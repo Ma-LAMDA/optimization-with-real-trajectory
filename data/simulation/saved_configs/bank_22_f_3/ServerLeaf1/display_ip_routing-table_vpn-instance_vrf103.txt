@@ -1,0 +1,17 @@
+display ip routing-table vpn-instance vrf103
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : vrf103
+         Destinations : 8        Routes : 8         
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   IBGP    255  0             RD  1.1.5.1                                  VXLAN
+     10.1.103.0/24  Direct  0    0             D   10.1.103.1                               Vbdif103
+     10.1.103.1/32  Direct  0    0             D   127.0.0.1                                Vbdif103
+   10.1.103.255/32  Direct  0    0             D   127.0.0.1                                Vbdif103
+       30.0.0.0/24  IBGP    255  0             RD  1.1.5.1                                  VXLAN
+       30.0.0.3/32  IBGP    255  0             RD  1.1.5.1                                  VXLAN
+       30.0.0.4/32  IBGP    255  0             RD  1.1.5.1                                  VXLAN
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

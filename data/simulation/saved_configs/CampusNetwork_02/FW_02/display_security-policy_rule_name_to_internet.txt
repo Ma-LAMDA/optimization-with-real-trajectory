@@ -1,0 +1,11 @@
+display security-policy rule name to_internet
+(1 times matched)
+ rule name to_internet
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.120.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  action permit

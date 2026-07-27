@@ -1,0 +1,43 @@
+
+Eth-Trunk1's state information is:
+(h): high priority
+(r): reference port
+Local:
+LAG ID: 1                       Working Mode: Static
+Preempt Delay: Disabled         Hash Arithmetic: According to flow
+System Priority: 32768          System ID: 380d-0011-1200
+Least Active-linknumber: 1      Max Active-linknumber: 256 
+Operating Status: up            Number Of Up Ports In Trunk: 1
+Timeout Period: Slow          
+PortKeyMode: Auto
+------------------------------------------------------------------------------------
+ActorPortName              Status   PortType PortPri PortNo PortKey PortState Weight
+GE1/0/2(r)                 Selected 100M     32768   1      289     10111100  1     
+
+Partner:
+------------------------------------------------------------------------------------
+ActorPortName              SysPri   SystemID        PortPri PortNo PortKey PortState
+GE1/0/2                    32768    3806-0011-1200  32768   1      289     10111100 
+
+
+Eth-Trunk3's state information is:
+(h): high priority
+(r): reference port
+Local:
+LAG ID: 3                       Working Mode: Static
+Preempt Delay: Disabled         Hash Arithmetic: According to flow
+System Priority: 32768          System ID: 380d-0011-1200
+Least Active-linknumber: 1      Max Active-linknumber: 256 
+Operating Status: up            Number Of Up Ports In Trunk: 1
+Timeout Period: Slow          
+PortKeyMode: Auto
+------------------------------------------------------------------------------------
+ActorPortName              Status   PortType PortPri PortNo PortKey PortState Weight
+GE1/0/3                    Unselect 100M     32768   2      801     10100010  1     
+GE1/0/5(r)                 Selected 100M     32768   3      801     10111100  1     
+
+Partner:
+------------------------------------------------------------------------------------
+ActorPortName              SysPri   SystemID        PortPri PortNo PortKey PortState
+GE1/0/3                    0        0000-0000-0000  0       0      0       10100011 
+GE1/0/5                    32768    0cb8-a819-0000  32768   3      577     10111100 

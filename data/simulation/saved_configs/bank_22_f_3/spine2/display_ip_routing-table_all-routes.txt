@@ -1,0 +1,37 @@
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : _public_
+         Destinations : 26       Routes : 29        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        1.1.1.1/32  OSPF    10   2             D   192.168.2.14                             GE1/0/3
+                    OSPF    10   2             D   192.168.2.10                             GE1/0/2
+                    OSPF    10   2             D   192.168.1.14                             GE1/0/1
+                    OSPF    10   2             D   192.168.1.10                             GE1/0/0
+        1.1.1.2/32  Direct  0    0             D   127.0.0.1                                LoopBack0
+        1.1.2.1/32  OSPF    10   1             D   192.168.2.10                             GE1/0/2
+        1.1.2.2/32  OSPF    10   1             D   192.168.2.14                             GE1/0/3
+        1.1.5.1/32  OSPF    10   1             D   192.168.1.10                             GE1/0/0
+        1.1.5.2/32  OSPF    10   1             D   192.168.1.14                             GE1/0/1
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0
+      127.0.0.1/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+127.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+    192.168.1.0/30  OSPF    10   2             D   192.168.1.10                             GE1/0/0
+    192.168.1.4/30  OSPF    10   2             D   192.168.1.14                             GE1/0/1
+    192.168.1.8/30  Direct  0    0             D   192.168.1.9                              GE1/0/0
+    192.168.1.9/32  Direct  0    0             D   127.0.0.1                                GE1/0/0
+   192.168.1.11/32  Direct  0    0             D   127.0.0.1                                GE1/0/0
+   192.168.1.12/30  Direct  0    0             D   192.168.1.13                             GE1/0/1
+   192.168.1.13/32  Direct  0    0             D   127.0.0.1                                GE1/0/1
+   192.168.1.15/32  Direct  0    0             D   127.0.0.1                                GE1/0/1
+    192.168.2.0/30  OSPF    10   2             D   192.168.2.10                             GE1/0/2
+    192.168.2.4/30  OSPF    10   2             D   192.168.2.14                             GE1/0/3
+    192.168.2.8/30  Direct  0    0             D   192.168.2.9                              GE1/0/2
+    192.168.2.9/32  Direct  0    0             D   127.0.0.1                                GE1/0/2
+   192.168.2.11/32  Direct  0    0             D   127.0.0.1                                GE1/0/2
+   192.168.2.12/30  Direct  0    0             D   192.168.2.13                             GE1/0/3
+   192.168.2.13/32  Direct  0    0             D   127.0.0.1                                GE1/0/3
+   192.168.2.15/32  Direct  0    0             D   127.0.0.1                                GE1/0/3
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

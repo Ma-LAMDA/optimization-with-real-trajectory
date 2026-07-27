@@ -1,0 +1,66 @@
+display bgp vpnv4 all routing-table 10.1.101.0 24
+BGP local router ID : 1.1.5.1
+ Local AS number : 65000
+ 
+ Total routes of Route Distinguisher(20:5002): 1
+ BGP routing table entry information of 10.1.101.0/24:
+ Imported route.
+ From: 0.0.0.0 (0.0.0.0)
+ Route Duration: 0d06h32m24s
+ Direct Out-interface: Vbdif202
+ Original nexthop: 30.0.0.2
+ Qos information : 0x0
+ Ext-Community: RT <21 : 5002>
+ AS-path Nil, origin incomplete, MED 0, pref-val 0, valid, local, best, select, pre 255
+ Not advertised to any peer yet
+
+
+ VPN-Instance ext_vrf101, Router ID 1.1.5.1:
+
+ Total Number of Routes: 1
+ BGP routing table entry information of 10.1.101.0/24:
+ Route Distinguisher: 20:5002
+ Imported route.
+ From: 0.0.0.0 (0.0.0.0)
+ Route Duration: 0d06h32m24s
+ Direct Out-interface: Vbdif202
+ Original nexthop: 30.0.0.2
+ Qos information : 0x0
+ AS-path Nil, origin incomplete, MED 0, pref-val 0, valid, local, best, select, pre 60
+ Not advertised to any peer yet
+
+
+ VPN-Instance vrf101, Router ID 1.1.5.1:
+
+ Total Number of Routes: 2
+ BGP routing table entry information of 10.1.101.0/24:
+ Route Distinguisher: 10:5001
+ Remote-Cross route
+ Evpn route: Type 5, ip-prefix
+ Label information (Received/Applied): 5001/NULL
+ From: 1.1.1.1 (1.1.1.1)
+ Route Duration: 0d06h33m50s
+ Relay Tunnel Out-Interface: VXLAN
+ Original nexthop: 1.1.2.1
+ Qos information : 0x0
+ Ext-Community: RT <11 : 5001>, Tunnel Type <VxLan>, Router's MAC <3808-0011-1200>
+ AS-path Nil, origin incomplete, MED 0, localpref 100, pref-val 0, valid, internal, best, select, pre 255
+ Originator: 1.1.2.1
+ Cluster list: 0.0.0.1
+ Not advertised to any peer yet
+
+ BGP routing table entry information of 10.1.101.0/24:
+ Route Distinguisher: 10:5001
+ Remote-Cross route
+ Evpn route: Type 5, ip-prefix
+ Label information (Received/Applied): 5001/NULL
+ From: 1.1.1.2 (1.1.1.2)
+ Route Duration: 0d06h33m48s
+ Relay Tunnel Out-Interface: VXLAN
+ Original nexthop: 1.1.2.1
+ Qos information : 0x0
+ Ext-Community: RT <11 : 5001>, Tunnel Type <VxLan>, Router's MAC <3808-0011-1200>
+ AS-path Nil, origin incomplete, MED 0, localpref 100, pref-val 0, valid, internal, pre 255, not preferred for peer address
+ Originator: 1.1.2.1
+ Cluster list: 0.0.0.1
+ Not advertised to any peer yet

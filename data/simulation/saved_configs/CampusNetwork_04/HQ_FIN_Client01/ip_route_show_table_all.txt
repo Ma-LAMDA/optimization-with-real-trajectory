@@ -1,0 +1,11 @@
+default via 10.1.20.254 dev eth0 
+10.1.20.0/24 dev eth0 scope link  src 10.1.20.100 
+broadcast 10.1.20.0 dev eth0 table local scope link  src 10.1.20.100 
+local 10.1.20.100 dev eth0 table local scope host  src 10.1.20.100 
+broadcast 10.1.20.255 dev eth0 table local scope link  src 10.1.20.100 
+broadcast 127.0.0.0 dev lo table local scope link  src 127.0.0.1 
+local 127.0.0.0/8 dev lo table local scope host  src 127.0.0.1 
+local 127.0.0.1 dev lo table local scope host  src 127.0.0.1 
+broadcast 127.255.255.255 dev lo table local scope link  src 127.0.0.1 
+local ::1 dev lo table local  metric 0 
+ff00::/8 dev eth0 table local  metric 256 

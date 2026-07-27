@@ -1,0 +1,12 @@
+display security-policy rule name to_dmz-server
+(2 times matched)
+ rule name to_dmz-server
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.1.60.0 mask 255.255.255.0
+  action permit

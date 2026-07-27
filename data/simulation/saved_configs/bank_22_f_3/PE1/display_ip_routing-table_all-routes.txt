@@ -1,0 +1,85 @@
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : _public_
+         Destinations : 62       Routes : 70        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        1.1.1.0/24  Static  60   0             RD  30.0.0.1                                 Vlanif202
+        3.3.3.1/32  Direct  0    0             D   127.0.0.1                                LoopBack0
+        3.3.3.2/32  OSPF    10   1             D   8.6.12.2                                 GE1/0/1
+        3.3.3.3/32  OSPF    10   1             D   8.6.13.3                                 GE1/0/2
+        3.3.3.4/32  OSPF    10   2             D   8.6.12.2                                 GE1/0/1
+        3.3.3.5/32  OSPF    10   2             D   8.6.13.3                                 GE1/0/2
+        3.3.3.6/32  OSPF    10   3             D   8.6.13.3                                 GE1/0/2
+                    OSPF    10   3             D   8.6.12.2                                 GE1/0/1
+        8.6.6.0/24  Static  5    0             RD  8.6.13.3                                 GE1/0/2
+       8.6.12.0/24  Direct  0    0             D   8.6.12.1                                 GE1/0/1
+       8.6.12.1/32  Direct  0    0             D   127.0.0.1                                GE1/0/1
+     8.6.12.255/32  Direct  0    0             D   127.0.0.1                                GE1/0/1
+       8.6.13.0/24  Direct  0    0             D   8.6.13.1                                 GE1/0/2
+       8.6.13.1/32  Direct  0    0             D   127.0.0.1                                GE1/0/2
+     8.6.13.255/32  Direct  0    0             D   127.0.0.1                                GE1/0/2
+       8.6.24.0/24  OSPF    10   2             D   8.6.12.2                                 GE1/0/1
+       8.6.35.0/24  OSPF    10   2             D   8.6.13.3                                 GE1/0/2
+       8.6.46.0/24  OSPF    10   3             D   8.6.12.2                                 GE1/0/1
+       8.6.56.0/24  OSPF    10   3             D   8.6.13.3                                 GE1/0/2
+        8.8.8.0/24  Direct  0    0             D   8.8.8.20                                 LoopBack20
+        8.8.8.5/32  Direct  0    0             D   127.0.0.1                                LoopBack5
+       8.8.8.10/32  Direct  0    0             D   127.0.0.1                                LoopBack10
+       8.8.8.15/32  Direct  0    0             D   127.0.0.1                                LoopBack15
+       8.8.8.20/32  Direct  0    0             D   127.0.0.1                                LoopBack20
+       8.8.8.25/32  Direct  0    0             D   127.0.0.1                                LoopBack25
+       8.8.8.30/32  Direct  0    0             D   127.0.0.1                                LoopBack30
+      8.8.8.255/32  Direct  0    0             D   127.0.0.1                                LoopBack20
+        9.9.9.5/32  OSPF    10   3             D   8.6.13.3                                 GE1/0/2
+                    OSPF    10   3             D   8.6.12.2                                 GE1/0/1
+       9.9.9.10/32  OSPF    10   3             D   8.6.13.3                                 GE1/0/2
+                    OSPF    10   3             D   8.6.12.2                                 GE1/0/1
+       10.1.1.0/24  Static  60   0             RD  10.1.6.3                                 Vlanif10
+       10.1.2.0/24  Static  60   0             RD  10.1.6.17                                Vlanif20
+       10.1.6.0/28  Direct  0    0             D   10.1.6.2                                 Vlanif10
+       10.1.6.2/32  Direct  0    0             D   127.0.0.1                                Vlanif10
+      10.1.6.15/32  Direct  0    0             D   127.0.0.1                                Vlanif10
+      10.1.6.16/28  Direct  0    0             D   10.1.6.18                                Vlanif20
+      10.1.6.18/32  Direct  0    0             D   127.0.0.1                                Vlanif20
+      10.1.6.31/32  Direct  0    0             D   127.0.0.1                                Vlanif20
+      10.1.6.32/28  Direct  0    0             D   10.1.6.34                                Vlanif30
+      10.1.6.34/32  Direct  0    0             D   127.0.0.1                                Vlanif30
+      10.1.6.47/32  Direct  0    0             D   127.0.0.1                                Vlanif30
+      10.1.6.48/28  Direct  0    0             D   10.1.6.50                                Vlanif40
+      10.1.6.50/32  Direct  0    0             D   127.0.0.1                                Vlanif40
+      10.1.6.63/32  Direct  0    0             D   127.0.0.1                                Vlanif40
+     10.1.101.0/24  Static  60   0             RD  30.0.0.1                                 Vlanif202
+     10.1.103.0/24  Static  60   0             RD  30.0.0.1                                 Vlanif202
+      10.60.1.0/28  Direct  0    0             D   10.60.1.2                                Vlanif50
+      10.60.1.2/32  Direct  0    0             D   127.0.0.1                                Vlanif50
+     10.60.1.15/32  Direct  0    0             D   127.0.0.1                                Vlanif50
+     10.101.1.0/24  Direct  0    0             D   10.101.1.2                               LoopBack1
+     10.101.1.2/32  Direct  0    0             D   127.0.0.1                                LoopBack1
+   10.101.1.255/32  Direct  0    0             D   127.0.0.1                                LoopBack1
+       20.1.1.0/24  O_ASE   150  1             D   8.6.13.3                                 GE1/0/2
+                    O_ASE   150  1             D   8.6.12.2                                 GE1/0/1
+       20.1.2.0/24  O_ASE   150  1             D   8.6.13.3                                 GE1/0/2
+                    O_ASE   150  1             D   8.6.12.2                                 GE1/0/1
+       20.1.3.0/24  O_ASE   150  1             D   8.6.13.3                                 GE1/0/2
+                    O_ASE   150  1             D   8.6.12.2                                 GE1/0/1
+       20.1.4.0/24  O_ASE   150  1             D   8.6.13.3                                 GE1/0/2
+                    O_ASE   150  1             D   8.6.12.2                                 GE1/0/1
+       20.1.5.0/24  O_ASE   150  1             D   8.6.13.3                                 GE1/0/2
+                    O_ASE   150  1             D   8.6.12.2                                 GE1/0/1
+       30.0.0.0/24  Direct  0    0             D   30.0.0.253                               Vlanif202
+     30.0.0.253/32  Direct  0    0             D   127.0.0.1                                Vlanif202
+     30.0.0.255/32  Direct  0    0             D   127.0.0.1                                Vlanif202
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0
+      127.0.0.1/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+127.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+------------------------------------------------------------------------------
+Routing Table : mpls1
+         Destinations : 1        Routes : 1         
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

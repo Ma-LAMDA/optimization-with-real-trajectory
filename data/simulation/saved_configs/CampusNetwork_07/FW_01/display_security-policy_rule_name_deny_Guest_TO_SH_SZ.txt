@@ -1,0 +1,13 @@
+display security-policy rule name deny_Guest_TO_SH_SZ
+(162 times matched)
+ rule name deny_Guest_TO_SH_SZ
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.120.0 mask 255.255.255.0
+  destination-address 10.2.10.0 mask 255.255.255.0
+  destination-address 10.2.20.0 mask 255.255.255.0
+  destination-address 10.2.30.0 mask 255.255.255.0
+  destination-address 10.3.10.0 mask 255.255.255.0
+  destination-address 10.3.20.0 mask 255.255.255.0
+  destination-address 10.3.30.0 mask 255.255.255.0
+  action deny

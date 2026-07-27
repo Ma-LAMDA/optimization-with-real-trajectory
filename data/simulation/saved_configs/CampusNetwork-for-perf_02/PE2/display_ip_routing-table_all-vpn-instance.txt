@@ -1,0 +1,23 @@
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : SH
+         Destinations : 16       Routes : 16        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+      10.1.10.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1			
+      10.1.20.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1			
+      10.1.30.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1			
+      10.1.40.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1			
+     10.1.110.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1			
+      10.2.10.0/24  EBGP    255  0             RD  10.10.100.6                              Ethernet1/0/0			
+      10.2.20.0/24  EBGP    255  0             RD  10.10.100.6                              Ethernet1/0/0			
+      10.2.30.0/24  EBGP    255  0             RD  10.10.100.6                              Ethernet1/0/0			
+      10.3.10.0/24  IBGP    255  0             RD  1.1.1.1                                  Ethernet1/0/1			
+      10.3.20.0/24  IBGP    255  0             RD  1.1.1.1                                  Ethernet1/0/1			
+      10.3.30.0/24  IBGP    255  0             RD  1.1.1.1                                  Ethernet1/0/1			
+    10.10.100.4/30  Direct  0    0             D   10.10.100.5                              Ethernet1/0/0			
+    10.10.100.5/32  Direct  0    0             D   127.0.0.1                                Ethernet1/0/0			
+    10.10.100.7/32  Direct  0    0             D   127.0.0.1                                Ethernet1/0/0			
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0			
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0			

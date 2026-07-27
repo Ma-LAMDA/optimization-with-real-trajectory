@@ -1,0 +1,32 @@
+2026-06-16 06:33:26.830
+ Role: active, peer: standby (should be "standby-active")
+ Running priority: 45000, peer: 45000
+ Backup channel usage: 0.00%
+ Stable time: 0 days, 0 hours, 0 minutes
+ Last state change information: 2026-06-16 6:33:01 HRP core state changed, old_state = abnormal(standby), new_state = abnormal(active), local_priority = 45000, peer_priority = 44998.
+
+ Configuration:
+ hello interval:              1000ms
+ preempt:                     60s
+ mirror configuration:        off
+ mirror session:              off
+ track trunk member:          on
+ auto-sync configuration:     on
+ auto-sync connection-status: on
+ adjust ospf-cost:            on
+ adjust ospfv3-cost:          on
+ adjust bgp-cost:             on
+ nat resource:                off
+
+ Detail information:
+                                 Eth-Trunk2: up
+                                 Eth-Trunk3: up
+                                 Eth-Trunk4: up
+                                 Eth-Trunk5: up
+                       GigabitEthernet1/0/1: up
+                       GigabitEthernet1/0/2: up
+                       GigabitEthernet1/0/3: up
+                       GigabitEthernet1/0/4: up
+                                  ospf-cost: +0 (should be "+65500")
+                                ospfv3-cost: +0 (should be "+65500")
+                                   bgp-cost: +0 (should be "+100")

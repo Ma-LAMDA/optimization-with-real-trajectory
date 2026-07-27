@@ -1,0 +1,497 @@
+!Software Version V800R023C10SPC100B313
+!Last configuration was updated at 2026-06-04 01:48:13+00:00 by root
+#
+sysname ServerLeaf2
+#
+undo ftp server source all-interface
+undo ftp ipv6 server source all-interface
+#
+device board 17 board-type CE-MPUB
+device board 1 board-type CE-LPUE
+device board 2 board-type CE-LPUE
+#
+ntp server source-interface all disable
+ntp ipv6 server source-interface all disable
+#
+evpn-overlay enable
+#
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+ip vpn-instance lb-vpn
+ ipv4-family
+  route-distinguisher 21:660
+  vpn-target 6000:10 export-extcommunity
+  vpn-target 6000:10 export-extcommunity evpn
+  vpn-target 6000:10 import-extcommunity
+  vpn-target 6000:10 import-extcommunity evpn
+ vxlan vni 6101
+#
+ip vpn-instance vpn1
+ ipv4-family
+  route-distinguisher 61:1
+  vpn-target 5000:10 export-extcommunity
+  vpn-target 5000:10 export-extcommunity evpn
+  vpn-target 5000:10 import-extcommunity
+  vpn-target 5000:10 import-extcommunity evpn
+ vxlan vni 5010
+#
+ip vpn-instance vpn2
+ ipv4-family
+  route-distinguisher 61:2
+  vpn-target 5000:20 export-extcommunity
+  vpn-target 5000:20 export-extcommunity evpn
+  vpn-target 5000:20 import-extcommunity
+  vpn-target 5000:20 import-extcommunity evpn
+ vxlan vni 5020
+#
+ip vpn-instance vpn3
+ ipv4-family
+  route-distinguisher 61:3
+  vpn-target 5000:30 export-extcommunity
+  vpn-target 5000:30 export-extcommunity evpn
+  vpn-target 5000:30 import-extcommunity
+  vpn-target 5000:30 import-extcommunity evpn
+ vxlan vni 5030
+#
+ip vpn-instance vpn4
+ ipv4-family
+  route-distinguisher 61:4
+  vpn-target 5000:40 export-extcommunity
+  vpn-target 5000:40 export-extcommunity evpn
+  vpn-target 5000:40 import-extcommunity
+  vpn-target 5000:40 import-extcommunity evpn
+ vxlan vni 5040
+#
+ip vpn-instance vpn5
+ ipv4-family
+  route-distinguisher 61:5
+  vpn-target 5000:50 export-extcommunity
+  vpn-target 5000:50 export-extcommunity evpn
+  vpn-target 5000:50 import-extcommunity
+  vpn-target 5000:50 import-extcommunity evpn
+ vxlan vni 5050
+#
+ip vpn-instance vpn6
+ ipv4-family
+  route-distinguisher 61:6
+  vpn-target 5000:60 export-extcommunity
+  vpn-target 5000:60 export-extcommunity evpn
+  vpn-target 5000:60 import-extcommunity
+  vpn-target 5000:60 import-extcommunity evpn
+ vxlan vni 5060
+#
+bridge-domain 10
+ vxlan vni 10
+ #
+ evpn
+  route-distinguisher 21:101
+  vpn-target 10:10 export-extcommunity
+  vpn-target 5000:10 export-extcommunity
+  vpn-target 10:10 import-extcommunity
+#
+bridge-domain 20
+ vxlan vni 20
+ #
+ evpn
+  route-distinguisher 21:102
+  vpn-target 20:20 export-extcommunity
+  vpn-target 5000:20 export-extcommunity
+  vpn-target 20:20 import-extcommunity
+#
+bridge-domain 30
+ vxlan vni 30
+ #
+ evpn
+  route-distinguisher 21:103
+  vpn-target 30:30 export-extcommunity
+  vpn-target 5000:30 export-extcommunity
+  vpn-target 30:30 import-extcommunity
+#
+bridge-domain 40
+ vxlan vni 40
+ #
+ evpn
+  route-distinguisher 21:104
+  vpn-target 40:40 export-extcommunity
+  vpn-target 5000:40 export-extcommunity
+  vpn-target 40:40 import-extcommunity
+#
+bridge-domain 50
+ vxlan vni 50
+ #
+ evpn
+  route-distinguisher 21:105
+  vpn-target 50:50 export-extcommunity
+  vpn-target 5000:50 export-extcommunity
+  vpn-target 50:50 import-extcommunity
+#
+bridge-domain 60
+ vxlan vni 60
+ #
+ evpn
+  route-distinguisher 21:106
+  vpn-target 60:60 export-extcommunity
+  vpn-target 5000:60 export-extcommunity
+  vpn-target 60:60 import-extcommunity
+#
+bridge-domain 500
+ vxlan vni 500
+ #
+ evpn
+  route-distinguisher 1101:110
+  vpn-target 1101:1101 export-extcommunity
+  vpn-target 6000:10 export-extcommunity
+  vpn-target 1101:1101 import-extcommunity
+#
+dhcp server request-packet all-interface disable
+#
+aaa
+ #
+ authentication-scheme default
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default
+ #
+ domain default
+ #
+ domain default_admin
+#
+warranty
+#
+interface Vbdif10
+ ip binding vpn-instance vpn1
+ ip address 10.1.1.1 255.255.255.0
+ mac-address 0000-00e0-0001
+ vxlan anycast-gateway enable
+ arp collect host enable
+#
+interface Vbdif20
+ ip binding vpn-instance vpn2
+ ip address 10.1.2.1 255.255.255.0
+ mac-address 0000-00e0-0001
+ vxlan anycast-gateway enable
+ arp collect host enable
+#
+interface Vbdif30
+ ip binding vpn-instance vpn3
+ ip address 10.1.3.1 255.255.255.0
+ mac-address 0000-00e0-0001
+ vxlan anycast-gateway enable
+ arp collect host enable
+#
+interface Vbdif40
+ ip binding vpn-instance vpn4
+ ip address 10.1.4.1 255.255.255.0
+ mac-address 0000-00e0-0001
+ vxlan anycast-gateway enable
+ arp collect host enable
+#
+interface Vbdif50
+ ip binding vpn-instance vpn5
+ ip address 10.1.5.1 255.255.255.0
+ mac-address 0000-0000-0060
+ vxlan anycast-gateway enable
+ arp collect host enable
+#
+interface Vbdif60
+ ip binding vpn-instance vpn6
+ ip address 11.1.1.1 255.255.255.0
+ mac-address 0000-0000-1111
+ vxlan anycast-gateway enable
+ arp collect host enable
+#
+interface Vbdif500
+ ip binding vpn-instance lb-vpn
+ ip address 10.1.100.1 255.255.255.0
+ mac-address 0000-0001-1001
+ vxlan anycast-gateway enable
+ arp collect host enable
+#
+interface MEth0/0/0
+ undo shutdown
+#
+interface GE1/0/0
+ undo portswitch
+ description To-Spine1-GE1/0/3
+ undo shutdown
+ ip address 192.168.2.6 255.255.255.252
+#
+interface GE1/0/1
+ undo portswitch
+ description To-Spine2-GE1/0/3
+ undo shutdown
+ ip address 192.168.2.14 255.255.255.252
+#
+interface GE1/0/2
+ undo shutdown
+#
+interface GE1/0/3
+ undo shutdown
+#
+interface GE1/0/4
+ undo shutdown
+#
+interface GE1/0/5
+ description To-PC2-GE1/0/4
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ stp edged-port enable
+#
+interface GE1/0/5.1 mode l2
+ encapsulation dot1q vid 10
+ bridge-domain 10
+#
+interface GE1/0/5.2 mode l2
+ encapsulation dot1q vid 20
+ bridge-domain 20
+#
+interface GE1/0/5.3 mode l2
+ encapsulation dot1q vid 30
+ bridge-domain 30
+#
+interface GE1/0/5.4 mode l2
+ encapsulation dot1q vid 40
+ bridge-domain 40
+#
+interface GE1/0/5.5 mode l2
+ encapsulation dot1q vid 50
+ bridge-domain 50
+#
+interface GE1/0/5.6 mode l2
+ encapsulation dot1q vid 60
+ bridge-domain 60
+#
+interface GE1/0/5.7 mode l2
+ encapsulation dot1q vid 70
+ bridge-domain 500
+#
+interface GE1/0/6
+ description To-server
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ stp edged-port enable
+#
+interface GE1/0/7
+ undo shutdown
+#
+interface GE1/0/8
+ undo shutdown
+#
+interface GE1/0/9
+ undo shutdown
+#
+interface GE1/1/0
+ shutdown
+#
+interface GE1/1/1
+ shutdown
+#
+interface GE1/1/2
+ shutdown
+#
+interface GE1/1/3
+ shutdown
+#
+interface GE1/1/4
+ shutdown
+#
+interface GE1/1/5
+ shutdown
+#
+interface GE1/1/6
+ shutdown
+#
+interface GE1/1/7
+ shutdown
+#
+interface GE1/1/8
+ shutdown
+#
+interface GE1/1/9
+ shutdown
+#
+interface GE2/0/0
+ shutdown
+#
+interface GE2/0/1
+ shutdown
+#
+interface GE2/0/2
+ shutdown
+#
+interface GE2/0/3
+ shutdown
+#
+interface GE2/0/4
+ shutdown
+#
+interface GE2/0/5
+ shutdown
+#
+interface GE2/0/6
+ shutdown
+#
+interface GE2/0/7
+ shutdown
+#
+interface GE2/0/8
+ shutdown
+#
+interface GE2/0/9
+ shutdown
+#
+interface GE2/1/0
+ shutdown
+#
+interface GE2/1/1
+ shutdown
+#
+interface GE2/1/2
+ shutdown
+#
+interface GE2/1/3
+ shutdown
+#
+interface GE2/1/4
+ shutdown
+#
+interface GE2/1/5
+ shutdown
+#
+interface GE2/1/6
+ shutdown
+#
+interface GE2/1/7
+ shutdown
+#
+interface GE2/1/8
+ shutdown
+#
+interface GE2/1/9
+ shutdown
+#
+interface LoopBack0
+ ip address 1.1.2.2 255.255.255.255
+#
+interface Nve1
+ source 1.1.2.2
+ vni 10 head-end peer-list protocol bgp
+ vni 20 head-end peer-list protocol bgp
+ vni 30 head-end peer-list protocol bgp
+ vni 40 head-end peer-list protocol bgp
+ vni 50 head-end peer-list protocol bgp
+ vni 60 head-end peer-list protocol bgp
+ vni 500 head-end peer-list protocol bgp
+#
+interface NULL0
+#
+bgp 65000
+ router-id 1.1.2.2
+ private-4-byte-as enable
+ peer 1.1.1.1 as-number 65000
+ peer 1.1.1.1 connect-interface LoopBack0
+ peer 1.1.1.2 as-number 65000
+ peer 1.1.1.2 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  peer 1.1.1.1 enable
+  peer 1.1.1.2 enable
+ #
+ ipv4-family vpn-instance lb-vpn
+  import-route direct
+  maximum load-balancing ibgp 8
+  advertise l2vpn evpn
+ #
+ ipv4-family vpn-instance vpn1
+  import-route direct
+  import-route ospf 1
+  maximum load-balancing ibgp 8
+  advertise l2vpn evpn
+ #
+ ipv4-family vpn-instance vpn2
+  import-route direct
+  import-route ospf 1
+  maximum load-balancing ibgp 8
+  advertise l2vpn evpn
+ #
+ ipv4-family vpn-instance vpn3
+  import-route direct
+  import-route ospf 1
+  maximum load-balancing ibgp 8
+  advertise l2vpn evpn
+ #
+ ipv4-family vpn-instance vpn4
+  import-route direct
+  import-route ospf 1
+  maximum load-balancing ibgp 8
+  advertise l2vpn evpn
+ #
+ ipv4-family vpn-instance vpn5
+  import-route direct
+  import-route ospf 1
+  maximum load-balancing ibgp 8
+  advertise l2vpn evpn
+ #
+ ipv4-family vpn-instance vpn6
+  import-route direct
+  import-route ospf 1
+  maximum load-balancing ibgp 8
+  advertise l2vpn evpn
+ #
+ l2vpn-family evpn
+  policy vpn-target
+  peer 1.1.1.1 enable
+  peer 1.1.1.1 advertise irb
+  peer 1.1.1.2 enable
+  peer 1.1.1.2 advertise irb
+#
+ospf 1 router-id 1.1.2.2
+ area 0.0.0.0
+  network 1.1.2.2 0.0.0.0
+  network 192.168.2.4 0.0.0.3
+  network 192.168.2.12 0.0.0.3
+#
+snmp-agent
+snmp-agent local-engineid 800007DB03383900111200
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+ssh server authentication-type keyboard-interactive enable
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+user-interface maximum-vty 5
+#
+user-interface con 0
+ screen-length 0
+#
+vm-manager
+#
+return

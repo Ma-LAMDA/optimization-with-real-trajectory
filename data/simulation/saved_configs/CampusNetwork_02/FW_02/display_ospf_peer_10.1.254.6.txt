@@ -1,0 +1,16 @@
+display ospf peer 10.1.254.6
+OSPF Process 1 with Router ID 10.1.254.4
+		 Neighbors 
+
+ Area 0.0.0.0 interface 10.1.200.21(Eth-Trunk5)'s neighbors
+ Router ID: 10.1.254.6       Address: 10.1.200.22     
+   State: Full  Mode:Nbr is  Master  Priority: 1
+   DR: None   BDR: None   MTU: 1500 
+   Dead timer due in 38  sec 
+   Retrans timer interval: 0 
+   Neighbor is up for 115:44:57    
+   Authentication Sequence: [ 0 ] 
+
+HRP_S<FW_02>
+Jun 16 2026 03:21:29 FW_02 %%01OSPF/4/NBR_CHANGE_E(l)[12459]:Neighbor changes event: neighbor status changed. (ProcessId=1, NeighborAddress=10.1.200.6, NeighborEvent=HelloReceived, NeighborPreviousState=Down, NeighborCurrentState=Init)
+Jun 16 2026 03:21:29 FW_02 %%01OSPF/4/NBR_CHANGE_E(l)[12460]:Neighbor changes event: neighbor status changed. (ProcessId=1, NeighborAddress=10.1.200.6, NeighborEvent=2WayReceived, NeighborPreviousState=Init, NeighborCurrentState=ExStart)

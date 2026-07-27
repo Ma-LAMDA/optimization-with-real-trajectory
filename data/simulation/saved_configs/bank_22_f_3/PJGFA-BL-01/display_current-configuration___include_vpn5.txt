@@ -1,0 +1,5 @@
+display current-configuration | include vpn5
+ip vpn-instance vpn5
+ ip binding vpn-instance vpn5
+ ipv4-family vpn-instance vpn5
+ip route-static vpn-instance vpn5 0.0.0.0 0.0.0.0 20.60.1.2

@@ -1,0 +1,32 @@
+display bgp vpnv4 all routing-table 9.9.9.5 32
+BGP local router ID : 3.3.3.4
+ Local AS number : 5000
+ 
+ Total routes of Route Distinguisher(5000:10): 1
+ BGP routing table entry information of 9.9.9.5/32:
+ Imported route.
+ From: 0.0.0.0 (0.0.0.0)
+ Route Duration: 0d20h42m17s
+ Direct Out-interface: LoopBack5
+ Original nexthop: 9.9.9.5
+ Qos information : 0x0
+ Ext-Community: RT <5000 : 11>, OSPF DOMAIN ID <0.0.0.0 : 0>, OSPF ROUTER ID <8.6.6.1 : 0>, OSPF RT <0.0.0.0 : 1 : 0>
+ AS-path Nil, origin incomplete, MED 1, pref-val 0, valid, local, best, select, pre 255
+ Advertised to such 1 peers:
+    3.3.3.1
+
+
+ VPN-Instance mpls1, Router ID 3.3.3.4:
+
+ Total Number of Routes: 1
+ BGP routing table entry information of 9.9.9.5/32:
+ Route Distinguisher: 5000:10
+ Imported route.
+ From: 0.0.0.0 (0.0.0.0)
+ Route Duration: 0d20h42m17s
+ Direct Out-interface: LoopBack5
+ Original nexthop: 9.9.9.5
+ Qos information : 0x0
+ Ext-Community: OSPF DOMAIN ID <0.0.0.0 : 0>, OSPF ROUTER ID <8.6.6.1 : 0>, OSPF RT <0.0.0.0 : 1 : 0>
+ AS-path Nil, origin incomplete, MED 1, pref-val 0, valid, local, best, select, pre 10
+ Not advertised to any peer yet

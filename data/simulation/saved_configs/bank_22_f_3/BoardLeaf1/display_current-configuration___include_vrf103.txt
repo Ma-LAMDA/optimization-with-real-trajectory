@@ -1,0 +1,5 @@
+display current-configuration | include vrf103
+ip vpn-instance vrf103
+ ip binding vpn-instance vrf103
+ ipv4-family vpn-instance vrf103
+ip route-static vpn-instance vrf103 0.0.0.0 0.0.0.0 30.0.0.4 recursive-lookup host-route arp-vlink-only

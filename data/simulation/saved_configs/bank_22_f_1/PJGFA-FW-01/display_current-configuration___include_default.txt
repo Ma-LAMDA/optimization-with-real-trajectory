@@ -1,0 +1,14 @@
+display current-configuration | include default
+info-center source default channel 0 trap state off
+firewall dataplane to manageplane application-apperceive default-action drop
+ip vpn-instance default
+ike proposal default
+ authentication-scheme default
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+l2tp-group default-lns
+ ip binding vpn-instance default
+ssh authentication-type default password
+pki realm default
+ default action permit

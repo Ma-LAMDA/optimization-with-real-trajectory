@@ -1,0 +1,131 @@
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : _public_
+         Destinations : 28       Routes : 31        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        1.1.5.1/32  Static  60   0             RD  20.3.1.2                                 Vlanif1001
+        1.1.5.2/32  Static  60   0             RD  20.3.1.2                                 Vlanif1001
+        2.1.1.1/32  OSPF    10   1             D   182.158.1.5                              GE1/0/2
+        2.1.1.2/32  OSPF    10   1             D   182.158.1.13                             GE1/0/3
+        2.1.2.1/32  OSPF    10   2             D   182.158.1.13                             GE1/0/3
+                    OSPF    10   2             D   182.158.1.5                              GE1/0/2
+        2.1.2.2/32  OSPF    10   2             D   182.158.1.13                             GE1/0/3
+                    OSPF    10   2             D   182.158.1.5                              GE1/0/2
+        2.1.5.1/32  OSPF    10   2             D   182.158.1.13                             GE1/0/3
+                    OSPF    10   2             D   182.158.1.5                              GE1/0/2
+        2.1.5.2/32  Direct  0    0             D   127.0.0.1                                LoopBack0
+       20.3.1.0/24  Direct  0    0             D   20.3.1.22                                Vlanif1001
+       20.3.1.1/32  Direct  0    0             D   127.0.0.1                                Vlanif1001
+      20.3.1.22/32  Direct  0    0             D   127.0.0.1                                Vlanif1001
+     20.3.1.255/32  Direct  0    0             D   127.0.0.1                                Vlanif1001
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0
+      127.0.0.1/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+127.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+    182.158.1.0/30  OSPF    10   2             D   182.158.1.5                              GE1/0/2
+    182.158.1.4/30  Direct  0    0             D   182.158.1.6                              GE1/0/2
+    182.158.1.6/32  Direct  0    0             D   127.0.0.1                                GE1/0/2
+    182.158.1.7/32  Direct  0    0             D   127.0.0.1                                GE1/0/2
+    182.158.1.8/30  OSPF    10   2             D   182.158.1.13                             GE1/0/3
+   182.158.1.12/30  Direct  0    0             D   182.158.1.14                             GE1/0/3
+   182.158.1.14/32  Direct  0    0             D   127.0.0.1                                GE1/0/3
+   182.158.1.15/32  Direct  0    0             D   127.0.0.1                                GE1/0/3
+    182.158.2.0/30  OSPF    10   2             D   182.158.1.5                              GE1/0/2
+    182.158.2.4/30  OSPF    10   2             D   182.158.1.5                              GE1/0/2
+    182.158.2.8/30  OSPF    10   2             D   182.158.1.13                             GE1/0/3
+   182.158.2.12/30  OSPF    10   2             D   182.158.1.13                             GE1/0/3
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+------------------------------------------------------------------------------
+Routing Table : vpn1
+         Destinations : 10       Routes : 10        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   IBGP    255  0             RD  2.1.5.1                                  VXLAN
+       20.1.1.0/24  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+       20.1.1.1/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.1.10/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.1.20/32  IBGP    255  0             RD  2.1.2.2                                  VXLAN
+       20.1.6.0/28  Direct  0    0             D   20.1.6.1                                 Vbdif8010
+       20.1.6.1/32  Direct  0    0             D   127.0.0.1                                Vbdif8010
+       20.1.6.2/32  IBGP    255  0             RD  2.1.5.1                                  VXLAN
+      20.1.6.15/32  Direct  0    0             D   127.0.0.1                                Vbdif8010
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+------------------------------------------------------------------------------
+Routing Table : vpn2
+         Destinations : 10       Routes : 10        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   IBGP    255  0             RD  2.1.5.1                                  VXLAN
+       20.1.2.0/24  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+       20.1.2.1/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.2.10/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.2.20/32  IBGP    255  0             RD  2.1.2.2                                  VXLAN
+      20.1.6.16/28  Direct  0    0             D   20.1.6.17                                Vbdif8020
+      20.1.6.17/32  Direct  0    0             D   127.0.0.1                                Vbdif8020
+      20.1.6.18/32  IBGP    255  0             RD  2.1.5.1                                  VXLAN
+      20.1.6.31/32  Direct  0    0             D   127.0.0.1                                Vbdif8020
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+------------------------------------------------------------------------------
+Routing Table : vpn3
+         Destinations : 10       Routes : 10        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   IBGP    255  0             RD  2.1.5.1                                  VXLAN
+       20.1.3.0/24  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+       20.1.3.1/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.3.10/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.3.20/32  IBGP    255  0             RD  2.1.2.2                                  VXLAN
+      20.1.6.32/28  Direct  0    0             D   20.1.6.33                                Vbdif8030
+      20.1.6.33/32  Direct  0    0             D   127.0.0.1                                Vbdif8030
+      20.1.6.34/32  IBGP    255  0             RD  2.1.5.1                                  VXLAN
+      20.1.6.47/32  Direct  0    0             D   127.0.0.1                                Vbdif8030
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+------------------------------------------------------------------------------
+Routing Table : vpn4
+         Destinations : 10       Routes : 10        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   IBGP    255  0             RD  2.1.5.1                                  VXLAN
+       20.1.4.0/24  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+       20.1.4.1/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.4.10/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.4.20/32  IBGP    255  0             RD  2.1.2.2                                  VXLAN
+      20.1.6.48/28  Direct  0    0             D   20.1.6.49                                Vbdif8040
+      20.1.6.49/32  Direct  0    0             D   127.0.0.1                                Vbdif8040
+      20.1.6.50/32  IBGP    255  0             RD  2.1.5.1                                  VXLAN
+      20.1.6.63/32  Direct  0    0             D   127.0.0.1                                Vbdif8040
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+------------------------------------------------------------------------------
+Routing Table : vpn5
+         Destinations : 10       Routes : 10        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   IBGP    255  0             RD  2.1.5.1                                  VXLAN
+       20.1.5.0/24  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+       20.1.5.1/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.5.10/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.5.20/32  IBGP    255  0             RD  2.1.2.2                                  VXLAN
+      20.60.1.0/24  Direct  0    0             D   20.60.1.1                                Vbdif8050
+      20.60.1.1/32  Direct  0    0             D   127.0.0.1                                Vbdif8050
+      20.60.1.2/32  IBGP    255  0             RD  2.1.5.1                                  VXLAN
+    20.60.1.255/32  Direct  0    0             D   127.0.0.1                                Vbdif8050
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+------------------------------------------------------------------------------
+Routing Table : vpn6
+         Destinations : 6        Routes : 6         
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+       20.1.6.0/24  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+       20.1.6.1/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.70.1.0/24  Direct  0    0             D   20.70.1.1                                Vbdif8060
+      20.70.1.1/32  Direct  0    0             D   127.0.0.1                                Vbdif8060
+    20.70.1.255/32  Direct  0    0             D   127.0.0.1                                Vbdif8060
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

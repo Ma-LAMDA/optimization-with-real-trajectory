@@ -1,0 +1,51 @@
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : _public_
+         Destinations : 43       Routes : 43
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   O_ASE   150  1             D   10.1.200.25                              Vlanif210
+      10.1.10.0/24  OSPF    10   3             D   10.1.200.25                              Vlanif210
+    10.1.10.254/32  OSPF    10   3             D   10.1.200.25                              Vlanif210
+      10.1.20.0/24  OSPF    10   3             D   10.1.200.25                              Vlanif210
+    10.1.20.254/32  OSPF    10   3             D   10.1.200.25                              Vlanif210
+      10.1.30.0/24  OSPF    10   3             D   10.1.200.25                              Vlanif210
+    10.1.30.254/32  OSPF    10   3             D   10.1.200.25                              Vlanif210
+      10.1.40.0/24  OSPF    10   3             D   10.1.200.25                              Vlanif210
+    10.1.40.254/32  OSPF    10   3             D   10.1.200.25                              Vlanif210
+      10.1.50.0/24  Direct  0    0             D   10.1.50.254                              Vlanif50
+    10.1.50.254/32  Direct  0    0             D   127.0.0.1                                Vlanif50
+    10.1.50.255/32  Direct  0    0             D   127.0.0.1                                Vlanif50
+      10.1.60.0/24  Direct  0    0             D   10.1.60.254                              Vlanif60
+    10.1.60.254/32  Direct  0    0             D   127.0.0.1                                Vlanif60
+    10.1.60.255/32  Direct  0    0             D   127.0.0.1                                Vlanif60
+     10.1.110.0/24  OSPF    10   3             D   10.1.200.25                              Vlanif210
+   10.1.110.254/32  OSPF    10   3             D   10.1.200.25                              Vlanif210
+     10.1.120.0/24  OSPF    10   3             D   10.1.200.25                              Vlanif210
+   10.1.120.254/32  OSPF    10   3             D   10.1.200.25                              Vlanif210
+     10.1.200.0/30  OSPF    10   2             D   10.1.200.25                              Vlanif210
+     10.1.200.4/30  OSPF    10   3             D   10.1.200.25                              Vlanif210
+     10.1.200.8/30  OSPF    10   2             D   10.1.200.25                              Vlanif210
+    10.1.200.12/30  OSPF    10   3             D   10.1.200.25                              Vlanif210
+    10.1.200.16/30  OSPF    10   2             D   10.1.200.25                              Vlanif210
+    10.1.200.20/30  OSPF    10   3             D   10.1.200.25                              Vlanif210
+    10.1.200.24/30  Direct  0    0             D   10.1.200.26                              Vlanif210
+    10.1.200.26/32  Direct  0    0             D   127.0.0.1                                Vlanif210
+    10.1.200.27/32  Direct  0    0             D   127.0.0.1                                Vlanif210
+    10.1.200.28/30  Direct  0    0             D   10.1.200.30                              Vlanif211
+    10.1.200.30/32  Direct  0    0             D   127.0.0.1                                Vlanif211
+    10.1.200.31/32  Direct  0    0             D   127.0.0.1                                Vlanif211
+     10.1.254.5/32  Direct  0    0             D   127.0.0.1                                LoopBack0
+     10.1.254.6/32  OSPF    10   3             D   10.1.200.25                              Vlanif210
+      10.2.10.0/24  O_ASE   150  3             D   10.1.200.25                              Vlanif210
+      10.2.20.0/24  O_ASE   150  3             D   10.1.200.25                              Vlanif210
+      10.2.30.0/24  O_ASE   150  3             D   10.1.200.25                              Vlanif210
+      10.3.10.0/24  O_ASE   150  3             D   10.1.200.25                              Vlanif210
+      10.3.20.0/24  O_ASE   150  3             D   10.1.200.25                              Vlanif210
+      10.3.30.0/24  O_ASE   150  3             D   10.1.200.25                              Vlanif210
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0
+      127.0.0.1/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+127.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

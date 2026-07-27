@@ -1,0 +1,25 @@
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : _public_
+         Destinations : 17       Routes : 17        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   Static  60   0             RD  10.2.100.1                               Vlanif100
+      10.2.10.0/24  Direct  0    0             D   10.2.10.254                              Vlanif10
+    10.2.10.254/32  Direct  0    0             D   127.0.0.1                                Vlanif10
+    10.2.10.255/32  Direct  0    0             D   127.0.0.1                                Vlanif10
+      10.2.20.0/24  Direct  0    0             D   10.2.20.254                              Vlanif20
+    10.2.20.254/32  Direct  0    0             D   127.0.0.1                                Vlanif20
+    10.2.20.255/32  Direct  0    0             D   127.0.0.1                                Vlanif20
+      10.2.30.0/24  Direct  0    0             D   10.2.30.254                              Vlanif30
+    10.2.30.254/32  Direct  0    0             D   127.0.0.1                                Vlanif30
+    10.2.30.255/32  Direct  0    0             D   127.0.0.1                                Vlanif30
+     10.2.100.0/30  Direct  0    0             D   10.2.100.2                               Vlanif100
+     10.2.100.2/32  Direct  0    0             D   127.0.0.1                                Vlanif100
+     10.2.100.3/32  Direct  0    0             D   127.0.0.1                                Vlanif100
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0
+      127.0.0.1/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+127.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

@@ -1,0 +1,49 @@
+The total number of vlans is : 11
+--------------------------------------------------------------------------------
+U: Up;         D: Down;         TG: Tagged;         UT: Untagged;
+MP: Vlan-mapping;               ST: Vlan-stacking;
+#: ProtocolTransparent-vlan;    *: Management-vlan;
+MAC-LRN: MAC-address learning;  STAT: Statistic;
+BC: Broadcast; MC: Multicast;   UC: Unknown-unicast;
+FWD: Forward;  DSD: Discard;
+--------------------------------------------------------------------------------
+
+VID          Ports                                                          
+--------------------------------------------------------------------------------
+   1         UT:GE1/0/0(D)      GE1/1/0(D)      GE1/1/1(D)      GE1/1/2(D)      
+                GE1/1/3(D)      GE1/1/4(D)      GE1/1/5(D)      GE1/1/6(D)      
+                GE1/1/7(D)      GE1/1/8(D)      GE1/1/9(D)      GE2/0/0(D)      
+                GE2/0/1(D)      GE2/0/2(D)      GE2/0/3(D)      GE2/0/4(D)      
+                GE2/0/5(D)      GE2/0/6(D)      GE2/0/7(D)      GE2/0/8(D)      
+                GE2/0/9(D)      GE2/1/0(D)      GE2/1/1(D)      GE2/1/2(D)      
+                GE2/1/3(D)      GE2/1/4(D)      GE2/1/5(D)      GE2/1/6(D)      
+                GE2/1/7(D)      GE2/1/8(D)      GE2/1/9(D)                      
+  10         TG:Eth-Trunk1(U)   GE1/0/3(U)                                      
+  20         TG:Eth-Trunk1(U)   GE1/0/4(U)                                      
+  30         TG:Eth-Trunk1(U)   GE1/0/5(U)                                      
+  40         TG:Eth-Trunk1(U)   GE1/0/6(U)                                      
+ 100         TG:Eth-Trunk1(U)   GE1/0/3(U)      GE1/0/4(U)      GE1/0/5(U)      
+                GE1/0/6(U)      GE1/0/7(D)                                      
+ 110         TG:Eth-Trunk1(U)   GE1/0/3(U)      GE1/0/4(U)      GE1/0/5(U)      
+                GE1/0/6(U)      GE1/0/7(D)                                      
+ 120         TG:Eth-Trunk1(U)   GE1/0/3(U)      GE1/0/4(U)      GE1/0/5(U)      
+                GE1/0/6(U)      GE1/0/7(D)                                      
+ 150         TG:Eth-Trunk1(U)   GE1/0/7(D)                                      
+ 201         UT:GE1/0/8(U)                                                      
+             TG:Eth-Trunk1(U)                                                   
+ 202         UT:GE1/0/9(D)                                                      
+             TG:Eth-Trunk1(U)                                                   
+                                                                                
+VID  Type     Status  Property  MAC-LRN STAT    BC  MC  UC  Description
+--------------------------------------------------------------------------------
+   1 common   enable  default   enable  disable FWD FWD FWD VLAN 0001           
+  10 common   enable  default   enable  disable FWD FWD FWD VLAN 0010           
+  20 common   enable  default   enable  disable FWD FWD FWD VLAN 0020           
+  30 common   enable  default   enable  disable FWD FWD FWD VLAN 0030           
+  40 common   enable  default   enable  disable FWD FWD FWD VLAN 0040           
+ 100 common   enable  default   enable  disable FWD FWD FWD VLAN 0100           
+ 110 common   enable  default   enable  disable FWD FWD FWD VLAN 0110           
+ 120 common   enable  default   enable  disable FWD FWD FWD VLAN 0120           
+ 150 common   enable  default   enable  disable FWD FWD FWD VLAN 0150           
+ 201 common   enable  default   enable  disable FWD FWD FWD VLAN 0201           
+ 202 common   enable  default   enable  disable FWD FWD FWD VLAN 0202           

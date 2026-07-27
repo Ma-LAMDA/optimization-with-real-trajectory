@@ -1,0 +1,377 @@
+2026-06-16 11:46:19.980
+!Software Version V500R005C00SPC100
+#
+sysname FW_02
+#
+ l2tp domain suffix-separator @
+#
+info-center source default channel 0 trap state off
+undo info-center enable
+#
+ ipsec sha2 compatible enable
+#
+undo telnet server enable
+undo telnet ipv6 server enable
+#
+clock timezone UTC add 00:00:00
+#
+ hrp enable
+ hrp standby-device
+ hrp interface Eth-Trunk1 remote 1.1.1.1
+ hrp track interface Eth-Trunk2
+ hrp track interface Eth-Trunk3
+ hrp track interface Eth-Trunk4
+ hrp track interface Eth-Trunk5
+#
+ update schedule location-sdb weekly Sun 00:08
+#
+ firewall defend action discard
+#
+ log type traffic enable
+ log type syslog enable
+ log type policy enable
+#
+ undo dataflow enable
+#
+ sa force-detection enable
+#
+ lldp enable
+#
+ banner enable
+#
+password-policy
+ level high
+user-manage single-sign-on radius
+#
+ web-manager security version tlsv1.1 tlsv1.2
+ web-manager enable
+ web-manager security enable
+#
+firewall dataplane to manageplane application-apperceive default-action drop
+#
+ update schedule ips-sdb daily 00:22
+ update schedule av-sdb daily 00:22
+ update schedule sa-sdb daily 00:22
+ update schedule cnc daily 00:22
+ update schedule file-reputation daily 00:22
+#
+ip vpn-instance default
+ ipv4-family
+#
+ time-range worktime
+  period-range 08:00:00 to 18:00:00 working-day
+#
+ike proposal default
+ encryption-algorithm aes-256 aes-192 aes-128
+ dh group14
+ authentication-algorithm sha2-512 sha2-384 sha2-256
+ authentication-method pre-share
+ integrity-algorithm hmac-sha2-256
+ prf hmac-sha2-256
+#
+aaa
+ authentication-scheme default
+ authentication-scheme admin_local
+ authentication-scheme admin_radius_local
+ authentication-scheme admin_hwtacacs_local
+ authentication-scheme admin_ad_local
+ authentication-scheme admin_ldap_local
+ authentication-scheme admin_radius
+ authentication-scheme admin_hwtacacs
+ authentication-scheme admin_ad
+ authentication-scheme admin_ldap
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+  service-type internetaccess ssl-vpn l2tp ike
+  internet-access mode auto-online
+  reference user current-domain
+ manager-user password valid-days 0
+ manager-user audit-admin
+  password cipher @%@%~azhA]irw/F1PxB"-AzX$/*kSD+QK*N{[2TefrAREF6>/*n$@%@%
+  service-type web terminal
+  level 15
+
+ manager-user api-admin
+  password cipher @%@%{Q"0.F*m"J<io9"@!yz3dK]XpNZV-9$DP@^ujm>J2\=UK][d@%@%
+  service-type api
+  level 15
+
+ manager-user admin
+  password cipher @%@%XrQ8#yo!)YQIMR>g;4OS2-dbTYk2$n]hc81Bt0ZCCT<U-de2@%@%
+  service-type web terminal
+  level 15
+
+ role system-admin
+ role device-admin
+ role device-admin(monitor)
+ role audit-admin
+ bind manager-user audit-admin role audit-admin
+ bind manager-user admin role system-admin
+#
+interface Eth-Trunk1
+ ip address 1.1.1.2 255.255.255.252
+ mode lacp-static
+ service-manage ping permit
+#
+interface Eth-Trunk2
+ description to_Core_SW_02_Eth-Trunk2
+ ip address 10.1.200.13 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+ service-manage ssh permit
+ service-manage snmp permit
+ service-manage telnet permit
+ service-manage netconf permit
+#
+interface Eth-Trunk3
+ description to_Core_SW_01_Eth-Trunk3
+ ip address 10.1.200.5 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+ service-manage ssh permit
+ service-manage snmp permit
+ service-manage telnet permit
+ service-manage netconf permit
+#
+interface Eth-Trunk4
+ ip address 10.1.200.29 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+#
+interface Eth-Trunk5
+ ip address 10.1.200.21 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+#
+l2tp-group default-lns
+#
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 20.0.0.2 255.255.255.0
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+#
+interface GigabitEthernet1/0/1
+ description to_Core_SW_01_GE1/0/9
+ undo shutdown
+ eth-trunk 3
+#
+interface GigabitEthernet1/0/2
+ description to_Core_SW_02_GE1/0/9
+ undo shutdown
+ eth-trunk 2
+#
+interface GigabitEthernet1/0/3
+ description to_to_BJHQ_CSR1000V_GW_01_Gi3
+ undo shutdown
+ eth-trunk 5
+#
+interface GigabitEthernet1/0/4
+ description to_SW-DMZ-ACC-01_GE1/0/2
+ undo shutdown
+ eth-trunk 4
+#
+interface GigabitEthernet1/0/5
+ description to_FW_01_GigabitEthernet1/0/5
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet1/0/6
+ description to_FW_01_GigabitEthernet1/0/6
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet1/0/7
+ undo shutdown
+#
+interface GigabitEthernet1/0/8
+ undo shutdown
+#
+interface GigabitEthernet1/0/9
+ undo shutdown
+#
+interface Virtual-if0
+#
+interface NULL0
+#
+interface LoopBack0
+ ip address 10.1.254.4 255.255.255.255
+#
+firewall zone local
+ set priority 100
+#
+firewall zone trust
+ set priority 85
+ add interface GigabitEthernet0/0/0
+ add interface Eth-Trunk3
+ add interface Eth-Trunk2
+#
+firewall zone untrust
+ set priority 5
+ add interface Eth-Trunk5
+#
+firewall zone dmz
+ set priority 50
+ add interface Eth-Trunk4
+#
+firewall zone name Heartbeat id 4
+ set priority 1
+ add interface Eth-Trunk1
+#
+api
+#
+ospf 1 router-id 10.1.254.4
+ area 0.0.0.0
+  network 10.1.200.5 0.0.0.0
+  network 10.1.200.13 0.0.0.0
+  network 10.1.200.21 0.0.0.0
+ area 0.0.0.3
+  network 10.1.200.29 0.0.0.0
+#
+undo ssh server compatible-ssh1x enable
+ssh authentication-type default password
+#
+user-interface password complexity-check disable
+#
+firewall detect ftp
+#
+user-interface con 0
+ authentication-mode password
+ set authentication password cipher $1c$uMM_BG!%M:$Q+N<0jBRb0!o)C)'@Hj6ASlG%9-a7&9Q"cK!~ig&$
+ idle-timeout 0 0
+ screen-length 0
+user-interface vty 0 4
+ authentication-mode aaa
+ protocol inbound ssh
+user-interface vty 16 20
+#
+pki realm default
+#
+sa
+#
+location
+#
+ multi-linkif
+ mode proportion-of-weight
+#
+right-manager server-group
+#
+security-policy
+ rule name to_Heartbeat
+  source-zone local
+  destination-zone Heartbeat
+  action permit
+ rule name to_60.2
+  source-zone untrust
+  destination-zone dmz
+  source-address 100.100.100.0 mask 255.255.255.0
+  source-address 200.200.200.0 mask 255.255.255.0
+  destination-address 10.1.60.2 mask 255.255.255.255
+  action permit
+ rule name SH_SZ_TO_BJ
+  source-zone untrust
+  destination-zone trust
+  source-address 10.2.10.0 mask 255.255.255.0
+  source-address 10.2.20.0 mask 255.255.255.0
+  source-address 10.2.30.0 mask 255.255.255.0
+  source-address 10.3.10.0 mask 255.255.255.0
+  source-address 10.3.20.0 mask 255.255.255.0
+  source-address 10.3.30.0 mask 255.255.255.0
+  destination-address 10.1.10.0 mask 255.255.255.0
+  destination-address 10.1.20.0 mask 255.255.255.0
+  destination-address 10.1.30.0 mask 255.255.255.0
+  destination-address 10.1.40.0 mask 255.255.255.0
+  action permit
+ rule name to_DHCP
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.120.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.1.50.1 mask 255.255.255.255
+  action permit
+ rule name to_dmz-server
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.1.60.0 mask 255.255.255.0
+  action permit
+ rule name to_DNS-server
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.120.0 mask 255.255.255.0
+  destination-address 10.1.60.1 mask 255.255.255.255
+  action permit
+ rule name BJ_TO_SH_SZ
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.2.10.0 mask 255.255.255.0
+  destination-address 10.2.20.0 mask 255.255.255.0
+  destination-address 10.2.30.0 mask 255.255.255.0
+  destination-address 10.3.10.0 mask 255.255.255.0
+  destination-address 10.3.20.0 mask 255.255.255.0
+  destination-address 10.3.30.0 mask 255.255.255.0
+  action permit
+ rule name deny_Guest_TO_SH_SZ
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.120.0 mask 255.255.255.0
+  destination-address 10.2.10.0 mask 255.255.255.0
+  destination-address 10.2.20.0 mask 255.255.255.0
+  destination-address 10.2.30.0 mask 255.255.255.0
+  destination-address 10.3.10.0 mask 255.255.255.0
+  destination-address 10.3.20.0 mask 255.255.255.0
+  destination-address 10.3.30.0 mask 255.255.255.0
+  action deny
+ rule name to_internet
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.120.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  action permit
+ rule name local
+  source-zone local
+  action permit
+#
+auth-policy
+#
+traffic-policy
+#
+policy-based-route
+#
+nat-policy
+#
+proxy-policy
+#
+pcp-policy
+#
+dns-transparent-policy
+#
+rightm-policy
+#
+return

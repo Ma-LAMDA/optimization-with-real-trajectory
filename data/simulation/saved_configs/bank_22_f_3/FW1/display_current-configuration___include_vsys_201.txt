@@ -1,0 +1,9 @@
+display current-configuration | include vsys_201
+vsys name vsys_201 1
+ip vpn-instance vsys_201
+ ip binding vpn-instance vsys_201
+ip route-static 1.1.1.11 255.255.255.255 vpn-instance vsys_201
+ip route-static 10.1.101.0 255.255.255.0 vpn-instance vsys_201
+ firewall import-flow public 192.168.101.0 192.168.101.254 vpn-instance vsys_201
+switch vsys vsys_201
+ ip binding vpn-instance vsys_201

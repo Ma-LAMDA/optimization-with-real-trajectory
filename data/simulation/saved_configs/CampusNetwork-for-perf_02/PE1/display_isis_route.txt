@@ -1,0 +1,19 @@
+
+                         Route information for ISIS(1)
+                         -----------------------------
+
+                        ISIS(1) Level-2 Forwarding Table
+                        --------------------------------
+
+IPV4 Destination   IntCost    ExtCost ExitInterface     NextHop         Flags
+-------------------------------------------------------------------------------
+1.1.1.1/32         0          NULL    Loop0             Direct          D/-/L/-
+2.2.2.2/32         10         NULL    Eth1/0/1          10.10.0.2       A/-/-/-
+3.3.3.3/32         10         NULL    Eth1/0/2          10.10.0.6       A/-/-/-
+10.10.0.0/30       10         NULL    Eth1/0/1          Direct          D/-/L/-
+10.10.0.4/30       10         NULL    Eth1/0/2          Direct          D/-/L/-
+10.10.0.8/30       20         NULL    Eth1/0/1          10.10.0.2       A/-/-/-
+                                      Eth1/0/2          10.10.0.6       
+     Flags: D-Direct, A-Added to URT, L-Advertised in LSPs, S-IGP Shortcut, 
+            U-Up/Down Bit Set, LP-Local Prefix-Sid
+     Protect Type: L-Link Protect, N-Node Protect

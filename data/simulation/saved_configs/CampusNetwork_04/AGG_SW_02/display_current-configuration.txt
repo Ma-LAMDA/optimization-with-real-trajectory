@@ -1,0 +1,917 @@
+display current-configuration
+#
+ version 7.1.070, Release 7639P06
+#
+mdc Admin id 1
+#
+ sysname AGG_SW_02
+#
+ irf mac-address persistent timer
+ irf auto-update enable
+ irf auto-merge enable
+ undo irf link-delay
+ irf member 1 priority 1
+#
+ lldp global enable
+#
+ reserve-vlan-interface 3000 to 3500
+#
+ system-working-mode standard
+ xbar load-single
+ lpu-type f-series
+#
+vlan 1
+#
+vlan 20
+#
+vlan 100
+#
+vlan 110
+#
+vlan 120
+#
+stp region-configuration
+ region-name huawei
+ instance 1 vlan 10 20 
+ instance 2 vlan 30 40 
+ instance 3 vlan 100 110 120 
+ active region-configuration
+#
+ stp global enable
+#
+ftth
+#
+interface NULL0
+#
+interface HundredGigE1/0/6
+ port link-mode route
+#
+interface HundredGigE1/0/7
+ port link-mode route
+#
+interface HundredGigE1/0/8
+ port link-mode route
+#
+interface HundredGigE1/0/9
+ port link-mode route
+#
+interface HundredGigE1/0/10
+ port link-mode route
+#
+interface HundredGigE1/0/11
+ port link-mode route
+#
+interface HundredGigE1/0/12
+ port link-mode route
+#
+interface HundredGigE1/0/13
+ port link-mode route
+#
+interface HundredGigE1/0/14
+ port link-mode route
+#
+interface HundredGigE1/0/15
+ port link-mode route
+#
+interface HundredGigE1/0/16
+ port link-mode route
+#
+interface HundredGigE1/0/17
+ port link-mode route
+#
+interface HundredGigE1/0/18
+ port link-mode route
+#
+interface HundredGigE1/0/19
+ port link-mode route
+#
+interface HundredGigE1/0/20
+ port link-mode route
+#
+interface HundredGigE1/0/21
+ port link-mode route
+#
+interface HundredGigE1/0/22
+ port link-mode route
+#
+interface HundredGigE1/0/23
+ port link-mode route
+#
+interface HundredGigE1/0/24
+ port link-mode route
+#
+interface HundredGigE1/0/25
+ port link-mode route
+#
+interface HundredGigE1/0/26
+ port link-mode route
+#
+interface HundredGigE1/0/27
+ port link-mode route
+#
+interface HundredGigE1/0/28
+ port link-mode route
+#
+interface HundredGigE1/0/29
+ port link-mode route
+#
+interface HundredGigE1/0/30
+ port link-mode route
+#
+interface HundredGigE1/0/31
+ port link-mode route
+#
+interface HundredGigE1/0/32
+ port link-mode route
+#
+interface HundredGigE1/0/33
+ port link-mode route
+#
+interface HundredGigE1/0/34
+ port link-mode route
+#
+interface HundredGigE1/0/35
+ port link-mode route
+#
+interface HundredGigE1/0/36
+ port link-mode route
+#
+interface HundredGigE1/0/37
+ port link-mode route
+#
+interface HundredGigE1/0/38
+ port link-mode route
+#
+interface HundredGigE1/0/39
+ port link-mode route
+#
+interface HundredGigE1/0/40
+ port link-mode route
+#
+interface HundredGigE1/0/41
+ port link-mode route
+#
+interface HundredGigE1/0/42
+ port link-mode route
+#
+interface HundredGigE1/0/43
+ port link-mode route
+#
+interface HundredGigE1/0/44
+ port link-mode route
+#
+interface HundredGigE1/0/45
+ port link-mode route
+#
+interface HundredGigE1/0/46
+ port link-mode route
+#
+interface HundredGigE1/0/47
+ port link-mode route
+#
+interface HundredGigE1/0/48
+ port link-mode route
+#
+interface HundredGigE1/0/49
+ port link-mode route
+#
+interface HundredGigE1/0/50
+ port link-mode route
+#
+interface HundredGigE1/0/51
+ port link-mode route
+#
+interface HundredGigE1/0/52
+ port link-mode route
+#
+interface HundredGigE1/0/53
+ port link-mode route
+#
+interface HundredGigE1/0/54
+ port link-mode route
+#
+interface HundredGigE1/0/55
+ port link-mode route
+#
+interface HundredGigE1/0/56
+ port link-mode route
+#
+interface HundredGigE1/0/57
+ port link-mode route
+#
+interface HundredGigE1/0/58
+ port link-mode route
+#
+interface HundredGigE1/0/59
+ port link-mode route
+#
+interface HundredGigE1/0/60
+ port link-mode route
+#
+interface HundredGigE1/0/61
+ port link-mode route
+#
+interface HundredGigE1/0/62
+ port link-mode route
+#
+interface HundredGigE1/0/63
+ port link-mode route
+#
+interface HundredGigE1/0/64
+ port link-mode route
+#
+interface HundredGigE1/0/65
+ port link-mode route
+#
+interface HundredGigE1/0/66
+ port link-mode route
+#
+interface HundredGigE1/0/67
+ port link-mode route
+#
+interface HundredGigE1/0/68
+ port link-mode route
+#
+interface HundredGigE1/0/69
+ port link-mode route
+#
+interface HundredGigE1/0/70
+ port link-mode route
+#
+interface HundredGigE1/0/71
+ port link-mode route
+#
+interface HundredGigE1/0/72
+ port link-mode route
+#
+interface HundredGigE1/0/73
+ port link-mode route
+#
+interface HundredGigE1/0/74
+ port link-mode route
+#
+interface HundredGigE1/0/75
+ port link-mode route
+#
+interface HundredGigE1/0/76
+ port link-mode route
+#
+interface HundredGigE1/0/77
+ port link-mode route
+#
+interface HundredGigE1/0/78
+ port link-mode route
+#
+interface HundredGigE1/0/79
+ port link-mode route
+#
+interface HundredGigE1/0/80
+ port link-mode route
+#
+interface HundredGigE1/0/81
+ port link-mode route
+#
+interface HundredGigE1/0/82
+ port link-mode route
+#
+interface HundredGigE1/0/83
+ port link-mode route
+#
+interface HundredGigE1/0/84
+ port link-mode route
+#
+interface HundredGigE1/0/85
+ port link-mode route
+#
+interface HundredGigE1/0/86
+ port link-mode route
+#
+interface HundredGigE1/0/87
+ port link-mode route
+#
+interface HundredGigE1/0/88
+ port link-mode route
+#
+interface HundredGigE1/0/89
+ port link-mode route
+#
+interface HundredGigE1/0/90
+ port link-mode route
+#
+interface HundredGigE1/0/91
+ port link-mode route
+#
+interface HundredGigE1/0/92
+ port link-mode route
+#
+interface HundredGigE1/0/93
+ port link-mode route
+#
+interface HundredGigE1/0/94
+ port link-mode route
+#
+interface HundredGigE1/0/95
+ port link-mode route
+#
+interface HundredGigE1/0/96
+ port link-mode route
+#
+interface HundredGigE1/0/97
+ port link-mode route
+#
+interface HundredGigE1/0/98
+ port link-mode route
+#
+interface HundredGigE1/0/99
+ port link-mode route
+#
+interface HundredGigE1/0/100
+ port link-mode route
+#
+interface HundredGigE1/0/101
+ port link-mode route
+#
+interface HundredGigE1/0/102
+ port link-mode route
+#
+interface HundredGigE1/0/103
+ port link-mode route
+#
+interface HundredGigE1/0/104
+ port link-mode route
+#
+interface HundredGigE1/0/105
+ port link-mode route
+#
+interface HundredGigE1/0/106
+ port link-mode route
+#
+interface HundredGigE1/0/107
+ port link-mode route
+#
+interface HundredGigE1/0/108
+ port link-mode route
+#
+interface HundredGigE1/0/109
+ port link-mode route
+#
+interface HundredGigE1/0/110
+ port link-mode route
+#
+interface HundredGigE1/0/111
+ port link-mode route
+#
+interface HundredGigE1/0/112
+ port link-mode route
+#
+interface HundredGigE1/0/113
+ port link-mode route
+#
+interface HundredGigE1/0/114
+ port link-mode route
+#
+interface HundredGigE1/0/115
+ port link-mode route
+#
+interface HundredGigE1/0/116
+ port link-mode route
+#
+interface HundredGigE1/0/117
+ port link-mode route
+#
+interface HundredGigE1/0/118
+ port link-mode route
+#
+interface HundredGigE1/0/119
+ port link-mode route
+#
+interface HundredGigE1/0/120
+ port link-mode route
+#
+interface HundredGigE1/0/121
+ port link-mode route
+#
+interface HundredGigE1/0/122
+ port link-mode route
+#
+interface HundredGigE1/0/123
+ port link-mode route
+#
+interface HundredGigE1/0/124
+ port link-mode route
+#
+interface HundredGigE1/0/125
+ port link-mode route
+#
+interface HundredGigE1/0/126
+ port link-mode route
+#
+interface HundredGigE1/0/127
+ port link-mode route
+#
+interface HundredGigE1/0/128
+ port link-mode route
+#
+interface HundredGigE1/0/129
+ port link-mode route
+#
+interface HundredGigE1/0/130
+ port link-mode route
+#
+interface HundredGigE1/0/131
+ port link-mode route
+#
+interface HundredGigE1/0/132
+ port link-mode route
+#
+interface HundredGigE1/0/133
+ port link-mode route
+#
+interface HundredGigE1/0/134
+ port link-mode route
+#
+interface HundredGigE1/0/135
+ port link-mode route
+#
+interface HundredGigE1/0/136
+ port link-mode route
+#
+interface HundredGigE1/0/137
+ port link-mode route
+#
+interface HundredGigE1/0/138
+ port link-mode route
+#
+interface HundredGigE1/0/139
+ port link-mode route
+#
+interface HundredGigE1/0/140
+ port link-mode route
+#
+interface HundredGigE1/0/141
+ port link-mode route
+#
+interface HundredGigE1/0/142
+ port link-mode route
+#
+interface HundredGigE1/0/143
+ port link-mode route
+#
+interface HundredGigE1/0/144
+ port link-mode route
+#
+interface HundredGigE1/0/145
+ port link-mode route
+#
+interface HundredGigE1/0/146
+ port link-mode route
+#
+interface HundredGigE1/0/147
+ port link-mode route
+#
+interface HundredGigE1/0/148
+ port link-mode route
+#
+interface HundredGigE1/0/149
+ port link-mode route
+#
+interface HundredGigE1/0/150
+ port link-mode route
+#
+interface HundredGigE1/0/151
+ port link-mode route
+#
+interface HundredGigE1/0/152
+ port link-mode route
+#
+interface HundredGigE1/0/153
+ port link-mode route
+#
+interface HundredGigE1/0/154
+ port link-mode route
+#
+interface HundredGigE1/0/155
+ port link-mode route
+#
+interface HundredGigE1/0/156
+ port link-mode route
+#
+interface HundredGigE1/0/157
+ port link-mode route
+#
+interface HundredGigE1/0/158
+ port link-mode route
+#
+interface HundredGigE1/0/159
+ port link-mode route
+#
+interface HundredGigE1/0/160
+ port link-mode route
+#
+interface HundredGigE1/0/161
+ port link-mode route
+#
+interface HundredGigE1/0/162
+ port link-mode route
+#
+interface HundredGigE1/0/163
+ port link-mode route
+#
+interface HundredGigE1/0/164
+ port link-mode route
+#
+interface HundredGigE1/0/165
+ port link-mode route
+#
+interface HundredGigE1/0/166
+ port link-mode route
+#
+interface HundredGigE1/0/167
+ port link-mode route
+#
+interface HundredGigE1/0/168
+ port link-mode route
+#
+interface HundredGigE1/0/169
+ port link-mode route
+#
+interface HundredGigE1/0/170
+ port link-mode route
+#
+interface HundredGigE1/0/171
+ port link-mode route
+#
+interface HundredGigE1/0/172
+ port link-mode route
+#
+interface HundredGigE1/0/173
+ port link-mode route
+#
+interface HundredGigE1/0/174
+ port link-mode route
+#
+interface HundredGigE1/0/175
+ port link-mode route
+#
+interface HundredGigE1/0/176
+ port link-mode route
+#
+interface HundredGigE1/0/177
+ port link-mode route
+#
+interface HundredGigE1/0/178
+ port link-mode route
+#
+interface HundredGigE1/0/179
+ port link-mode route
+#
+interface HundredGigE1/0/180
+ port link-mode route
+#
+interface HundredGigE1/0/181
+ port link-mode route
+#
+interface HundredGigE1/0/182
+ port link-mode route
+#
+interface HundredGigE1/0/183
+ port link-mode route
+#
+interface HundredGigE1/0/184
+ port link-mode route
+#
+interface HundredGigE1/0/185
+ port link-mode route
+#
+interface HundredGigE1/0/186
+ port link-mode route
+#
+interface HundredGigE1/0/187
+ port link-mode route
+#
+interface HundredGigE1/0/188
+ port link-mode route
+#
+interface HundredGigE1/0/189
+ port link-mode route
+#
+interface HundredGigE1/0/190
+ port link-mode route
+#
+interface HundredGigE1/0/191
+ port link-mode route
+#
+interface HundredGigE1/0/192
+ port link-mode route
+#
+interface HundredGigE1/0/193
+ port link-mode route
+#
+interface HundredGigE1/0/194
+ port link-mode route
+#
+interface HundredGigE1/0/195
+ port link-mode route
+#
+interface HundredGigE1/0/196
+ port link-mode route
+#
+interface HundredGigE1/0/197
+ port link-mode route
+#
+interface HundredGigE1/0/198
+ port link-mode route
+#
+interface HundredGigE1/0/199
+ port link-mode route
+#
+interface HundredGigE1/0/200
+ port link-mode route
+#
+interface HundredGigE1/0/201
+ port link-mode route
+#
+interface HundredGigE1/0/202
+ port link-mode route
+#
+interface HundredGigE1/0/203
+ port link-mode route
+#
+interface HundredGigE1/0/204
+ port link-mode route
+#
+interface HundredGigE1/0/205
+ port link-mode route
+#
+interface HundredGigE1/0/206
+ port link-mode route
+#
+interface HundredGigE1/0/207
+ port link-mode route
+#
+interface HundredGigE1/0/208
+ port link-mode route
+#
+interface HundredGigE1/0/209
+ port link-mode route
+#
+interface HundredGigE1/0/210
+ port link-mode route
+#
+interface HundredGigE1/0/211
+ port link-mode route
+#
+interface HundredGigE1/0/212
+ port link-mode route
+#
+interface HundredGigE1/0/213
+ port link-mode route
+#
+interface HundredGigE1/0/214
+ port link-mode route
+#
+interface HundredGigE1/0/215
+ port link-mode route
+#
+interface HundredGigE1/0/216
+ port link-mode route
+#
+interface HundredGigE1/0/217
+ port link-mode route
+#
+interface HundredGigE1/0/218
+ port link-mode route
+#
+interface HundredGigE1/0/219
+ port link-mode route
+#
+interface HundredGigE1/0/220
+ port link-mode route
+#
+interface HundredGigE1/0/221
+ port link-mode route
+#
+interface HundredGigE1/0/222
+ port link-mode route
+#
+interface HundredGigE1/0/223
+ port link-mode route
+#
+interface HundredGigE1/0/224
+ port link-mode route
+#
+interface HundredGigE1/0/225
+ port link-mode route
+#
+interface HundredGigE1/0/226
+ port link-mode route
+#
+interface HundredGigE1/0/227
+ port link-mode route
+#
+interface HundredGigE1/0/228
+ port link-mode route
+#
+interface HundredGigE1/0/229
+ port link-mode route
+#
+interface HundredGigE1/0/230
+ port link-mode route
+#
+interface HundredGigE1/0/231
+ port link-mode route
+#
+interface HundredGigE1/0/232
+ port link-mode route
+#
+interface HundredGigE1/0/233
+ port link-mode route
+#
+interface HundredGigE1/0/234
+ port link-mode route
+#
+interface HundredGigE1/0/235
+ port link-mode route
+#
+interface HundredGigE1/0/236
+ port link-mode route
+#
+interface HundredGigE1/0/237
+ port link-mode route
+#
+interface HundredGigE1/0/238
+ port link-mode route
+#
+interface HundredGigE1/0/239
+ port link-mode route
+#
+interface HundredGigE1/0/240
+ port link-mode route
+#
+interface HundredGigE1/0/241
+ port link-mode route
+#
+interface HundredGigE1/0/242
+ port link-mode route
+#
+interface HundredGigE1/0/243
+ port link-mode route
+#
+interface HundredGigE1/0/244
+ port link-mode route
+#
+interface HundredGigE1/0/245
+ port link-mode route
+#
+interface HundredGigE1/0/246
+ port link-mode route
+#
+interface HundredGigE1/0/247
+ port link-mode route
+#
+interface HundredGigE1/0/248
+ port link-mode route
+#
+interface HundredGigE1/0/249
+ port link-mode route
+#
+interface HundredGigE1/0/250
+ port link-mode route
+#
+interface HundredGigE1/0/251
+ port link-mode route
+#
+interface HundredGigE1/0/252
+ port link-mode route
+#
+interface HundredGigE1/0/253
+ port link-mode route
+#
+interface HundredGigE1/0/254
+ port link-mode route
+#
+interface HundredGigE1/0/255
+ port link-mode route
+#
+interface HundredGigE1/0/256
+ port link-mode route
+#
+interface HundredGigE1/0/1
+ port link-mode bridge
+ description to_Core_SW_01_GE1/0/4
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 20 100 110 120
+#
+interface HundredGigE1/0/2
+ port link-mode bridge
+ description to_Core_SW_02_GE1/0/4
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 20 100 110 120
+#
+interface HundredGigE1/0/3
+ port link-mode bridge
+ description to_HQ_FIN_PC01_eth0
+ port access vlan 20
+ stp edged-port
+#
+interface HundredGigE1/0/4
+ port link-mode bridge
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 100 110 120
+ port trunk pvid vlan 100
+#
+interface HundredGigE1/0/5
+ port link-mode bridge
+ description to_HQ_FIN_Client01_eth0
+ port access vlan 20
+ stp edged-port
+#
+interface M-GigabitEthernet0/0/0
+#
+ scheduler logfile size 16
+#
+line class aux
+ user-role network-operator
+#
+line class console
+ user-role network-admin
+#
+line class tty
+ user-role network-operator
+#
+line class vty
+ user-role network-operator
+#
+line aux 0
+ authentication-mode none
+ user-role network-admin
+ user-role network-operator
+#
+line con 0
+ user-role network-admin
+#
+line vty 0 63
+ user-role network-operator
+#
+domain system
+#
+ domain default enable system
+#
+role name level-0
+ description Predefined level-0 role
+#
+role name level-1
+ description Predefined level-1 role
+#
+role name level-2
+ description Predefined level-2 role
+#
+role name level-3
+ description Predefined level-3 role
+#
+role name level-4
+ description Predefined level-4 role
+#
+role name level-5
+ description Predefined level-5 role
+#
+role name level-6
+ description Predefined level-6 role
+#
+role name level-7
+ description Predefined level-7 role
+#
+role name level-8
+ description Predefined level-8 role
+#
+role name level-9
+ description Predefined level-9 role
+#
+role name level-10
+ description Predefined level-10 role
+#
+role name level-11
+ description Predefined level-11 role
+#
+role name level-12
+ description Predefined level-12 role
+#
+role name level-13
+ description Predefined level-13 role
+#
+role name level-14
+ description Predefined level-14 role
+#
+user-group system
+#
+ security-enhanced level 1
+#
+ undo ssl renegotiation disable
+ undo ssl version ssl3.0 disable
+ undo ssl version tls1.0 disable
+ undo ssl version tls1.1 disable
+#
+return

@@ -1,0 +1,55 @@
+display bgp vpnv4 all routing-table 10.2.30.0 24
+BGP local router ID : 2.2.2.2
+ Local AS number : 65000
+ 
+ Total routes of Route Distinguisher(1:2): 1
+ BGP routing table entry information of 10.2.30.0/24:
+ Label information (Received/Applied): 48001/NULL
+ From: 1.1.1.1 (1.1.1.1)
+ Route Duration: 4d18h21m45s
+ Relay IP Nexthop: 10.10.0.1
+ Relay IP Out-Interface: Ethernet1/0/1
+ Relay Tunnel Out-Interface: Ethernet1/0/1
+ Original nexthop: 1.1.1.1
+ Qos information : 0x0
+ Ext-Community: RT <1 : 1>
+ AS-path 65001 65000 65002, origin incomplete, localpref 100, pref-val 0, valid, internal, best, select, pre 255, IGP cost 10
+ Not advertised to any peer yet
+ 
+ Total routes of Route Distinguisher(2:2): 1
+ BGP routing table entry information of 10.2.30.0/24:
+ From: 10.10.100.6 (10.2.100.1)
+ Route Duration: 4d18h21m45s
+ Direct Out-interface: Ethernet1/0/0
+ Original nexthop: 10.10.100.6
+ Qos information : 0x0
+ Ext-Community: RT <2 : 2>
+ AS-path 65002, origin incomplete, MED 0, pref-val 0, valid, external, best, select, pre 255
+ Advertised to such 1 peers:
+    1.1.1.1
+    
+ VPN-Instance SH, Router ID 2.2.2.2:
+
+ Total Number of Routes: 2
+ BGP routing table entry information of 10.2.30.0/24:
+ Route Distinguisher: 2:2
+ From: 10.10.100.6 (10.2.100.1)
+ Route Duration: 4d18h21m45s
+ Direct Out-interface: Ethernet1/0/0
+ Original nexthop: 10.10.100.6
+ Qos information : 0x0
+ AS-path 65002, origin incomplete, MED 0, pref-val 0, valid, external, best, select, pre 255
+ Not advertised to any peer yet
+
+ BGP routing table entry information of 10.2.30.0/24:
+ Route Distinguisher: 1:2
+ Remote-Cross route
+ Label information (Received/Applied): 48001/NULL
+ From: 1.1.1.1 (1.1.1.1)
+ Route Duration: 4d18h21m45s
+ Relay Tunnel Out-Interface: Ethernet1/0/1
+ Original nexthop: 1.1.1.1
+ Qos information : 0x0
+ Ext-Community: RT <1 : 1>
+ AS-path 65001 65000 65002, origin incomplete, localpref 100, pref-val 0, valid, internal, pre 255, IGP cost 10, not preferred for AS-Path
+ Not advertised to any peer yet

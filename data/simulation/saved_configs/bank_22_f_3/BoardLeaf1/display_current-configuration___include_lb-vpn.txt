@@ -1,0 +1,4 @@
+display current-configuration | include lb-vpn
+ip vpn-instance lb-vpn
+ ipv4-family vpn-instance lb-vpn
+ip route-static vpn-instance lb-vpn 0.0.0.0 0.0.0.0 10.100.1.2

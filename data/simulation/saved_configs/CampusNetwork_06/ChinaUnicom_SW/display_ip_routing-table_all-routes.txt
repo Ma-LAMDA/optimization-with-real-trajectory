@@ -1,0 +1,24 @@
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : _public_
+         Destinations : 16       Routes : 16
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        8.8.8.0/24  Direct  0    0             D   8.8.8.254                                Vlanif8
+      8.8.8.254/32  Direct  0    0             D   127.0.0.1                                Vlanif8
+      8.8.8.255/32  Direct  0    0             D   127.0.0.1                                Vlanif8
+  100.100.100.0/24  Direct  0    0             D   100.100.100.254                          Vlanif100
+100.100.100.254/32  Direct  0    0             D   127.0.0.1                                Vlanif100
+100.100.100.255/32  Direct  0    0             D   127.0.0.1                                Vlanif100
+  114.114.114.0/24  Direct  0    0             D   114.114.114.254                          Vlanif114
+114.114.114.254/32  Direct  0    0             D   127.0.0.1                                Vlanif114
+114.114.114.255/32  Direct  0    0             D   127.0.0.1                                Vlanif114
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0
+      127.0.0.1/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+127.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+  200.200.200.0/24  Direct  0    0             D   200.200.200.254                          Vlanif200
+200.200.200.254/32  Direct  0    0             D   127.0.0.1                                Vlanif200
+200.200.200.255/32  Direct  0    0             D   127.0.0.1                                Vlanif200
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

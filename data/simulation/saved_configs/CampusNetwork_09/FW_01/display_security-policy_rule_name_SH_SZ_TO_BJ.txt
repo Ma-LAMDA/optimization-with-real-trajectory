@@ -1,0 +1,16 @@
+display security-policy rule name SH_SZ_TO_BJ
+(18 times matched)
+ rule name SH_SZ_TO_BJ
+  source-zone untrust
+  destination-zone trust
+  source-address 10.2.10.0 mask 255.255.255.0
+  source-address 10.2.20.0 mask 255.255.255.0
+  source-address 10.2.30.0 mask 255.255.255.0
+  source-address 10.3.10.0 mask 255.255.255.0
+  source-address 10.3.20.0 mask 255.255.255.0
+  source-address 10.3.30.0 mask 255.255.255.0
+  destination-address 10.1.10.0 mask 255.255.255.0
+  destination-address 10.1.20.0 mask 255.255.255.0
+  destination-address 10.1.30.0 mask 255.255.255.0
+  destination-address 10.1.40.0 mask 255.255.255.0
+  action permit

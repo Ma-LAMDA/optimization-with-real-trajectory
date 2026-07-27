@@ -1,0 +1,35 @@
+display bgp routing-table 2.1.2.1 32
+BGP local router ID : 2.1.2.1
+ Local AS number : 65001
+ Paths:   3 available, 1 best, 2 select, 0 best-external, 0 add-path
+ BGP routing table entry information of 2.1.2.1/32:
+ Imported route.
+ From: 0.0.0.0 (0.0.0.0)
+ Route Duration: 0d06h39m15s
+ Direct Out-interface: LoopBack0
+ Original nexthop: 127.0.0.1
+ Qos information : 0x0
+ AS-path Nil, origin incomplete, MED 0, pref-val 0, valid, local, best, select, pre 0
+ Advertised to such 2 peers:
+    2.1.1.2
+    2.1.1.1
+
+ BGP routing table entry information of 2.1.2.1/32:
+ Imported route.
+ From: 0.0.0.0 (0.0.0.0)
+ Route Duration: 0d06h39m09s
+ Direct Out-interface: LoopBack0
+ Original nexthop: 2.1.2.1
+ Qos information : 0x0
+ AS-path Nil, origin incomplete, MED 0, pref-val 0, valid, local, pre 10, not preferred for not direct route
+ Not advertised to any peer yet
+
+ BGP routing table entry information of 2.1.2.1/32:
+ From: 2.1.1.1 (2.1.1.1)
+ Route Duration: 0d06h39m05s
+ Relay IP Nexthop: 182.158.2.1
+ Relay IP Out-Interface: GE1/0/1
+ Original nexthop: 2.1.1.1
+ Qos information : 0x0
+ AS-path Nil, origin incomplete, MED 1, localpref 100, pref-val 0, valid, internal, select, pre 255, IGP cost 1, not preferred for route type
+ Not advertised to any peer yet

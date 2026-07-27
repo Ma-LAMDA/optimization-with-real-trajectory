@@ -1,0 +1,65 @@
+2026-06-04 08:19:20.000 
+local
+ priority is 100
+ interface of the zone is (0):
+#
+trust
+ priority is 85
+ interface of the zone is (1):
+    GigabitEthernet0/0/0
+#
+untrust
+ priority is 5
+ interface of the zone is (2):
+    Virtual-if0
+    Vlanif202
+#
+dmz
+ priority is 50
+ interface of the zone is (1):
+    Eth-Trunk0
+#
+outside
+ priority is 4
+ interface of the zone is (0):
+#
+inside
+ priority is 49
+ interface of the zone is (1):
+    Eth-Trunk2
+#
+vpn-instance vsys_201 local
+ priority is 100
+ interface of the zone is (0):
+#
+vpn-instance vsys_201 trust
+ priority is 85
+ interface of the zone is (1):
+    Vlanif201
+#
+vpn-instance vsys_201 untrust
+ priority is 5
+ interface of the zone is (1):
+    Virtual-if1
+#
+vpn-instance vsys_201 dmz
+ priority is 50
+ interface of the zone is (0):
+#
+vpn-instance vsys_203 local
+ priority is 100
+ interface of the zone is (0):
+#
+vpn-instance vsys_203 trust
+ priority is 85
+ interface of the zone is (1):
+    Vlanif203
+#
+vpn-instance vsys_203 untrust
+ priority is 5
+ interface of the zone is (1):
+    Virtual-if2
+#
+vpn-instance vsys_203 dmz
+ priority is 50
+ interface of the zone is (0):

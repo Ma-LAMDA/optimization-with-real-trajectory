@@ -1,0 +1,18 @@
+display vlan 204
+--------------------------------------------------------------------------------
+U: Up;         D: Down;         TG: Tagged;         UT: Untagged;
+MP: Vlan-mapping;               ST: Vlan-stacking;
+#: ProtocolTransparent-vlan;    *: Management-vlan;
+MAC-LRN: MAC-address learning;  STAT: Statistic;
+BC: Broadcast; MC: Multicast;   UC: Unknown-unicast;
+FWD: Forward;  DSD: Discard;
+--------------------------------------------------------------------------------
+
+VID          Ports                                                          
+--------------------------------------------------------------------------------
+ 204         UT:Eth-Trunk2(U)                                                   
+             TG:Eth-Trunk1(U)                                                   
+                                                                                
+VID  Type     Status  Property  MAC-LRN STAT    BC  MC  UC  Description
+--------------------------------------------------------------------------------
+ 204 common   enable  default   enable  disable FWD FWD FWD VLAN 0204           

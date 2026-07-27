@@ -1,0 +1,19 @@
+display ip routing-table vpn-instance vpn2
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : vpn2
+         Destinations : 10       Routes : 10        
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        0.0.0.0/0   Static  60   0             RD  20.1.6.18                                VXLAN
+       20.1.2.0/24  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+       20.1.2.1/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.2.10/32  IBGP    255  0             RD  2.1.2.1                                  VXLAN
+      20.1.2.20/32  IBGP    255  0             RD  2.1.2.2                                  VXLAN
+      20.1.6.16/28  Direct  0    0             D   20.1.6.17                                Vbdif8020
+      20.1.6.17/32  Direct  0    0             D   127.0.0.1                                Vbdif8020
+      20.1.6.18/32  IBGP    255  0             RD  2.1.5.1                                  VXLAN
+      20.1.6.31/32  Direct  0    0             D   127.0.0.1                                Vbdif8020
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

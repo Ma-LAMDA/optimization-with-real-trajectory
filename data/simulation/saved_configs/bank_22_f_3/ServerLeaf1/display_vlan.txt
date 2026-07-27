@@ -1,0 +1,33 @@
+The total number of vlans is : 5
+--------------------------------------------------------------------------------
+U: Up;         D: Down;         TG: Tagged;         UT: Untagged;
+MP: Vlan-mapping;               ST: Vlan-stacking;
+#: ProtocolTransparent-vlan;    *: Management-vlan;
+MAC-LRN: MAC-address learning;  STAT: Statistic;
+BC: Broadcast; MC: Multicast;   UC: Unknown-unicast;
+FWD: Forward;  DSD: Discard;
+--------------------------------------------------------------------------------
+
+VID          Ports                                                          
+--------------------------------------------------------------------------------
+   1         UT:Eth-Trunk4(D)   Eth-Trunk5(D)   Eth-Trunk6(D)   GE1/0/2(D)      
+                GE1/1/0(D)      GE1/1/1(D)      GE1/1/2(D)      GE1/1/3(D)      
+                GE1/1/4(D)      GE1/1/5(D)      GE1/1/6(D)      GE1/1/7(D)      
+                GE1/1/8(D)      GE1/1/9(D)      GE2/0/0(D)      GE2/0/1(D)      
+                GE2/0/2(D)      GE2/0/3(D)      GE2/0/4(D)      GE2/0/5(D)      
+                GE2/0/6(D)      GE2/0/7(D)      GE2/0/8(D)      GE2/0/9(D)      
+                GE2/1/0(D)      GE2/1/1(D)      GE2/1/2(D)      GE2/1/3(D)      
+                GE2/1/4(D)      GE2/1/5(D)      GE2/1/6(D)      GE2/1/7(D)      
+                GE2/1/8(D)      GE2/1/9(D)                                      
+ 101                                                                            
+ 103                                                                            
+1001         TG:Eth-Trunk3(D)   Eth-Trunk4(D)                                   
+2000                                                                            
+                                                                                
+VID  Type     Status  Property  MAC-LRN STAT    BC  MC  UC  Description
+--------------------------------------------------------------------------------
+   1 common   enable  default   enable  disable FWD FWD FWD VLAN 0001           
+ 101 common   enable  default   enable  disable FWD FWD FWD VLAN 0101           
+ 103 common   enable  default   enable  disable FWD FWD FWD VLAN 0103           
+1001 common   enable  default   enable  disable FWD FWD FWD VLAN 1001           
+2000 common   enable  default   enable  disable FWD FWD FWD VLAN 2000           

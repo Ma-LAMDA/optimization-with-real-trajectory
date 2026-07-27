@@ -1,0 +1,7 @@
+display current-configuration | include vsys_203
+vsys name vsys_203 2
+ip vpn-instance vsys_203
+ ip binding vpn-instance vsys_203
+ip route-static 10.1.103.0 255.255.255.0 vpn-instance vsys_203
+switch vsys vsys_203
+ ip binding vpn-instance vsys_203

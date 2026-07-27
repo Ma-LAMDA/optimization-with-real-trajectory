@@ -1,0 +1,32 @@
+ARP Entry Types: D - Dynamic, S - Static, I - Interface, O - OpenFlow, RD - Redirect
+EXP: Expire-time VLAN: VLAN or Bridge Domain
+
+IP ADDRESS      MAC ADDRESS    EXP(M) TYPE/VLAN       INTERFACE        VPN-INSTANCE
+----------------------------------------------------------------------------------------
+192.168.1.2     3814-9111-0100        I               GE1/0/0          
+192.168.1.1     3801-2011-0100   17   D               GE1/0/0          
+192.168.1.10    3814-9111-0101        I               GE1/0/1          
+192.168.1.9     3828-4211-0100   17   D               GE1/0/1          
+30.0.0.1        3809-0011-1200        I               Vbdif201         vrf101
+30.0.0.2        0c6a-872f-0000   20   D/BD201         Eth-Trunk3.201   vrf101
+30.0.0.1        3809-0011-1200        I               Vbdif202         ext_vrf101
+30.0.0.2        0c6a-872f-0000   20   D/BD202         Eth-Trunk3.202   ext_vrf101
+30.0.0.253      3816-0011-1200    2   D/BD202         Eth-Trunk1.202   ext_vrf101
+30.0.0.3        3809-0011-1200        I               Vbdif203         vrf103
+30.0.0.4        0c6a-872f-0000   20   D/BD203         Eth-Trunk3.203   vrf103
+10.1.6.3        0000-00f0-0002        I               Vbdif8010        vpn1
+10.1.6.2        3816-0011-1200   17   D/BD8010        Eth-Trunk1.10    vpn1
+10.1.6.21       0000-00f0-0003        I               Vbdif8020        vpn2
+10.1.6.18       3816-0011-1200   17   D/BD8020        Eth-Trunk1.20    vpn2
+10.1.6.38       0000-00f0-0003        I               Vbdif8030        vpn3
+10.1.6.34       3816-0011-1200   17   D/BD8030        Eth-Trunk1.30    vpn3
+10.1.6.53       0000-00f0-0004        I               Vbdif8040        vpn4
+10.1.6.50       3816-0011-1200   17   D/BD8040        Eth-Trunk1.40    vpn4
+10.60.1.1       0000-0000-0060        I               Vbdif8050        vpn5
+10.60.1.2       3816-0011-1200   17   D/BD8050        Eth-Trunk1.50    vpn5
+10.70.1.1       0000-1111-0000        I               Vbdif8060        vpn6
+10.3.1.21       3809-0011-1200        I               Vlanif1001       
+10.4.1.20       3809-0011-1200        I               Vlanif1101       
+----------------------------------------------------------------------------------------
+Total:24         Dynamic:11       Static:0    Interface:13    OpenFlow:0
+Redirect:0

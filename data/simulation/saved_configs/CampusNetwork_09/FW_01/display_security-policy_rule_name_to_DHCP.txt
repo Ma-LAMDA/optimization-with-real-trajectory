@@ -1,0 +1,13 @@
+display security-policy rule name to_DHCP
+(30 times matched)
+ rule name to_DHCP
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.120.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.1.50.1 mask 255.255.255.255
+  action permit

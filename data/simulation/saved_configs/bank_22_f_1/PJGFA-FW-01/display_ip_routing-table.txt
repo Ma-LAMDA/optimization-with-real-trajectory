@@ -1,0 +1,39 @@
+2026-06-03 09:14:09.040 
+Route Flags: R - relay, D - download to fib
+------------------------------------------------------------------------------
+Routing Tables: Public
+         Destinations : 31       Routes : 31       
+
+Destination/Mask    Proto   Pre  Cost      Flags NextHop         Interface
+
+        1.1.1.0/24  O_ASE   150  2           D   8.6.6.1         GigabitEthernet1/0/2
+        2.1.3.1/32  Direct  0    0           D   127.0.0.1       LoopBack0
+        8.6.6.0/24  Direct  0    0           D   8.6.6.2         GigabitEthernet1/0/2
+        8.6.6.2/32  Direct  0    0           D   127.0.0.1       GigabitEthernet1/0/2
+        9.9.9.5/32  OSPF    10   1           D   8.6.6.1         GigabitEthernet1/0/2
+       9.9.9.10/32  OSPF    10   1           D   8.6.6.1         GigabitEthernet1/0/2
+     10.1.101.0/24  O_ASE   150  2           D   8.6.6.1         GigabitEthernet1/0/2
+     10.1.103.0/24  O_ASE   150  2           D   8.6.6.1         GigabitEthernet1/0/2
+       20.1.1.0/24  Static  60   0          RD   20.1.6.1        Vlanif10
+       20.1.2.0/24  Static  60   0          RD   20.1.6.17       Vlanif20
+       20.1.3.0/24  Static  60   0          RD   20.1.6.33       Vlanif30
+       20.1.4.0/24  Static  60   0          RD   20.1.6.49       Vlanif40
+       20.1.5.0/24  Static  60   0          RD   20.60.1.1       Vlanif50
+       20.1.6.0/28  Direct  0    0           D   20.1.6.2        Vlanif10
+       20.1.6.2/32  Direct  0    0           D   127.0.0.1       Vlanif10
+      20.1.6.16/28  Direct  0    0           D   20.1.6.18       Vlanif20
+      20.1.6.18/32  Direct  0    0           D   127.0.0.1       Vlanif20
+      20.1.6.32/28  Direct  0    0           D   20.1.6.34       Vlanif30
+      20.1.6.34/32  Direct  0    0           D   127.0.0.1       Vlanif30
+      20.1.6.48/28  Direct  0    0           D   20.1.6.50       Vlanif40
+      20.1.6.50/32  Direct  0    0           D   127.0.0.1       Vlanif40
+      20.60.1.0/28  Direct  0    0           D   20.60.1.2       Vlanif50
+      20.60.1.2/32  Direct  0    0           D   127.0.0.1       Vlanif50
+       30.0.0.0/24  OSPF    10   3           D   8.6.6.1         GigabitEthernet1/0/2
+      127.0.0.0/8   Direct  0    0           D   127.0.0.1       InLoopBack0
+      127.0.0.1/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+     222.10.1.1/32  Unr     61   0           D   127.0.0.1       InLoopBack0
+     222.10.1.2/31  Unr     61   0           D   127.0.0.1       InLoopBack0
+     222.10.1.4/30  Unr     61   0           D   127.0.0.1       InLoopBack0
+     222.10.1.8/31  Unr     61   0           D   127.0.0.1       InLoopBack0
+    222.10.1.10/32  Unr     61   0           D   127.0.0.1       InLoopBack0

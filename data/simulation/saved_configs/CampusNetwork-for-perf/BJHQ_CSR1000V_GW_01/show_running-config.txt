@@ -1,0 +1,427 @@
+Building configuration...
+
+Current configuration : 10074 bytes
+!
+! Last configuration change at 12:25:45 UTC Tue Jun 2 2026
+!
+version 16.12
+service timestamps debug datetime msec
+service timestamps log datetime msec
+! Call-home is enabled by Smart-Licensing.
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname BJHQ_CSR1000V_GW_01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+!
+no aaa new-model
+call-home
+ ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com
+ ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications.
+ contact-email-addr sch-smart-licensing@cisco.com
+ profile "CiscoTAC-1"
+  active
+  destination transport-method http
+  no destination transport-method email
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2900324673
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2900324673
+ revocation-check none
+ rsakeypair TP-self-signed-2900324673
+!
+crypto pki trustpoint SLA-TrustPoint
+ enrollment pkcs12
+ revocation-check crl
+!
+crypto pki trustpoint TP-self-signed-1590416503
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1590416503
+ revocation-check none
+ rsakeypair TP-self-signed-1590416503
+!
+crypto pki trustpoint TP-self-signed-2778010088
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2778010088
+ revocation-check none
+ rsakeypair TP-self-signed-2778010088
+!
+!
+crypto pki certificate chain TP-self-signed-2900324673
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32393030 33323436 3733301E 170D3236 30363032 31323230 
+  35385A17 0D333030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 39303033 
+  32343637 33308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100AA1F 3A1FBCB2 2E4B2B10 918226E1 EC524827 8FE2EAC0 4F8ED448 
+  4C69985B 7F545B89 ACFA8A07 4B0FFBC5 EFBD5DB2 B7031D53 3B570A73 CB200F2A 
+  CD95DC85 2E5B9598 75AE802D 3F756CA9 D2262C99 D1145131 12D92B05 73399717 
+  80ADDBC6 776899D2 10BB622E FFA0A248 704C281C 9AC47965 3C37F6F7 0B56BE9C 
+  154A82FF 19C9AB10 F43F38C8 0732AEB6 3E5CB124 0C6D2776 F483A5E1 F44066EB 
+  DF4981CE DC251DBE C8DC02C1 1695EA20 AAA06968 3A81F9FD DC071597 548CA348 
+  6D46FF1B DDF37D35 220D9F7B 3326FE77 15DDB47A 8EE3F964 6186EDF9 EA4330A6 
+  0334906E E02DA995 814D0E07 60A09907 2F6CE1A5 E7604533 E5AF0A7C 8E6FADA2 
+  1CB78BF5 37590203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 
+  301F0603 551D2304 18301680 14AFB810 E7B427CF 6DE9EC5C 61D0651B 4B64DC3E 
+  1E301D06 03551D0E 04160414 AFB810E7 B427CF6D E9EC5C61 D0651B4B 64DC3E1E 
+  300D0609 2A864886 F70D0101 05050003 82010100 4608D080 AE812501 750C4F9B 
+  766E3A59 3ED0F2F2 4C0B47FE 165C666D A2F6FB13 A77002AB 979BEDF4 04FAD7A1 
+  B748B86A 4B5F5375 2BDE9EED 9CDBFCEB 762A4F35 DF65B77D A9213554 C8A3FBAB 
+  D39A4C35 89190812 0C09C990 77142227 DC8E277A 68A14092 6C279A04 8951353D 
+  B74174CA 3FB56AC3 D96BFDB9 D9C25133 1681F87E B2846F3F D9222CF7 D822304D 
+  85601C93 E8FCA639 63F3807E DC9CF84B 0A2FB8A9 ECE43271 7E521D76 030F7CE1 
+  05DC2A46 94252707 35B7D897 BAC64B9D E06D1F92 F1B769F7 B4FC55D5 851525D2 
+  FCC06CA2 EC192911 AC9F4FDC 903100DA 628F4132 339D337B 0BE56A1B E9611694 
+  E4763FD0 0B2C124E 2B004BB6 418B3CD5 51E37040
+  	quit
+crypto pki certificate chain SLA-TrustPoint
+ certificate ca 01
+  30820321 30820209 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  32310E30 0C060355 040A1305 43697363 6F312030 1E060355 04031317 43697363 
+  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31 33303533 30313934 
+  3834375A 170D3338 30353330 31393438 34375A30 32310E30 0C060355 040A1305 
+  43697363 6F312030 1E060355 04031317 43697363 6F204C69 63656E73 696E6720 
+  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 
+  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6 17222EA1 F1EFF64D 
+  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A 9CAE6388 8A38E520 
+  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3 700A8BF7 D8F256EE 
+  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7 104FDC5F EA2956AC 
+  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3 C0BD23CF 58BD7188 
+  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F 539BA42B 42C68BB7 
+  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4 5D5D5FB8 8F27D191 
+  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B DF5F4368 95135E44 
+  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F 0101FF04 04030201 
+  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D 0E041604 1449DC85 
+  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648 86F70D01 010B0500 
+  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0 49631C78 240DA905 
+  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB 9093D3B1 6C9E3D8B 
+  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646 5575B146 8DFC66A8 
+  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC 11BA9CD2 55A9232C 
+  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86 C71E3B49 1765308B 
+  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229 C37C1E69 39F08678 
+  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A B623CDBD 230E3AFB 
+  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE 0275156F 719BB2F0 
+  D697DF7F 28
+  	quit
+crypto pki certificate chain TP-self-signed-1590416503
+crypto pki certificate chain TP-self-signed-2778010088
+!
+license udi pid CSR1000V sn 91QKKSXXO97
+diagnostic bootup level minimal
+memory free low-watermark processor 72329
+!
+!
+spanning-tree extend system-id
+!
+!
+redundancy
+!
+!
+!
+!
+!
+lldp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface Loopback0
+ ip address 10.1.254.6 255.255.255.255
+!
+interface GigabitEthernet1
+ description to_ChinaUnicom_SW_GE1/0/1
+ ip address 100.100.100.201 255.255.255.0 secondary
+ ip address 100.100.100.253 255.255.255.0
+ ip nat outside
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description to_FW_01_GigabitEthernet1/0/3
+ ip address 10.1.200.18 255.255.255.252
+ ip nat inside
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ description to_FW_02_GigabitEthernet1/0/3
+ ip address 10.1.200.22 255.255.255.252
+ ip nat inside
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ description to_PE1_Ethernet2/0/0
+ ip address 10.10.100.2 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet5
+ description to_PE1_Ethernet2/0/1
+ ip address 10.10.100.14 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet6
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet7
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet8
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet9
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet10
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet11
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet12
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet13
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet14
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet15
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet16
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet17
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet18
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet19
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet20
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet21
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet22
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet23
+ ip address 20.0.0.2 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet24
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+router ospf 1
+ router-id 10.1.254.6
+ redistribute bgp 65001 metric-type 1
+ network 10.1.200.18 0.0.0.0 area 0
+ network 10.1.200.22 0.0.0.0 area 0
+ network 10.1.254.6 0.0.0.0 area 0
+ default-information originate always
+!
+router bgp 65001
+ bgp log-neighbor-changes
+ redistribute ospf 1 route-map O2B
+ neighbor 10.10.100.1 remote-as 65000
+ neighbor 10.10.100.13 remote-as 65000
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip nat pool NAT_POOL 100.100.100.1 100.100.100.200 netmask 255.255.255.0
+ip nat inside source static tcp 10.1.60.2 21 100.100.100.201 21 extendable
+ip nat inside source list 2000 pool NAT_POOL overload
+ip route 0.0.0.0 0.0.0.0 100.100.100.254
+!
+!
+!
+ip prefix-list BJ seq 5 permit 10.1.10.0/24
+ip prefix-list BJ seq 10 permit 10.1.20.0/24
+ip prefix-list BJ seq 15 permit 10.1.30.0/24
+ip prefix-list BJ seq 20 permit 10.1.40.0/24
+ip prefix-list BJ seq 25 permit 10.1.110.0/24
+ip access-list extended 2000
+ 10 permit ip any any
+!
+!
+route-map O2B permit 10 
+ match ip address prefix-list BJ
+!
+route-map O2B deny 20 
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+!
+!
+!
+!
+end

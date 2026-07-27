@@ -1,0 +1,13 @@
+display ip routing-table 10.1.30.254
+Proto: Protocol        Pre: Preference
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : _public_
+Summary Count : 4
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+    10.1.30.254/32  OSPF    10   2             D   10.1.40.252                              Vlanif40			
+                    OSPF    10   2             D   10.1.30.252                              Vlanif30
+                    OSPF    10   2             D   10.1.20.252                              Vlanif20
+                    OSPF    10   2             D   10.1.10.252                              Vlanif10

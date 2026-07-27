@@ -1,0 +1,7 @@
+2026-06-03 09:14:07.000 
+ rule 5 permit ip source 20.1.1.0 0.0.0.255 destination 10.1.101.0 0.0.0.255
+ rule 10 deny ip source 20.1.2.0 0.0.0.255 destination 10.1.101.0 0.0.0.255
+ rule 15 permit ip source 20.1.3.0 0.0.0.255 destination 10.1.101.0 0.0.0.255
+ rule 20 permit ip source 20.1.4.0 0.0.0.255 destination 10.1.101.0 0.0.0.255
+nat address-group addressgroup1 0
+nat-policy

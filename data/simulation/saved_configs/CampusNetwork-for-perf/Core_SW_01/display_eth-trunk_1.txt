@@ -1,0 +1,23 @@
+display eth-trunk 1
+Eth-Trunk1's state information is:
+(h): high priority
+(r): reference port
+Local:
+LAG ID: 1                       Working Mode: Static
+Preempt Delay: Disabled         Hash Arithmetic: According to flow
+System Priority: 32768          System ID: 3810-0011-1200
+Least Active-linknumber: 1      Max Active-linknumber: 256 
+Operating Status: down          Number Of Up Ports In Trunk: 0
+Timeout Period: Slow          
+PortKeyMode: Auto
+------------------------------------------------------------------------------------
+ActorPortName              Status   PortType PortPri PortNo PortKey PortState Weight
+GE1/0/1(hr)                Unselect 100M     32768   1      289     10110000  1     
+GE1/0/2(h)                 Unselect 100M     32768   2      289     10100000  1     
+
+Partner:
+------------------------------------------------------------------------------------
+ActorPortName              SysPri   SystemID        PortPri PortNo PortKey PortState
+GE1/0/1                    32768    3811-0011-1200  32768   1      289     10100000 
+GE1/0/2                    32768    3811-0011-1200  32768   2      289     10100010 
+

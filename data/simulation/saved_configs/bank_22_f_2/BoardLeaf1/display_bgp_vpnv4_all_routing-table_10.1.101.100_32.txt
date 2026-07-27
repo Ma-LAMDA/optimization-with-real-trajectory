@@ -1,0 +1,39 @@
+display bgp vpnv4 all routing-table 10.1.101.100 32
+BGP local router ID : 1.1.5.1
+ Local AS number : 65000
+
+
+ VPN-Instance vrf101, Router ID 1.1.5.1:
+
+ Total Number of Routes: 2
+ BGP routing table entry information of 10.1.101.100/32:
+ Route Distinguisher: 10:101
+ Remote-Cross route
+ Evpn route: Type 2, irb
+ Label information (Received/Applied): 5001/NULL
+ From: 1.1.1.1 (1.1.1.1)
+ Route Duration: 0d06h26m30s
+ Relay Tunnel Out-Interface: VXLAN
+ Original nexthop: 1.1.2.1
+ Qos information : 0x0
+ Ext-Community: RT <11 : 101>, RT <11 : 5001>, Tunnel Type <VxLan>, Router's MAC <3808-0011-1200>
+ AS-path Nil, origin igp, localpref 100, pref-val 0, valid, internal, best, select, pre 255
+ Originator: 1.1.2.1
+ Cluster list: 0.0.0.1
+ Not advertised to any peer yet
+
+ BGP routing table entry information of 10.1.101.100/32:
+ Route Distinguisher: 10:101
+ Remote-Cross route
+ Evpn route: Type 2, irb
+ Label information (Received/Applied): 5001/NULL
+ From: 1.1.1.2 (1.1.1.2)
+ Route Duration: 0d06h26m30s
+ Relay Tunnel Out-Interface: VXLAN
+ Original nexthop: 1.1.2.1
+ Qos information : 0x0
+ Ext-Community: RT <11 : 101>, RT <11 : 5001>, Tunnel Type <VxLan>, Router's MAC <3808-0011-1200>
+ AS-path Nil, origin igp, localpref 100, pref-val 0, valid, internal, pre 255, not preferred for peer address
+ Originator: 1.1.2.1
+ Cluster list: 0.0.0.1
+ Not advertised to any peer yet

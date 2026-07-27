@@ -1,0 +1,63 @@
+display bgp vpnv4 all routing-table 10.3.10.0 24
+BGP local router ID : 1.1.1.1
+ Local AS number : 65000
+ 
+ Total routes of Route Distinguisher(1:2): 1
+ BGP routing table entry information of 10.3.10.0/24:
+ From: 10.10.100.14 (10.1.254.6)
+ Route Duration: 0d23h20m19s
+ Direct Out-interface: Ethernet2/0/1
+ Original nexthop: 10.10.100.14
+ Qos information : 0x0
+ Ext-Community: RT <1 : 1>
+ AS-path 65001 65000 65003, origin incomplete, pref-val 0, valid, external, best, select, pre 255
+ Advertised to such 2 peers:
+    3.3.3.3
+    2.2.2.2
+ 
+ Total routes of Route Distinguisher(3:3): 1
+ BGP routing table entry information of 10.3.10.0/24:
+ RR-client route.
+ Label information (Received/Applied): 48000/NULL
+ From: 3.3.3.3 (3.3.3.3)
+ Route Duration: 0d23h23m13s
+ Relay IP Nexthop: 10.10.0.6
+ Relay IP Out-Interface: Ethernet1/0/2
+ Relay Tunnel Out-Interface: Ethernet1/0/2
+ Original nexthop: 3.3.3.3
+ Qos information : 0x0
+ Ext-Community: RT <2 : 2>
+ AS-path 65003, origin incomplete, MED 0, localpref 100, pref-val 0, valid, internal, best, select, pre 255, IGP cost 10
+ Advertised to such 2 peers:
+    3.3.3.3
+    2.2.2.2
+    
+ VPN-Instance BJ_In, Router ID 1.1.1.1:
+
+ Total Number of Routes: 1
+ BGP routing table entry information of 10.3.10.0/24:
+ Route Distinguisher: 3:3
+ Remote-Cross route
+ Label information (Received/Applied): 48000/NULL
+ From: 3.3.3.3 (3.3.3.3)
+ Route Duration: 0d23h23m13s
+ Relay Tunnel Out-Interface: Ethernet1/0/2
+ Original nexthop: 3.3.3.3
+ Qos information : 0x0
+ Ext-Community: RT <2 : 2>
+ AS-path 65003, origin incomplete, MED 0, localpref 100, pref-val 0, valid, internal, best, select, pre 255, IGP cost 10
+ Advertised to such 1 peers:
+    10.10.100.2
+    
+ VPN-Instance BJ_Out, Router ID 1.1.1.1:
+
+ Total Number of Routes: 1
+ BGP routing table entry information of 10.3.10.0/24:
+ Route Distinguisher: 1:2
+ From: 10.10.100.14 (10.1.254.6)
+ Route Duration: 0d23h20m19s
+ Direct Out-interface: Ethernet2/0/1
+ Original nexthop: 10.10.100.14
+ Qos information : 0x0
+ AS-path 65001 65000 65003, origin incomplete, pref-val 0, valid, external, best, select, pre 255
+ Not advertised to any peer yet

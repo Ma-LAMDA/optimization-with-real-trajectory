@@ -1,0 +1,56 @@
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, m - OMP
+       n - NAT, Ni - NAT inside, No - NAT outside, Nd - NAT DIA
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       H - NHRP, G - NHRP registered, g - NHRP registration summary
+       o - ODR, P - periodic downloaded static route, l - LISP
+       a - application route
+       + - replicated route, % - next hop override, p - overrides from PfR
+
+Gateway of last resort is 100.100.100.254 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 100.100.100.254
+      10.0.0.0/8 is variably subnetted, 35 subnets, 3 masks
+O IA     10.1.10.0/24 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.10.254/32 [110/3] via 10.1.200.17, 02:00:43, Port-channel1
+O IA     10.1.20.0/24 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.20.254/32 [110/3] via 10.1.200.17, 02:00:48, Port-channel1
+O IA     10.1.30.0/24 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.30.254/32 [110/3] via 10.1.200.17, 00:54:18, Port-channel1
+O IA     10.1.40.0/24 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.40.254/32 [110/3] via 10.1.200.17, 00:54:59, Port-channel1
+O IA     10.1.50.0/24 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.60.0/24 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.110.0/24 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.110.254/32 [110/3] via 10.1.200.17, 02:00:43, Port-channel1
+O IA     10.1.120.0/24 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.120.254/32 [110/3] via 10.1.200.17, 02:00:43, Port-channel1
+O        10.1.200.0/30 [110/2] via 10.1.200.17, 22:32:28, Port-channel1
+O        10.1.200.4/30 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+O        10.1.200.8/30 [110/2] via 10.1.200.17, 22:32:28, Port-channel1
+O        10.1.200.12/30 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+C        10.1.200.16/30 is directly connected, Port-channel1
+L        10.1.200.18/32 is directly connected, Port-channel1
+C        10.1.200.20/30 is directly connected, Port-channel2
+L        10.1.200.22/32 is directly connected, Port-channel2
+O IA     10.1.200.24/30 [110/2] via 10.1.200.17, 22:32:28, Port-channel1
+O IA     10.1.200.28/30 [110/3] via 10.1.200.17, 22:32:28, Port-channel1
+C        10.1.254.6/32 is directly connected, Loopback0
+B        10.2.10.0/24 [20/0] via 10.10.100.1, 22:32:29
+B        10.2.20.0/24 [20/0] via 10.10.100.1, 22:32:29
+B        10.2.30.0/24 [20/0] via 10.10.100.1, 22:32:29
+B        10.3.10.0/24 [20/0] via 10.10.100.1, 22:32:29
+B        10.3.20.0/24 [20/0] via 10.10.100.1, 22:32:29
+B        10.3.30.0/24 [20/0] via 10.10.100.1, 22:32:29
+C        10.10.100.0/30 is directly connected, GigabitEthernet4
+L        10.10.100.2/32 is directly connected, GigabitEthernet4
+C        10.10.100.12/30 is directly connected, GigabitEthernet5
+L        10.10.100.14/32 is directly connected, GigabitEthernet5
+      100.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+C        100.100.100.0/24 is directly connected, GigabitEthernet1
+L        100.100.100.1/32 is directly connected, GigabitEthernet1
+L        100.100.100.201/32 is directly connected, GigabitEthernet1
+L        100.100.100.253/32 is directly connected, GigabitEthernet1

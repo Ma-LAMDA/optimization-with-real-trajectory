@@ -1,0 +1,18 @@
+display vlan 120
+--------------------------------------------------------------------------------
+U: Up;         D: Down;         TG: Tagged;         UT: Untagged;
+MP: Vlan-mapping;               ST: Vlan-stacking;
+#: ProtocolTransparent-vlan;    *: Management-vlan;
+MAC-LRN: MAC-address learning;  STAT: Statistic;
+BC: Broadcast; MC: Multicast;   UC: Unknown-unicast;
+FWD: Forward;  DSD: Discard;
+--------------------------------------------------------------------------------
+
+VID          Ports                                                          
+--------------------------------------------------------------------------------
+ 120         TG:Eth-Trunk1(D)   GE1/0/3(U)      GE1/0/4(U)      GE1/0/5(U)      
+                GE1/0/6(U)      GE1/0/7(D)                                      
+                                                                                
+VID  Type     Status  Property  MAC-LRN STAT    BC  MC  UC  Description
+--------------------------------------------------------------------------------
+ 120 common   enable  default   enable  disable FWD FWD FWD VLAN 0120           

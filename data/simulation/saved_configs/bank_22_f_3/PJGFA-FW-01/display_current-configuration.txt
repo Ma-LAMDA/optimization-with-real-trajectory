@@ -1,0 +1,342 @@
+2026-06-04 02:10:49.860 
+!Software Version V500R005C00SPC100
+#
+sysname PJGFA-FW-01
+#
+ l2tp domain suffix-separator @
+#
+info-center source default channel 0 trap state off
+undo info-center enable
+#
+vlan batch 10 20 30 40 50 1001
+#
+ ipsec sha2 compatible enable 
+#
+undo telnet server enable
+undo telnet ipv6 server enable
+#
+clock timezone UTC add 00:00:00
+#
+ update schedule location-sdb weekly Sun 00:08
+#
+ firewall defend action discard
+#
+ log type traffic enable
+ log type syslog enable
+ log type policy enable
+#
+ undo dataflow enable
+#
+ sa force-detection enable
+#
+ lldp enable
+#
+ banner enable
+#
+password-policy
+ level high
+user-manage single-sign-on radius
+#
+ web-manager security version tlsv1.1 tlsv1.2
+ web-manager enable
+ web-manager security enable
+#
+firewall dataplane to manageplane application-apperceive default-action drop
+#
+ update schedule ips-sdb daily 00:22
+ update schedule av-sdb daily 00:22
+ update schedule sa-sdb daily 00:22
+ update schedule cnc daily 00:22
+ update schedule file-reputation daily 00:22
+#
+ip vpn-instance default
+ ipv4-family
+#
+ip address-set SA1 type object
+ address 0 20.1.0.0 mask 16
+ address 1 22.1.0.0 mask 16
+ address 3 222.0.0.0 mask 8
+#
+ip address-set SA2 type object
+ address 0 10.1.0.0 mask 16
+ address 1 30.1.0.0 mask 16
+ address 3 111.0.0.0 mask 8
+ address 4 121.0.0.0 mask 8
+ address 5 210.0.0.0 mask 8
+ address 6 11.1.0.0 mask 16
+ address 7 33.1.0.0 mask 16
+ address 8 10.100.0.0 mask 16
+ address 9 40.1.0.0 mask 16
+ address 10 50.1.0.0 mask 16
+#
+ time-range worktime
+  period-range 08:00:00 to 18:00:00 working-day   
+#
+acl number 3000
+ rule 5 permit ip source 20.1.1.0 0.0.0.255 destination 10.1.101.0 0.0.0.255 
+ rule 10 permit ip source 20.1.2.0 0.0.0.255 destination 10.1.101.0 0.0.0.255 
+ rule 15 permit ip source 20.1.3.0 0.0.0.255 destination 10.1.101.0 0.0.0.255 
+ rule 20 permit ip source 20.1.4.0 0.0.0.255 destination 10.1.101.0 0.0.0.255 
+ rule 25 permit ip source 20.1.5.0 0.0.0.255 destination 10.1.101.0 0.0.0.255 
+#
+ipsec proposal ipsecProposal1
+ esp authentication-algorithm sha2-256 
+ esp encryption-algorithm aes-256 
+#
+ike proposal default
+ encryption-algorithm aes-256 aes-192 aes-128 
+ dh group14 
+ authentication-algorithm sha2-512 sha2-384 sha2-256 
+ authentication-method pre-share
+ integrity-algorithm hmac-sha2-256 
+ prf hmac-sha2-256 
+ike proposal 10
+ encryption-algorithm aes-256 
+ dh group14 
+ authentication-algorithm sha2-256 
+ authentication-method pre-share
+ integrity-algorithm hmac-sha2-256 
+ prf hmac-sha2-256 
+#
+ike peer ikePeer1
+ pre-shared-key %^%#><R9FpqG(>,5FKUMT3<5A17A>^HTR*A.q=23#3b-%^%#
+ ike-proposal 10
+ remote-address 30.0.0.2 
+#
+ipsec policy ipsecPolicy1 10 isakmp
+ security acl 3000
+ ike-peer ikePeer1
+ proposal ipsecProposal1
+#
+aaa
+ authentication-scheme default
+ authentication-scheme admin_local
+ authentication-scheme admin_radius_local
+ authentication-scheme admin_hwtacacs_local
+ authentication-scheme admin_ad_local
+ authentication-scheme admin_ldap_local
+ authentication-scheme admin_radius
+ authentication-scheme admin_hwtacacs
+ authentication-scheme admin_ad
+ authentication-scheme admin_ldap
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+  service-type internetaccess ssl-vpn l2tp ike
+  internet-access mode auto-online
+  reference user current-domain
+ manager-user password valid-days 0
+ manager-user audit-admin 
+  password cipher @%@%~azhA]irw/F1PxB"-AzX$/*kSD+QK*N{[2TefrAREF6>/*n$@%@%
+  service-type web terminal 
+  level 15 
+
+ manager-user api-admin 
+  password cipher @%@%{Q"0.F*m"J<io9"@!yz3dK]XpNZV-9$DP@^ujm>J2\=UK][d@%@%
+  service-type api 
+  level 15 
+
+ manager-user admin 
+  password cipher @%@%XrQ8#yo!)YQIMR>g;4OS2-dbTYk2$n]hc81Bt0ZCCT<U-de2@%@%
+  service-type web terminal 
+  level 15 
+
+ role system-admin
+ role device-admin
+ role device-admin(monitor)
+ role audit-admin
+ bind manager-user audit-admin role audit-admin
+ bind manager-user admin role system-admin
+#
+interface Vlanif10
+ ip address 20.1.6.2 255.255.255.240
+#
+interface Vlanif20
+ ip address 20.1.6.18 255.255.255.240
+#
+interface Vlanif30
+ ip address 20.1.6.34 255.255.255.240
+#
+interface Vlanif40
+ ip address 20.1.6.50 255.255.255.240
+#
+interface Vlanif50
+ ip address 20.60.1.2 255.255.255.240
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+ service-manage ssh permit
+ service-manage snmp permit
+ service-manage telnet permit
+ service-manage netconf permit
+#
+interface Eth-Trunk1
+ portswitch
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 10 20 30 40 50
+ mode lacp-static
+#
+interface Eth-Trunk2
+#
+interface Eth-Trunk2.1001
+ vlan-type dot1q 1001
+#
+l2tp-group default-lns
+#
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip binding vpn-instance default
+ ip address 192.168.0.1 255.255.255.0
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+#
+interface GigabitEthernet1/0/1
+ description To-PJGFA-BL-02-GE1/0/4
+ undo shutdown
+#
+interface GigabitEthernet1/0/2
+ description TO-PE
+ undo shutdown
+ ip address 8.6.6.2 255.255.255.0
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+ service-manage ssh permit
+ service-manage snmp permit
+ service-manage telnet permit
+ service-manage netconf permit
+ ipsec policy ipsecPolicy1
+#
+interface GigabitEthernet1/0/3
+ description To-PJGFA-BL-01-GE1/0/4
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet1/0/4
+ shutdown
+#
+interface GigabitEthernet1/0/5
+ undo shutdown
+#
+interface GigabitEthernet1/0/6
+ undo shutdown
+#
+interface GigabitEthernet1/0/7
+ undo shutdown
+#
+interface GigabitEthernet1/0/8
+ undo shutdown
+#
+interface GigabitEthernet1/0/9
+ undo shutdown
+#
+interface Virtual-if0
+#
+interface NULL0
+#
+interface LoopBack0
+ ip address 2.1.3.1 255.255.255.255
+#
+firewall zone local
+ set priority 100
+#
+firewall zone trust
+ set priority 85
+ add interface GigabitEthernet0/0/0
+ add interface Eth-Trunk1
+ add interface Vlanif10
+ add interface Vlanif50
+ add interface Vlanif20
+ add interface Vlanif30
+ add interface Vlanif40
+#
+firewall zone untrust
+ set priority 5
+ add interface GigabitEthernet1/0/2
+#
+firewall zone dmz
+ set priority 50
+#
+api
+#
+bgp 65001
+ router-id 2.1.3.1
+ peer 8.6.6.1 as-number 5000
+ #
+ ipv4-family unicast
+  undo synchronization
+  import-route direct
+  import-route static
+  import-route ospf 1
+  peer 8.6.6.1 enable
+#
+ospf 100 router-id 2.1.3.1
+ import-route static
+ area 0.0.0.0
+  network 8.6.6.0 0.0.0.255
+#
+ip route-static 20.1.1.0 255.255.255.0 20.1.6.1
+ip route-static 20.1.2.0 255.255.255.0 20.1.6.17
+ip route-static 20.1.3.0 255.255.255.0 20.1.6.33
+ip route-static 20.1.4.0 255.255.255.0 20.1.6.49
+ip route-static 20.1.5.0 255.255.255.0 20.60.1.1
+ip route-static 22.0.0.0 255.0.0.0 20.70.1.1
+#
+undo ssh server compatible-ssh1x enable
+ssh authentication-type default password
+#
+user-interface password complexity-check disable
+#
+firewall detect ftp
+#
+user-interface con 0
+ authentication-mode password
+ set authentication password cipher $1c$uMM_BG!%M:$Q+N<0jBRb0!o)C)'@Hj6ASlG%9-a7&9Q"cK!~ig&$
+ idle-timeout 0 0
+ screen-length 0
+user-interface vty 0 4
+ authentication-mode aaa
+ protocol inbound ssh
+user-interface vty 16 20
+#
+pki realm default
+#
+sa
+#
+location
+#
+nat address-group addressgroup1 0
+ mode no-pat global
+ route enable
+ section 0 222.10.1.1 222.10.1.10
+#
+ multi-linkif
+ mode proportion-of-weight
+#
+right-manager server-group
+#
+security-policy
+ default action permit
+#
+auth-policy
+#
+traffic-policy
+#
+policy-based-route
+#
+nat-policy
+#
+proxy-policy
+#
+pcp-policy
+#
+dns-transparent-policy
+#
+rightm-policy
+#
+return

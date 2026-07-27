@@ -1,0 +1,5 @@
+display current-configuration | include vpn3
+ip vpn-instance vpn3
+ ip binding vpn-instance vpn3
+ ipv4-family vpn-instance vpn3
+ip route-static vpn-instance vpn3 0.0.0.0 0.0.0.0 10.1.6.34

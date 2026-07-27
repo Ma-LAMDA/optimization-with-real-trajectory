@@ -1,0 +1,46 @@
+Route Flags: R - relay, D - download to fib, T - to vpn-instance, B - black hole route
+------------------------------------------------------------------------------
+Routing Table : _public_
+         Destinations : 16       Routes : 17
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+        1.1.1.1/32  ISIS-L2 15   10            D   10.10.0.5                                Ethernet1/0/1
+        2.2.2.2/32  ISIS-L2 15   10            D   10.10.0.9                                Ethernet1/0/2
+        3.3.3.3/32  Direct  0    0             D   127.0.0.1                                LoopBack0
+      10.10.0.0/30  ISIS-L2 15   20            D   10.10.0.5                                Ethernet1/0/1
+                    ISIS-L2 15   20            D   10.10.0.9                                Ethernet1/0/2
+      10.10.0.4/30  Direct  0    0             D   10.10.0.6                                Ethernet1/0/1
+      10.10.0.6/32  Direct  0    0             D   127.0.0.1                                Ethernet1/0/1
+      10.10.0.7/32  Direct  0    0             D   127.0.0.1                                Ethernet1/0/1
+      10.10.0.8/30  Direct  0    0             D   10.10.0.10                               Ethernet1/0/2
+     10.10.0.10/32  Direct  0    0             D   127.0.0.1                                Ethernet1/0/2
+     10.10.0.11/32  Direct  0    0             D   127.0.0.1                                Ethernet1/0/2
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0
+      127.0.0.1/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+127.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+      150.0.0.1/32  Static  255  0             RD  10.10.0.5                                Ethernet1/0/1
+      160.0.0.1/32  Static  255  0             RD  10.10.0.9                                Ethernet1/0/2
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0
+------------------------------------------------------------------------------
+Routing Table : SZ
+         Destinations : 16       Routes : 16
+
+Destination/Mask    Proto   Pre  Cost        Flags NextHop                                  Interface
+
+      10.1.10.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1
+      10.1.20.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1
+      10.1.30.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1
+      10.1.40.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1
+     10.1.110.0/24  IBGP    255  3             RD  1.1.1.1                                  Ethernet1/0/1
+      10.2.10.0/24  IBGP    255  0             RD  1.1.1.1                                  Ethernet1/0/1
+      10.2.20.0/24  IBGP    255  0             RD  1.1.1.1                                  Ethernet1/0/1
+      10.2.30.0/24  IBGP    255  0             RD  1.1.1.1                                  Ethernet1/0/1
+      10.3.10.0/24  EBGP    255  0             RD  10.10.100.10                             Ethernet1/0/0
+      10.3.20.0/24  EBGP    255  0             RD  10.10.100.10                             Ethernet1/0/0
+      10.3.30.0/24  EBGP    255  0             RD  10.10.100.10                             Ethernet1/0/0
+    10.10.100.8/30  Direct  0    0             D   10.10.100.9                              Ethernet1/0/0
+    10.10.100.9/32  Direct  0    0             D   127.0.0.1                                Ethernet1/0/0
+   10.10.100.11/32  Direct  0    0             D   127.0.0.1                                Ethernet1/0/0
+      127.0.0.0/8   Direct  0    0             D   127.0.0.1                                InLoopBack0
+255.255.255.255/32  Direct  0    0             D   127.0.0.1                                InLoopBack0

@@ -1,0 +1,14 @@
+display arp interface Vlanif100
+ARP timeout:1200s
+ARP Entry Types: D - Dynamic, S - Static, I - Interface, O - OpenFlow, RD - Redirect
+EXP: Expire-time VLAN: VLAN or Bridge Domain
+
+IP ADDRESS      MAC ADDRESS    EXP(M) TYPE/VLAN       INTERFACE        VPN-INSTANCE
+----------------------------------------------------------------------------------------
+100.100.100.254 3815-0011-1200        I               Vlanif100        
+100.100.100.1   0c9c-e15b-0000   18   D/100           GE1/0/1          
+100.100.100.201 0c9c-e15b-0000   18   D/100           GE1/0/1          
+100.100.100.253 0c9c-e15b-0000   18   D/100           GE1/0/1          
+----------------------------------------------------------------------------------------
+Total:4         Dynamic:3       Static:0    Interface:1    OpenFlow:0
+Redirect:0

@@ -1,0 +1,28 @@
+display interface brief | include NULL0
+PHY: Physical
+*down: administratively down
+(l): loopback
+(s): spoofing
+(b): BFD down
+(d): Dampening Suppressed
+InUti/OutUti: input utility/output utility
+Interface                   PHY   Protocol  InUti OutUti   inErrors  outErrors
+NULL0                       up    up(s)        0%     0%          0          0
+HRP_S<FW_01>
+Jun 16 2026 06:42:01 FW_01 %%01LACP/3/LAG_DOWN_REASON_PDU(l)[113]:The member of the LACP mode Eth-Trunk interface went down because the local device received changed LACP PDU from partner. (TrunkName=Eth-Trunk3, PortName=GigabitEthernet1/0/2, Reason=PartnerSyncFalse, OldParam=b1Synchronization:1, NewParam=b1Synchronization:0)
+Jun 16 2026 06:42:01 FW_01 %%01HRPI/4/PRIORITY_CHANGE(l)[114]:The priority of the local VGMP group changed.(change_reason="The interface went Down.",local_old_priority=45000, local_new_priority=44998)
+Jun 16 2026 06:42:01 FW_01 %%01HRPI/4/PRIORITY_CHANGE(l)[115]:The priority of the local VGMP group changed.(change_reason="The interface went Down.",local_old_priority=44998, local_new_priority=44996)
+Jun 16 2026 06:42:01 FW_01 %%01IFNET/4/IF_STATE(l)[116]:Interface Eth-Trunk3 has turned into DOWN state.
+Jun 16 2026 06:42:01 FW_01 %%01IFNET/4/LINK_STATE(l)[117]:The line protocol IP on the interface Eth-Trunk3 has entered the DOWN state.
+Jun 16 2026 06:42:01 FW_01 %%01OSPF/3/NBR_CHG_DOWN(l)[118]:Neighbor event:neighbor state changed to Down. (ProcessId=1, NeighborAddress=10.1.200.10, NeighborEvent=KillNbr, NeighborPreviousState=Full, NeighborCurrentState=Down)
+Jun 16 2026 06:42:01 FW_01 %%01OSPF/3/NBR_DOWN_REASON(l)[119]:Neighbor state leaves full or changed to Down. (ProcessId=1, NeighborRouterId=10.1.254.2, NeighborAreaId=0, NeighborInterface=Eth-Trunk3, NeighborDownImmediate reason=Neighbor Down Due to Kill Neighbor, NeighborDownPrimeReason=Physical Interface State Change, NeighborChangeTime=2026-06-16 06:42:01+00:00)
+Jun 16 2026 06:42:01 FW_01 %%01HRPI/4/CORE_STATE(l)[120]:The HRP core state changed due to "The object monitored or detected is down".(old_state=abnormal(active), new_state=abnormal(standby), local_priority=44996, peer_priority=45000)
+Jun 16 2026 06:42:02 FW_01 %%01HRPI/4/PRIORITY_CHANGE(l)[121]:The priority of the local VGMP group changed.(change_reason="The interface went Up.",local_old_priority=44996, local_new_priority=44998)
+Jun 16 2026 06:42:02 FW_01 %%01HRPI/4/PRIORITY_CHANGE(l)[122]:The priority of the local VGMP group changed.(change_reason="The interface went Up.",local_old_priority=44998, local_new_priority=45000)
+Jun 16 2026 06:42:02 FW_01 %%01IFNET/4/IF_STATE(l)[123]:Interface Eth-Trunk3 has turned into UP state.
+Jun 16 2026 06:42:02 FW_01 %%01IFNET/4/LINK_STATE(l)[124]:The line protocol IP on the interface Eth-Trunk3 has entered the UP state.
+HRP_S<FW_01>
+Jun 16 2026 06:42:04 FW_01 %%01OSPF/4/NBR_CHANGE_E(l)[125]:Neighbor changes event: neighbor status changed. (ProcessId=1, NeighborAddress=10.1.200.10, NeighborEvent=HelloReceived, NeighborPreviousState=Down, NeighborCurrentState=Init)
+Jun 16 2026 06:42:04 FW_01 %%01OSPF/4/NBR_CHANGE_E(l)[126]:Neighbor changes event: neighbor status changed. (ProcessId=1, NeighborAddress=10.1.200.10, NeighborEvent=2WayReceived, NeighborPreviousState=Init, NeighborCurrentState=ExStart)
+HRP_S<FW_01>
+Jun 16 2026 06:42:11 FW_01 %%01HRPI/4/CORE_STATE(l)[127]:The HRP core state changed due to "Interface change to UP".(old_state=abnormal(standby), new_state=abnormal(active), local_priority=45000, peer_priority=44998)
