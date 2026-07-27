@@ -71,12 +71,18 @@ ms-swift 没有删除或截断样本。
 - Transformers 5.x；
 - PEFT、Accelerate；
 - `qwen_vl_utils>=0.0.14` 和 `decord`。
+- `flash-linear-attention==0.5.1`，用于 Qwen3.6/Qwen3.5 的线性注意力层；
+- Triton 3.3 或更高版本。
+
+`flash-linear-attention` 官方要求 PyTorch 2.7 或更高版本及 Triton 3.3
+或更高版本。缺少该依赖时，模型可以完成加载，但会在首个 forward
+开始前退出，因而不会产生 loss。
 
 训练使用本地模型，不重复下载基座权重。开始前记录：
 
 ```bash
 swift --version
-python -c "import torch, transformers; print(torch.__version__, transformers.__version__)"
+python -c "import torch, transformers, fla, triton; print(torch.__version__, transformers.__version__, fla.__version__, triton.__version__)"
 nvidia-smi
 ```
 

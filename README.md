@@ -168,7 +168,7 @@ swift sft \
   --output_dir output/qwen36-27b-reasoning-lora
 ```
 
-批大小、梯度累积、LoRA 参数、分布式策略和 `max_length` 应按训练硬件及目标 tokenizer 的实际统计调整。当前数据的完整训练门槛、服务器资源假设、冒烟训练参数、逐分钟监控项和验收标准见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。仓库提供的 `scripts/train_qwen36_lora_smoke.sh` 只执行单卡一轮 LoRA 链路验证，不代表正式能力训练。
+批大小、梯度累积、LoRA 参数、分布式策略和 `max_length` 应按训练硬件及目标 tokenizer 的实际统计调整。Qwen3.6 的线性注意力训练还需要 `flash-linear-attention`；当前环境基线固定为 0.5.1。完整训练门槛、服务器资源假设、冒烟训练参数、逐分钟监控项和验收标准见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。仓库提供的 `scripts/train_qwen36_lora_smoke.sh` 会预检该依赖，并只执行单卡一轮 LoRA 链路验证，不代表正式能力训练。
 
 ## 数据说明
 
@@ -183,6 +183,7 @@ swift sft \
 
 ### 更新记录
 
+- 2026-07-27：根据首次冒烟执行结果补充 `flash-linear-attention==0.5.1` 环境要求，并在训练脚本中增加启动前依赖检查。
 - 2026-07-27：新增 Qwen3.6-27B LoRA 训练方案和单卡冒烟训练脚本，补充数据准入、逐分钟 loss 监控与验收要求，并将 ms-swift 4.x 参数更正为 `--tuner_type lora`。
 - 2026-07-27：将一轨迹一决策样本扩展为多阶段样本；保留抽象的下一步核验计划，删除具体工具与执行方式，共整理 7 条 planning、2 条 reasoning 和 3 条 decision 样本。
 - 2026-07-27：将生成目标升级为单一 `reasoning_decision` SFT；新增显式策展证据和推理标注，移除工具调用训练格式。

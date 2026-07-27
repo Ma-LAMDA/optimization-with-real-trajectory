@@ -18,6 +18,11 @@ if ! command -v swift >/dev/null 2>&1; then
   exit 1
 fi
 
+if ! python -c "import fla" >/dev/null 2>&1; then
+  echo "flash-linear-attention is required by Qwen3.6 linear attention." >&2
+  exit 1
+fi
+
 if [[ ! -d "${MODEL_PATH}" ]]; then
   echo "Model directory does not exist: ${MODEL_PATH}" >&2
   exit 1
