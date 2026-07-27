@@ -85,5 +85,6 @@ swift sft \
 
 ### 更新记录
 
+- 2026-07-27：在 `data/simulation/` 中新增 `IP user prompt by text.txt`，保存 IP 故障分析仿真的用户提示词文本。
 - 2026-07-27：建立 README 同步维护规则，并增加仓库级协作说明。
 
