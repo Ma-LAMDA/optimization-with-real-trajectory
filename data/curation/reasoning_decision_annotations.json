@@ -1,0 +1,199 @@
+{
+  "schema_version": "qwen36-reasoning-curation.v2",
+  "samples": [
+    {
+      "id": "q0014_plan_01",
+      "source_id": "q0014",
+      "target_type": "planning",
+      "source_message_index": 2,
+      "evidence_message_indices": [],
+      "review_status": "draft",
+      "evidence": [],
+      "reasoning": "题目已经给出多条候选转发路径，四条路径在接入汇聚、核心、防火墙和出口处存在公共节点与分支节点。高延迟可能来自端口状态、二层收敛、路由选择或策略处理，因此应先从路径公共段和实际承载业务的接口入手，再比较冗余分支的配置差异。",
+      "response": "下一步：先确认源主机接入 VLAN、AGG_SW_01 两条核心上联及沿途三层转发是否正常，并重点比较实际路径与冗余路径的接口配置差异。"
+    },
+    {
+      "id": "q0014_plan_02",
+      "source_id": "q0014",
+      "target_type": "planning",
+      "source_message_index": 19,
+      "evidence_message_indices": [
+        13,
+        16
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "已获得路径相关设备的配置和接口信息。",
+        "AGG_SW_01 HundredGigE1/0/1 是通往 Core_SW_01 的 trunk，允许 VLAN 10、100、110、120，并配置了 stp port bpdu-filter enable。"
+      ],
+      "reasoning": "当前已经发现一项位于实际路径上的异常配置，但仅凭单个命令还不能排除并行上联、路由或安全策略中存在更直接的原因。最有效的收敛方式是比较两条核心上联，并确认该异常是否只出现在其中一条链路。",
+      "response": "下一步：对比 AGG_SW_01 HundredGigE1/0/1 与 HundredGigE1/0/2 的 VLAN 和 STP 配置，同时核对沿途路由及安全策略是否存在能够独立解释高延迟的异常。"
+    },
+    {
+      "id": "q0014_reason_01",
+      "source_id": "q0014",
+      "target_type": "reasoning",
+      "source_message_index": 22,
+      "evidence_message_indices": [
+        16,
+        21
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "题目给出的路径经过 AGG_SW_01 HundredGigE1/0/1 上联 Core_SW_01。",
+        "HundredGigE1/0/1 配置了 stp port bpdu-filter enable，而并行上联 HundredGigE1/0/2 未配置该命令；两条上联允许相同的业务 VLAN。"
+      ],
+      "reasoning": "两条并行上联承载相同 VLAN，只有实际路径上的 HundredGigE1/0/1 过滤 BPDU，因此该差异与路径和症状直接相关。BPDU 过滤会阻断生成树控制报文，使拓扑感知或收敛异常。不过在形成最小根因集合前，还应排除防火墙策略或三层转发异常。",
+      "response": "阶段判断：AGG_SW_01 上联端口的 BPDU 过滤是当前最强候选。下一步只需确认沿途不存在更直接的路由或策略异常，再决定是否将其作为唯一根因。"
+    },
+    {
+      "id": "q0014_decision_01",
+      "source_id": "q0014",
+      "target_type": "decision",
+      "source_message_index": 30,
+      "evidence_message_indices": [
+        21,
+        24
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "AGG_SW_01 HundredGigE1/0/1 位于已定位路径，配置了 BPDU 过滤；并行上联允许相同 VLAN，但没有该配置。",
+        "防火墙相关策略配置中未发现能够独立解释该高延迟的流量整形或策略路由规则。"
+      ],
+      "reasoning": "异常配置位于实际转发路径上，并且是并行链路之间最明确的差异。它会破坏 STP 报文交换和二层拓扑收敛，而其他已核查方向没有发现能够独立解释症状的异常。因此按最小集合原则，只保留 AGG_SW_01 的端口级 BPDU 过滤。",
+      "response": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>"
+    },
+    {
+      "id": "q0017_plan_01",
+      "source_id": "q0017",
+      "target_type": "planning",
+      "source_message_index": 4,
+      "evidence_message_indices": [],
+      "review_status": "draft",
+      "evidence": [],
+      "reasoning": "题目只给出了源、目的和高延迟现象，尚未给出完整路径。应先确定访客客户端的接入 VLAN 与汇聚设备，再沿可能的出口路径核对接口、STP、路由和策略，这样才能把故障范围从全网缩小到实际承载链路。",
+      "response": "下一步：先确认 GUEST_WIFI_CLIENT01 的接入 VLAN、接入设备和上联路径，再核对该路径上的端口状态、生成树角色及三层转发。"
+    },
+    {
+      "id": "q0017_plan_02",
+      "source_id": "q0017",
+      "target_type": "planning",
+      "source_message_index": 28,
+      "evidence_message_indices": [
+        20,
+        27
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "已获得路径相关交换机、防火墙和出口设备的配置。",
+        "初步配置显示访客业务与 VLAN 100 相关，AGG_SW_01 的一条核心上联存在 BPDU 过滤配置。"
+      ],
+      "reasoning": "访客业务很可能从 VLAN 100 进入汇聚层，但还需要把客户端接入、VLAN 100 的 MST 实例和具体核心上联关联起来。只有确认异常端口实际承载访客 VLAN，才能避免把无关配置误判为根因。",
+      "response": "下一步：定位访客客户端到 AGG_SW_01 的接入链路，确认 VLAN 100 所属 MST 实例，并检查该实例经过的两条核心上联。"
+    },
+    {
+      "id": "q0017_plan_03",
+      "source_id": "q0017",
+      "target_type": "planning",
+      "source_message_index": 37,
+      "evidence_message_indices": [
+        27,
+        34
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "VLAN 100、110、120 映射到 MST 实例 3，核心交换机已经启用 STP。",
+        "AGG_SW_01 HundredGigE1/0/1 存在 BPDU 过滤配置，但仍需确认访客接入与该上联的关联。"
+      ],
+      "reasoning": "全局 STP 已启用，因此“全局未使能 STP”不成立。故障范围应下沉到实例 3 和具体端口。接下来需要确认访客接入端口、AGG_SW_01 到两台核心的上联配置，以及异常是否只存在于其中一条链路。",
+      "response": "下一步：核对访客接入端口的 VLAN 归属，并比较 AGG_SW_01 两条核心上联在 MST 实例 3、BPDU 处理和允许 VLAN 上的差异。"
+    },
+    {
+      "id": "q0017_reason_01",
+      "source_id": "q0017",
+      "target_type": "reasoning",
+      "source_message_index": 69,
+      "evidence_message_indices": [
+        49,
+        50,
+        56,
+        67,
+        68
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "AGG_SW_01 HundredGigE1/0/4 连接 HQ_MKT_AP01，允许 VLAN 100、110、120，并以 VLAN 100 作为 PVID。",
+        "HundredGigE1/0/1 连接 Core_SW_01，承载 VLAN 100 并配置了 BPDU 过滤。",
+        "HundredGigE1/0/2 连接 Core_SW_02，允许相同业务 VLAN，但没有配置 BPDU 过滤。",
+        "VLAN 100 属于 MST 实例 3，两台核心交换机均已启用 STP。"
+      ],
+      "reasoning": "访客客户端经接入点进入 VLAN 100，VLAN 100 属于实例 3，并由 AGG_SW_01 的核心上联承载。两条并行上联中只有通往 Core_SW_01 的端口过滤 BPDU，因此全局 STP、VLAN 映射和并行链路配置对比都指向同一个端口级异常。",
+      "response": "阶段判断：故障已收敛到 AGG_SW_01 HundredGigE1/0/1 的 BPDU 过滤。下一步只需用已有路径和配置证据确认它位于受影响流量路径，即可形成最小根因集合。"
+    },
+    {
+      "id": "q0017_decision_01",
+      "source_id": "q0017",
+      "target_type": "decision",
+      "source_message_index": 88,
+      "evidence_message_indices": [
+        83,
+        85
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "访客接入 VLAN 100，经 AGG_SW_01 上联进入核心网络。",
+        "通往 Core_SW_01 的 HundredGigE1/0/1 承载 VLAN 100 并过滤 BPDU；并行上联未配置 BPDU 过滤。",
+        "核心交换机已启用 STP，未发现比该端口差异更直接的独立根因。"
+      ],
+      "reasoning": "该端口异常位于受影响业务的二层路径，能够破坏实例 3 的生成树报文交换与收敛。全局 STP 已启用，并行上联配置正常，因此无需加入其他冗余根因。最小根因集合只包含 AGG_SW_01 的端口级 BPDU 过滤。",
+      "response": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>"
+    },
+    {
+      "id": "q0018_plan_01",
+      "source_id": "q0018",
+      "target_type": "planning",
+      "source_message_index": 4,
+      "evidence_message_indices": [],
+      "review_status": "draft",
+      "evidence": [],
+      "reasoning": "题目已经提供四条候选路径，访客流量从接入点进入 AGG_SW_01 后可经过两台核心和两台防火墙。应先检查公共接入段，再比较 AGG_SW_01 的两条核心上联，最后排除路由和防火墙策略，以最少的核验步骤定位差异。",
+      "response": "下一步：先确认访客 VLAN 和 AGG_SW_01 接入端口，再比较两条核心上联的 VLAN、STP 与端口状态，并核对出口路由和安全策略。"
+    },
+    {
+      "id": "q0018_plan_02",
+      "source_id": "q0018",
+      "target_type": "planning",
+      "source_message_index": 30,
+      "evidence_message_indices": [
+        22,
+        26
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "Core_SW_01 和 Core_SW_02 均已启用 STP，VLAN 100、110、120 映射到 MST 实例 3。",
+        "题目路径显示访客流量从 AGG_SW_01 分别上联两台核心，但当前还缺少汇聚交换机端口的精确对比。"
+      ],
+      "reasoning": "核心侧全局 STP 和 MST 映射一致，问题更可能位于 AGG_SW_01 的接入或上联端口。为了区分带宽、VLAN 和 STP 异常，需要聚焦访客接入口以及两条核心上联的配置差异。",
+      "response": "下一步：重点核对 AGG_SW_01 连接接入点的端口及两条核心上联，比较允许 VLAN、PVID、STP 边缘属性、BPDU 处理和端口带宽配置。"
+    },
+    {
+      "id": "q0018_decision_01",
+      "source_id": "q0018",
+      "target_type": "decision",
+      "source_message_index": 33,
+      "evidence_message_indices": [
+        22,
+        26,
+        32
+      ],
+      "review_status": "draft",
+      "evidence": [
+        "访客流量通过 HQ_MKT_AP01 接入 AGG_SW_01 HundredGigE1/0/4，使用 VLAN 100。",
+        "AGG_SW_01 HundredGigE1/0/1 连接 Core_SW_01，承载 VLAN 100 并配置了 stp port bpdu-filter enable。",
+        "并行上联 HundredGigE1/0/2 承载相同 VLAN，但没有配置 BPDU 过滤；两台核心交换机均已启用 STP。"
+      ],
+      "reasoning": "VLAN 100 属于 MST 实例 3，两个核心侧均已正常启用 STP。唯一与路径直接相关的异常差异是 AGG_SW_01 通往 Core_SW_01 的上联过滤 BPDU，这会破坏生成树控制报文交换和拓扑收敛。按最小集合原则，应只保留这一端口故障。",
+      "response": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>"
+    }
+  ]
+}
