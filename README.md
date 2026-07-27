@@ -180,6 +180,7 @@ swift sft \
 
 ### 更新记录
 
+- 2026-07-27：新增 `data/simulation/saved_configs` 离线组网配置快照和 `IP user prompt with saved configs skills.txt`，用于按项目、节点与命令文件查询故障证据。
 - 2026-07-27：将一轨迹一决策样本扩展为多阶段样本；保留抽象的下一步核验计划，删除具体工具与执行方式，共整理 7 条 planning、2 条 reasoning 和 3 条 decision 样本。
 - 2026-07-27：将生成目标升级为单一 `reasoning_decision` SFT；新增显式策展证据和推理标注，移除工具调用训练格式。
 - 2026-07-27：建立 README 同步维护规则，并增加仓库级协作说明。
