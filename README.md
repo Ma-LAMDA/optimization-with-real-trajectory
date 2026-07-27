@@ -170,6 +170,23 @@ swift sft \
 
 批大小、梯度累积、LoRA 参数、分布式策略和 `max_length` 应按训练硬件及目标 tokenizer 的实际统计调整。Qwen3.6 的线性注意力训练还需要 `flash-linear-attention`；当前环境基线固定为 0.5.1。完整训练门槛、服务器资源假设、冒烟训练参数、逐分钟监控项和验收标准见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。仓库提供的 `scripts/train_qwen36_lora_smoke.sh` 会预检该依赖，并只执行单卡一轮 LoRA 链路验证，不代表正式能力训练。
 
+## 推理生成约定
+
+后续离线评估、交互推理和服务请求默认将输出上限设为 8,000 个新 token：
+
+```bash
+# ms-swift / Transformers
+--max_new_tokens 8000
+```
+
+```json
+{
+  "max_tokens": 8000
+}
+```
+
+8,000 token 是最大允许长度，不会强制模型生成满该长度；模型输出 EOS 时正常提前结束。采样温度等参数由具体任务单独指定。当前原始基座模型在单卡 Transformers 环境、`temperature=0.7`、5,000-token 上限下的单样本实测生成速度约为 21.2 token/s；长上下文下的实际速度可能下降。详细约束与测试口径见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
+
 ## 数据说明
 
 - 当前只有 3 条来源轨迹、12 条阶段样本，暂不划分验证集；待轨迹增加后应按 `source_id` 分组划分，避免同一轨迹进入训练集和验证集。
@@ -183,6 +200,7 @@ swift sft \
 
 ### 更新记录
 
+- 2026-07-27：将后续推理默认输出上限统一为 8,000 个新 token，并记录 ms-swift、vLLM 参数写法及原始基座模型的单样本速度基线。
 - 2026-07-27：根据首次冒烟执行结果补充 `flash-linear-attention==0.5.1` 环境要求，并在训练脚本中增加启动前依赖检查。
 - 2026-07-27：新增 Qwen3.6-27B LoRA 训练方案和单卡冒烟训练脚本，补充数据准入、逐分钟 loss 监控与验收要求，并将 ms-swift 4.x 参数更正为 `--tuner_type lora`。
 - 2026-07-27：将一轨迹一决策样本扩展为多阶段样本；保留抽象的下一步核验计划，删除具体工具与执行方式，共整理 7 条 planning、2 条 reasoning 和 3 条 decision 样本。
