@@ -20,6 +20,8 @@
 │   │   └── q0018/conversation_trajectory.json
 │   ├── curation/
 │   │   └── reasoning_decision_annotations.json
+│   ├── simulation/
+│   │   └── prompts, evaluation trajectories, configs and JSONL data
 │   └── sft/
 │       ├── manifest.json
 │       └── qwen3_6_27b_reasoning_decision_sft.jsonl
@@ -194,12 +196,23 @@ swift sft \
 - 同一轨迹拆出的阶段样本高度相关，训练时应按来源轨迹控制采样权重，避免长轨迹过度影响模型。
 - 推送到远端 GitHub 前，应检查配置、地址和内部系统信息是否已经完成脱敏与授权。
 
+### IP 故障分析仿真资料
+
+`data/simulation/` 保存 IP 故障分析仿真的原始提示词、两组 GPT 评测轨迹、配置归档和训练 JSONL。资料包括：
+
+- `ChatGPT system prompt.txt`、`Claude Code system prompt.txt`、`IP user prompt.txt` 和 `IP user prompt by text.txt`；
+- `myf-ip评测0725-GPT_轨迹.zip`、`myf-ip评测GPT-0725-2_轨迹.zip` 和 `saved_configs.rar`；
+- `train_0629.jsonl`（100 条记录）和 `train_data_0610.jsonl`（350 条记录）。
+
+`Claude Code system prompt.txt` 的来源文件当前为空，仓库按来源状态原样保留。
+
 ## 提交维护规则
 
 每次创建并推送 GitHub 提交时，必须在同一个提交中同步更新本 README，记录该次变更对项目内容、数据、脚本或使用方式的影响。
 
 ### 更新记录
 
+- 2026-07-27：向 `data/simulation/` 补充 IP 故障分析提示词、GPT 评测轨迹、配置归档及两份训练 JSONL，并记录文件清单与可解析记录数。
 - 2026-07-27：将后续推理默认输出上限统一为 8,000 个新 token，并记录 ms-swift、vLLM 参数写法及原始基座模型的单样本速度基线。
 - 2026-07-27：根据首次冒烟执行结果补充 `flash-linear-attention==0.5.1` 环境要求，并在训练脚本中增加启动前依赖检查。
 - 2026-07-27：新增 Qwen3.6-27B LoRA 训练方案和单卡冒烟训练脚本，补充数据准入、逐分钟 loss 监控与验收要求，并将 ms-swift 4.x 参数更正为 `--tuner_type lora`。
