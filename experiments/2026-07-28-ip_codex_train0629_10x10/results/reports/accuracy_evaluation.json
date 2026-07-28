@@ -1,0 +1,151 @@
+{
+  "schema_version": "codex-ip-trajectory-accuracy.v1",
+  "evaluated_at": "2026-07-28T11:03:37.713Z",
+  "scoring_rule": {
+    "source": "data/simulation/train_0629.jsonl answer field",
+    "parser": "exactly one <result> wrapper containing a JSON array of strings",
+    "comparison": "exact fault-set match; list order ignored",
+    "duplicates": "collapsed as set members",
+    "missing_extra_or_wrong_fault": "incorrect",
+    "parse_failure": "incorrect and counted separately"
+  },
+  "source_hashes": {
+    "dataset_sha256": "79f961a2ce788fa2219e8ee5343b7fa87ca8d79ed3f3dec6049dca0ff7514ad9",
+    "manifest_sha256": "8ed5c8fce573c13efd35d32613a36208084a2b2bff2fa26cd4f889e0a08a2ef8"
+  },
+  "case_ids": [
+    13,
+    14,
+    17,
+    18,
+    87,
+    88,
+    91,
+    92,
+    93,
+    94
+  ],
+  "repeats_per_case": 10,
+  "total_runs": 100,
+  "correct_runs": 96,
+  "incorrect_runs": 4,
+  "parse_failures": 0,
+  "accuracy_percent": 96,
+  "summary": [
+    {
+      "case_id": 13,
+      "total": 10,
+      "correct": 9,
+      "incorrect": 1,
+      "accuracy_percent": 90,
+      "correct_repeats": "1 2 3 4 6 7 8 9 10",
+      "incorrect_repeats": "5",
+      "parse_failures": 0,
+      "expected": "AGG_SW_01;STP BPDU被过滤"
+    },
+    {
+      "case_id": 14,
+      "total": 10,
+      "correct": 10,
+      "incorrect": 0,
+      "accuracy_percent": 100,
+      "correct_repeats": "1 2 3 4 5 6 7 8 9 10",
+      "incorrect_repeats": "",
+      "parse_failures": 0,
+      "expected": "AGG_SW_01;STP BPDU被过滤"
+    },
+    {
+      "case_id": 17,
+      "total": 10,
+      "correct": 9,
+      "incorrect": 1,
+      "accuracy_percent": 90,
+      "correct_repeats": "1 2 3 4 5 7 8 9 10",
+      "incorrect_repeats": "6",
+      "parse_failures": 0,
+      "expected": "AGG_SW_01;STP BPDU被过滤"
+    },
+    {
+      "case_id": 18,
+      "total": 10,
+      "correct": 9,
+      "incorrect": 1,
+      "accuracy_percent": 90,
+      "correct_repeats": "1 2 3 4 6 7 8 9 10",
+      "incorrect_repeats": "5",
+      "parse_failures": 0,
+      "expected": "AGG_SW_01;STP BPDU被过滤"
+    },
+    {
+      "case_id": 87,
+      "total": 10,
+      "correct": 10,
+      "incorrect": 0,
+      "accuracy_percent": 100,
+      "correct_repeats": "1 2 3 4 5 6 7 8 9 10",
+      "incorrect_repeats": "",
+      "parse_failures": 0,
+      "expected": "Core_SW_01;VRRP工作在非抢占模式"
+    },
+    {
+      "case_id": 88,
+      "total": 10,
+      "correct": 10,
+      "incorrect": 0,
+      "accuracy_percent": 100,
+      "correct_repeats": "1 2 3 4 5 6 7 8 9 10",
+      "incorrect_repeats": "",
+      "parse_failures": 0,
+      "expected": "Core_SW_01;VRRP工作在非抢占模式"
+    },
+    {
+      "case_id": 91,
+      "total": 10,
+      "correct": 10,
+      "incorrect": 0,
+      "accuracy_percent": 100,
+      "correct_repeats": "1 2 3 4 5 6 7 8 9 10",
+      "incorrect_repeats": "",
+      "parse_failures": 0,
+      "expected": "Core_SW_02;VRRP工作在非抢占模式"
+    },
+    {
+      "case_id": 92,
+      "total": 10,
+      "correct": 10,
+      "incorrect": 0,
+      "accuracy_percent": 100,
+      "correct_repeats": "1 2 3 4 5 6 7 8 9 10",
+      "incorrect_repeats": "",
+      "parse_failures": 0,
+      "expected": "Core_SW_02;VRRP工作在非抢占模式"
+    },
+    {
+      "case_id": 93,
+      "total": 10,
+      "correct": 9,
+      "incorrect": 1,
+      "accuracy_percent": 90,
+      "correct_repeats": "1 2 3 4 5 7 8 9 10",
+      "incorrect_repeats": "6",
+      "parse_failures": 0,
+      "expected": "Core_SW_01;VRRP工作在非抢占模式"
+    },
+    {
+      "case_id": 94,
+      "total": 10,
+      "correct": 10,
+      "incorrect": 0,
+      "accuracy_percent": 100,
+      "correct_repeats": "1 2 3 4 5 6 7 8 9 10",
+      "incorrect_repeats": "",
+      "parse_failures": 0,
+      "expected": "Core_SW_01;VRRP工作在非抢占模式"
+    }
+  ],
+  "files": {
+    "summary_csv": "results/reports/各题准确率统计.csv",
+    "detail_csv": "results/reports/逐轨迹判分明细.csv",
+    "audit_xlsx": "results/reports/准确率统计审计.xlsx"
+  }
+}

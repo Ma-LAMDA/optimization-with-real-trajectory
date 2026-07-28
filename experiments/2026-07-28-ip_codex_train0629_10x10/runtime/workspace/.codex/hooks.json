@@ -1,0 +1,19 @@
+{
+  "description": "Allow only read-only queries to the local saved-configs API.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "D:\\Python\\python.exe -B D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_10x10\\runtime\\workspace\\.codex\\hooks\\api_only_hook.py",
+            "commandWindows": "D:\\Python\\python.exe -B D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_10x10\\runtime\\workspace\\.codex\\hooks\\api_only_hook.py",
+            "statusMessage": "Enforcing localhost API-only evidence access",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

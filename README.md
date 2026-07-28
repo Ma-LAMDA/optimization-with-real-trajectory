@@ -39,7 +39,11 @@
 │   └── simulation/
 │       └── prompts, evaluation trajectories, configs and JSONL data
 ├── experiments/
-│   └── 2026-07-27-ip_codex_train0629_14x10/
+│   ├── 2026-07-27-ip_codex_train0629_14x10/
+│   │   ├── inputs/
+│   │   ├── scripts/
+│   │   └── results/
+│   └── 2026-07-28-ip_codex_train0629_10x10/
 │       ├── inputs/
 │       ├── scripts/
 │       └── results/
@@ -268,12 +272,20 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 实验仍从仓库根目录的共享 `saved_configs/` 快照读取离线配置。完整目录结构、轨迹文件说明、重试规则、恢复命令和耗时 CSV 生成方式见 `experiments/2026-07-27-ip_codex_train0629_14x10/README.md`。
 
+`experiments/2026-07-28-ip_codex_train0629_10x10/` 保存使用本地 Codex CLI、`gpt-5.6-sol`
+和 `saved_configs_service` 本地 HTTP API 重新生成的 10×10 实验。题号为
+13、14、17、18、87、88、91、92、93、94，每题保留 10 条有效成功轨迹，共 100 条；
+故障集合精确匹配标准答案后为 96/100 正确，准确率 96%。该目录包含完整事件流、最终回答、
+运行/策略审计、逐题准确率 CSV、逐轨迹判分明细和审计工作簿；具体结构与复核命令见
+`experiments/2026-07-28-ip_codex_train0629_10x10/README.md`。
+
 ## 提交维护规则
 
 每次创建并推送 GitHub 提交时，必须在同一个提交中同步更新本 README，记录该次变更对项目内容、数据、脚本或使用方式的影响。
 
 ### 更新记录
 
+- 2026-07-28：新增 `experiments/2026-07-28-ip_codex_train0629_10x10/`，归档通过本地 API 仿真环境重新生成的 100 条有效 Codex 轨迹、运行审计及 96% 准确率统计。
 - 2026-07-28：将实验运行压缩为 `results/runs/fullaccess/q<题号>_r<轮次>/attempt_<序号>/`，合并重复的 case/run 层级，同时保留额度重试所需的 attempt 记录。
 - 2026-07-28：将实验目录按“日期-实验名”合并命名为 `experiments/2026-07-27-ip_codex_train0629_14x10/`，移除 `results/runs/` 下的日期层，并同步适配生成、统计和 SFT 转换脚本。
 - 2026-07-28：将最新 140 条 Codex 运行规范化到 `data/2026-07-28/`；排除准确率未达 100% 的题 25、26、27、28，并按题号留出题 94，生成 90 条训练和 10 条验证样本。

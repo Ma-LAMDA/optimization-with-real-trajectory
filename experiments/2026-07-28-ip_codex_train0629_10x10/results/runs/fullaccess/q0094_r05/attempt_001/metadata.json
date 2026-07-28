@@ -1,0 +1,86 @@
+{
+  "schema_version": "codex-ip-trajectory-case.v1",
+  "case_id": 94,
+  "repeat_index": 5,
+  "attempt_index": 1,
+  "source_line_number": 94,
+  "scenario": "ip",
+  "scenario_id": "",
+  "R3_level": "L2",
+  "service_base_url": "http://127.0.0.1:3080",
+  "prompt_localization": {
+    "source": "data/simulation/IP user prompt.txt",
+    "replacement": {
+      "from": "10.139.194.154",
+      "to": "127.0.0.1"
+    }
+  },
+  "files": {
+    "prompt": "../prompt.txt",
+    "source_record": "../source_record.json",
+    "events": "events.jsonl",
+    "stderr": "stderr.log",
+    "final_answer": "final_answer.txt"
+  },
+  "started_at": "2026-07-28T08:23:07.404+00:00",
+  "sha256": {
+    "prompt": "6104776dc1694e1b877d07ac76bdd42087a4d42304717f136a5e55f3e8992f53",
+    "source_record": "40e39dbc66602e52baaa3c6aa2dc3c127de37fad13d786259f9eadb54610b4b4",
+    "events": "334935afaf75b03ca3e93ccb96ae6a8801c3ce3c47e85ab61c9944b451af67dd",
+    "stderr": "bcb2919cbf1a31a7c281e3fa8437e151daedb6d0cc173e254cfde800179ffb4c",
+    "final_answer": "6174030b87deac3f474a23efd3e8ea421ed8d672cc470135c9456ced3023836d"
+  },
+  "command": [
+    "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\ip_codex_0728_10x10\\runtime\\codex.exe",
+    "exec",
+    "--ephemeral",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--skip-git-repo-check",
+    "--cd",
+    "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\ip_codex_0728_10x10\\runtime\\workspace",
+    "--json",
+    "--sandbox",
+    "danger-full-access",
+    "--output-last-message",
+    "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\ip_codex_0728_10x10\\results\\runs\\fullaccess\\q0094_r05\\attempt_001\\final_answer.txt",
+    "--model",
+    "gpt-5.6-sol",
+    "-"
+  ],
+  "working_directory": "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\ip_codex_0728_10x10\\runtime\\workspace",
+  "codex_executable": "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\ip_codex_0728_10x10\\runtime\\codex.exe",
+  "model_override": "gpt-5.6-sol",
+  "sandbox": "danger-full-access",
+  "status": "succeeded",
+  "ended_at": "2026-07-28T08:23:57.318+00:00",
+  "duration_seconds": 49.91,
+  "exit_code": 0,
+  "thread_id": "019fa7d2-09b0-70f1-a54e-521d22ce1a4c",
+  "usage": {
+    "input_tokens": 106490,
+    "cached_input_tokens": 82688,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1243,
+    "reasoning_output_tokens": 448
+  },
+  "event_type_counts": {
+    "item.completed": 7,
+    "item.started": 4,
+    "thread.started": 1,
+    "turn.completed": 1,
+    "turn.started": 1
+  },
+  "item_type_counts": {
+    "agent_message": 3,
+    "command_execution": 8
+  },
+  "successful_command_executions": 4,
+  "failed_command_executions": 0,
+  "final_answer_valid": true,
+  "error_events": [],
+  "invalid_jsonl_events": [],
+  "launch_error": null,
+  "failure_kind": null,
+  "credit_limit_matches": []
+}
