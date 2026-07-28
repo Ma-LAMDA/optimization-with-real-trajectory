@@ -76,3 +76,54 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/summarize_duratio
 ## 准确率统计
 
 `results/reports/各题准确率统计.csv` 将 140 个 `final_answer.txt` 与 `inputs/train_0629.jsonl` 中的标准答案进行比较。判分采用故障集合精确匹配：忽略列表顺序，但漏报、多报或错报均判错。报表包含每题的正确数、错误数、准确率、正确/错误轮次、解析失败数和标准答案；总计为 117/140，准确率 83.57%。
+
+## 题 94 epoch-10 LoRA 验证（2026-07-28）
+
+后续验证复用了本实验 `inputs/train_0629.jsonl` 中题 94 的 source record 和
+`inputs/IP user prompt with saved configs skills.txt` 模板，使用完整 prompt、
+Codex CLI 0.145.0 和本地 `Qwen3.6-27B-trained` 串行运行 5 次。模型是从原始
+Qwen3.6-27B 训练 10 个 epoch 后的 LoRA `checkpoint-450`。
+
+重构后的等价执行入口为：
+
+```bash
+python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py \
+  --case-ids 94 \
+  --repeats 5 \
+  --sandbox danger-full-access \
+  --model Qwen3.6-27B-trained \
+  --output-root /root/autodl-tmp/qwen-codex-eval \
+  --run-name q94-0728-epoch10-20260728T043741Z \
+  --credit-retry-seconds 0
+```
+
+标准 label：
+
+```json
+[
+  "Core_SW_01;VRRP工作在非抢占模式"
+]
+```
+
+| Run | 最终预测 | 严格匹配 | 耗时 | 工具 loop |
+| --- | --- | --- | ---: | ---: |
+| 1 | Core_SW_01、Core_SW_02 均为 VRRP 非抢占 | 否，多报 Core_SW_02 | 458.126 秒 | 22 |
+| 2 | 仅 Core_SW_01 VRRP 非抢占 | 是 | 449.790 秒 | 31 |
+| 3 | 仅 Core_SW_01 VRRP 非抢占 | 是 | 686.751 秒 | 33 |
+| 4 | 仅 Core_SW_01 VRRP 非抢占 | 是 | 580.252 秒 | 18 |
+| 5 | 仅 Core_SW_01 VRRP 非抢占 | 是 | 440.225 秒 | 24 |
+
+runner 和最终格式均为 5/5 成功，严格集合匹配为 4/5。5 次累计 input/output
+token 为 3,750,029 / 77,832，总耗时 2,615.144 秒，加权端到端输出速度为
+29.76 token/s；共执行 128 个工具 loop，其中成功 125、失败 3。所有失败命令
+均为读取或 grep 不存在的 `Vlanif100` 配置，不影响 runner 完成。
+
+本次运行产物保存在仓库外：
+
+```text
+/root/autodl-tmp/qwen-codex-eval/2026-07-28/q94-0728-epoch10-20260728T043741Z
+```
+
+逐次原始 `<result>`、SHA-256、vLLM 指标、训练参数和适用边界见
+[`../../docs/2026-07-28_Q94_EPOCH10_VALIDATION.md`](../../docs/2026-07-28_Q94_EPOCH10_VALIDATION.md)。
+本轮没有原始基座同条件 A/B，因此不得用 4/5 量化 LoRA 相对提升。

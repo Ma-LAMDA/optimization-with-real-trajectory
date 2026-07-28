@@ -337,6 +337,34 @@ vLLM 周期日志给出的吞吐是时间窗口采样值，必须与逐请求精
 - prefix cache 开启/关闭状态及命中率；
 - 原始逐次结果和聚合结果，不能只报告最优一次。
 
+### 9.5 已完成的题 94 epoch-10 验证
+
+2026-07-28 已使用完整题 94 user prompt、Codex CLI 0.145.0 和本地部署的
+Qwen3.6-27B epoch-10 LoRA `checkpoint-450` 串行运行 5 次。逐次原始输出、
+标准 label、文件哈希、训练配置和完整遥测见
+[`2026-07-28_Q94_EPOCH10_VALIDATION.md`](2026-07-28_Q94_EPOCH10_VALIDATION.md)。
+
+| 指标 | 实测 |
+| --- | --- |
+| runner / 格式成功 | 5/5 / 5/5 |
+| 严格 label 匹配 | 4/5，80% |
+| 唯一错误 | Run 1 多报 `Core_SW_02;VRRP工作在非抢占模式` |
+| 总计 / 平均耗时 | 2,615.144 / 523.029 秒 |
+| 累计 input / output token | 3,750,029 / 77,832 |
+| 加权端到端输出速度 | 29.76 token/s |
+| 工具 loop | 128；成功 125、失败 3 |
+| prefix cache | 5 次均为 0% 命中 |
+
+本轮已经记录总耗时、累计 token、Agent 消息段、工具 loop、错误事件、
+vLLM 周期吞吐、KV cache 峰值、最终输出和严格判分；尚未记录逐请求 TTFT、
+TPOT、prefill/decode 拆分、Responses API 请求数、每 loop token、GPU 时间序列
+和实际 sampling 参数。这些缺失字段不得事后推算为 0。
+
+题 94 未进入 90 条训练集，但作为 10 条 validation 样本参与训练期评估。本次
+Codex CLI 使用完整调查 prompt 和离线配置工具，与直接 validation loss 的口径
+不同。由于没有执行原始基座的同条件 5 次对照，80% 只能作为 LoRA 绝对结果，
+不能用于宣称相对基座提升。下一轮必须按 9.4 的要求补跑基座，并将两组顺序交错。
+
 ## 10. 正式训练扩展
 
 数据完成审核并扩充后，再考虑：

@@ -282,6 +282,7 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-28：将题 94 epoch-10 LoRA 的 5 次实测结果同步到 Training Plan 和实验 README，补充运行命令、严格 4/5 判定、耗时/token/工具 loop、外部产物路径及基座 A/B 缺口。
 - 2026-07-28：归档 Qwen3.6-27B epoch-10 LoRA 在题 94 上的 5 次 Codex CLI 验证报告，记录原始 label/输出、严格 4/5 结果、耗时、token、工具 loop、vLLM 指标、哈希与评测局限。
 - 2026-07-28：增加 Codex CLI 多次验证遥测规范，统一 turn、API 调用、Agent 消息和工具 loop 口径，并规定 TTFT、TPOT、token、缓存、GPU、质量判定及基座/LoRA A/B 的记录要求。
 - 2026-07-28：将实验运行压缩为 `results/runs/fullaccess/q<题号>_r<轮次>/attempt_<序号>/`，合并重复的 case/run 层级，同时保留额度重试所需的 attempt 记录。
