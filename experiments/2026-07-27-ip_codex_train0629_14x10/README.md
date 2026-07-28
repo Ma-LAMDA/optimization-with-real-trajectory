@@ -5,7 +5,7 @@
 ## 目录结构
 
 ```text
-ip_codex_train0629_14x10/
+2026-07-27-ip_codex_train0629_14x10/
 ├── README.md
 ├── inputs/
 │   ├── IP user prompt with saved configs skills.txt
@@ -18,15 +18,21 @@ ip_codex_train0629_14x10/
     │   ├── 各题准确率统计.csv
     │   └── 各题耗时统计.csv
     └── runs/
-        └── 2026-07-27/
-            └── train0629_14x10_fullaccess_20260727T135213Z/
+        └── fullaccess/
+            ├── manifest.json
+            ├── q0013_r01/
+            │   ├── prompt.txt
+            │   ├── source_record.json
+            │   ├── run.json
+            │   └── attempt_001/
+            └── ...
 ```
 
-`2026-07-27/train0629_14x10_fullaccess_20260727T135213Z` 是完成的
-full-access 运行，包含 14 个题号各 10 条成功轨迹，共 140 条。后续新运行也会按
-启动日期自动写入 `results/runs/YYYY-MM-DD/`。
+`fullaccess` 是完成的 full-access 运行，包含 14 个题号各 10 条成功轨迹，共
+140 条。后续新运行会直接写入
+`results/runs/<运行目录>/`，日期由实验目录名和运行目录名记录。
 
-每个运行目录内同时保存 `manifest.json`、对应的 `runner.stdout.log`/`runner.stderr.log`，以及按 `case_<题号>/run_<轮次>/attempt_<序号>/` 组织的完整事件、最终答案、元数据和哈希。
+每个运行目录内同时保存 `manifest.json`、对应的 `runner.stdout.log`/`runner.stderr.log`，以及按 `q<题号>_r<轮次>/attempt_<序号>/` 组织的完整事件、最终答案、元数据和哈希。
 
 目录级 `.gitattributes` 禁止 Git 改写输入、轨迹和报表文件的换行符，以保证 metadata 中保存的 SHA-256 在克隆或切换分支后仍可复验。
 
@@ -41,7 +47,7 @@ full-access 运行，包含 14 个题号各 10 条成功轨迹，共 140 条。�
 在仓库根目录执行：
 
 ```powershell
-python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
+python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
 ```
 
 脚本默认选择题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94，每题串行执行 10 次。只有成功执行才计入目标数量；额度不足时保留失败 attempt，等待 1,800 秒后重试同一槽位，其他错误会停止整批任务。
@@ -49,20 +55,20 @@ python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
 运行前可只实例化并校验 140 份 prompt：
 
 ```powershell
-python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py --dry-run
+python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py --dry-run
 ```
 
 从未完成运行恢复：
 
 ```powershell
-python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py `
-  --resume-run experiments/ip_codex_train0629_14x10/results/runs/<日期>/<运行目录>
+python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py `
+  --resume-run experiments/2026-07-27-ip_codex_train0629_14x10/results/runs/<运行目录>
 ```
 
 ## 重新生成耗时统计
 
 ```powershell
-python experiments/ip_codex_train0629_14x10/scripts/summarize_durations.py
+python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/summarize_durations.py
 ```
 
 脚本自动选择最新的成功运行，校验 14 × 10 条成功 metadata，并生成 UTF-8 BOM 编码的 `results/reports/各题耗时统计.csv`。CSV 每题一行，包含 10 次轨迹耗时，以及最短、平均、中位数、最长和总耗时。

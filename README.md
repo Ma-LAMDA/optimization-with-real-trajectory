@@ -39,7 +39,7 @@
 │   └── simulation/
 │       └── prompts, evaluation trajectories, configs and JSONL data
 ├── experiments/
-│   └── ip_codex_train0629_14x10/
+│   └── 2026-07-27-ip_codex_train0629_14x10/
 │       ├── inputs/
 │       ├── scripts/
 │       └── results/
@@ -151,9 +151,10 @@ I should use Grep to inspect the uplink configuration and compare it with anothe
 
 ## 2026-07-28 Codex 留一数据
 
-`data/2026-07-28/` 来自最新完整运行
-`train0629_14x10_fullaccess_20260727T135213Z`。转换器将 140 条运行规范化到
-`raw/`，并保留实验事件文件、最终答案、题目记录和 SHA-256 来源信息。
+`data/2026-07-28/` 来自
+`experiments/2026-07-27-ip_codex_train0629_14x10/results/runs/fullaccess/`。
+转换器将 140 条运行规范化到 `raw/`，并保留实验事件文件、最终答案、题目记录和
+SHA-256 来源信息。
 
 题 25、26、27、28 因 10 次运行的准确率未达到 100% 而整题排除。其余 10 道题
 均为 10/10 正确，共形成 100 条 `decision` 样本：
@@ -259,13 +260,13 @@ swift sft \
 
 ### Codex 批量轨迹生成
 
-`experiments/ip_codex_train0629_14x10/` 集中保存本次实验的输入、生成脚本、完整运行，以及耗时与准确率统计。完整运行位于 `results/runs/2026-07-27/`，包含题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94 各 10 条成功轨迹，共 140 条。
+`experiments/2026-07-27-ip_codex_train0629_14x10/` 集中保存本次实验的输入、生成脚本、完整运行，以及耗时与准确率统计。完整运行直接位于 `results/runs/`，包含题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94 各 10 条成功轨迹，共 140 条。
 
 ```powershell
-python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
+python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
 ```
 
-实验仍从仓库根目录的共享 `saved_configs/` 快照读取离线配置。完整目录结构、轨迹文件说明、重试规则、恢复命令和耗时 CSV 生成方式见 `experiments/ip_codex_train0629_14x10/README.md`。
+实验仍从仓库根目录的共享 `saved_configs/` 快照读取离线配置。完整目录结构、轨迹文件说明、重试规则、恢复命令和耗时 CSV 生成方式见 `experiments/2026-07-27-ip_codex_train0629_14x10/README.md`。
 
 ## 提交维护规则
 
@@ -273,11 +274,12 @@ python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
 
 ### 更新记录
 
-- 2026-07-28：为实验轨迹增加 `results/runs/YYYY-MM-DD/` 日期层，并使生成、统计和 SFT 转换脚本自动适配日期目录。
+- 2026-07-28：将实验运行压缩为 `results/runs/fullaccess/q<题号>_r<轮次>/attempt_<序号>/`，合并重复的 case/run 层级，同时保留额度重试所需的 attempt 记录。
+- 2026-07-28：将实验目录按“日期-实验名”合并命名为 `experiments/2026-07-27-ip_codex_train0629_14x10/`，移除 `results/runs/` 下的日期层，并同步适配生成、统计和 SFT 转换脚本。
 - 2026-07-28：将最新 140 条 Codex 运行规范化到 `data/2026-07-28/`；排除准确率未达 100% 的题 25、26、27、28，并按题号留出题 94，生成 90 条训练和 10 条验证样本。
 - 2026-07-28：将本次 Codex 实验使用的 `train_0629.jsonl` 原样复制到 `data/simulation/`，并增加仿真原始资料只读、只允许复制的保护规则。
 - 2026-07-28：为 `raw`、`curation` 和 `sft` 增加统一的 `data/2026-07-27/` 日期层；`data/simulation/` 作为原始仿真资料保持原位不变。
-- 2026-07-28：将 Train 0629 Codex 轨迹实验的输入、脚本、140 条完整轨迹、runner 日志和统计 CSV 统一整理到 `experiments/ip_codex_train0629_14x10/`。
+- 2026-07-28：将 Train 0629 Codex 轨迹实验的输入、脚本、140 条完整轨迹、runner 日志和统计 CSV 统一整理到 `experiments/2026-07-27-ip_codex_train0629_14x10/`。
 - 2026-07-27：新增指定 IP 题目的 Codex 批量执行脚本，每题执行 10 个成功轮次，共生成 140 条完整 JSONL 轨迹；额度不足时保留失败尝试，并每隔 30 分钟无限重试同一槽位。
 - 2026-07-27：新增根目录 `saved_configs` 离线组网配置快照和 `IP user prompt with saved configs skills.txt`，用于按项目、节点与命令文件查询故障证据。
 - 2026-07-27：向 `data/simulation/` 补充 IP 故障分析提示词、GPT 评测轨迹、配置归档及两份训练 JSONL，并记录文件清单与可解析记录数。

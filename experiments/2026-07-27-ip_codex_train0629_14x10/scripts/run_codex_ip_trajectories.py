@@ -328,9 +328,7 @@ def prepare_slot(
     prompt: str,
 ) -> Path:
     identifier = row["id"]
-    case_root = run_dir / f"case_{identifier:04d}"
-    case_root.mkdir(exist_ok=True)
-    slot_dir = case_root / f"run_{repeat_index:02d}"
+    slot_dir = run_dir / f"q{identifier:04d}_r{repeat_index:02d}"
     slot_dir.mkdir(exist_ok=True)
     prompt_path = slot_dir / "prompt.txt"
     record_path = slot_dir / "source_record.json"
@@ -616,7 +614,7 @@ def slot_entry(identifier: int, repeat_index: int) -> dict[str, Any]:
         "case_id": identifier,
         "repeat_index": repeat_index,
         "status": "pending",
-        "directory": f"case_{identifier:04d}/run_{repeat_index:02d}",
+        "directory": f"q{identifier:04d}_r{repeat_index:02d}",
         "successful_attempt": None,
         "attempts": [],
     }
@@ -725,7 +723,6 @@ def main() -> int:
         write_json(manifest_path, manifest)
     else:
         started_at = now()
-        date_output_root = output_root / started_at[:10]
         run_name = arguments.run_name or datetime.now(timezone.utc).strftime(
             "%Y%m%dT%H%M%SZ"
         )
@@ -734,8 +731,8 @@ def main() -> int:
                 "run name must contain only letters, digits, '.', '_' and '-', "
                 "and must start with a letter or digit"
             )
-        date_output_root.mkdir(parents=True, exist_ok=True)
-        run_dir = date_output_root / run_name
+        output_root.mkdir(parents=True, exist_ok=True)
+        run_dir = output_root / run_name
         run_dir.mkdir()
         manifest_path = run_dir / "manifest.json"
         manifest = {

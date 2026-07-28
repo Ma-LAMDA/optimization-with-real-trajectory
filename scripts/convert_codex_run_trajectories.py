@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNS_ROOT = (
     ROOT
     / "experiments"
-    / "ip_codex_train0629_14x10"
+    / "2026-07-27-ip_codex_train0629_14x10"
     / "results"
     / "runs"
 )

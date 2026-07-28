@@ -42,7 +42,7 @@ def newest_succeeded_run(runs_root: Path) -> Path:
 
 def load_successful_metadata(run_dir: Path) -> dict[tuple[int, int], dict[str, Any]]:
     selected: dict[tuple[int, int], dict[str, Any]] = {}
-    for metadata_path in run_dir.glob("case_*/run_*/attempt_*/metadata.json"):
+    for metadata_path in run_dir.glob("q*_r*/attempt_*/metadata.json"):
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         if metadata.get("status") != "succeeded":
             continue
