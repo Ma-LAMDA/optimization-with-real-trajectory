@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>saved_configs 数据浏览器</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3f6fa;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --line: #dfe6ee;
+      --line-strong: #cbd6e2;
+      --text: #17212f;
+      --muted: #68788d;
+      --accent: #1769e0;
+      --accent-soft: #eaf2ff;
+      --success: #16805c;
+      --danger: #c43d4b;
+      --shadow: 0 12px 36px rgba(31, 52, 75, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    button, input { font: inherit; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 22px clamp(20px, 4vw, 56px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 750;
+      box-shadow: 0 8px 20px rgba(23, 105, 224, 0.22);
+    }
+
+    h1 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
+    .subtitle { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+
+    .top-actions { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #9aa8b8;
+      box-shadow: 0 0 0 3px rgba(154, 168, 184, 0.16);
+    }
+
+    .status.ok .status-dot { background: var(--success); box-shadow: 0 0 0 3px rgba(22, 128, 92, 0.14); }
+    .status.error .status-dot { background: var(--danger); box-shadow: 0 0 0 3px rgba(196, 61, 75, 0.14); }
+
+    .api-link, .copy-button {
+      border: 1px solid var(--line-strong);
+      border-radius: 9px;
+      background: var(--surface);
+      color: var(--text);
+      padding: 8px 12px;
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .api-link:hover, .copy-button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .copy-button:disabled { cursor: default; opacity: 0.45; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(540px, 1.05fr) minmax(440px, 1fr);
+      gap: 18px;
+      padding: 22px clamp(20px, 4vw, 56px) 36px;
+    }
+
+    .card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 62px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .breadcrumb {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .browser-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      min-height: 620px;
+    }
+
+    .pane { min-width: 0; border-right: 1px solid var(--line); }
+    .pane:last-child { border-right: 0; }
+
+    .pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 14px 9px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .count {
+      min-width: 24px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      padding: 2px 7px;
+      text-align: center;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .filter {
+      display: block;
+      width: calc(100% - 24px);
+      margin: 0 12px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      outline: none;
+      background: var(--surface-soft);
+      color: var(--text);
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
+    .filter:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .filter:disabled { opacity: 0.55; }
+
+    .item-list {
+      height: 530px;
+      overflow: auto;
+      padding: 0 8px 12px;
+      scrollbar-color: #c4cfdb transparent;
+      scrollbar-width: thin;
+    }
+
+    .item {
+      display: flex;
+      width: 100%;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 2px 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      padding: 9px 8px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .item:hover { background: var(--surface-soft); }
+    .item.active { background: var(--accent-soft); color: #0b55bb; }
+    .item-icon { flex: 0 0 auto; margin-top: 1px; color: #db9f25; font-size: 14px; }
+    .item.file .item-icon { color: #6e84a0; }
+    .item-copy { min-width: 0; }
+    .item-name { display: block; overflow-wrap: anywhere; font-size: 12px; font-weight: 600; line-height: 1.35; }
+    .item-meta { display: block; overflow: hidden; margin-top: 3px; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .item.active .item-meta { color: #5e80ad; }
+
+    .empty-state {
+      display: grid;
+      min-height: 180px;
+      place-items: center;
+      padding: 24px 16px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .output-card { display: flex; min-height: 683px; flex-direction: column; }
+    .output-heading { min-width: 0; }
+    .output-title { overflow: hidden; max-width: 520px; font-size: 14px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+    .output-meta { min-height: 36px; padding: 10px 18px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+
+    .output {
+      flex: 1;
+      min-height: 0;
+      margin: 0;
+      overflow: auto;
+      background: #101722;
+      color: #dce7f3;
+      padding: 20px;
+      font-family: "Cascadia Mono", Consolas, "SFMono-Regular", monospace;
+      font-size: 12px;
+      line-height: 1.62;
+      tab-size: 4;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .output.placeholder { display: grid; place-items: center; color: #8493a5; text-align: center; }
+
+    .footer-note {
+      padding: 0 clamp(20px, 4vw, 56px) 28px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1100px) {
+      .workspace { grid-template-columns: 1fr; }
+      .browser-grid { min-height: 520px; }
+      .item-list { height: 430px; }
+      .output-card { min-height: 560px; }
+    }
+
+    @media (max-width: 680px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .top-actions { width: 100%; justify-content: space-between; }
+      .workspace { padding-inline: 12px; }
+      .browser-grid { grid-template-columns: 1fr; }
+      .pane { border-right: 0; border-bottom: 1px solid var(--line); }
+      .pane:last-child { border-bottom: 0; }
+      .item-list { height: 260px; }
+      .output-card { min-height: 480px; }
+      .footer-note { padding-inline: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">SC</div>
+      <div>
+        <h1>saved_configs 数据浏览器</h1>
+        <p class="subtitle">通过只读本地服务查看网络项目、设备节点与命令快照</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div class="status" id="serviceStatus"><span class="status-dot"></span><span id="statusText">正在连接…</span></div>
+      <a class="api-link" href="/v3/projects" target="_blank" rel="noreferrer">查看项目 API ↗</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="card">
+      <div class="card-header">
+        <div style="min-width:0">
+          <div class="eyebrow">Snapshot browser</div>
+          <div class="breadcrumb" id="breadcrumb">saved_configs</div>
+        </div>
+      </div>
+      <div class="browser-grid">
+        <section class="pane">
+          <div class="pane-header"><span>项目</span><span class="count" id="projectCount">0</span></div>
+          <input class="filter" id="projectFilter" type="search" placeholder="筛选项目…" autocomplete="off">
+          <div class="item-list" id="projectList"><div class="empty-state">正在加载项目…</div></div>
+        </section>
+        <section class="pane">
+          <div class="pane-header"><span>节点</span><span class="count" id="nodeCount">0</span></div>
+          <input class="filter" id="nodeFilter" type="search" placeholder="筛选节点…" autocomplete="off" disabled>
+          <div class="item-list" id="nodeList"><div class="empty-state">请先选择项目</div></div>
+        </section>
+        <section class="pane">
+          <div class="pane-header"><span>命令快照</span><span class="count" id="commandCount">0</span></div>
+          <input class="filter" id="commandFilter" type="search" placeholder="筛选文件…" autocomplete="off" disabled>
+          <div class="item-list" id="commandList"><div class="empty-state">请先选择节点</div></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="card output-card">
+      <div class="card-header">
+        <div class="output-heading">
+          <div class="eyebrow">Snapshot content</div>
+          <div class="output-title" id="outputTitle">尚未选择命令快照</div>
+        </div>
+        <button class="copy-button" id="copyButton" type="button" disabled>复制内容</button>
+      </div>
+      <div class="output-meta" id="outputMeta">从左侧依次选择项目、节点和命令文件。</div>
+      <pre class="output placeholder" id="output">选择一个 .txt 命令快照后，完整内容会显示在这里。</pre>
+    </section>
+  </main>
+
+  <div class="footer-note">只读服务 · 页面展示的是 saved_configs 中的固定快照，不会执行实时设备命令。</div>
+
+  <script>
+    "use strict";
+
+    const state = {
+      projects: [], nodes: [], commands: [],
+      project: null, node: null, command: null, output: ""
+    };
+
+    const el = (id) => document.getElementById(id);
+
+    function setStatus(kind, message) {
+      el("serviceStatus").className = `status ${kind || ""}`.trim();
+      el("statusText").textContent = message;
+    }
+
+    function setEmpty(target, message) {
+      target.replaceChildren();
+      const empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.textContent = message;
+      target.appendChild(empty);
+    }
+
+    function updateBreadcrumb() {
+      const parts = ["saved_configs"];
+      if (state.project) parts.push(state.project);
+      if (state.node) parts.push(state.node);
+      if (state.command) parts.push(`${state.command.command_key}.txt`);
+      el("breadcrumb").textContent = parts.join("  /  ");
+    }
+
+    async function requestJson(path) {
+      const response = await fetch(path, { headers: { Accept: "application/json" }, cache: "no-store" });
+      let data;
+      try { data = await response.json(); } catch (_) { data = null; }
+      if (!response.ok) throw new Error((data && data.error) || `HTTP ${response.status}`);
+      return data;
+    }
+
+    function makeItem(type, name, meta, active, onClick) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `item ${type === "file" ? "file" : ""} ${active ? "active" : ""}`.trim();
+      button.addEventListener("click", onClick);
+
+      const icon = document.createElement("span");
+      icon.className = "item-icon";
+      icon.textContent = type === "file" ? "▤" : "▰";
+
+      const copy = document.createElement("span");
+      copy.className = "item-copy";
+      const primary = document.createElement("span");
+      primary.className = "item-name";
+      primary.textContent = name;
+      copy.appendChild(primary);
+      if (meta) {
+        const secondary = document.createElement("span");
+        secondary.className = "item-meta";
+        secondary.textContent = meta;
+        copy.appendChild(secondary);
+      }
+
+      button.append(icon, copy);
+      return button;
+    }
+
+    function filtered(items, query, fields) {
+      const needle = query.trim().toLocaleLowerCase();
+      if (!needle) return items;
+      return items.filter((item) => fields.some((field) => String(item[field] || "").toLocaleLowerCase().includes(needle)));
+    }
+
+    function renderProjects() {
+      const items = filtered(state.projects, el("projectFilter").value, ["name", "project_id"]);
+      const list = el("projectList");
+      list.replaceChildren();
+      if (!items.length) return setEmpty(list, "没有匹配的项目");
+      for (const project of items) {
+        list.appendChild(makeItem("folder", project.name, "项目文件夹", state.project === project.project_id, () => selectProject(project.project_id)));
+      }
+    }
+
+    function renderNodes() {
+      const items = filtered(state.nodes, el("nodeFilter").value, ["name", "node_id"]);
+      const list = el("nodeList");
+      list.replaceChildren();
+      if (!items.length) return setEmpty(list, state.project ? "没有匹配的节点" : "请先选择项目");
+      for (const node of items) {
+        list.appendChild(makeItem("folder", node.name, "设备节点", state.node === node.node_id, () => selectNode(node.node_id)));
+      }
+    }
+
+    function renderCommands() {
+      const items = filtered(state.commands, el("commandFilter").value, ["command_key", "command"]);
+      const list = el("commandList");
+      list.replaceChildren();
+      if (!items.length) return setEmpty(list, state.node ? "没有匹配的命令快照" : "请先选择节点");
+      for (const command of items) {
+        const meta = command.command || "固定命令快照";
+        list.appendChild(makeItem("file", `${command.command_key}.txt`, meta, state.command && state.command.command_key === command.command_key, () => selectCommand(command)));
+      }
+    }
+
+    function clearOutput(message = "选择一个 .txt 命令快照后，完整内容会显示在这里。") {
+      state.output = "";
+      el("outputTitle").textContent = "尚未选择命令快照";
+      el("outputMeta").textContent = "从左侧依次选择项目、节点和命令文件。";
+      el("output").textContent = message;
+      el("output").classList.add("placeholder");
+      el("copyButton").disabled = true;
+    }
+
+    async function selectProject(projectId) {
+      state.project = projectId;
+      state.node = null;
+      state.command = null;
+      state.nodes = [];
+      state.commands = [];
+      el("nodeFilter").value = "";
+      el("commandFilter").value = "";
+      el("nodeFilter").disabled = true;
+      el("commandFilter").disabled = true;
+      el("nodeCount").textContent = "0";
+      el("commandCount").textContent = "0";
+      renderProjects();
+      setEmpty(el("nodeList"), "正在加载节点…");
+      setEmpty(el("commandList"), "请先选择节点");
+      clearOutput();
+      updateBreadcrumb();
+
+      try {
+        const selected = projectId;
+        const nodes = await requestJson(`/v3/projects/${encodeURIComponent(projectId)}/nodes`);
+        if (state.project !== selected) return;
+        state.nodes = nodes;
+        el("nodeCount").textContent = String(nodes.length);
+        el("nodeFilter").disabled = false;
+        renderNodes();
+      } catch (error) {
+        setEmpty(el("nodeList"), `节点加载失败：${error.message}`);
+      }
+    }
+
+    async function selectNode(nodeId) {
+      state.node = nodeId;
+      state.command = null;
+      state.commands = [];
+      el("commandFilter").value = "";
+      el("commandFilter").disabled = true;
+      el("commandCount").textContent = "0";
+      renderNodes();
+      setEmpty(el("commandList"), "正在加载命令快照…");
+      clearOutput();
+      updateBreadcrumb();
+
+      try {
+        const selectedProject = state.project;
+        const selectedNode = nodeId;
+        const path = `/v3/projects/${encodeURIComponent(selectedProject)}/nodes/${encodeURIComponent(nodeId)}/commands?limit=1000`;
+        const result = await requestJson(path);
+        if (state.project !== selectedProject || state.node !== selectedNode) return;
+        state.commands = result.commands;
+        el("commandCount").textContent = String(result.total);
+        el("commandFilter").disabled = false;
+        renderCommands();
+      } catch (error) {
+        setEmpty(el("commandList"), `命令加载失败：${error.message}`);
+      }
+    }
+
+    async function selectCommand(command) {
+      state.command = command;
+      renderCommands();
+      updateBreadcrumb();
+      el("outputTitle").textContent = `${command.command_key}.txt`;
+      el("outputMeta").textContent = "正在读取快照内容…";
+      el("output").textContent = "正在加载…";
+      el("output").classList.add("placeholder");
+      el("copyButton").disabled = true;
+
+      try {
+        const selectedProject = state.project;
+        const selectedNode = state.node;
+        const selectedKey = command.command_key;
+        const path = `/v3/projects/${encodeURIComponent(selectedProject)}/nodes/${encodeURIComponent(selectedNode)}/command?cmd=${encodeURIComponent(selectedKey)}`;
+        const result = await requestJson(path);
+        if (!state.command || state.command.command_key !== selectedKey) return;
+        state.output = result.output;
+        el("output").textContent = result.output;
+        el("output").classList.remove("placeholder");
+        el("outputMeta").textContent = `${selectedProject} / ${selectedNode} · ${result.output.length.toLocaleString()} 个字符`;
+        el("copyButton").disabled = false;
+      } catch (error) {
+        state.output = "";
+        el("outputMeta").textContent = "读取失败";
+        el("output").textContent = `快照读取失败：${error.message}`;
+      }
+    }
+
+    async function loadProjects() {
+      try {
+        await requestJson("/healthz");
+        const projects = await requestJson("/v3/projects");
+        state.projects = projects;
+        el("projectCount").textContent = String(projects.length);
+        renderProjects();
+        setStatus("ok", `服务已连接 · ${projects.length} 个项目`);
+      } catch (error) {
+        setStatus("error", "服务连接失败");
+        setEmpty(el("projectList"), `无法加载项目：${error.message}`);
+      }
+    }
+
+    el("projectFilter").addEventListener("input", renderProjects);
+    el("nodeFilter").addEventListener("input", renderNodes);
+    el("commandFilter").addEventListener("input", renderCommands);
+    el("copyButton").addEventListener("click", async () => {
+      if (!state.output) return;
+      try {
+        await navigator.clipboard.writeText(state.output);
+        el("copyButton").textContent = "已复制";
+        setTimeout(() => { el("copyButton").textContent = "复制内容"; }, 1200);
+      } catch (_) {
+        el("copyButton").textContent = "复制失败";
+      }
+    });
+
+    loadProjects();
+  </script>
+</body>
+</html>
