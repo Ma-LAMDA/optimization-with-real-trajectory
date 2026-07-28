@@ -1,0 +1,55 @@
+{
+  "schema_version": "codex-ip-normalized-trajectory.v1",
+  "id": "q0087_run_09",
+  "case_id": 87,
+  "repeat_index": 9,
+  "source_record": {
+    "id": 87,
+    "scenario_id": "",
+    "question": "在CampusNetwork_09组网中，从 HQ_FIN_Client01 ping节点 SZ_Server_Cluster1（10.3.10.1）出现高延迟。已知，两个核心交换机Core_SW_01 和 Core_SW_02之间因链路距离较长，传输时延较大。基于当前配置框架，在STP规划合理的情况下，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "answer": "[\n\"Core_SW_01;VRRP工作在非抢占模式\"\n]",
+    "R3_level": "L1",
+    "scenario": "ip"
+  },
+  "agent_messages": [
+    {
+      "event_line": 3,
+      "item_id": "item_0",
+      "text": "我会严格按离线快照流程取证：先锁定CampusNetwork_09，再核对相关节点、可用命令与实际转发/STP路径，最后仅按指定格式输出最小根因集合。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_4",
+      "text": "项目和节点均已精确匹配。接下来重点核对财务客户端的网关/VLAN、两台核心的MST根角色与VRRP主备角色，以及到10.3.10.0/24的出口，判断是否因二层根与三层网关错位而绕经高时延互联链路。"
+    },
+    {
+      "event_line": 21,
+      "item_id": "item_10",
+      "text": "```<result>\n[\n\"Core_SW_01;VRRP工作在非抢占模式\"\n]\n</result>```"
+    }
+  ],
+  "final_answer": "```<result>\n[\n\"Core_SW_01;VRRP工作在非抢占模式\"\n]\n</result>```",
+  "expected_result_items": [
+    "Core_SW_01;VRRP工作在非抢占模式"
+  ],
+  "actual_result_items": [
+    "Core_SW_01;VRRP工作在非抢占模式"
+  ],
+  "answer_matches_reference": true,
+  "source": {
+    "experiment_run": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z",
+    "run_directory": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_09",
+    "run_json": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_09/run.json",
+    "run_json_sha256": "871a2a24c2deefd7843a96ea49e25828cbaec162d0bc6cfa9cb774a121981fe4",
+    "events_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_09/attempt_001/events.jsonl",
+    "events_sha256": "bd5dc18f56ab57a1584ff0712f7abc6d2b759d1cc0879630c96c31815f97e7ec",
+    "final_answer_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_09/attempt_001/final_answer.txt",
+    "final_answer_sha256": "a91c8d3d66b224f47eeb5068f692a7fb4de5a54f972f341ed37c0b851a0f61e1",
+    "source_record_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_09/source_record.json",
+    "source_record_sha256": "781a8e7e5b7e4e70e269d4516dcb4c5dab35c787e07840cac96b2793e19e262f",
+    "successful_attempt": 1,
+    "thread_id": "019fa5cb-7a87-7433-8912-91fbb078218c",
+    "duration_seconds": 95.375
+  }
+}

@@ -1,6 +1,9 @@
 # Qwen3.6-27B 推理、计划与决策 SFT 数据
 
-本项目保存 `q0014`、`q0017`、`q0018` 三段原始网络故障分析轨迹，并将它们整理为不包含工具调用协议的多阶段 SFT 数据。训练目标是让模型学会：
+本项目按日期保存网络故障分析轨迹及其 SFT 数据。`2026-07-27` 数据由
+`q0014`、`q0017`、`q0018` 三段轨迹人工策展为多阶段样本；`2026-07-28`
+数据由最新一次 14×10 Codex 完整运行转换而来，并按题号执行留一验证划分。
+两批训练输出均不包含工具调用协议。训练目标是让模型学会：
 
 - 根据当前信息判断还缺少哪些事实；
 - 说明下一步需要核验什么以及为什么核验；
@@ -14,25 +17,37 @@
 ├── docs/
 │   └── TRAINING_PLAN.md
 ├── data/
-│   ├── raw/
-│   │   ├── q0014/conversation_trajectory.json
-│   │   ├── q0017/conversation_trajectory.json
-│   │   └── q0018/conversation_trajectory.json
-│   ├── curation/
-│   │   └── reasoning_decision_annotations.json
-│   ├── simulation/
-│   │   └── prompts, evaluation trajectories, configs and JSONL data
-│   └── sft/
-│       ├── manifest.json
-│       └── qwen3_6_27b_reasoning_decision_sft.jsonl
+│   ├── 2026-07-27/
+│   │   ├── raw/
+│   │   │   ├── q0014/conversation_trajectory.json
+│   │   │   ├── q0017/conversation_trajectory.json
+│   │   │   └── q0018/conversation_trajectory.json
+│   │   ├── curation/
+│   │   │   └── reasoning_decision_annotations.json
+│   │   └── sft/
+│   │       ├── manifest.json
+│   │       └── qwen3_6_27b_reasoning_decision_sft.jsonl
+│   ├── 2026-07-28/
+│   │   ├── raw/
+│   │   │   └── qXXXX/run_XX/conversation_trajectory.json
+│   │   ├── curation/
+│   │   │   └── trajectory_selection.json
+│   │   └── sft/
+│   │       ├── manifest.json
+│   │       ├── qwen3_6_27b_reasoning_decision_train.jsonl
+│   │       └── qwen3_6_27b_reasoning_decision_validation.jsonl
+│   └── simulation/
+│       └── prompts, evaluation trajectories, configs and JSONL data
 ├── experiments/
 │   └── ip_codex_train0629_14x10/
 │       ├── inputs/
 │       ├── scripts/
 │       └── results/
 └── scripts/
+    ├── convert_codex_run_trajectories.py
     ├── convert_trajectories.py
     ├── train_qwen36_lora_smoke.sh
+    ├── validate_codex_run_sft.py
     └── validate_sft.py
 ```
 
@@ -68,7 +83,7 @@ I should use Grep to inspect the uplink configuration and compare it with anothe
 
 ## 多阶段样本
 
-一条原始轨迹可以生成多个训练样本。当前共生成 12 条：
+`2026-07-27` 中一条原始轨迹可以生成多个训练样本，共生成 12 条：
 
 | 类型 | 数量 | 训练目标 |
 | --- | ---: | --- |
@@ -122,7 +137,7 @@ I should use Grep to inspect the uplink configuration and compare it with anothe
 
 ## 策展与来源追踪
 
-`data/curation/reasoning_decision_annotations.json` 为每个阶段样本记录：
+`data/2026-07-27/curation/reasoning_decision_annotations.json` 为每个阶段样本记录：
 
 - `source_id`：来源轨迹；
 - `source_message_index`：被净化的原始 assistant 消息；
@@ -134,6 +149,27 @@ I should use Grep to inspect the uplink configuration and compare it with anothe
 
 转换器会保证证据消息出现在目标消息之前，并校验最终决策与原轨迹答案一致。当前 12 条标注均为 `draft`，正式训练前建议由网络领域专家审核。
 
+## 2026-07-28 Codex 留一数据
+
+`data/2026-07-28/` 来自最新完整运行
+`train0629_14x10_fullaccess_20260727T135213Z`。转换器将 140 条运行规范化到
+`raw/`，并保留实验事件文件、最终答案、题目记录和 SHA-256 来源信息。
+
+题 25、26、27、28 因 10 次运行的准确率未达到 100% 而整题排除。其余 10 道题
+均为 10/10 正确，共形成 100 条 `decision` 样本：
+
+| 集合 | 题号 | 样本数 |
+| --- | --- | ---: |
+| 训练集 | 13、14、17、18、87、88、91、92、93 | 90 |
+| 验证集 | 94 | 10 |
+| 排除 | 25、26、27、28 | 40 条原始轨迹，不进入 SFT |
+
+划分策略为按 `case_id` 分组的 `leave_one_case_out`。验证题 94 不会出现在训练集，
+因此不存在同题重复运行跨集合泄漏。仅当轨迹最终根因条目与原题标准答案完全一致、
+最终事件与落盘答案一致，并且最终证据摘要不含工具操作细节时才允许进入 SFT。
+源答案中的 Markdown 代码围栏会规范化为严格的 `<result>` 格式，原文仍保存在
+`raw/`。全部样本当前标记为 `draft`，正式训练前仍需领域审核。
+
 ## 重新生成与校验
 
 脚本只依赖 Python 标准库：
@@ -141,6 +177,9 @@ I should use Grep to inspect the uplink configuration and compare it with anothe
 ```powershell
 python scripts/convert_trajectories.py
 python scripts/validate_sft.py
+
+python scripts/convert_codex_run_trajectories.py
+python scripts/validate_codex_run_sft.py
 ```
 
 也可以指定其他目录：
@@ -162,14 +201,17 @@ python scripts/validate_sft.py --sft-dir D:\path\to\sft
 - 工具协议、具体工具名和执行操作未进入训练输出；
 - API 文档已从原始问题中移除；
 - 证据来源、样本数量、类型统计和文件哈希一致；
-- 当前数据全部进入训练集，验证集为 0。
+- 0727 数据全部进入训练集，验证集为 0；
+- 0728 数据按题号留一，训练集与验证集题号交集为 0。
 
 ## ms-swift 训练示例
 
 ```bash
 swift sft \
   --model Qwen/Qwen3.6-27B \
-  --dataset data/sft/qwen3_6_27b_reasoning_decision_sft.jsonl \
+  --dataset data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_train.jsonl \
+  --val_dataset data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_validation.jsonl \
+  --split_dataset_ratio 0 \
   --tuner_type lora \
   --torch_dtype bfloat16 \
   --output_dir output/qwen36-27b-reasoning-lora
@@ -196,7 +238,9 @@ swift sft \
 
 ## 数据说明
 
-- 当前只有 3 条来源轨迹、12 条阶段样本，暂不划分验证集；待轨迹增加后应按 `source_id` 分组划分，避免同一轨迹进入训练集和验证集。
+- 0727 数据只有 3 条来源轨迹、12 条阶段样本，不单独划分验证集。
+- 0728 数据包含 90 条训练样本和 10 条验证样本；按题号整组留一，禁止将同题重复运行拆到两个集合。
+- 题 25、26、27、28 的原始运行只用于审计，不进入训练或验证数据。
 - 三条来源轨迹的最终标签相同。正式数据集必须补充不同设备、故障类型、正确配置和难负例，避免模型记忆固定答案。
 - 同一轨迹拆出的阶段样本高度相关，训练时应按来源轨迹控制采样权重，避免长轨迹过度影响模型。
 - 推送到远端 GitHub 前，应检查配置、地址和内部系统信息是否已经完成脱敏与授权。
@@ -207,13 +251,15 @@ swift sft \
 
 - `ChatGPT system prompt.txt`、`Claude Code system prompt.txt`、`IP user prompt.txt` 和 `IP user prompt by text.txt`；
 - `myf-ip评测0725-GPT_轨迹.zip`、`myf-ip评测GPT-0725-2_轨迹.zip` 和 `saved_configs.rar`；
-- `train_data_0610.jsonl`（350 条记录）；本次 Codex 实验使用的 `train_0629.jsonl` 已随实验归档。
+- `train_data_0610.jsonl`（350 条记录）和 `train_0629.jsonl`（100 条记录）；后者与本次 Codex 实验归档的输入副本字节一致。
 
 `Claude Code system prompt.txt` 的来源文件当前为空，仓库按来源状态原样保留。
 
+`data/simulation/` 中的文件均视为不可变原始资料：只允许读取或复制到其他位置，不得编辑、覆盖、重命名、移动或删除。具体协作约束见 [`AGENTS.md`](AGENTS.md)。
+
 ### Codex 批量轨迹生成
 
-`experiments/ip_codex_train0629_14x10/` 集中保存本次实验的输入、生成脚本、一次未完成运行、一次完整运行，以及耗时与准确率统计。完整运行包含题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94 各 10 条成功轨迹，共 140 条。
+`experiments/ip_codex_train0629_14x10/` 集中保存本次实验的输入、生成脚本、完整运行，以及耗时与准确率统计。完整运行位于 `results/runs/2026-07-27/`，包含题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94 各 10 条成功轨迹，共 140 条。
 
 ```powershell
 python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
@@ -227,7 +273,11 @@ python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
 
 ### 更新记录
 
-- 2026-07-28：将 Train 0629 Codex 轨迹实验的输入、脚本、140 条完整轨迹、未完成运行、runner 日志和耗时 CSV 统一整理到 `experiments/ip_codex_train0629_14x10/`。
+- 2026-07-28：为实验轨迹增加 `results/runs/YYYY-MM-DD/` 日期层，并使生成、统计和 SFT 转换脚本自动适配日期目录。
+- 2026-07-28：将最新 140 条 Codex 运行规范化到 `data/2026-07-28/`；排除准确率未达 100% 的题 25、26、27、28，并按题号留出题 94，生成 90 条训练和 10 条验证样本。
+- 2026-07-28：将本次 Codex 实验使用的 `train_0629.jsonl` 原样复制到 `data/simulation/`，并增加仿真原始资料只读、只允许复制的保护规则。
+- 2026-07-28：为 `raw`、`curation` 和 `sft` 增加统一的 `data/2026-07-27/` 日期层；`data/simulation/` 作为原始仿真资料保持原位不变。
+- 2026-07-28：将 Train 0629 Codex 轨迹实验的输入、脚本、140 条完整轨迹、runner 日志和统计 CSV 统一整理到 `experiments/ip_codex_train0629_14x10/`。
 - 2026-07-27：新增指定 IP 题目的 Codex 批量执行脚本，每题执行 10 个成功轮次，共生成 140 条完整 JSONL 轨迹；额度不足时保留失败尝试，并每隔 30 分钟无限重试同一槽位。
 - 2026-07-27：新增根目录 `saved_configs` 离线组网配置快照和 `IP user prompt with saved configs skills.txt`，用于按项目、节点与命令文件查询故障证据。
 - 2026-07-27：向 `data/simulation/` 补充 IP 故障分析提示词、GPT 评测轨迹、配置归档及两份训练 JSONL，并记录文件清单与可解析记录数。

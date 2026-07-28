@@ -14,9 +14,10 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_DIR = ROOT / "data" / "raw"
-ANNOTATIONS = ROOT / "data" / "curation" / "reasoning_decision_annotations.json"
-SFT_DIR = ROOT / "data" / "sft"
+DATA_ROOT = ROOT / "data" / "2026-07-27"
+RAW_DIR = DATA_ROOT / "raw"
+ANNOTATIONS = DATA_ROOT / "curation" / "reasoning_decision_annotations.json"
+SFT_DIR = DATA_ROOT / "sft"
 OUTPUT = "qwen3_6_27b_reasoning_decision_sft.jsonl"
 MANIFEST = "manifest.json"
 OBSOLETE = (

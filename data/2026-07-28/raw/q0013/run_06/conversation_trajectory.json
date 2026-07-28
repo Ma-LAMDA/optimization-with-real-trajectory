@@ -1,0 +1,55 @@
+{
+  "schema_version": "codex-ip-normalized-trajectory.v1",
+  "id": "q0013_run_06",
+  "case_id": 13,
+  "repeat_index": 6,
+  "source_record": {
+    "id": 13,
+    "scenario_id": "",
+    "question": "在CampusNetwork_04组网中，从 HQ_MKT_PC01 ping节点 GoogleWebServer01（114.114.114.114）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "answer": "[\n\"AGG_SW_01;STP BPDU被过滤\"\n]",
+    "R3_level": "L1",
+    "scenario": "ip"
+  },
+  "agent_messages": [
+    {
+      "event_line": 3,
+      "item_id": "item_0",
+      "text": "我会严格按离线快照流程锁定CampusNetwork_04,沿HQ_MKT_PC01到114.114.114.114的实际路径取最少充分证据,并只输出证据支持的最小根因集合。"
+    },
+    {
+      "event_line": 34,
+      "item_id": "item_16",
+      "text": "已确认业务主机地址、VRRP网关和公网服务器回程均有明确邻接。当前最可疑点位于HQ_MKT_PC01的接入交换机冗余上联,我正在用MST运行状态与链路接口状态交叉验证它是否足以单独解释高延迟。"
+    },
+    {
+      "event_line": 49,
+      "item_id": "item_24",
+      "text": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>",
+  "expected_result_items": [
+    "AGG_SW_01;STP BPDU被过滤"
+  ],
+  "actual_result_items": [
+    "AGG_SW_01;STP BPDU被过滤"
+  ],
+  "answer_matches_reference": true,
+  "source": {
+    "experiment_run": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z",
+    "run_directory": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0013/run_06",
+    "run_json": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0013/run_06/run.json",
+    "run_json_sha256": "a7bebf0595ecef28d998441ba4d5b1bcc202f1a9030c4eddecce9e519c78b3d9",
+    "events_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0013/run_06/attempt_001/events.jsonl",
+    "events_sha256": "dd9c1f48a81b88f7ce6a32a311f3f728f48a1e9c22dd170ab4159a94ab31882d",
+    "final_answer_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0013/run_06/attempt_001/final_answer.txt",
+    "final_answer_sha256": "523884ef5991fe92f2c031d5baabc1ffa3753b2eb205362450fbea961460542a",
+    "source_record_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0013/run_06/source_record.json",
+    "source_record_sha256": "8e765a6d1e774065a1dc40814b6c47ab73525b5cfa98d6447bb5ea24e9d4ece5",
+    "successful_attempt": 1,
+    "thread_id": "019fa4f6-be6d-75c1-b789-6bf97dcc412c",
+    "duration_seconds": 152.188
+  }
+}

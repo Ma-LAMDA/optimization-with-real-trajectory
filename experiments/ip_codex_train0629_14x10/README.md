@@ -1,6 +1,6 @@
 # Train 0629 Codex IP 轨迹实验（14 题 × 10 次）
 
-本目录集中保存本次 Codex IP 故障分析轨迹实验的输入、生成代码、完整运行结果、未完成运行记录和统计报表。
+本目录集中保存本次 Codex IP 故障分析轨迹实验的输入、生成代码、完整运行结果和统计报表。
 
 ## 目录结构
 
@@ -18,11 +18,13 @@ ip_codex_train0629_14x10/
     │   ├── 各题准确率统计.csv
     │   └── 各题耗时统计.csv
     └── runs/
-        ├── train0629_14x10_20260727T134210Z/
-        └── train0629_14x10_fullaccess_20260727T135213Z/
+        └── 2026-07-27/
+            └── train0629_14x10_fullaccess_20260727T135213Z/
 ```
 
-`train0629_14x10_20260727T134210Z` 是外部终止的只读沙箱运行，只保留了第 13 题第 1 次的执行现场；为避免改写原始记录，其 manifest/metadata 中的状态仍是 `running`。`train0629_14x10_fullaccess_20260727T135213Z` 是完成的 full-access 运行，包含 14 个题号各 10 条成功轨迹，共 140 条。
+`2026-07-27/train0629_14x10_fullaccess_20260727T135213Z` 是完成的
+full-access 运行，包含 14 个题号各 10 条成功轨迹，共 140 条。后续新运行也会按
+启动日期自动写入 `results/runs/YYYY-MM-DD/`。
 
 每个运行目录内同时保存 `manifest.json`、对应的 `runner.stdout.log`/`runner.stderr.log`，以及按 `case_<题号>/run_<轮次>/attempt_<序号>/` 组织的完整事件、最终答案、元数据和哈希。
 
@@ -54,7 +56,7 @@ python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
 
 ```powershell
 python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py `
-  --resume-run experiments/ip_codex_train0629_14x10/results/runs/<运行目录>
+  --resume-run experiments/ip_codex_train0629_14x10/results/runs/<日期>/<运行目录>
 ```
 
 ## 重新生成耗时统计

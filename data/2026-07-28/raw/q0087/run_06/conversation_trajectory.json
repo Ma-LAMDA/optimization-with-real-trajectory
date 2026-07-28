@@ -1,0 +1,60 @@
+{
+  "schema_version": "codex-ip-normalized-trajectory.v1",
+  "id": "q0087_run_06",
+  "case_id": 87,
+  "repeat_index": 6,
+  "source_record": {
+    "id": 87,
+    "scenario_id": "",
+    "question": "在CampusNetwork_09组网中，从 HQ_FIN_Client01 ping节点 SZ_Server_Cluster1（10.3.10.1）出现高延迟。已知，两个核心交换机Core_SW_01 和 Core_SW_02之间因链路距离较长，传输时延较大。基于当前配置框架，在STP规划合理的情况下，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "answer": "[\n\"Core_SW_01;VRRP工作在非抢占模式\"\n]",
+    "R3_level": "L1",
+    "scenario": "ip"
+  },
+  "agent_messages": [
+    {
+      "event_line": 3,
+      "item_id": "item_0",
+      "text": "我会严格按离线快照流程取证：先锁定`CampusNetwork_09`，再核实涉及节点与已有命令文件，最后沿实际转发路径交叉检查STP、VRRP和接口状态，只输出能够构成“最小根因集合”的故障项。"
+    },
+    {
+      "event_line": 8,
+      "item_id": "item_3",
+      "text": "项目和题目节点均已精确匹配。下一步我会先盘点`HQ_FIN_Client01`、两台核心、广域侧及深圳端节点的已有快照，再用最少必要文件还原流量路径，重点验证是否因STP实例路径代价或VRRP主设备规划导致报文绕行高时延互联链路。"
+    },
+    {
+      "event_line": 19,
+      "item_id": "item_9",
+      "text": "关键异常已经收敛到VLAN 20：客户端的二层上行按MST实例1正常落到`Core_SW_01`，但网关VRID 2当前Master却是`Core_SW_02`。我正在区分“错误主设备角色”究竟是独立规划错误，还是由更具体的非抢占配置直接造成，以确保最终集合保持最小。"
+    },
+    {
+      "event_line": 24,
+      "item_id": "item_12",
+      "text": "<result>\n[\n\"Core_SW_01;VRRP工作在非抢占模式\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_01;VRRP工作在非抢占模式\"\n]\n</result>",
+  "expected_result_items": [
+    "Core_SW_01;VRRP工作在非抢占模式"
+  ],
+  "actual_result_items": [
+    "Core_SW_01;VRRP工作在非抢占模式"
+  ],
+  "answer_matches_reference": true,
+  "source": {
+    "experiment_run": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z",
+    "run_directory": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_06",
+    "run_json": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_06/run.json",
+    "run_json_sha256": "f1315cfd9d4b5c796525f3a0f899afd5afb5957d2beba95dea6d393d01ea2882",
+    "events_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_06/attempt_001/events.jsonl",
+    "events_sha256": "a81f8ebbddde441e127be4fde814f8dad046776dac281ed1af2a51ff557ea690",
+    "final_answer_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_06/attempt_001/final_answer.txt",
+    "final_answer_sha256": "6174030b87deac3f474a23efd3e8ea421ed8d672cc470135c9456ced3023836d",
+    "source_record_file": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/case_0087/run_06/source_record.json",
+    "source_record_sha256": "781a8e7e5b7e4e70e269d4516dcb4c5dab35c787e07840cac96b2793e19e262f",
+    "successful_attempt": 1,
+    "thread_id": "019fa520-f0a6-7170-8874-cff2a84be005",
+    "duration_seconds": 124.219
+  }
+}

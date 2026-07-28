@@ -31,7 +31,7 @@ def parse_args() -> argparse.Namespace:
 
 def newest_succeeded_run(runs_root: Path) -> Path:
     candidates: list[Path] = []
-    for manifest_path in runs_root.glob("*/manifest.json"):
+    for manifest_path in runs_root.rglob("manifest.json"):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         if manifest.get("status") == "succeeded":
             candidates.append(manifest_path.parent)

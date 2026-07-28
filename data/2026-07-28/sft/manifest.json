@@ -1,0 +1,86 @@
+{
+  "schema_version": "qwen36-reasoning-decision-sft.v3",
+  "source_run": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z",
+  "source_manifest": "experiments/ip_codex_train0629_14x10/results/runs/2026-07-27/train0629_14x10_fullaccess_20260727T135213Z/manifest.json",
+  "source_manifest_sha256": "cc1e02e7ff9738ee45c3393aa1b439c3a075d011823a07cabc8786785ccbb256",
+  "raw_trajectory_count": 140,
+  "selected_trajectory_count": 100,
+  "excluded_trajectory_count": 40,
+  "curation_file": "data/2026-07-28/curation/trajectory_selection.json",
+  "curation_sha256": "32be03d2792d7d4cfb3780843ae154eea4f71064e76a6a9868f4ccfb45425564",
+  "target_type_counts": {
+    "train": {
+      "decision": 90
+    },
+    "validation": {
+      "decision": 10
+    }
+  },
+  "split": {
+    "strategy": "leave_one_case_out",
+    "group_key": "case_id",
+    "train": 90,
+    "validation": 10,
+    "train_case_ids": [
+      13,
+      14,
+      17,
+      18,
+      87,
+      88,
+      91,
+      92,
+      93
+    ],
+    "validation_case_ids": [
+      94
+    ],
+    "case_groups_disjoint": true
+  },
+  "selection": {
+    "included": 100,
+    "excluded": 40,
+    "excluded_case_ids": [
+      25,
+      26,
+      27,
+      28
+    ],
+    "quality_excluded_case_ids": [],
+    "required_case_eligibility_rate": 1.0,
+    "case_accuracy": {
+      "13": 1.0,
+      "14": 1.0,
+      "17": 1.0,
+      "18": 1.0,
+      "25": 0.4,
+      "26": 0.4,
+      "27": 0.6,
+      "28": 0.3,
+      "87": 1.0,
+      "88": 1.0,
+      "91": 1.0,
+      "92": 1.0,
+      "93": 1.0,
+      "94": 1.0
+    },
+    "exclusion_reason_counts": {
+      "case_excluded_by_user": 40,
+      "final_answer_differs_from_reference": 23
+    }
+  },
+  "outputs": [
+    {
+      "path": "data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_train.jsonl",
+      "samples": 90,
+      "bytes": 464043,
+      "sha256": "54cf41db1519a60a17c69ea276c0a5f9ff132c175968e4306cfbeccec224c7f5"
+    },
+    {
+      "path": "data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_validation.jsonl",
+      "samples": 10,
+      "bytes": 58603,
+      "sha256": "6c4639010442aa186029216556dbda2493ffe14910fb1f2c70cfd8251893be95"
+    }
+  ]
+}

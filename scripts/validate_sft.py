@@ -12,7 +12,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SFT_DIR = ROOT / "data" / "sft"
+SFT_DIR = ROOT / "data" / "2026-07-27" / "sft"
 OUTPUT = "qwen3_6_27b_reasoning_decision_sft.jsonl"
 MANIFEST = "manifest.json"
 TARGET_TYPES = {"planning", "reasoning", "decision"}

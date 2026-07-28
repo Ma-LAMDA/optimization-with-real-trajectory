@@ -724,6 +724,8 @@ def main() -> int:
         refresh_summary(manifest)
         write_json(manifest_path, manifest)
     else:
+        started_at = now()
+        date_output_root = output_root / started_at[:10]
         run_name = arguments.run_name or datetime.now(timezone.utc).strftime(
             "%Y%m%dT%H%M%SZ"
         )
@@ -732,14 +734,14 @@ def main() -> int:
                 "run name must contain only letters, digits, '.', '_' and '-', "
                 "and must start with a letter or digit"
             )
-        output_root.mkdir(parents=True, exist_ok=True)
-        run_dir = output_root / run_name
+        date_output_root.mkdir(parents=True, exist_ok=True)
+        run_dir = date_output_root / run_name
         run_dir.mkdir()
         manifest_path = run_dir / "manifest.json"
         manifest = {
             "schema_version": "codex-ip-trajectory-run.v2",
             "status": "preparing" if arguments.dry_run else "running",
-            "started_at": now(),
+            "started_at": started_at,
             "repository_root": str(ROOT),
             "dataset": label(dataset),
             "dataset_sha256": digest(dataset),
