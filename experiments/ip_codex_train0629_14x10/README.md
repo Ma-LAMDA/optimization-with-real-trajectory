@@ -15,6 +15,7 @@ ip_codex_train0629_14x10/
 │   └── summarize_durations.py
 └── results/
     ├── reports/
+    │   ├── 各题准确率统计.csv
     │   └── 各题耗时统计.csv
     └── runs/
         ├── train0629_14x10_20260727T134210Z/
@@ -63,3 +64,7 @@ python experiments/ip_codex_train0629_14x10/scripts/summarize_durations.py
 ```
 
 脚本自动选择最新的成功运行，校验 14 × 10 条成功 metadata，并生成 UTF-8 BOM 编码的 `results/reports/各题耗时统计.csv`。CSV 每题一行，包含 10 次轨迹耗时，以及最短、平均、中位数、最长和总耗时。
+
+## 准确率统计
+
+`results/reports/各题准确率统计.csv` 将 140 个 `final_answer.txt` 与 `inputs/train_0629.jsonl` 中的标准答案进行比较。判分采用故障集合精确匹配：忽略列表顺序，但漏报、多报或错报均判错。报表包含每题的正确数、错误数、准确率、正确/错误轮次、解析失败数和标准答案；总计为 117/140，准确率 83.57%。

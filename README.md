@@ -213,7 +213,7 @@ swift sft \
 
 ### Codex 批量轨迹生成
 
-`experiments/ip_codex_train0629_14x10/` 集中保存本次实验的输入、生成脚本、一次未完成运行、一次完整运行和耗时统计。完整运行包含题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94 各 10 条成功轨迹，共 140 条。
+`experiments/ip_codex_train0629_14x10/` 集中保存本次实验的输入、生成脚本、一次未完成运行、一次完整运行，以及耗时与准确率统计。完整运行包含题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94 各 10 条成功轨迹，共 140 条。
 
 ```powershell
 python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
