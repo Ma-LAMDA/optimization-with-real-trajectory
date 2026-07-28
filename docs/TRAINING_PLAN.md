@@ -202,7 +202,142 @@ token 预留余量。长输出会增加延迟和 KV cache 占用。
 耗时约 257.6 秒。该结果仅作为当前硬件与软件环境的速度基线，不代表 8,000
 token 输出会线性耗时。
 
-## 9. 正式训练扩展
+## 9. Codex CLI 多次验证遥测规范
+
+使用完整 user prompt、Codex CLI 和本地模型进行多次验证时，不能只记录最终
+答案和总耗时。每次运行必须保存可复现标识、模型调用、Agent 循环、工具执行、
+延迟、token、缓存、GPU 资源和质量判定。原始事件流、服务日志和汇总指标必须
+同时保留，避免只有汇总值而无法追溯。
+
+### 9.1 统一计数口径
+
+以下四个计数不得混用：
+
+- **Codex turn**：一次用户输入触发的外层 turn；一次 `codex exec` 通常为 1；
+- **Responses API 调用数**：Codex 与模型服务之间实际完成的 HTTP 请求数；
+- **Agent 消息段数**：事件流中的 `agent_message` 数；一个模型调用可能产生零个
+  或多个消息段；
+- **工具 loop 数**：事件流中的已完成 `command_execution` 数，必须进一步拆为
+  成功、失败、超时和取消。
+
+如果 runner 无法直接提供 Responses API 调用数，应将该字段记为 `null`，不得
+用 Agent 消息段数或工具 loop 数替代。
+
+### 9.2 每次运行必须记录的字段
+
+#### 可复现标识
+
+- run ID、case ID、repeat index、attempt index、Codex thread ID；
+- 开始和结束时间，统一使用带时区的 ISO 8601；
+- Git 分支、完整 commit SHA、工作区是否干净；
+- 数据集、user prompt 模板、source record 和期望 label 的 SHA-256；
+- 基座模型路径、adapter 路径、训练 epoch/step 和 checkpoint SHA-256；
+- Codex CLI、vLLM、PyTorch、CUDA、驱动和 tokenizer 版本；
+- API 类型、sandbox、tool parser、reasoning parser 和工作目录。
+
+#### 采样与上下文
+
+- `temperature`、`top_p`、`top_k`、`seed`、`max_tokens` 和停止条件；
+- 模型上下文上限、首次请求输入 token、峰值上下文 token；
+- 累计 input、cached input、cache-write input、output 和 reasoning token；
+- 每个 Responses API 调用和每个工具 loop 前后的 token 增量；
+- 是否发生上下文截断、自动摘要、重试或重新编码。
+
+采样参数若由 Codex 或 provider 使用默认值，也必须解析并落盘实际值；确实无法
+获取时写 `null`，不能只写“默认”。累计 input token 会重复计算多轮历史，不能
+把它解释为原始 user prompt 长度。
+
+#### 延迟与吞吐
+
+- 端到端总耗时；
+- TTFT（请求发出到首 token 的时间）；
+- TPOT（首 token 后相邻输出 token 的平均时间）；
+- prefill、decode、排队和模型服务时间；
+- Shell/工具执行时间、模型等待时间以及二者占总耗时的比例；
+- 每个模型请求和工具 loop 的开始、结束、耗时；
+- prompt throughput、generation throughput 及其均值、中位数、P95 和峰值。
+
+统一计算公式：
+
+```text
+end_to_end_output_tps = output_tokens / duration_seconds
+effective_total_tps = (input_tokens + output_tokens) / duration_seconds
+TPOT = (last_token_time - first_token_time) / (output_tokens - 1)
+decode_tps = 1 / TPOT
+```
+
+`end_to_end_output_tps` 包含工具和文件 I/O 等待，`decode_tps` 才表示纯解码速度。
+vLLM 周期日志给出的吞吐是时间窗口采样值，必须与逐请求精确计时分列展示。
+
+#### Agent 与工具行为
+
+- Codex turn、Responses API 调用、Agent 消息段和工具 loop 四类计数；
+- 每个工具命令的类别、目标、退出码、耗时和输出字节数；
+- 成功、失败、超时、取消、无匹配和重复命令数；
+- 首次定位正确根因所在的 loop，以及定位后继续执行的冗余 loop；
+- runner attempt、重试原因、error event、非法 JSONL 和 credit-limit 事件；
+- 最终答案前是否已形成正确证据链。
+
+#### GPU、缓存与服务资源
+
+- 每张 GPU 的型号、显存总量、显存占用、利用率、温度、功耗和时钟；
+- tensor parallel、dtype、最大上下文、GPU memory utilization 和 LoRA rank；
+- GPU 指标至少每 1 秒采样一次，并与模型请求时间戳对齐；
+- KV cache 峰值/均值，prefix cache 命中率及 cached token 数；
+- vLLM running/waiting request 数、请求队列时长、OOM 和 engine reset；
+- 并发数以及同一 GPU 上是否存在其他训练或推理任务。
+
+#### 质量与稳定性
+
+- runner 状态、退出码、最终答案格式是否有效；
+- 解析后的预测 label、期望 label、严格集合匹配结果；
+- false positive、false negative、重复 label 和非法 label；
+- 根因集合最小性、证据一致性和人工复核结论；
+- 多次运行的准确率、均值、中位数、最小/最大值、标准差、P95 和变异系数；
+- 基座与 LoRA 的同条件 A/B 差值，禁止只用 LoRA 单组结果宣称提升。
+
+### 9.3 最小落盘格式
+
+每个 `attempt_XXX/` 除现有 `metadata.json`、`events.jsonl`、`stderr.log` 和
+`final_answer.txt` 外，应新增 `telemetry.json`。建议最小结构如下：
+
+```json
+{
+  "schema_version": "codex-sft-eval-telemetry.v1",
+  "run_id": "q94-example/run_01/attempt_001",
+  "model": {"base": "Qwen3.6-27B", "adapter": "checkpoint-450"},
+  "sampling": {"temperature": null, "top_p": null, "seed": null, "max_tokens": 8000},
+  "counts": {"codex_turns": 1, "responses_requests": null, "agent_messages": 0,
+             "tool_loops": 0, "tool_success": 0, "tool_failed": 0},
+  "tokens": {"input": 0, "cached_input": 0, "output": 0,
+             "reasoning_output": null, "peak_context": null},
+  "latency_ms": {"total": 0, "ttft": null, "tpot": null,
+                 "prefill": null, "decode": null, "tools": null},
+  "throughput_tps": {"end_to_end_output": 0, "decode": null,
+                     "prompt_mean": null, "generation_mean": null},
+  "cache": {"kv_peak_pct": null, "prefix_hit_pct": null},
+  "quality": {"final_valid": false, "exact_match": false,
+              "false_positive": [], "false_negative": []}
+}
+```
+
+所有时间统一以毫秒落盘，吞吐统一为 token/s，比例统一为百分数。缺失指标使用
+`null`，只有实测为零时才写 `0`。汇总 CSV 可以从 JSON 生成，但 JSON、事件流
+和原始服务日志应作为事实来源保留。
+
+### 9.4 A/B 验证要求
+
+训练效果验证至少应让原始基座和 LoRA adapter 使用完全相同的 prompt、数据、
+采样参数、Codex/服务版本与硬件配置，各运行不少于 5 次。两组运行顺序应交错或
+随机化，避免温度、缓存和服务预热造成固定顺序偏差。报告必须同时给出：
+
+- 严格准确率、false positive/negative 和输出格式通过率；
+- 运行耗时、TTFT、TPOT、token、工具 loop 与失败命令；
+- 均值、中位数、P95、标准差和变异系数；
+- prefix cache 开启/关闭状态及命中率；
+- 原始逐次结果和聚合结果，不能只报告最优一次。
+
+## 10. 正式训练扩展
 
 数据完成审核并扩充后，再考虑：
 

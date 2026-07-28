@@ -237,6 +237,12 @@ swift sft \
 
 8,000 token 是最大允许长度，不会强制模型生成满该长度；模型输出 EOS 时正常提前结束。采样温度等参数由具体任务单独指定。当前原始基座模型在单卡 Transformers 环境、`temperature=0.7`、5,000-token 上限下的单样本实测生成速度约为 21.2 token/s；长上下文下的实际速度可能下降。详细约束与测试口径见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
 
+## Codex CLI 验证遥测
+
+使用完整 user prompt、Codex CLI 和本地模型进行多次验证时，应同时保留原始事件流、服务日志和逐次遥测。必须区分 Codex turn、Responses API 调用、Agent 消息段与工具 loop，并记录 TTFT、TPOT、每轮 token、采样参数、上下文峰值、工具耗时、GPU 时间序列、KV cache、prefix cache、错误重试和严格 label 判定。缺失指标统一写为 `null`，不得以 0 或其他计数替代。
+
+训练效果结论必须来自原始基座与 LoRA adapter 的同条件 A/B；两组各运行不少于 5 次，并报告逐次结果、准确率、false positive/negative、均值、中位数、P95、标准差和变异系数。字段定义、计算公式和推荐的 `telemetry.json` schema 见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md#9-codex-cli-多次验证遥测规范)。
+
 ## 数据说明
 
 - 0727 数据只有 3 条来源轨迹、12 条阶段样本，不单独划分验证集。
@@ -274,6 +280,7 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-28：增加 Codex CLI 多次验证遥测规范，统一 turn、API 调用、Agent 消息和工具 loop 口径，并规定 TTFT、TPOT、token、缓存、GPU、质量判定及基座/LoRA A/B 的记录要求。
 - 2026-07-28：将实验运行压缩为 `results/runs/fullaccess/q<题号>_r<轮次>/attempt_<序号>/`，合并重复的 case/run 层级，同时保留额度重试所需的 attempt 记录。
 - 2026-07-28：将实验目录按“日期-实验名”合并命名为 `experiments/2026-07-27-ip_codex_train0629_14x10/`，移除 `results/runs/` 下的日期层，并同步适配生成、统计和 SFT 转换脚本。
 - 2026-07-28：将最新 140 条 Codex 运行规范化到 `data/2026-07-28/`；排除准确率未达 100% 的题 25、26、27、28，并按题号留出题 94，生成 90 条训练和 10 条验证样本。
