@@ -1,0 +1,65 @@
+# Train 0629 Codex IP 轨迹实验（14 题 × 10 次）
+
+本目录集中保存本次 Codex IP 故障分析轨迹实验的输入、生成代码、完整运行结果、未完成运行记录和统计报表。
+
+## 目录结构
+
+```text
+ip_codex_train0629_14x10/
+├── README.md
+├── inputs/
+│   ├── IP user prompt with saved configs skills.txt
+│   └── train_0629.jsonl
+├── scripts/
+│   ├── run_codex_ip_trajectories.py
+│   └── summarize_durations.py
+└── results/
+    ├── reports/
+    │   └── 各题耗时统计.csv
+    └── runs/
+        ├── train0629_14x10_20260727T134210Z/
+        └── train0629_14x10_fullaccess_20260727T135213Z/
+```
+
+`train0629_14x10_20260727T134210Z` 是外部终止的只读沙箱运行，只保留了第 13 题第 1 次的执行现场；为避免改写原始记录，其 manifest/metadata 中的状态仍是 `running`。`train0629_14x10_fullaccess_20260727T135213Z` 是完成的 full-access 运行，包含 14 个题号各 10 条成功轨迹，共 140 条。
+
+每个运行目录内同时保存 `manifest.json`、对应的 `runner.stdout.log`/`runner.stderr.log`，以及按 `case_<题号>/run_<轮次>/attempt_<序号>/` 组织的完整事件、最终答案、元数据和哈希。
+
+目录级 `.gitattributes` 禁止 Git 改写输入、轨迹和报表文件的换行符，以保证 metadata 中保存的 SHA-256 在克隆或切换分支后仍可复验。
+
+## 外部只读依赖
+
+实验执行时从仓库根目录的 `saved_configs/` 查询离线组网配置。该目录包含 99,031 个共享配置文件，因此不在本实验目录内重复复制。运行脚本会自动定位仓库根目录，并将其作为 Codex 工作目录。
+
+运行结果中的 manifest 和 metadata 保留了执行发生时的原始路径，用于审计历史；文件移动后这些字段是历史记录，不表示当前存放位置。
+
+## 重新生成轨迹
+
+在仓库根目录执行：
+
+```powershell
+python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
+```
+
+脚本默认选择题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94，每题串行执行 10 次。只有成功执行才计入目标数量；额度不足时保留失败 attempt，等待 1,800 秒后重试同一槽位，其他错误会停止整批任务。
+
+运行前可只实例化并校验 140 份 prompt：
+
+```powershell
+python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py --dry-run
+```
+
+从未完成运行恢复：
+
+```powershell
+python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py `
+  --resume-run experiments/ip_codex_train0629_14x10/results/runs/<运行目录>
+```
+
+## 重新生成耗时统计
+
+```powershell
+python experiments/ip_codex_train0629_14x10/scripts/summarize_durations.py
+```
+
+脚本自动选择最新的成功运行，校验 14 × 10 条成功 metadata，并生成 UTF-8 BOM 编码的 `results/reports/各题耗时统计.csv`。CSV 每题一行，包含 10 次轨迹耗时，以及最短、平均、中位数、最长和总耗时。

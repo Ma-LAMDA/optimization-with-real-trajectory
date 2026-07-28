@@ -1,0 +1,556 @@
+2026-07-27T14:03:51.839336Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-27T14:03:51.839411Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-27T14:03:51.851201Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-27T14:03:52.424700Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-27T14:03:52.424751Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-27T14:05:49.415241Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.1 seconds
+Output:
+3-!Time: Tue Jun 16 06:28:55 2026
+4-
+5-version 7.3(0)D1(1)
+6-power redundancy-mode redundant
+7-
+8-hostname SZ_Core
+9-vdc SZ_Core id 1
+10-  limit-resource module-type m1 m1xl m2xl f2e
+11:  allocate interface Ethernet2/1-48
+12-  allocate interface Ethernet3/1-48
+13-  allocate interface Ethernet4/1-48
+14-  limit-resource vlan minimum 16 maximum 4094
+15-  limit-resource vrf minimum 2 maximum 4096
+16-  limit-resource port-channel minimum 0 maximum 768
+17-  limit-resource u4route-mem minimum 96 maximum 96
+18-  limit-resource u6route-mem minimum 24 maximum 24
+19-  limit-resource m4route-mem minimum 58 maximum 58
+--
+92-interface Vlan30
+93-  no shutdown
+94-  ip address 10.3.30.254/24
+95-
+96-interface Vlan100
+97-  no shutdown
+98-  ip address 10.3.100.2/30
+99-
+100:interface Ethernet2/1
+101-  description to_SZ_Server_Cluster1_eth0
+102-  switchport
+103-  switchport access vlan 10
+104-  no shutdown
+105-
+106-interface Ethernet2/2
+107-  description to_SZ_Server_Cluster2_eth0
+108-  switchport
+--
+110-  no shutdown
+111-
+112-interface Ethernet2/3
+113-  description to_SZ_Server_Cluster3_eth0
+114-  switchport
+115-  switchport access vlan 30
+116-  no shutdown
+117-
+118:interface Ethernet2/4
+119-  description to_SZ_AR_Ethernet1/0/0
+120-  switchport
+121-  switchport access vlan 100
+122-  no shutdown
+123-
+124-interface Ethernet2/5
+125-  shutdown
+126-  no switchport
+--
+141-  no switchport
+142-  mac-address 0000.0000.002f
+143-
+144-interface Ethernet2/9
+145-  shutdown
+146-  no switchport
+147-  mac-address 0000.0000.002f
+148-
+149:interface Ethernet2/10
+150-  shutdown
+151-  no switchport
+152-  mac-address 0000.0000.002f
+153-
+154:interface Ethernet2/11
+155-  shutdown
+156-  no switchport
+157-  mac-address 0000.0000.002f
+158-
+159:interface Ethernet2/12
+160-  shutdown
+161-  no switchport
+162-  mac-address 0000.0000.002f
+163-
+164:interface Ethernet2/13
+165-  shutdown
+166-  no switchport
+167-  mac-address 0000.0000.002f
+168-
+169:interface Ethernet2/14
+170-  shutdown
+171-  no switchport
+172-  mac-address 0000.0000.002f
+173-
+174:interface Ethernet2/15
+175-  shutdown
+176-  no switchport
+177-  mac-address 0000.0000.002f
+178-
+179:interface Ethernet2/16
+180-  shutdown
+181-  no switchport
+182-  mac-address 0000.0000.002f
+183-
+184:interface Ethernet2/17
+185-  shutdown
+186-  no switchport
+187-  mac-address 0000.0000.002f
+188-
+189:interface Ethernet2/18
+190-  shutdown
+191-  no switchport
+192-  mac-address 0000.0000.002f
+193-
+194:interface Ethernet2/19
+195-  shutdown
+196-  no switchport
+197-  mac-address 0000.0000.002f
+198-
+199-interface Ethernet2/20
+200-  shutdown
+201-  no switchport
+202-  mac-address 0000.0000.002f
+--
+206-  no switchport
+207-  mac-address 0000.0000.002f
+208-
+209-interface Ethernet2/22
+210-  shutdown
+211-  no switchport
+212-  mac-address 0000.0000.002f
+213-
+214:interface Ethernet2/23
+215-  no switchport
+216-  mac-address 0000.0000.002f
+217:  ip address 20.0.0.2/24
+218-  no shutdown
+219-
+220-interface Ethernet2/24
+221-  shutdown
+222-  no switchport
+223-  mac-address 0000.0000.002f
+224-
+225-interface Ethernet2/25
+--
+292-  no switchport
+293-  mac-address 0000.0000.002f
+294-
+295-interface Ethernet2/39
+296-  shutdown
+297-  no switchport
+298-  mac-address 0000.0000.002f
+299-
+300:interface Ethernet2/40
+301-  shutdown
+302-  no switchport
+303-  mac-address 0000.0000.002f
+304-
+305:interface Ethernet2/41
+306-  shutdown
+307-  no switchport
+308-  mac-address 0000.0000.002f
+309-
+310:interface Ethernet2/42
+311-  shutdown
+312-  no switchport
+313-  mac-address 0000.0000.002f
+314-
+315:interface Ethernet2/43
+316-  shutdown
+317-  no switchport
+318-  mac-address 0000.0000.002f
+319-
+320:interface Ethernet2/44
+321-  shutdown
+322-  no switchport
+323-  mac-address 0000.0000.002f
+324-
+325:interface Ethernet2/45
+326-  shutdown
+327-  no switchport
+328-  mac-address 0000.0000.002f
+329-
+330:interface Ethernet2/46
+331-  shutdown
+332-  no switchport
+333-  mac-address 0000.0000.002f
+334-
+335:interface Ethernet2/47
+336-  shutdown
+337-  no switchport
+338-  mac-address 0000.0000.002f
+339-
+340:interface Ethernet2/48
+341-  shutdown
+342-  no switchport
+343-  mac-address 0000.0000.002f
+344-
+345-interface Ethernet3/1
+346-  shutdown
+347-  no switchport
+348-  mac-address 0000.0000.002f
+rg: .\saved_configs\CampusNetwork_05\SZ_Core\*.txt: IO error for operation on .\saved_configs\CampusNetwork_05\SZ_Core\*.txt: 文件名、目录名或卷标语法不正确。 (os error 123)
+
+2026-07-27T14:06:07.093319Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+
+2026-07-27T14:06:48.775835Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+4:12bf-da3e-45e1   20         Learned          HGE1/0/3                 Y
+Get-Content : Cannot find path '.\saved_configs\CampusNetwork_05\AGG_SW_02\display_interface_description.txt' because i
+t does not exist.
+At line:2 char:103
++ ... ddress.txt; Get-Content -LiteralPath .\saved_configs\CampusNetwork_05 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.\saved_configs...description.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+Get-Content : Cannot find path '.\saved_configs\CampusNetwork_05\AGG_SW_02\display_lldp_neighbor_brief.txt' because it 
+does not exist.
+At line:2 char:206
++ ... iption.txt; Get-Content -LiteralPath .\saved_configs\CampusNetwork_05 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.\saved_configs...ghbor_brief.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-07-27T14:07:02.639376Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+display interface brief
+Brief information on interfaces in route mode:
+Link: ADM - administratively down; Stby - standby
+Protocol: (s) - spoofing
+Interface            Link Protocol Primary IP        Description
+HGE1/0/6             UP   UP       --
+HGE1/0/7             UP   UP       --
+HGE1/0/8             DOWN DOWN     --
+HGE1/0/9             DOWN DOWN     --
+HGE1/0/10            DOWN DOWN     --
+HGE1/0/11            DOWN DOWN     --
+HGE1/0/12            DOWN DOWN     --
+HGE1/0/13            DOWN DOWN     --
+HGE1/0/14            DOWN DOWN     --
+HGE1/0/15            DOWN DOWN     --
+HGE1/0/16            DOWN DOWN     --
+HGE1/0/17            DOWN DOWN     --
+HGE1/0/18            DOWN DOWN     --
+HGE1/0/19            DOWN DOWN     --
+HGE1/0/20            DOWN DOWN     --
+HGE1/0/21            DOWN DOWN     --
+HGE1/0/22            DOWN DOWN     --
+HGE1/0/23            DOWN DOWN     --
+HGE1/0/24            DOWN DOWN     --
+HGE1/0/25            DOWN DOWN     --
+HGE1/0/26            DOWN DOWN     --
+HGE1/0/27            DOWN DOWN     --
+HGE1/0/28            DOWN DOWN     --
+HGE1/0/29            DOWN DOWN     --
+HGE1/0/30            DOWN DOWN     --
+HGE1/0/31            DOWN DOWN     --
+HGE1/0/32            DOWN DOWN     --
+HGE1/0/33            DOWN DOWN     --
+HGE1/0/34            DOWN DOWN     --
+HGE1/0/35            DOWN DOWN     --
+HGE1/0/36            DOWN DOWN     --
+HGE1/0/37            DOWN DOWN     --
+HGE1/0/38            DOWN DOWN     --
+HGE1/0/39            DOWN DOWN     --
+HGE1/0/40            DOWN DOWN     --
+HGE1/0/41            DOWN DOWN     --
+HGE1/0/42            DOWN DOWN     --
+HGE1/0/43            DOWN DOWN     --
+HGE1/0/44            DOWN DOWN     --
+HGE1/0/45            DOWN DOWN     --
+HGE1/0/46            DOWN DOWN     --
+HGE1/0/47            DOWN DOWN     --
+HGE1/0/48            DOWN DOWN     --
+HGE1/0/49            DOWN DOWN     --
+HGE1/0/50            DOWN DOWN     --
+HGE1/0/51            DOWN DOWN     --
+HGE1/0/52            DOWN DOWN     --
+HGE1/0/53            DOWN DOWN     --
+HGE1/0/54            DOWN DOWN     --
+HGE1/0/55            DOWN DOWN     --
+HGE1/0/56            DOWN DOWN     --
+HGE1/0/57            DOWN DOWN     --
+HGE1/0/58            DOWN DOWN     --
+HGE1/0/59            DOWN DOWN     --
+HGE1/0/60            DOWN DOWN     --
+HGE1/0/61            DOWN DOWN     --
+HGE1/0/62            DOWN DOWN     --
+HGE1/0/63            DOWN DOWN     --
+HGE1/0/64            DOWN DOWN     --
+HGE1/0/65            DOWN DOWN     --
+HGE1/0/66            DOWN DOWN     --
+HGE1/0/67            DOWN DOWN     --
+HGE1/0/68            DOWN DOWN     --
+HGE1/0/69            DOWN DOWN     --
+HGE1/0/70            DOWN DOWN     --
+HGE1/0/71            DOWN DOWN     --
+HGE1/0/72            DOWN DOWN     --
+HGE1/0/73            DOWN DOWN     --
+HGE1/0/74            DOWN DOWN     --
+HGE1/0/75            DOWN DOWN     --
+HGE1/0/76            DOWN DOWN     --
+HGE1/0/77            DOWN DOWN     --
+HGE1/0/78            DOWN DOWN     --
+HGE1/0/79            DOWN DOWN     --
+HGE1/0/80            DOWN DOWN     --
+HGE1/0/81            DOWN DOWN     --
+HGE1/0/82            DOWN DOWN     --
+HGE1/0/83            DOWN DOWN     --
+HGE1/0/84            DOWN DOWN     --
+HGE1/0/85            DOWN DOWN     --
+HGE1/0/86            DOWN DOWN     --
+HGE1/0/87            DOWN DOWN     --
+HGE1/0/88            DOWN DOWN     --
+HGE1/0/89            DOWN DOWN     --
+HGE1/0/90            DOWN DOWN     --
+HGE1/0/91            DOWN DOWN     --
+HGE1/0/92            DOWN DOWN     --
+HGE1/0/93            DOWN DOWN     --
+HGE1/0/94            DOWN DOWN     --
+HGE1/0/95            DOWN DOWN     --
+HGE1/0/96            DOWN DOWN     --
+HGE1/0/97            DOWN DOWN     --
+HGE1/0/98            DOWN DOWN     --
+HGE1/0/99            DOWN DOWN     --
+HGE1/0/100           DOWN DOWN     --
+HGE1/0/101           DOWN DOWN     --
+HGE1/0/102           DOWN DOWN     --
+HGE1/0/103           DOWN DOWN     --
+HGE1/0/104           DOWN DOWN     --
+HGE1/0/105           DOWN DOWN     --
+HGE1/0/106           DOWN DOWN     --
+HGE1/0/107           DOWN DOWN     --
+HGE1/0/108           DOWN DOWN     --
+HGE1/0/109           DOWN DOWN     --
+HGE1/0/110           DOWN DOWN     --
+HGE1/0/111           DOWN DOWN     --
+HGE1/0/112           DOWN DOWN     --
+HGE1/0/113           DOWN DOWN     --
+HGE1/0/114           DOWN DOWN     --
+HGE1/0/115           DOWN DOWN     --
+HGE1/0/116           DOWN DOWN     --
+HGE1/0/117           DOWN DOWN     --
+HGE1/0/118           DOWN DOWN     --
+HGE1/0/119           DOWN DOWN     --
+HGE1/0/120           DOWN DOWN     --
+HGE1/0/121           DOWN DOWN     --
+HGE1/0/122           DOWN DOWN     --
+HGE1/0/123           DOWN DOWN     --
+HGE1/0/124           DOWN DOWN     --
+HGE1/0/125           DOWN DOWN     --
+HGE1/0/126           DOWN DOWN     --
+HGE1/0/127           DOWN DOWN     --
+HGE1/0/128           DOWN DOWN     --
+HGE1/0/129           DOWN DOWN     --
+HGE1/0/130           DOWN DOWN     --
+HGE1/0/131           DOWN DOWN     --
+HGE1/0/132           DOWN DOWN     --
+HGE1/0/133           DOWN DOWN     --
+HGE1/0/134           DOWN DOWN     --
+HGE1/0/135           DOWN DOWN     --
+HGE1/0/136           DOWN DOWN     --
+HGE1/0/137           DOWN DOWN     --
+HGE1/0/138           DOWN DOWN     --
+HGE1/0/139           DOWN DOWN     --
+HGE1/0/140           DOWN DOWN     --
+HGE1/0/141           DOWN DOWN     --
+HGE1/0/142           DOWN DOWN     --
+HGE1/0/143           DOWN DOWN     --
+HGE1/0/144           DOWN DOWN     --
+HGE1/0/145           DOWN DOWN     --
+HGE1/0/146           DOWN DOWN     --
+HGE1/0/147           DOWN DOWN     --
+HGE1/0/148           DOWN DOWN     --
+HGE1/0/149           DOWN DOWN     --
+HGE1/0/150           DOWN DOWN     --
+HGE1/0/151           DOWN DOWN     --
+HGE1/0/152           DOWN DOWN     --
+HGE1/0/153           DOWN DOWN     --
+HGE1/0/154           DOWN DOWN     --
+HGE1/0/155           DOWN DOWN     --
+HGE1/0/156           DOWN DOWN     --
+HGE1/0/157           DOWN DOWN     --
+HGE1/0/158           DOWN DOWN     --
+HGE1/0/159           DOWN DOWN     --
+HGE1/0/160           DOWN DOWN     --
+HGE1/0/161           DOWN DOWN     --
+HGE1/0/162           DOWN DOWN     --
+HGE1/0/163           DOWN DOWN     --
+HGE1/0/164           DOWN DOWN     --
+HGE1/0/165           DOWN DOWN     --
+HGE1/0/166           DOWN DOWN     --
+HGE1/0/167           DOWN DOWN     --
+HGE1/0/168           DOWN DOWN     --
+HGE1/0/169           DOWN DOWN     --
+HGE1/0/170           DOWN DOWN     --
+HGE1/0/171           DOWN DOWN     --
+HGE1/0/172           DOWN DOWN     --
+HGE1/0/173           DOWN DOWN     --
+HGE1/0/174           DOWN DOWN     --
+HGE1/0/175           DOWN DOWN     --
+HGE1/0/176           DOWN DOWN     --
+HGE1/0/177           DOWN DOWN     --
+HGE1/0/178           DOWN DOWN     --
+HGE1/0/179           DOWN DOWN     --
+HGE1/0/180           DOWN DOWN     --
+HGE1/0/181           DOWN DOWN     --
+HGE1/0/182           DOWN DOWN     --
+HGE1/0/183           DOWN DOWN     --
+HGE1/0/184           DOWN DOWN     --
+HGE1/0/185           DOWN DOWN     --
+HGE1/0/186           DOWN DOWN     --
+HGE1/0/187           DOWN DOWN     --
+HGE1/0/188           DOWN DOWN     --
+HGE1/0/189           DOWN DOWN     --
+HGE1/0/190           DOWN DOWN     --
+HGE1/0/191           DOWN DOWN     --
+HGE1/0/192           DOWN DOWN     --
+HGE1/0/193           DOWN DOWN     --
+HGE1/0/194           DOWN DOWN     --
+HGE1/0/195           DOWN DOWN     --
+HGE1/0/196           DOWN DOWN     --
+HGE1/0/197           DOWN DOWN     --
+HGE1/0/198           DOWN DOWN     --
+HGE1/0/199           DOWN DOWN     --
+HGE1/0/200           DOWN DOWN     --
+HGE1/0/201           DOWN DOWN     --
+HGE1/0/202           DOWN DOWN     --
+HGE1/0/203           DOWN DOWN     --
+HGE1/0/204           DOWN DOWN     --
+HGE1/0/205           DOWN DOWN     --
+HGE1/0/206           DOWN DOWN     --
+HGE1/0/207           DOWN DOWN     --
+HGE1/0/208           DOWN DOWN     --
+HGE1/0/209           DOWN DOWN     --
+HGE1/0/210           DOWN DOWN     --
+HGE1/0/211           DOWN DOWN     --
+HGE1/0/212           DOWN DOWN     --
+HGE1/0/213           DOWN DOWN     --
+HGE1/0/214           DOWN DOWN     --
+HGE1/0/215           DOWN DOWN     --
+HGE1/0/216           DOWN DOWN     --
+HGE1/0/217           DOWN DOWN     --
+HGE1/0/218           DOWN DOWN     --
+HGE1/0/219           DOWN DOWN     --
+HGE1/0/220           DOWN DOWN     --
+HGE1/0/221           DOWN DOWN     --
+HGE1/0/222           DOWN DOWN     --
+HGE1/0/223           DOWN DOWN     --
+HGE1/0/224           DOWN DOWN     --
+HGE1/0/225           DOWN DOWN     --
+HGE1/0/226           DOWN DOWN     --
+HGE1/0/227           DOWN DOWN     --
+HGE1/0/228           DOWN DOWN     --
+HGE1/0/229           DOWN DOWN     --
+HGE1/0/230           DOWN DOWN     --
+HGE1/0/231           DOWN DOWN     --
+HGE1/0/232           DOWN DOWN     --
+HGE1/0/233           DOWN DOWN     --
+HGE1/0/234           DOWN DOWN     --
+HGE1/0/235           DOWN DOWN     --
+HGE1/0/236           DOWN DOWN     --
+HGE1/0/237           DOWN DOWN     --
+HGE1/0/238           DOWN DOWN     --
+HGE1/0/239           DOWN DOWN     --
+HGE1/0/240           DOWN DOWN     --
+HGE1/0/241           DOWN DOWN     --
+HGE1/0/242           DOWN DOWN     --
+HGE1/0/243           DOWN DOWN     --
+HGE1/0/244           DOWN DOWN     --
+HGE1/0/245           DOWN DOWN     --
+HGE1/0/246           DOWN DOWN     --
+HGE1/0/247           DOWN DOWN     --
+HGE1/0/248           DOWN DOWN     --
+HGE1/0/249           DOWN DOWN     --
+HGE1/0/250           DOWN DOWN     --
+HGE1/0/251           DOWN DOWN     --
+HGE1/0/252           DOWN DOWN     --
+HGE1/0/253           DOWN DOWN     --
+HGE1/0/254           DOWN DOWN     --
+HGE1/0/255           DOWN DOWN     --
+HGE1/0/256           DOWN DOWN     --
+InLoop0              UP   UP(s)    --
+MGE0/0/0             UP   UP       --
+NULL0                UP   UP(s)    --
+REG0                 UP   --       --
+
+Brief information on interfaces in bridge mode:
+Link: ADM - administratively down; Stby - standby
+Speed: (a) - auto
+Duplex: (a)/A - auto; H - half; F - full
+Type: A - access; T - trunk; H - hybrid
+Interface            Link Speed     Duplex Type PVID Description
+HGE1/0/1             UP   100G      F(a)   T    1    to_Core_SW_01_GE1/0/4
+HGE1/0/2             UP   100G      F(a)   T    1    to_Core_SW_02_GE1/0/4
+HGE1/0/3             UP   100G      F(a)   A    20   to_HQ_FIN_PC01_eth0
+HGE1/0/4             UP   100G      F(a)   T    100
+HGE1/0/5             UP   100G      F(a)   A    20   to_HQ_FIN_Client01_eth0
+display lldp neighbor-information
+LLDP neighbor-information of port 2[HundredGigE1/0/1]:
+LLDP agent nearest-bridge:
+ LLDP neighbor index : 1
+ ChassisID/subtype   : 3810-0011-1200/MAC address
+ PortID/subtype      : GE1/0/4/Interface name
+ Capabilities        : Bridge, Router
+
+LLDP neighbor-information of port 3[HundredGigE1/0/2]:
+LLDP agent nearest-bridge:
+ LLDP neighbor index : 1
+ ChassisID/subtype   : 380b-0011-1200/MAC address
+ PortID/subtype      : GE1/0/4/Interface name
+ Capabilities        : Bridge, Router
+
+2026-07-27T14:10:05.210846Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+CPU utilization for five seconds: 0%/0%; one minute: 0%; five minutes: 0%
+ PID Runtime(ms)     Invoked      uSecs   5Sec   1Min   5Min TTY Process
+   1           0          12          0  0.00%  0.00%  0.00%   0 Chunk Manager
+   2        5545       12587        440  0.00%  0.00%  0.00%   0 Load Meter
+   3           0           1          0  0.00%  0.00%  0.00%   0 Policy bind Proc
+   4           0           1          0  0.00%  0.00%  0.00%   0 Retransmission o
+   5           0           1          0  0.00%  0.00%  0.00%   0 IPC ISSU Dispatc
+   6          23          13       1769  0.00%  0.00%  0.00%   0 RF Slave Main Th
+   7           0           1          0  0.00%  0.00%  0.00%   0 EDDRI_MAIN
+   8           0           1          0  0.00%  0.00%  0.00%   0 RO Notify Timers
+   9       41997        9633       4359  0.00%  0.04%  0.05%   0 Check heaps
+  10         200        1063        188  0.00%  0.00%  0.00%   0 Pool Manager
+  11           0           1          0  0.00%  0.00%  0.00%   0 DiscardQ Backgro
+  12           0           2          0  0.00%  0.00%  0.00%   0 Timers
+  13           1         103          9  0.00%  0.00%  0.00%   0 WATCH_AFS
+  14         459       31872         14  0.00%  0.00%  0.00%   0 IOSXE heartbeat
+  15           0           2          0  0.00%  0.00%  0.00%   0 DB Lock Manager
+  16           0           1          0  0.00%  0.00%  0.00%   0 DB Notification
+  17           0           1          0  0.00%  0.00%  0.00%   0 PKI Trustpool
+  18           0           1          0  0.00%  0.00%  0.00%   0 VACS Background
+  19           0           2          0  0.00%  0.00%  0.00%   0 ATM AutoVC Perio
+  20           0           2          0  0.00%  0.00%  0.00%   0 ATM VC Auto Crea
+  21           0           1          0  0.00%  0.00%  0.00%   0 IPC Apps Task
+  22           0           1          0  0.00%  0.00%  0.00%   0 ifIndex Receive
+  23          96       12749          7  0.00%  0.00%  0.00%   0 IPC Event Notifi
+  24         589       62245          9  0.00%  0.00%  0.00%   0 IPC Mcast Pendin
+  25           0           1          0  0.00%  0.00%  0.00%   0 Platform appsess
+  26          12        1063         11  0.00%  0.00%  0.00%   0 IPC Dynamic Cach
+  27          84       12749          6  0.00%  0.00%  0.00%   0 IPC Service NonC
+  28           0           1          0  0.00%  0.00%  0.00%   0 IPC Zone Manager
+

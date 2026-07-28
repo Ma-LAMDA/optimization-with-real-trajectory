@@ -25,6 +25,11 @@
 │   └── sft/
 │       ├── manifest.json
 │       └── qwen3_6_27b_reasoning_decision_sft.jsonl
+├── experiments/
+│   └── ip_codex_train0629_14x10/
+│       ├── inputs/
+│       ├── scripts/
+│       └── results/
 └── scripts/
     ├── convert_trajectories.py
     ├── train_qwen36_lora_smoke.sh
@@ -202,9 +207,19 @@ swift sft \
 
 - `ChatGPT system prompt.txt`、`Claude Code system prompt.txt`、`IP user prompt.txt` 和 `IP user prompt by text.txt`；
 - `myf-ip评测0725-GPT_轨迹.zip`、`myf-ip评测GPT-0725-2_轨迹.zip` 和 `saved_configs.rar`；
-- `train_0629.jsonl`（100 条记录）和 `train_data_0610.jsonl`（350 条记录）。
+- `train_data_0610.jsonl`（350 条记录）；本次 Codex 实验使用的 `train_0629.jsonl` 已随实验归档。
 
 `Claude Code system prompt.txt` 的来源文件当前为空，仓库按来源状态原样保留。
+
+### Codex 批量轨迹生成
+
+`experiments/ip_codex_train0629_14x10/` 集中保存本次实验的输入、生成脚本、一次未完成运行、一次完整运行和耗时统计。完整运行包含题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94 各 10 条成功轨迹，共 140 条。
+
+```powershell
+python experiments/ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
+```
+
+实验仍从仓库根目录的共享 `saved_configs/` 快照读取离线配置。完整目录结构、轨迹文件说明、重试规则、恢复命令和耗时 CSV 生成方式见 `experiments/ip_codex_train0629_14x10/README.md`。
 
 ## 提交维护规则
 
@@ -212,6 +227,8 @@ swift sft \
 
 ### 更新记录
 
+- 2026-07-28：将 Train 0629 Codex 轨迹实验的输入、脚本、140 条完整轨迹、未完成运行、runner 日志和耗时 CSV 统一整理到 `experiments/ip_codex_train0629_14x10/`。
+- 2026-07-27：新增指定 IP 题目的 Codex 批量执行脚本，每题执行 10 个成功轮次，共生成 140 条完整 JSONL 轨迹；额度不足时保留失败尝试，并每隔 30 分钟无限重试同一槽位。
 - 2026-07-27：新增根目录 `saved_configs` 离线组网配置快照和 `IP user prompt with saved configs skills.txt`，用于按项目、节点与命令文件查询故障证据。
 - 2026-07-27：向 `data/simulation/` 补充 IP 故障分析提示词、GPT 评测轨迹、配置归档及两份训练 JSONL，并记录文件清单与可解析记录数。
 - 2026-07-27：将后续推理默认输出上限统一为 8,000 个新 token，并记录 ms-swift、vLLM 参数写法及原始基座模型的单样本速度基线。
