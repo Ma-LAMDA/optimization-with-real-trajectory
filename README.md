@@ -243,6 +243,8 @@ swift sft \
 
 训练效果结论必须来自原始基座与 LoRA adapter 的同条件 A/B；两组各运行不少于 5 次，并报告逐次结果、准确率、false positive/negative、均值、中位数、P95、标准差和变异系数。字段定义、计算公式和推荐的 `telemetry.json` schema 见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md#9-codex-cli-多次验证遥测规范)。
 
+2026-07-28 使用 epoch-10 LoRA、完整题 94 prompt 和 Codex CLI 串行验证 5 次：runner 与格式均为 5/5 成功，严格 label 匹配为 4/5；其中 Run 1 多报 Core_SW_02。本轮逐次最终输出、label、文件哈希、耗时、token、工具 loop、vLLM 吞吐、训练配置和适用边界见 [`docs/2026-07-28_Q94_EPOCH10_VALIDATION.md`](docs/2026-07-28_Q94_EPOCH10_VALIDATION.md)。由于未执行原始基座同条件对照，该结果不用于量化 LoRA 相对提升。
+
 ## 数据说明
 
 - 0727 数据只有 3 条来源轨迹、12 条阶段样本，不单独划分验证集。
@@ -280,6 +282,7 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-28：归档 Qwen3.6-27B epoch-10 LoRA 在题 94 上的 5 次 Codex CLI 验证报告，记录原始 label/输出、严格 4/5 结果、耗时、token、工具 loop、vLLM 指标、哈希与评测局限。
 - 2026-07-28：增加 Codex CLI 多次验证遥测规范，统一 turn、API 调用、Agent 消息和工具 loop 口径，并规定 TTFT、TPOT、token、缓存、GPU、质量判定及基座/LoRA A/B 的记录要求。
 - 2026-07-28：将实验运行压缩为 `results/runs/fullaccess/q<题号>_r<轮次>/attempt_<序号>/`，合并重复的 case/run 层级，同时保留额度重试所需的 attempt 记录。
 - 2026-07-28：将实验目录按“日期-实验名”合并命名为 `experiments/2026-07-27-ip_codex_train0629_14x10/`，移除 `results/runs/` 下的日期层，并同步适配生成、统计和 SFT 转换脚本。
