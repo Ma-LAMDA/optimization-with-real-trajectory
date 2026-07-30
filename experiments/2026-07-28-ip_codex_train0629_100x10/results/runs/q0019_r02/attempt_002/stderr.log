@@ -1,0 +1,38 @@
+2026-07-29T05:09:08.963732Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:09:08.963810Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:09:08.964666Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:09:08.968136Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:09:08.977741Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T05:09:09.837717Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:09:09.837762Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:09:09.839063Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:09:09.843278Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:09:22.451657Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files
+2026-07-29T05:09:22.451657Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-29T05:09:27.739693Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get | ConvertTo-Json -Depth 5
+2026-07-29T05:09:41.954420Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get | ConvertTo-Json -Depth 5"
+2026-07-29T05:10:25.046808Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.9 seconds
+Output:
+.Exception.Message : The term '.Exception.Message' is not recognized as the name of a cmdlet, function, script file, or
+ operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try a
+gain.
+At line:1 char:168
++ ... -Method Get | ConvertTo-Json -Depth 10 } catch { .Exception.Message }
++                                                      ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Message:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T05:10:31.893942Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T05:10:57.613921Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '$r=Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/Core_SW_01/command?cmd=display%20current-configuration" -Method Get; $r.output -split "`r?`n" | Select-String -Pattern "^(sysname|interface | description| qos| traffic|.*rate|.*speed| stp| undo stp|.*vrrp|.*ip address|.*ospf|.*route-static)"'

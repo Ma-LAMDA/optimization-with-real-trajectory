@@ -1,0 +1,186 @@
+2026-07-28T13:36:22.934562Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T13:36:22.934637Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T13:36:22.935298Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T13:36:22.938283Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T13:36:22.946017Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T13:36:23.691508Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T13:36:23.691540Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T13:36:23.692267Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T13:36:23.695630Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T13:36:33.209444Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5
+2026-07-28T13:36:37.198876Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g "*gns*" -g "*.ps1" -g "*.py"
+2026-07-28T13:36:54.822679Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-28T13:37:01.573896Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-28T13:37:06.356708Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5"
+2026-07-28T13:37:28.806495Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:37:28.807707Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:37:28.808830Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:38:43.733280Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /openapi.json. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/openapi.json' | ConvertTo-Json -Depth 12"
+2026-07-28T13:38:43.982934Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /docs. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/docs' | ConvertTo-Json -Depth 12"
+2026-07-28T13:38:45.150804Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"query parameter 'cmd' is required"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:38:45.739831Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:39:19.268898Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10.6 seconds
+Output:
+command timed out after 10555 milliseconds
+{
+    "project_id":  "CampusNetwork_02",
+    "node_id":  "SH_Core",
+    "keyword":  "ping",
+    "total":  0,
+    "offset":  0,
+    "limit":  500,
+    "commands":  [
+
+                 ]
+}
+
+2026-07-28T13:40:30.162781Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 2.1 seconds
+Output:
+Invoke-RestMethod : {"error":"node not found: FW_02"}
+At line:1 char:2
++ (Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetw ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:43:24.049916Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:43:24.615690Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:43:25.177193Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:44:12.649035Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:44:13.217175Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:44:13.787803Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:44:14.376055Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T13:44:14.943421Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+

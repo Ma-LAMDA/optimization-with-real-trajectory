@@ -1,0 +1,368 @@
+2026-07-29T05:53:53.716062Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:53:53.716133Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:53:53.716762Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:53:53.719650Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:53:53.728102Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T05:53:54.990482Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:53:54.990516Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:53:54.991186Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:53:54.994212Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:54:02.945002Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T05:54:07.321473Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files
+2026-07-29T05:54:17.141249Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5"
+2026-07-29T05:55:51.876802Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '$nodes=(Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes").name; $diff=@(); foreach($n in $nodes){$u1="http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/$n/command?cmd=display%20current-configuration"; $u2="http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf_04/nodes/$n/command?cmd=display%20current-configuration"; $a=(Invoke-RestMethod -Uri $u1).output; $b=(Invoke-RestMethod -Uri $u2).output; $a=$a -replace "!Last configuration was updated.*",""; $b=$b -replace "!Last configuration was updated.*",""; if($a -ne $b){$diff += [pscustomobject]@{node=$n; current_found=($a -notlike "Error:*"); baseline_found=($b -notlike "Error:*"); current_length=$a.Length; baseline_length=$b.Length}}}; $diff | ConvertTo-Json -Depth 5'
+2026-07-29T05:56:02.173900Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 1.1 seconds
+Output:
+At line:1 char:439
++ ... utput; $b=(Invoke-RestMethod -Uri $u2).output; $a=$a -replace !Last c ...
++                                                                  ~
+You must provide a value expression following the '-replace' operator.
+At line:1 char:440
++ ...  $b=(Invoke-RestMethod -Uri $u2).output; $a=$a -replace !Last configu ...
++                                                             ~~~~~
+Unexpected token '!Last' in expression or statement.
+At line:1 char:474
++ ... s updated.*,"; $b=$b -replace !Last configuration was updated.*,; if( ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The string is missing the terminator: ".
+At line:1 char:117
++ ... projects/CampusNetwork_04/nodes).name; foreach($n in $nodes){$u1=http ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-29T05:56:30.746997Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 4.2 seconds
+Output:
+Invoke-RestMethod : {"error":"node not found: Outside_FTP_Client01"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T05:56:47.794913Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.798741Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.802138Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.806381Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.813141Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.815475Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.817409Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.817512Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.817840Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.818416Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.818539Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.822138Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.822248Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.822313Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.827068Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.827179Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.831348Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.831451Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.857398Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.861679Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.892869Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.896707Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.903099Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.907140Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.997077Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.997079Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:47.999860Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.001411Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.001488Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.004129Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.005045Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.005155Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.052141Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.056914Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.104807Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.109398Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.143980Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.148323Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.216306Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.220597Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.342996Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.347371Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.466885Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.471276Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.533230Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.537580Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.680429Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.684459Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.684606Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.688744Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.766781Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.771021Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.781036Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.783284Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.785362Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.785474Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.796419Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:48.800848Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:49.079808Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:49.081043Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:49.082497Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:49.082605Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:49.082686Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:49.145721Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:49.150105Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.317725Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.358684Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.358797Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.383808Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.383908Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.413896Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.422514Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.535453Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.545458Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.570255Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.573889Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.601685Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.627729Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.634230Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.656523Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.665714Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.665821Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.671483Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.679060Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.701907Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.721397Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.738703Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.760218Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.778973Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.792596Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.810069Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.829756Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.851972Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.862619Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.894117Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.912384Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.918605Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.921746Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.934310Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.958475Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.958599Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.992188Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:51.998178Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.009557Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.054423Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.079545Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.137220Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.142536Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.186862Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.205533Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.245241Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.265701Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.290000Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.293907Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.320342Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.325294Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.330864Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.348509Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.355059Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.369680Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.369809Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.464312Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:52.472471Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.306984Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.312194Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.322498Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.350216Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.360514Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.404643Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.411750Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.440674Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:56:53.449934Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.560127Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.560222Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.564159Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.648294Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.648350Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.650983Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.651112Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.651771Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.651805Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.651780Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.651784Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.666638Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.666724Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.666840Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.666915Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.667016Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.667071Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.667163Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.667252Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.810352Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.814639Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.814702Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.814788Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.814829Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.814882Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.816122Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.816469Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.818932Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.819053Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.819127Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.819227Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.819298Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.819367Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.821411Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.826177Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.838104Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.843114Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.852108Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.852107Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.855404Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.856504Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.856626Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.856732Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.910721Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.910769Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.917023Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.917112Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.966457Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:50.970750Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.008073Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.008169Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.008993Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.013270Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.089789Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.090791Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.091714Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.093940Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.094063Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.094150Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.098476Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.102750Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.139794Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.139794Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.144089Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.144197Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.195455Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.199424Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.199759Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.203507Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.274930Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.274929Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.281513Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.281609Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.285100Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.289285Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.351216Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.355383Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.355593Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.359834Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.404132Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.404132Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.410540Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.410633Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.536165Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.540370Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.570906Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.575252Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.649526Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.653752Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.741955Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.746284Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.814923Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.819233Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:51.900870Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:52.107588Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:52.108599Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:52.111729Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:52.111850Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:52.333277Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:52.338350Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:54.586775Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:54.660290Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:54.787326Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:54.787443Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.255799Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.301251Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.397859Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.397967Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.398037Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.424371Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.426639Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.450635Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.450736Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.461926Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.480410Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.487224Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.490243Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.548006Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.575167Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.623593Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.702327Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.719520Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.755799Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.773579Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.780948Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.791987Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.798945Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.810368Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.834230Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.840881Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.882178Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.898918Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.899058Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.909010Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.924854Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.933714Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.938227Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.938343Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:55.952441Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.067893Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.071250Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.087145Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.095627Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.111883Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.111968Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.133286Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.169753Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.197555Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.197696Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.201343Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.201467Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.238084Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.261887Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.273150Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.273248Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.281670Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.281776Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.287171Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.295980Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.297376Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.363413Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.368479Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.386251Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.429037Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.470523Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:56.512027Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.091945Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.347461Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.378172Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.384075Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.403382Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.435056Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.522364Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.544725Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.592344Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.600010Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.639976Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:57:57.663394Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:58:13.040044Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:58:13.412511Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:58:13.442107Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T05:58:25.869468Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac6f-c3de-7313-bd6f-010c578cc4b6 turn_id=019fac6f-c4a1-7242-ac46-3bf92081379c item_id="exec-c2c053de-1cae-4049-8816-b6f5a86fdfe0"
+2026-07-29T05:59:04.689761Z  WARN codex_analytics::client: events failed with status 503 Service Unavailable: upstream connect error or disconnect/reset before headers. retried and the latest reset reason: connection timeout
+2026-07-29T05:59:22.465265Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac6f-c3de-7313-bd6f-010c578cc4b6 turn_id=019fac6f-c4a1-7242-ac46-3bf92081379c item_id="exec-c4673d91-005a-4b15-8446-05621a74fa95"
+2026-07-29T05:59:22.465315Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac6f-c3de-7313-bd6f-010c578cc4b6 turn_id=019fac6f-c4a1-7242-ac46-3bf92081379c item_id="exec-304cd483-884f-4553-b017-bab633ef8428"
+2026-07-29T05:59:23.616967Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac6f-c3de-7313-bd6f-010c578cc4b6 turn_id=019fac6f-c4a1-7242-ac46-3bf92081379c item_id="exec-0b99cd39-f192-4264-9654-e50520d2e330"
+2026-07-29T05:59:23.617011Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac6f-c3de-7313-bd6f-010c578cc4b6 turn_id=019fac6f-c4a1-7242-ac46-3bf92081379c item_id="exec-c36e5b17-6580-4af1-8afc-c423ef352c9a"
+2026-07-29T05:59:24.175703Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac6f-c3de-7313-bd6f-010c578cc4b6 turn_id=019fac6f-c4a1-7242-ac46-3bf92081379c item_id="exec-bb006c8b-5e3f-4936-8939-6244b5627567"
+2026-07-29T05:59:24.175751Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac6f-c3de-7313-bd6f-010c578cc4b6 turn_id=019fac6f-c4a1-7242-ac46-3bf92081379c item_id="exec-78b06e0e-70fc-42b2-a9a8-9b5af755511b"

@@ -1,0 +1,103 @@
+{
+  "schema_version": "ip-distill-attempt.v1",
+  "row_index": 6,
+  "original_id": 6,
+  "sample_id": 6,
+  "sample_key": "q0006",
+  "target_success_slot": 2,
+  "attempt_index": 6,
+  "status": "rejected",
+  "generation_status": "completed",
+  "judge_status": "completed",
+  "error_class": "incorrect_result",
+  "started_at": "2026-07-28T16:42:45.342+00:00",
+  "model": "gpt-5.6-sol",
+  "cli_version": "codex-cli 0.146.0-alpha.3.1",
+  "service_base_url": "http://127.0.0.1:3080",
+  "working_directory": "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_100x10\\results\\runs\\q0006_r02\\attempt_006\\workspace",
+  "ephemeral_session": true,
+  "command": [
+    "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_100x10\\runtime\\codex.exe",
+    "exec",
+    "--ephemeral",
+    "--ignore-rules",
+    "--dangerously-bypass-hook-trust",
+    "--enable",
+    "hooks",
+    "--skip-git-repo-check",
+    "--cd",
+    "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_100x10\\results\\runs\\q0006_r02\\attempt_006\\workspace",
+    "-c",
+    "projects.'D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_100x10\\results\\runs\\q0006_r02\\attempt_006\\workspace'.trust_level=\"trusted\"",
+    "-c",
+    "web_search=\"disabled\"",
+    "--json",
+    "--sandbox",
+    "danger-full-access",
+    "--output-last-message",
+    "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_100x10\\results\\runs\\q0006_r02\\attempt_006\\final_answer.txt",
+    "--model",
+    "gpt-5.6-sol",
+    "-"
+  ],
+  "prompt_sha256": "3bab7cfb6b6f19725466e40b4abf8693a30f2a9bd04ea51b34caafe282145758",
+  "source_record_sha256": "7a17dfb8bf3982fc7544f55da11189a72dc97f41ab5b38c80267e9f849b4344f",
+  "contains_ground_answer": false,
+  "api_only_hook_sha256": "71ee2e7bd9cf81a6276c92e4ecd617aac98c0923a125e7c9394ae000f96f7648",
+  "files": {
+    "prompt": "prompt.txt",
+    "events": "events.jsonl",
+    "stdout": "stdout.log",
+    "stderr": "stderr.log",
+    "final_answer": "final_answer.txt",
+    "hook_audit": "hook_audit.jsonl",
+    "hook_audit_parts": "hook_audit_parts/",
+    "judgment": "judgment.json"
+  },
+  "ended_at": "2026-07-28T16:48:23.678+00:00",
+  "duration_seconds": 338.331,
+  "exit_code": 0,
+  "model_process_started": true,
+  "timed_out": false,
+  "launch_error": null,
+  "thread_id": "019fa99b-7702-7712-b882-7b6ea9323590",
+  "usage": {
+    "input_tokens": 909516,
+    "cached_input_tokens": 824576,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 12383,
+    "reasoning_output_tokens": 7223
+  },
+  "event_type_counts": {
+    "item.completed": 65,
+    "item.started": 59,
+    "thread.started": 1,
+    "turn.completed": 1,
+    "turn.started": 1
+  },
+  "item_type_counts": {
+    "agent_message": 4,
+    "command_execution": 118,
+    "error": 2
+  },
+  "invalid_jsonl_lines": [],
+  "error_event_count": 0,
+  "hook_audit": {
+    "allowed": 59,
+    "denied": 2,
+    "invalid": 0,
+    "sessions": [
+      "019fa99b-7702-7712-b882-7b6ea9323590"
+    ],
+    "fragment_count": 61
+  },
+  "sha256": {
+    "prompt": "3bab7cfb6b6f19725466e40b4abf8693a30f2a9bd04ea51b34caafe282145758",
+    "source_record": "7a17dfb8bf3982fc7544f55da11189a72dc97f41ab5b38c80267e9f849b4344f",
+    "events": "24cc6c3c97fd0027b4e3b999cd589fe04431aee1fd4a09221cadd60a0398dba1",
+    "stdout": "24cc6c3c97fd0027b4e3b999cd589fe04431aee1fd4a09221cadd60a0398dba1",
+    "stderr": "1cc7d9bb9daaae93ed1be70624dd85d18400e34cfd7345224e3358a54a3e4cb3",
+    "final_answer": "06d2dda0f8408d628cc0b65b4aea4cf85737be82b02e89b4c55565a8697c358d",
+    "hook_audit": "100c8b34798326d329e387f559aedacda66977dc297adcf4dc9114aa4e2959db"
+  }
+}

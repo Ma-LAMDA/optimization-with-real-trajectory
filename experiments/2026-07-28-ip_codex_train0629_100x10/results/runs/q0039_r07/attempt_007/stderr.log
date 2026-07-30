@@ -1,0 +1,52 @@
+2026-07-29T13:40:48.434501Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:40:48.434572Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:40:48.435237Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:40:48.438199Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:40:48.446387Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T13:40:49.210851Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:40:49.210881Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:40:49.211737Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:40:49.215140Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:40:58.491414Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-29T13:41:12.847847Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg --files
+2026-07-29T13:41:39.832199Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:290
++ ... dr','ip route') | ForEach-Object { =+[uri]::EscapeDataString(); =Invo ...
++                                                                  ~
+An expression was expected after '('.
+At line:1 char:338
++ ... peDataString(); =Invoke-RestMethod -Uri  -Method Get; '### '+; .outpu ...
++                                                                  ~
+You must provide a value expression following the '+' operator.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedExpression
+ 
+
+2026-07-29T13:41:49.671793Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Missing closing '}' in statement block or type definition.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingEndCurlyBrace
+ 
+
+2026-07-29T13:42:50.636596Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+The string is missing the terminator: ".
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TerminatorExpectedAtEndOfString
+ 
+
+2026-07-29T13:43:01.496140Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$nodes=@('SZ_Core','SZ_AR','PE3','PE2','PE1','BJHQ_CSR1000V_GW_01','Core_SW_01','Core_SW_02'); foreach(`$n in `$nodes){ `$outs=@{}; foreach(`$p in @('CampusNetwork-for-perf','CampusNetwork_05')){ `$o=''; foreach(`$c in @('display current-configuration','show running-config')){ `$u='http://127.0.0.1:3080/v3/projects/'+`$p+'/nodes/'+`$n+'/command?cmd='+[uri]::EscapeDataString(`$c); `$x=(Invoke-RestMethod -Uri `$u -Method Get).output; if(`$x -notlike 'Error:*'){ `$o=`$x; break } }; `$outs[`$p]=`$o }; `$a=`$outs['CampusNetwork-for-perf'] -split [char]10 | Where-Object { `$_ -notmatch '^(!Time:|!Last configuration)' }; `$b=`$outs['CampusNetwork_05'] -split [char]10 | Where-Object { `$_ -notmatch '^(!Time:|!Last configuration)' }; `$d=Compare-Object `$a `$b; '===== '+`$n+' diff='+@(`$d).Count+' ====='; `$d | Select-Object -First 80 | ForEach-Object { `$_.SideIndicator+' '+`$_.InputObject } }"
+2026-07-29T13:43:44.761395Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Missing closing '}' in statement block or type definition.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingEndCurlyBrace
+ 
+
+2026-07-29T13:45:40.999208Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "foreach(`$n in @('PE1','PE2','PE3')){ `$u='http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/'+`$n+'/command?cmd='+[uri]::EscapeDataString('display current-configuration'); `$o=(Invoke-RestMethod -Uri `$u -Method Get).output; '===== '+`$n+' ====='; `$o -split '\r?\n' | Where-Object { `$_ -match '^(sysname|ip vpn-instance| ipv4-family| route-distinguisher| vpn-target|interface Ethernet1/0/[012]|interface Ethernet2/0/[01]| description| undo shutdown| ip binding vpn-instance| ip address| isis| mpls|bgp | peer |  peer |  network|  import-route|ip route-static|static-lsp)' } }"

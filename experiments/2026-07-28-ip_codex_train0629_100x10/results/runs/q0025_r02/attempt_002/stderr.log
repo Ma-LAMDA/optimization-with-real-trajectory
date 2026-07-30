@@ -1,0 +1,95 @@
+2026-07-29T08:31:18.784607Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T08:31:18.784681Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T08:31:18.785443Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T08:31:18.788762Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T08:31:18.798754Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T08:31:24.654418Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T08:31:24.654453Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T08:31:24.655142Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T08:31:24.658070Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T08:31:30.055190Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T08:31:35.702644Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g "*"
+2026-07-29T08:31:49.875391Z ERROR codex_core::tools::router: error=Tool call blocked by PreToolUse hook: tool 'mcp__node_repl__js' is disabled; use the local HTTP API. Tool: mcp__node_repl__js
+2026-07-29T08:31:58.491020Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5"
+2026-07-29T08:32:47.456997Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Message : The term '.Exception.Message' is not recognized as the name of a cmdlet, function, script file, or
+ operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try a
+gain.
+At line:1 char:145
++ ... C01/config' | ConvertTo-Json -Depth 10 } catch { .Exception.Message }
++                                                      ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Message:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T08:32:55.273423Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T08:33:03.612691Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T08:33:03.617560Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T08:33:46.939756Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '((Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SZ_Core/command?cmd=display%20interface%20brief").output -split [Environment]::NewLine) | Where-Object { $_ -match "up|UP" }'
+2026-07-29T08:33:56.452404Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:145
++ ... Z_Core/command?cmd=display%20interface%20brief).output -split \n) | W ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:146
++ ... ore/command?cmd=display%20interface%20brief).output -split \n) | Wher ...
++                                                                ~~
+Unexpected token '\n' in expression or statement.
+At line:1 char:145
++ ... Z_Core/command?cmd=display%20interface%20brief).output -split \n) | W ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:148
++ ... re/command?cmd=display%20interface%20brief).output -split \n) | Where ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:150
++ ... /command?cmd=display%20interface%20brief).output -split \n) | Where-O ...
++                                                                 ~
+An empty pipe element is not allowed.
+At line:1 char:176
++ ... terface%20brief).output -split \n) | Where-Object { $_ -match up|UP }
++                                                                  ~
+You must provide a value expression following the '-match' operator.
+At line:1 char:177
++ ... terface%20brief).output -split \n) | Where-Object { $_ -match up|UP }
++                                                                   ~~
+Unexpected token 'up' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+

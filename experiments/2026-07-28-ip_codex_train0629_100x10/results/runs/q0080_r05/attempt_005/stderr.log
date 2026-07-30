@@ -1,0 +1,33 @@
+2026-07-29T22:59:30.817453Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:59:30.817525Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:59:30.818178Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:59:30.821242Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:59:30.829490Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T22:59:31.484666Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:59:31.484698Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:59:31.485537Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:59:31.489106Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:59:39.347035Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg --files
+2026-07-29T22:59:44.437718Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-29T22:59:49.415456Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get | ConvertTo-Json -Depth 10
+2026-07-29T23:00:12.015073Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+=Invoke-RestMethod : The term '=Invoke-RestMethod' is not recognized as the name of a cmdlet, function, script file, or
+ operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try a
+gain.
+At line:1 char:1
++ =Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetw ...
++ ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=Invoke-RestMethod:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+.output : The term '.output' is not recognized as the name of a cmdlet, function, script file, or operable program. Che
+ck the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:151
++ ... _02/command?cmd=display%20current-configuration' -Method Get; .output
++                                                                   ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.output:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+

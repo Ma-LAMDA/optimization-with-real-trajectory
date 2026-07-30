@@ -1,0 +1,49 @@
+2026-07-29T04:53:00.967069Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T04:53:00.967195Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T04:53:00.968397Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T04:53:00.973523Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T04:53:00.985859Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T04:53:01.692373Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T04:53:01.692406Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T04:53:01.693113Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T04:53:01.696350Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T04:53:09.166635Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 8
+2026-07-29T04:53:15.305506Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg -n --hidden --glob '!data/simulation/**' "3080|GNS3|Invoke-RestMethod|HTTP client" .
+2026-07-29T04:53:20.301628Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -sS http://127.0.0.1:3080/v3/projects
+2026-07-29T04:53:26.523187Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-29T04:54:42.671096Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:155
++ ... 01/command?cmd=display%20current-configuration).output -split `r?`n;  ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:156
++ ... mand?cmd=display%20current-configuration).output -split `r?`n; $b=(In ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:326
++ ... 01/command?cmd=display%20current-configuration).output -split `r?`n;  ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:327
++ ... mand?cmd=display%20current-configuration).output -split `r?`n; Compar ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:395
++ ... Compare-Object $b $a | Where-Object {$_.InputObject -notmatch Last co ...
++                                                                  ~
+You must provide a value expression following the '-notmatch' operator.
+At line:1 char:396
++ ... re-Object $b $a | Where-Object {$_.InputObject -notmatch Last configu ...
++                                                              ~~~~
+Unexpected token 'Last' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-29T04:54:55.996439Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "& { `$a=(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/HQ_MKT_AP01/command?cmd=display%20current-configuration').output -split [Environment]::NewLine; `$b=(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf_04/nodes/HQ_MKT_AP01/command?cmd=display%20current-configuration').output -split [Environment]::NewLine; Compare-Object `$b `$a | Where-Object { `$_.InputObject -notmatch 'Last configuration|local-engineid' } | Format-Table -AutoSize }"
+2026-07-29T04:55:04.077538Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "& { `$a=(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/HQ_MKT_AP01/command?cmd=display%20current-configuration').output -split '\n'; `$b=(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf_04/nodes/HQ_MKT_AP01/command?cmd=display%20current-configuration').output -split '\n'; Compare-Object `$b `$a | Where-Object { `$_.InputObject -notmatch 'Last configuration|local-engineid' } | Format-Table -AutoSize }"
+2026-07-29T04:55:46.390782Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "((Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/ChinaUnicom_SW/command?cmd=display%20current-configuration').output -split '\n') | Select-String -Pattern 'ospf cost|traffic|qos|bandwidth|speed|mtu|stp instance|pathcost|path-cost|cost ' -Context 3,3"
+2026-07-29T04:55:46.390832Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "((Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/AGG_SW_04/command?cmd=display%20current-configuration').output -split '\n') | Select-String -Pattern 'ospf cost|traffic|qos|bandwidth|speed|mtu|stp instance|pathcost|path-cost|cost ' -Context 3,3"
+2026-07-29T04:56:12.138422Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "((Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/Core_SW_02/command?cmd=display%20current-configuration').output -split '\n') | Where-Object { `$_ -match 'sysname|interface Vlanif20[12]|ip address 10.1.200|ospf cost|network 10.1.200|vrrp vrid 5|stp instance [0-3] root' }"

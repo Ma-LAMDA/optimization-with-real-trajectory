@@ -1,0 +1,127 @@
+2026-07-29T11:16:00.737508Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T11:16:00.737615Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T11:16:00.738666Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T11:16:00.743114Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T11:16:00.758155Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T11:16:01.536412Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T11:16:01.536445Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T11:16:01.537182Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T11:16:01.540983Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T11:16:11.816320Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T11:16:18.792402Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g "!*__pycache__*" | Select-Object -First 200
+2026-07-29T11:16:26.532159Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-29T11:16:32.442311Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-29T11:16:37.800827Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5"
+2026-07-29T11:17:09.763667Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Response.StatusCode.value__ : The term '.Exception.Response.StatusCode.value__' is not recognized as the nam
+e of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, v
+erify that the path is correct and try again.
+At line:1 char:151
++ ... rtTo-Json -Depth 5 } catch { .Exception.Response.StatusCode.value__ }
++                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Response.StatusCode.value__:String) [], CommandNotFoundExcep 
+   tion
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T11:17:09.763691Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Response.StatusCode.value__ : The term '.Exception.Response.StatusCode.value__' is not recognized as the nam
+e of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, v
+erify that the path is correct and try again.
+At line:1 char:144
++ ... rtTo-Json -Depth 5 } catch { .Exception.Response.StatusCode.value__ }
++                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Response.StatusCode.value__:String) [], CommandNotFoundExcep 
+   tion
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T11:17:16.103663Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T11:17:16.104687Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T11:17:23.120258Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"query parameter 'cmd' is required"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T11:19:38.281647Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:336
++ ... (Invoke-RestMethod -Uri $v).output; Compare-Object ($b -split `r?`n)  ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:337
++ ... e-RestMethod -Uri $v).output; Compare-Object ($b -split `r?`n) ($a -s ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:336
++ ... (Invoke-RestMethod -Uri $v).output; Compare-Object ($b -split `r?`n)  ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:342
++ ... -RestMethod -Uri $v).output; Compare-Object ($b -split `r?`n) ($a -sp ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:354
++ ... d -Uri $v).output; Compare-Object ($b -split `r?`n) ($a -split `r?`n)
++                                                                   ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:355
++ ... d -Uri $v).output; Compare-Object ($b -split `r?`n) ($a -split `r?`n)
++                                                                    ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:354
++ ... d -Uri $v).output; Compare-Object ($b -split `r?`n) ($a -split `r?`n)
++                                                                   ~
+Missing closing ')' in expression.
+At line:1 char:360
++ ... d -Uri $v).output; Compare-Object ($b -split `r?`n) ($a -split `r?`n)
++                                                                         ~
+Unexpected token ')' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-29T11:19:46.451912Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '$u="http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SH_Core/command?cmd=display%20current-configuration"; $v="http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf/nodes/SH_Core/command?cmd=display%20current-configuration"; $a=(Invoke-RestMethod -Uri $u).output; $b=(Invoke-RestMethod -Uri $v).output; Compare-Object $b.Split([Environment]::NewLine) $a.Split([Environment]::NewLine)'
+2026-07-29T11:21:07.515163Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 2.8 seconds
+Output:
+Invoke-RestMethod : {"error":"node not found: FW_02"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T11:22:49.964674Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 182ms)... turn_id=019fad96-acf2-7572-93ff-41d4a3ef7c8f retries=1 max_retries=5 sampling_error=stream disconnected before completion: WebSocket protocol error: Connection reset without closing handshake

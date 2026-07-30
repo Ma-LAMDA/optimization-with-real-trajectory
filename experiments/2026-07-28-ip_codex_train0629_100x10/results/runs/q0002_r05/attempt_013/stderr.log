@@ -1,0 +1,256 @@
+2026-07-28T14:14:11.040389Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T14:14:11.040461Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T14:14:11.041126Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T14:14:11.044251Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T14:14:11.051814Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T14:14:11.844391Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T14:14:11.844422Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T14:14:11.845065Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T14:14:11.848069Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T14:14:21.838799Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-28T14:14:26.874176Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g '*gns3*' -g '*api*' -g '*.ps1' -g '*.py'
+2026-07-28T14:14:39.000432Z ERROR codex_core::tools::router: error=Tool call blocked by PreToolUse hook: tool 'mcp__node_repl__js' is disabled; use the local HTTP API. Tool: mcp__node_repl__js
+2026-07-28T14:14:46.000644Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-28T14:15:13.818167Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+At line:1 char:160
++ ... .1:3080/v3/projects/CampusNetwork_02/nodes/PE3/command?cmd='+) | Conv ...
++                                                                  ~
+You must provide a value expression following the '+' operator.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-28T14:17:09.084472Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '& { $nodes=(Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_02/nodes").name; foreach($n in $nodes){ $u1="http://127.0.0.1:3080/v3/projects/CampusNetwork_02/nodes/$n/command?cmd=display%20current-configuration"; $u0="http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf_02/nodes/$n/command?cmd=display%20current-configuration"; $a=(Invoke-RestMethod -Uri $u1).output -split "`r?`n" | Where-Object {$_ -notmatch "^!Last configuration"}; $b=(Invoke-RestMethod -Uri $u0).output -split "`r?`n" | Where-Object {$_ -notmatch "^!Last configuration"}; $d=Compare-Object -ReferenceObject $b -DifferenceObject $a; if($d){ Write-Output "### $n"; $d | ForEach-Object {"$($_.SideIndicator) $($_.InputObject)"} } } }'
+2026-07-28T14:17:22.525114Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.9 seconds
+Output:
+At line:1 char:391
++ ... -configuration; $a=(Invoke-RestMethod -Uri $u1).output -split `r?`n | ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:392
++ ... guration; $a=(Invoke-RestMethod -Uri $u1).output -split `r?`n | Where ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:426
++ ... od -Uri $u1).output -split `r?`n | Where-Object {$_ -notmatch ^!Last  ...
++                                                                  ~
+You must provide a value expression following the '-notmatch' operator.
+At line:1 char:427
++ ...  $u1).output -split `r?`n | Where-Object {$_ -notmatch ^!Last configu ...
++                                                            ~~~~~~
+Unexpected token '^!Last' in expression or statement.
+At line:1 char:495
++ ... configuration}; $b=(Invoke-RestMethod -Uri $u0).output -split `r?`n | ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:496
++ ... uration}; $b=(Invoke-RestMethod -Uri $u0).output -split `r?`n | Where ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:530
++ ... od -Uri $u0).output -split `r?`n | Where-Object {$_ -notmatch ^!Last  ...
++                                                                  ~
+You must provide a value expression following the '-notmatch' operator.
+At line:1 char:531
++ ...  $u0).output -split `r?`n | Where-Object {$_ -notmatch ^!Last configu ...
++                                                            ~~~~~~
+Unexpected token '^!Last' in expression or statement.
+At line:1 char:620
++ ... pare-Object -ReferenceObject $b -DifferenceObject $a; if($d){ Write-O ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:117
++ ... projects/CampusNetwork_02/nodes).name; foreach($n in $nodes){ $u1=htt ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-28T14:18:14.503667Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 5.7 seconds
+Output:
+Invoke-RestMethod : {"error":"node not found: FW_02"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T14:18:39.018165Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.112827Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.112828Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.119103Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.119180Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.241666Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.241665Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.246751Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.246751Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.247810Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.247909Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.254594Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.254707Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.289315Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.293647Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.293954Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.298320Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.319781Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.323879Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.341721Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.346074Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.698286Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.702199Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.705345Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.709950Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.847001Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.851500Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.854607Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.855881Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.855977Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.918175Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:39.922478Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:40.055614Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:40.059917Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:40.155911Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:40.160748Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:40.285081Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:40.289380Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:40.348316Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:42.828037Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:42.828158Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:42.880145Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:42.880245Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:42.912875Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:42.975658Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.013492Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.013606Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.021490Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.062579Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.108487Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.123703Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.199912Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.251148Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.350605Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.356583Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.362875Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.378006Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.383180Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.511126Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.518733Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.544288Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.577787Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.581188Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.581294Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.590264Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.590372Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.600181Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.620338Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.633559Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.639267Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.647964Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.654462Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.783087Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.786999Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.799438Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.799556Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.814152Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.820758Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.824787Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.873090Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.890564Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.906305Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.916651Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.992403Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:43.992513Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:44.046081Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:44.414542Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:45.414142Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:45.414255Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:45.528508Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.424541Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.432134Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.443990Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.479208Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.503514Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.549372Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.620892Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.775293Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.863177Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.896313Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.925820Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.935340Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.953001Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.953121Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:46.989103Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:47.033669Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:47.043819Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:47.043905Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:47.048740Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:47.064101Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:47.091453Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:47.119842Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:18:47.121020Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T14:19:39.558286Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T14:19:39.559350Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T14:19:47.289193Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T14:19:57.692035Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /openapi.json. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/openapi.json' | ConvertTo-Json -Depth 8"
+2026-07-28T14:19:57.924813Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /docs. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/docs' | ConvertTo-Json -Depth 8"
+2026-07-28T14:19:58.156855Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /v3. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3' | ConvertTo-Json -Depth 8"
+2026-07-28T14:20:06.789884Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T14:20:07.379408Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T14:20:10.508164Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fa913-6f0d-71c3-aca6-82603fda7716 turn_id=019fa913-6fd5-7bc0-9c0c-af9a13903ca7 item_id="exec-951adf2e-5131-488b-825c-e7fe8b4b8a70"
+2026-07-28T14:20:10.508202Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fa913-6f0d-71c3-aca6-82603fda7716 turn_id=019fa913-6fd5-7bc0-9c0c-af9a13903ca7 item_id="exec-2ef69dd1-7f67-415a-b126-6e85327c4ef5"

@@ -1,0 +1,117 @@
+2026-07-29T19:58:57.186959Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T19:58:57.187033Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T19:58:57.187731Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T19:58:57.190572Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T19:58:57.199278Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T19:58:57.858683Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T19:58:57.858735Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T19:58:57.859424Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T19:58:57.862429Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T19:59:07.809825Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-29T19:59:12.009584Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g '*'
+2026-07-29T19:59:49.341828Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:80
++ ... :3080/v3/projects/CampusNetwork_07/nodes/AGG_SW_03'; foreach( in @('/ ...
++                                                                  ~
+Missing variable name after foreach.
+At line:1 char:116
++ ... des/AGG_SW_03'; foreach( in @('/config','/configuration','')) { try { ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:152
++ ... fig','/configuration','')) { try { =Invoke-RestMethod -Uri (+); Write ...
++                                                                  ~
+Missing expression after unary operator '+'.
+At line:1 char:176
++ ... )) { try { =Invoke-RestMethod -Uri (+); Write-Output ('URL='+);  | Co ...
++                                                                  ~
+You must provide a value expression following the '+' operator.
+At line:1 char:180
++ ... try { =Invoke-RestMethod -Uri (+); Write-Output ('URL='+);  | Convert ...
++                                                                 ~
+An empty pipe element is not allowed.
+At line:1 char:238
++ ... | ConvertTo-Json -Depth 6 } catch { Write-Output ('ERR='++':'+.Except ...
++                                                               ~~~
+Unexpected token '':'' in expression or statement.
+At line:1 char:238
++ ... ;  | ConvertTo-Json -Depth 6 } catch { Write-Output ('ERR='++':'+.Exc ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:214
++ ...  Write-Output ('URL='+);  | ConvertTo-Json -Depth 6 } catch { Write-O ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:118
++ ... s/AGG_SW_03'; foreach( in @('/config','/configuration','')) { try { = ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:280
++ ... Write-Output ('ERR='++':'+.Exception.Response.StatusCode.value__) } }
++                                                                     ~
+Unexpected token ')' in expression or statement.
+Not all parse errors were reported.  Correct the reported errors and try again.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingVariableNameAfterForeach
+ 
+
+2026-07-29T19:59:57.337380Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:103
++ ... mpusNetwork_07/nodes/AGG_SW_03; foreach($suffix in @(/config,/configu ...
++                                                                 ~
+Missing argument in parameter list.
+At line:1 char:119
++ ... nfiguration,")) { try { $x=Invoke-RestMethod -Uri ($base+$suffix); Wr ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The string is missing the terminator: ".
+At line:1 char:317
++ ... -Output (ERR=+$suffix+:+$_.Exception.Response.StatusCode.value__) } }
++                                                                           ~
+Missing closing ')' in subexpression.
+At line:1 char:316
++ ... -Output (ERR=+$suffix+:+$_.Exception.Response.StatusCode.value__) } }
++                                                                          ~
+Missing closing ')' after expression part of foreach loop.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingArgument
+ 
+
+2026-07-29T20:00:06.470665Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T20:00:06.471862Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T20:00:33.685115Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Get-ChildItem -Force | Select-Object Mode,Length,Name | Format-Table -AutoSize"
+2026-07-29T20:00:40.328454Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /docs. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/docs' | ConvertTo-Json -Depth 10"
+2026-07-29T20:00:45.764375Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/openapi.json' | Conv ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+

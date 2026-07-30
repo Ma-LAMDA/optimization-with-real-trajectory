@@ -1,0 +1,74 @@
+2026-07-28T16:51:21.876042Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T16:51:21.876120Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T16:51:21.876767Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T16:51:21.879676Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T16:51:21.886973Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T16:51:22.711771Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T16:51:22.711808Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T16:51:22.712440Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T16:51:22.716656Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T16:51:31.153464Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-28T16:51:36.771141Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg -n "3080|GNS3|projects/.*/nodes|http client|HTTP client" -S .
+2026-07-28T16:51:59.682506Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-28T16:52:05.533306Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-28T16:52:11.645170Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "$r = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $r | ConvertTo-Json -Depth 5"
+2026-07-28T16:52:17.584331Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:77
++ ... thod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get;  | Convert ...
++                                                                 ~
+An empty pipe element is not allowed.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : EmptyPipeElement
+ 
+
+2026-07-28T16:53:58.023951Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:445
++ ... y%20current-configuration -Method Get).output; $an=($a -split `n | Wh ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:446
++ ... 0current-configuration -Method Get).output; $an=($a -split `n | Where ...
++                                                                ~~
+Unexpected token '`n' in expression or statement.
+At line:1 char:445
++ ... y%20current-configuration -Method Get).output; $an=($a -split `n | Wh ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:477
++ ... d Get).output; $an=($a -split `n | Where-Object {$_ -notmatch ^!Last  ...
++                                                                  ~
+You must provide a value expression following the '-notmatch' operator.
+At line:1 char:478
++ ... output; $an=($a -split `n | Where-Object {$_ -notmatch ^!Last configu ...
++                                                            ~~~~~~
+Unexpected token '^!Last' in expression or statement.
+At line:1 char:193
++ ... stMethod -Uri $test/nodes -Method Get; foreach($n in $nodes){ $a=(Inv ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:499
++ ... -split `n | Where-Object {$_ -notmatch ^!Last configuration}) -join ` ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:506
++ ...  `n | Where-Object {$_ -notmatch ^!Last configuration}) -join `n; $bn ...
++                                                                  ~
+Missing expression after unary operator '-join'.
+At line:1 char:507
++ ...  | Where-Object {$_ -notmatch ^!Last configuration}) -join `n; $bn=($ ...
++                                                                ~~
+Unexpected token '`n' in expression or statement.
+At line:1 char:525
++ ... {$_ -notmatch ^!Last configuration}) -join `n; $bn=($b -split `n | Wh ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+Not all parse errors were reported.  Correct the reported errors and try again.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-28T16:54:09.560026Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$base='http://127.0.0.1:3080/v3/projects/CampusNetwork_02'; `$test='http://127.0.0.1:3080/v3/projects/CampusNetwork_03'; `$nodes=Invoke-RestMethod -Uri ('{0}/nodes' -f `$test) -Method Get; foreach(`$n in `$nodes){ `$a=(Invoke-RestMethod -Uri ('{0}/nodes/{1}/command?cmd=display%20current-configuration' -f `$base,`$n.node_id) -Method Get).output; `$b=(Invoke-RestMethod -Uri ('{0}/nodes/{1}/command?cmd=display%20current-configuration' -f `$test,`$n.node_id) -Method Get).output; `$an=(`$a -split [Environment]::NewLine | Where-Object {`$_ -notmatch '^!Last configuration'}) -join [Environment]::NewLine; `$bn=(`$b -split [Environment]::NewLine | Where-Object {`$_ -notmatch '^!Last configuration'}) -join [Environment]::NewLine; if(`$an -ne `$bn){Write-Output `$n.node_id}}"

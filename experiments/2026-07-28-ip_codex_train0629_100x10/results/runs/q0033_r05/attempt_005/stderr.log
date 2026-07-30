@@ -1,0 +1,89 @@
+2026-07-29T11:44:37.187196Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T11:44:37.187273Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T11:44:37.188154Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T11:44:37.191585Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T11:44:37.200342Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T11:44:40.959197Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T11:44:40.959244Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T11:44:40.960395Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T11:44:40.966887Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T11:44:42.093891Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+2026-07-29T11:44:55.310716Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T11:45:01.040772Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-29T11:45:08.273774Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5"
+2026-07-29T11:45:26.381433Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files
+2026-07-29T11:45:41.381830Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:90
++ ... SH_AR','PE1','PE2','PE3','Core_SW_01','Core_SW_02'); foreach( in ){ W ...
++                                                                  ~
+Missing variable name after foreach.
+At line:1 char:94
++ ... ','PE1','PE2','PE3','Core_SW_01','Core_SW_02'); foreach( in ){ Write- ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:121
++ ... Core_SW_02'); foreach( in ){ Write-Output ('===== '++' ====='); ='htt ...
++                                                          ~~~~~~~~
+Unexpected token '' ====='' in expression or statement.
+At line:1 char:121
++ ... SW_01','Core_SW_02'); foreach( in ){ Write-Output ('===== '++' =====' ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:95
++ ... ,'PE1','PE2','PE3','Core_SW_01','Core_SW_02'); foreach( in ){ Write-O ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:129
++ ... ore_SW_02'); foreach( in ){ Write-Output ('===== '++' ====='); ='http ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:275
++ ... =display%20current-configuration'; (Invoke-RestMethod -Uri ).output }
++                                                                         ~
+Unexpected token '}' in expression or statement.
+At line:1 char:111
++ ... e_SW_01','Core_SW_02'); foreach( in ){ Write-Output ('===== '++' ==== ...
++                                                          ~~~~~~~~
+The '++' operator works only on variables or on properties.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingVariableNameAfterForeach
+ 
+
+2026-07-29T11:46:07.191191Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$nodes=@('PE1','PE2','PE3'); foreach(`$n in `$nodes){ Write-Output ('===== '+`$n+' ====='); `$u='http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/'+`$n+'/command?cmd=display%20current-configuration'; `$o=(Invoke-RestMethod -Uri `$u).output; `$o -split \"`n\" | Select-String -Pattern 'static-lsp|ip route-static|mpls|vpn-instance|description to_PE|interface Ethernet1/0/[12]|ip address 10.10.0' }"
+2026-07-29T11:46:42.569830Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /openapi.json. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$urls=@('http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SH_AR','http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SH_AR/commands','http://127.0.0.1:3080/openapi.json'); foreach(`$u in `$urls){ Write-Output ('===== '+`$u+' ====='); try{ Invoke-RestMethod -Uri `$u | ConvertTo-Json -Depth 8 } catch { Write-Output `$_.Exception.Message } }"
+2026-07-29T11:47:47.109250Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+2026-07-29T11:47:59.679986Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$cmd='display current-configuration'; `$e=[System.Uri]::EscapeDataString(`$cmd); `$a=(Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/PE1/command?cmd='+`$e)).output -split [Environment]::NewLine; `$b=(Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf/nodes/PE1/command?cmd='+`$e)).output -split [Environment]::NewLine; Compare-Object -ReferenceObject `$b -DifferenceObject `$a"
+2026-07-29T11:48:09.179967Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+The string is missing the terminator: ".
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TerminatorExpectedAtEndOfString
+ 
+
+2026-07-29T11:48:25.450981Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:198
++ ... ts/CampusNetwork_05/nodes/PE1/command?cmd=+$e)).output -split \r?\n;  ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:199
++ ... pusNetwork_05/nodes/PE1/command?cmd=+$e)).output -split \r?\n; $b=(In ...
++                                                             ~~~~~
+Unexpected token '\r?\n' in expression or statement.
+At line:1 char:332
++ ... pusNetwork-for-perf/nodes/PE1/command?cmd=+$e)).output -split \r?\n;  ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:333
++ ... work-for-perf/nodes/PE1/command?cmd=+$e)).output -split \r?\n; Compar ...
++                                                             ~~~~~
+Unexpected token '\r?\n' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-29T11:48:37.620763Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)

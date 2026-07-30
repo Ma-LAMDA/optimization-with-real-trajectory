@@ -1,0 +1,45 @@
+2026-07-29T13:28:58.117398Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:28:58.117474Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:28:58.118247Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:28:58.121216Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:28:58.129836Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T13:29:01.403140Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:29:01.403174Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:29:01.403827Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:29:01.406646Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:29:08.520530Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-29T13:29:14.580898Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: & 'C:\Windows\System32\curl.exe' -sS 'http://127.0.0.1:3080/v3/projects'
+2026-07-29T13:29:20.574124Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; Get-ChildItem -Recurse -Force -File | Select-Object -First 200 FullName
+2026-07-29T13:29:41.314866Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: (Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content
+2026-07-29T13:30:07.854583Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+=http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SZ_Core/command?cmd=display%20current-configuration : The ter
+m '=http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SZ_Core/command?cmd=display%20current-configuration' is no
+t recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if
+ a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ ='http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SZ_Core/co ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=http://127.0.0...t-configuration:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+Invoke-RestMethod : Missing an argument for parameter 'Uri'. Specify a parameter of type 'System.Uri' and try again.
+At line:1 char:132
++ ... ?cmd=display%20current-configuration'; Invoke-RestMethod -Uri  -Metho ...
++                                                              ~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Invoke-RestMethod], ParameterBindingException
+    + FullyQualifiedErrorId : MissingArgument,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+ 
+
+2026-07-29T13:30:26.844843Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$cmds=@('show running-config','show run','display current-configuration','display current-configuration interface','display interface brief','show interfaces','display ip routing-table','show ip route','ping 10.1.40.254','tracert 10.1.40.254','traceroute 10.1.40.254'); foreach (`$c in `$cmds) { `$e=[uri]::EscapeDataString(`$c); `$r=Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SZ_Core/command?cmd='+`$e) -Method Get; if (`$r.output -notlike 'Error:*') { [pscustomobject]@{command=`$c;output=`$r.output} } } | ConvertTo-Json -Depth 5"
+2026-07-29T13:30:39.015062Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$cmds=@('show running-config','show run','display current-configuration','display current-configuration interface','display interface brief','show interfaces','display ip routing-table','show ip route','ping 10.1.40.254','tracert 10.1.40.254','traceroute 10.1.40.254'); `$found=@(); foreach (`$c in `$cmds) { `$e=[System.Uri]::EscapeDataString(`$c); `$r=Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SZ_Core/command?cmd='+`$e) -Method Get; if (`$r.output -notlike 'Error:*') { `$found += [pscustomobject]@{command=`$c;output=`$r.output} } }; `$found | ConvertTo-Json -Depth 5"
+2026-07-29T13:31:17.165777Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 183ms)... turn_id=019fae10-6671-7bd3-b245-c412c4dd26ac retries=1 max_retries=5 sampling_error=stream disconnected before completion: WebSocket protocol error: Connection reset without closing handshake
+2026-07-29T13:33:07.773956Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+The string is missing the terminator: ".
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TerminatorExpectedAtEndOfString
+ 
+

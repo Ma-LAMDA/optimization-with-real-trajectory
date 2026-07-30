@@ -1,0 +1,55 @@
+2026-07-28T15:56:07.292978Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T15:56:07.293044Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T15:56:07.293785Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T15:56:07.297181Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T15:56:07.305584Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T15:56:08.070545Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T15:56:08.070580Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T15:56:08.071381Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T15:56:08.074924Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T15:56:17.046280Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-28T15:56:20.423904Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files
+2026-07-28T15:56:25.536038Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-28T15:56:32.404033Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: (Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content
+2026-07-28T15:56:37.952892Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-28T15:58:22.971654Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:327
++ ... t-configuration -Method Get; Compare-Object ($b.output -split `r`n) ( ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:328
++ ... figuration -Method Get; Compare-Object ($b.output -split `r`n) ($a.ou ...
++                                                              ~~~~
+Unexpected token '`r`n' in expression or statement.
+At line:1 char:327
++ ... t-configuration -Method Get; Compare-Object ($b.output -split `r`n) ( ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:332
++ ... iguration -Method Get; Compare-Object ($b.output -split `r`n) ($a.out ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:351
++ ... d Get; Compare-Object ($b.output -split `r`n) ($a.output -split `r`n)
++                                                                    ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:352
++ ... d Get; Compare-Object ($b.output -split `r`n) ($a.output -split `r`n)
++                                                                     ~~~~
+Unexpected token '`r`n' in expression or statement.
+At line:1 char:351
++ ... d Get; Compare-Object ($b.output -split `r`n) ($a.output -split `r`n)
++                                                                    ~
+Missing closing ')' in expression.
+At line:1 char:356
++ ... d Get; Compare-Object ($b.output -split `r`n) ($a.output -split `r`n)
++                                                                         ~
+Unexpected token ')' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-28T15:58:29.159947Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '$a=Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_02/nodes/PE1/command?cmd=display%20current-configuration" -Method Get; $b=Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf/nodes/PE1/command?cmd=display%20current-configuration" -Method Get; Compare-Object ($b.output.Split([Environment]::NewLine)) ($a.output.Split([Environment]::NewLine))'
+2026-07-28T15:59:58.419484Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_02/nodes/BJHQ_CSR1000V_GW_01/command?cmd=show%20running-config' -Method Get).output | Select-String -Pattern '160.0.0.1'"

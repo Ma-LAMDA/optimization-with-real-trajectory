@@ -1,0 +1,1458 @@
+2026-07-29T12:26:26.480452Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T12:26:26.480528Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T12:26:26.481276Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T12:26:26.484920Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T12:26:26.494220Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T12:26:27.230746Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T12:26:27.230801Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T12:26:27.231526Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T12:26:27.235384Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T12:26:36.520113Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5
+2026-07-29T12:26:40.173754Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files
+2026-07-29T12:27:34.387895Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/openapi.json').Content"
+2026-07-29T12:27:39.867391Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /openapi.json. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/openapi.json' | ConvertTo-Json -Depth 20"
+2026-07-29T12:27:46.321013Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Message : The term '.Exception.Message' is not recognized as the name of a cmdlet, function, script file, or
+ operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try a
+gain.
+At line:1 char:152
++ ... er2/config' | ConvertTo-Json -Depth 10 } catch { .Exception.Message }
++                                                      ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Message:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T12:27:54.753221Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T12:29:19.871650Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "((Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SZ_Core/command?cmd=show%20running-config').output -split [Environment]::NewLine) | Select-String -Pattern 'interface|description|bandwidth|speed|rate|qos|traffic|policy|queue|shape|mtu|delay|ip route|ip address'"
+2026-07-29T12:29:27.811628Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "((Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SZ_Core/command?cmd=show%20running-config').output -split '\n') | Select-String -Pattern 'interface|description|bandwidth|speed|rate|qos|traffic|policy|queue|shape|mtu|delay|ip route|ip address'"
+2026-07-29T12:30:34.369003Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10.2 seconds
+Output:
+command timed out after 10234 milliseconds
+!Software Version V800R022C10SPC100B315
+!Last configuration was updated at 2026-06-15 12:29:54+00:00
+#
+sysname SZ_AR
+#
+undo FTP server-source all-interface
+undo FTP ipv6 server-source all-interface
+#
+ntp-service server source-interface all disable
+ntp-service ipv6 server source-interface all disable
+#
+undo telnet server enable
+undo telnet ipv6 server enable
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+dhcp server request-packet all-interface disable
+#
+aaa
+ #
+ authentication-scheme default0
+ #
+ authentication-scheme default1
+ #
+ authentication-scheme default
+  authentication-mode local radius
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default0
+ #
+ accounting-scheme default1
+ #
+ domain default0
+ #
+ domain default1
+ #
+ domain default_admin
+#
+license
+#
+warranty
+#
+interface Ethernet1/0/0
+ description to_SZ_Core_Ethernet2/4
+ undo shutdown
+ ip address 10.3.100.1 255.255.255.252
+#
+interface Ethernet1/0/1
+ description to_PE3_Ethernet1/0/0
+ undo shutdown
+ ip address 10.10.100.10 255.255.255.252
+#
+interface Ethernet1/0/2
+ undo shutdown
+#
+interface Ethernet1/0/3
+ undo shutdown
+#
+interface Ethernet1/0/4
+ undo shutdown
+#
+interface Ethernet1/0/5
+ undo shutdown
+#
+interface Ethernet1/0/6
+ undo shutdown
+#
+interface Ethernet1/0/7
+ undo shutdown
+#
+interface Ethernet1/0/8
+ undo shutdown
+#
+interface Ethernet1/0/9
+ undo shutdown
+#
+interface Ethernet1/1/0
+ undo shutdown
+#
+interface Ethernet1/1/1
+ undo shutdown
+#
+interface Ethernet1/1/2
+ undo shutdown
+#
+interface Ethernet1/1/3
+ undo shutdown
+#
+interface Ethernet1/1/4
+ undo shutdown
+#
+interface Ethernet1/1/5
+ undo shutdown
+#
+interface Ethernet1/1/6
+ undo shutdown
+#
+interface Ethernet1/1/7
+ undo shutdown
+#
+interface Ethernet1/1/8
+ undo shutdown
+#
+interface Ethernet1/1/9
+ undo shutdown
+#
+interface Ethernet2/0/0
+ undo shutdown
+#
+interface Ethernet2/0/1
+ undo shutdown
+#
+interface Ethernet2/0/2
+ undo shutdown
+#
+interface Ethernet2/0/3
+ undo shutdown
+#
+interface Ethernet2/0/4
+ undo shutdown
+#
+interface Ethernet2/0/5
+ undo shutdown
+#
+interface Ethernet2/0/6
+ undo shutdown
+#
+interface Ethernet2/0/7
+ undo shutdown
+#
+interface Ethernet2/0/8
+ undo shutdown
+#
+interface Ethernet2/0/9
+ undo shutdown
+#
+interface Ethernet2/1/0
+ undo shutdown
+#
+interface Ethernet2/1/1
+ undo shutdown
+#
+interface Ethernet2/1/2
+ undo shutdown
+#
+interface Ethernet2/1/3
+ undo shutdown
+#
+interface Ethernet2/1/4
+ undo shutdown
+#
+interface Ethernet2/1/5
+ undo shutdown
+#
+interface Ethernet2/1/6
+ undo shutdown
+#
+interface Ethernet2/1/7
+ undo shutdown
+#
+interface Ethernet2/1/8
+ undo shutdown
+#
+interface Ethernet2/1/9
+ undo shutdown
+#
+interface GigabitEthernet0/0/0
+ undo shutdown
+#
+interface NULL0
+#
+bgp 65003
+ private-4-byte-as enable
+ peer 10.10.100.9 as-number 65000
+ #
+ ipv4-family unicast
+  undo synchronization
+  import-route static
+  peer 10.10.100.9 enable
+#
+ip route-static 10.3.10.0 255.255.255.0 10.3.100.2
+ip route-static 10.3.20.0 255.255.255.0 10.3.100.2
+ip route-static 10.3.30.0 255.255.255.0 10.3.100.2
+#
+snmp-agent local-engineid 800007DB0338BA26994801
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512 x509v3-rsa2048-sha256
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256
+#
+user-interface maximum-vty 21
+#
+user-interface con 0
+#
+user-interface aux 0
+#
+netconf
+ activate module huawei-ip
+#
+local-aaa-server
+#
+pki domain default
+#
+set license LCR5S40VA5C00 threshold 50
+#
+return
+
+2026-07-29T12:30:34.421237Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10 seconds
+Output:
+command timed out after 10029 milliseconds
+!Software Version V800R022C10SPC100B315
+!Last configuration was updated at 2026-06-16 08:42:13+00:00
+#
+sysname PE3
+#
+undo FTP server-source all-interface
+undo FTP ipv6 server-source all-interface
+#
+ntp-service server source-interface all disable
+ntp-service ipv6 server source-interface all disable
+#
+router id 3.3.3.3
+#
+undo telnet server enable
+undo telnet ipv6 server enable
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+ip vpn-instance SZ
+ ipv4-family
+  route-distinguisher 3:3
+  apply-label per-instance
+  vpn-target 2:2 export-extcommunity
+  vpn-target 1:1 import-extcommunity
+#
+mpls lsr-id 3.3.3.3
+#
+mpls
+#
+mpls ldp
+ #
+ ipv4-family
+#
+dhcp server request-packet all-interface disable
+#
+aaa
+ #
+ authentication-scheme default0
+ #
+ authentication-scheme default1
+ #
+ authentication-scheme default
+  authentication-mode local radius
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default0
+ #
+ accounting-scheme default1
+ #
+ domain default0
+ #
+ domain default1
+ #
+ domain default_admin
+#
+license
+#
+warranty
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 49.0001.0030.0000.0003.00
+#
+interface Ethernet1/0/0
+ description to_SZ_AR_Ethernet1/0/1
+ undo shutdown
+ ip binding vpn-instance SZ
+ ip address 10.10.100.9 255.255.255.252
+#
+interface Ethernet1/0/1
+ description to_PE1_Ethernet1/0/2
+ undo shutdown
+ ip address 10.10.0.6 255.255.255.252
+ isis enable 1
+ isis circuit-type p2p
+ isis ppp-negotiation 2-way
+ mpls
+ mpls ldp
+#
+interface Ethernet1/0/2
+ description to_PE2_Ethernet1/0/2
+ undo shutdown
+ ip address 10.10.0.10 255.255.255.252
+ isis enable 1
+ isis circuit-type p2p
+ isis ppp-negotiation 2-way
+ mpls
+ mpls ldp
+#
+interface Ethernet1/0/3
+ undo shutdown
+#
+interface Ethernet1/0/4
+ undo shutdown
+#
+interface Ethernet1/0/5
+ undo shutdown
+#
+interface Ethernet1/0/6
+ undo shutdown
+#
+interface Ethernet1/0/7
+ undo shutdown
+#
+interface Ethernet1/0/8
+ undo shutdown
+#
+interface Ethernet1/0/9
+ undo shutdown
+#
+interface Ethernet1/1/0
+ undo shutdown
+#
+interface Ethernet1/1/1
+ undo shutdown
+#
+interface Ethernet1/1/2
+ undo shutdown
+#
+interface Ethernet1/1/3
+ undo shutdown
+#
+interface Ethernet1/1/4
+ undo shutdown
+#
+interface Ethernet1/1/5
+ undo shutdown
+#
+interface Ethernet1/1/6
+ undo shutdown
+#
+interface Ethernet1/1/7
+ undo shutdown
+#
+interface Ethernet1/1/8
+ undo shutdown
+#
+interface Ethernet1/1/9
+ undo shutdown
+#
+interface Ethernet2/0/0
+ undo shutdown
+#
+interface Ethernet2/0/1
+ undo shutdown
+#
+interface Ethernet2/0/2
+ undo shutdown
+#
+interface Ethernet2/0/3
+ undo shutdown
+#
+interface Ethernet2/0/4
+ undo shutdown
+#
+interface Ethernet2/0/5
+ undo shutdown
+#
+interface Ethernet2/0/6
+ undo shutdown
+#
+interface Ethernet2/0/7
+ undo shutdown
+#
+interface Ethernet2/0/8
+ undo shutdown
+#
+interface Ethernet2/0/9
+ undo shutdown
+#
+interface Ethernet2/1/0
+ undo shutdown
+#
+interface Ethernet2/1/1
+ undo shutdown
+#
+interface Ethernet2/1/2
+ undo shutdown
+#
+interface Ethernet2/1/3
+ undo shutdown
+#
+interface Ethernet2/1/4
+ undo shutdown
+#
+interface Ethernet2/1/5
+ undo shutdown
+#
+interface Ethernet2/1/6
+ undo shutdown
+#
+interface Ethernet2/1/7
+ undo shutdown
+#
+interface Ethernet2/1/8
+ undo shutdown
+#
+interface Ethernet2/1/9
+ undo shutdown
+#
+interface GigabitEthernet0/0/0
+ undo shutdown
+#
+interface LoopBack0
+ ip address 3.3.3.3 255.255.255.255
+ isis enable 1
+#
+interface NULL0
+#
+bgp 65000
+ undo default ipv4-unicast
+ private-4-byte-as enable
+ peer 1.1.1.1 as-number 65000
+ peer 1.1.1.1 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  undo peer 1.1.1.1 enable
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 1.1.1.1 enable
+ #
+ ipv4-family vpn-instance SZ
+  peer 10.10.100.10 as-number 65003
+#
+snmp-agent local-engineid 800007DB0338BA7D09F601
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512 x509v3-rsa2048-sha256
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256
+#
+user-interface maximum-vty 21
+#
+user-interface con 0
+#
+user-interface aux 0
+#
+netconf
+ activate module huawei-ip
+#
+local-aaa-server
+#
+pki domain default
+#
+set license LCR5S40VA5C00 threshold 50
+#
+return
+
+2026-07-29T12:30:35.305520Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10.5 seconds
+Output:
+command timed out after 10486 milliseconds
+!Software Version V800R022C10SPC100B315
+!Last configuration was updated at 2026-06-16 03:07:48+00:00
+#
+sysname PE1
+#
+undo FTP server-source all-interface
+undo FTP ipv6 server-source all-interface
+#
+ntp-service server source-interface all disable
+ntp-service ipv6 server source-interface all disable
+#
+router id 1.1.1.1
+#
+undo telnet server enable
+undo telnet ipv6 server enable
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+ip vpn-instance BJ_In
+ ipv4-family
+  route-distinguisher 1:1
+  apply-label per-instance
+  vpn-target 2:2 import-extcommunity
+#
+ip vpn-instance BJ_Out
+ ipv4-family
+  route-distinguisher 1:2
+  apply-label per-instance
+  vpn-target 1:1 export-extcommunity
+#
+mpls lsr-id 1.1.1.1
+#
+mpls
+#
+mpls ldp
+ #
+ ipv4-family
+#
+dhcp server request-packet all-interface disable
+#
+aaa
+ #
+ authentication-scheme default0
+ #
+ authentication-scheme default1
+ #
+ authentication-scheme default
+  authentication-mode local radius
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default0
+ #
+ accounting-scheme default1
+ #
+ domain default0
+ #
+ domain default1
+ #
+ domain default_admin
+#
+license
+#
+warranty
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 49.0001.0010.0000.0001.00
+#
+interface Ethernet1/0/0
+ undo shutdown
+#
+interface Ethernet1/0/1
+ description to_PE2_Ethernet1/0/1
+ undo shutdown
+ ip address 10.10.0.1 255.255.255.252
+ isis enable 1
+ isis circuit-type p2p
+ isis ppp-negotiation 2-way
+ mpls
+ mpls ldp
+#
+interface Ethernet1/0/2
+ description to_PE3_Ethernet1/0/1
+ undo shutdown
+ ip address 10.10.0.5 255.255.255.252
+ isis enable 1
+ isis circuit-type p2p
+ isis ppp-negotiation 2-way
+ mpls
+ mpls ldp
+#
+interface Ethernet1/0/3
+ undo shutdown
+#
+interface Ethernet1/0/4
+ undo shutdown
+#
+interface Ethernet1/0/5
+ undo shutdown
+#
+interface Ethernet1/0/6
+ undo shutdown
+#
+interface Ethernet1/0/7
+ undo shutdown
+#
+interface Ethernet1/0/8
+ undo shutdown
+#
+interface Ethernet1/0/9
+ undo shutdown
+#
+interface Ethernet1/1/0
+ undo shutdown
+#
+interface Ethernet1/1/1
+ undo shutdown
+#
+interface Ethernet1/1/2
+ undo shutdown
+#
+interface Ethernet1/1/3
+ undo shutdown
+#
+interface Ethernet1/1/4
+ undo shutdown
+#
+interface Ethernet1/1/5
+ undo shutdown
+#
+interface Ethernet1/1/6
+ undo shutdown
+#
+interface Ethernet1/1/7
+ undo shutdown
+#
+interface Ethernet1/1/8
+ undo shutdown
+#
+interface Ethernet1/1/9
+ undo shutdown
+#
+interface Ethernet2/0/0
+ description to_BJHQ_CSR1000V_GW_01_Gi4
+ undo shutdown
+ ip binding vpn-instance BJ_In
+ ip address 10.10.100.1 255.255.255.252
+#
+interface Ethernet2/0/1
+ description to_BJHQ_CSR1000V_GW_01_Gi5
+ undo shutdown
+ ip binding vpn-instance BJ_Out
+ ip address 10.10.100.13 255.255.255.252
+#
+interface Ethernet2/0/2
+ undo shutdown
+#
+interface Ethernet2/0/3
+ undo shutdown
+#
+interface Ethernet2/0/4
+ undo shutdown
+#
+interface Ethernet2/0/5
+ undo shutdown
+#
+interface Ethernet2/0/6
+ undo shutdown
+#
+interface Ethernet2/0/7
+ undo shutdown
+#
+interface Ethernet2/0/8
+ undo shutdown
+#
+interface Ethernet2/0/9
+ undo shutdown
+#
+interface Ethernet2/1/0
+ undo shutdown
+#
+interface Ethernet2/1/1
+ undo shutdown
+#
+interface Ethernet2/1/2
+ undo shutdown
+#
+interface Ethernet2/1/3
+ undo shutdown
+#
+interface Ethernet2/1/4
+ undo shutdown
+#
+interface Ethernet2/1/5
+ undo shutdown
+#
+interface Ethernet2/1/6
+ undo shutdown
+#
+interface Ethernet2/1/7
+ undo shutdown
+#
+interface Ethernet2/1/8
+ undo shutdown
+#
+interface Ethernet2/1/9
+ undo shutdown
+#
+interface GigabitEthernet0/0/0
+ undo shutdown
+#
+interface LoopBack0
+ ip address 1.1.1.1 255.255.255.255
+ isis enable 1
+#
+interface NULL0
+#
+bgp 65000
+ undo default ipv4-unicast
+ private-4-byte-as enable
+ peer 2.2.2.2 as-number 65000
+ peer 2.2.2.2 connect-interface LoopBack0
+ peer 3.3.3.3 as-number 65000
+ peer 3.3.3.3 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  undo peer 2.2.2.2 enable
+  undo peer 3.3.3.3 enable
+ #
+ ipv4-family vpnv4
+  undo policy vpn-target
+  peer 2.2.2.2 enable
+  peer 2.2.2.2 reflect-client
+  peer 3.3.3.3 enable
+  peer 3.3.3.3 reflect-client
+ #
+ ipv4-family vpn-instance BJ_In
+  peer 10.10.100.2 as-number 65001
+ #
+ ipv4-family vpn-instance BJ_Out
+  peer 10.10.100.14 as-number 65001
+  peer 10.10.100.14 allow-as-loop
+#
+ip route-static 150.0.0.1 255.255.255.255 10.10.0.2 preference 255
+ip route-static 160.0.0.1 255.255.255.255 10.10.0.6 preference 255
+#
+static-lsp transit LPTESTOR in-label 1001 nexthop 10.10.0.2 out-label 1001
+#
+snmp-agent local-engineid 800007DB0338BA2ED72701
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512 x509v3-rsa2048-sha256
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256
+#
+user-interface maximum-vty 21
+#
+user-interface con 0
+#
+user-interface aux 0
+#
+netconf
+ activate module huawei-ip
+#
+local-aaa-server
+#
+pki domain default
+#
+set license LCR5S40VA5C00 threshold 50
+#
+return
+
+2026-07-29T12:30:37.157975Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.5 seconds
+Output:
+command timed out after 12536 milliseconds
+
+2026-07-29T12:30:37.176823Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 11.4 seconds
+Output:
+command timed out after 11445 milliseconds
+!Software Version V800R022C10SPC100B315
+!Last configuration was updated at 2026-06-11 07:34:17+00:00
+#
+sysname PE3
+#
+undo FTP server-source all-interface
+undo FTP ipv6 server-source all-interface
+#
+ntp-service server source-interface all disable
+ntp-service ipv6 server source-interface all disable
+#
+router id 3.3.3.3
+#
+undo telnet server enable
+undo telnet ipv6 server enable
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+ip vpn-instance SZ
+ ipv4-family
+  route-distinguisher 3:3
+  apply-label per-instance
+  vpn-target 2:2 export-extcommunity
+  vpn-target 1:1 import-extcommunity
+#
+mpls lsr-id 3.3.3.3
+#
+mpls
+#
+mpls ldp
+ #
+ ipv4-family
+#
+dhcp server request-packet all-interface disable
+#
+aaa
+ #
+ authentication-scheme default0
+ #
+ authentication-scheme default1
+ #
+ authentication-scheme default
+  authentication-mode local radius
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default0
+ #
+ accounting-scheme default1
+ #
+ domain default0
+ #
+ domain default1
+ #
+ domain default_admin
+#
+license
+#
+warranty
+#
+isis 1
+ is-level level-2
+ cost-style wide
+ network-entity 49.0001.0030.0000.0003.00
+#
+interface Ethernet1/0/0
+ description to_SZ_AR_Ethernet1/0/1
+ undo shutdown
+ ip binding vpn-instance SZ
+ ip address 10.10.100.9 255.255.255.252
+#
+interface Ethernet1/0/1
+ description to_PE1_Ethernet1/0/2
+ undo shutdown
+ ip address 10.10.0.6 255.255.255.252
+ isis enable 1
+ isis circuit-type p2p
+ isis ppp-negotiation 2-way
+ mpls
+ mpls ldp
+#
+interface Ethernet1/0/2
+ description to_PE2_Ethernet1/0/2
+ undo shutdown
+ ip address 10.10.0.10 255.255.255.252
+ isis enable 1
+ isis circuit-type p2p
+ isis ppp-negotiation 2-way
+ mpls
+ mpls ldp
+#
+interface Ethernet1/0/3
+ undo shutdown
+#
+interface Ethernet1/0/4
+ undo shutdown
+#
+interface Ethernet1/0/5
+ undo shutdown
+#
+interface Ethernet1/0/6
+ undo shutdown
+#
+interface Ethernet1/0/7
+ undo shutdown
+#
+interface Ethernet1/0/8
+ undo shutdown
+#
+interface Ethernet1/0/9
+ undo shutdown
+#
+interface Ethernet1/1/0
+ undo shutdown
+#
+interface Ethernet1/1/1
+ undo shutdown
+#
+interface Ethernet1/1/2
+ undo shutdown
+#
+interface Ethernet1/1/3
+ undo shutdown
+#
+interface Ethernet1/1/4
+ undo shutdown
+#
+interface Ethernet1/1/5
+ undo shutdown
+#
+interface Ethernet1/1/6
+ undo shutdown
+#
+interface Ethernet1/1/7
+ undo shutdown
+#
+interface Ethernet1/1/8
+ undo shutdown
+#
+interface Ethernet1/1/9
+ undo shutdown
+#
+interface Ethernet2/0/0
+ undo shutdown
+#
+interface Ethernet2/0/1
+ undo shutdown
+#
+interface Ethernet2/0/2
+ undo shutdown
+#
+interface Ethernet2/0/3
+ undo shutdown
+#
+interface Ethernet2/0/4
+ undo shutdown
+#
+interface Ethernet2/0/5
+ undo shutdown
+#
+interface Ethernet2/0/6
+ undo shutdown
+#
+interface Ethernet2/0/7
+ undo shutdown
+#
+interface Ethernet2/0/8
+ undo shutdown
+#
+interface Ethernet2/0/9
+ undo shutdown
+#
+interface Ethernet2/1/0
+ undo shutdown
+#
+interface Ethernet2/1/1
+ undo shutdown
+#
+interface Ethernet2/1/2
+ undo shutdown
+#
+interface Ethernet2/1/3
+ undo shutdown
+#
+interface Ethernet2/1/4
+ undo shutdown
+#
+interface Ethernet2/1/5
+ undo shutdown
+#
+interface Ethernet2/1/6
+ undo shutdown
+#
+interface Ethernet2/1/7
+ undo shutdown
+#
+interface Ethernet2/1/8
+ undo shutdown
+#
+interface Ethernet2/1/9
+ undo shutdown
+#
+interface GigabitEthernet0/0/0
+ undo shutdown
+#
+interface LoopBack0
+ ip address 3.3.3.3 255.255.255.255
+ isis enable 1
+#
+interface NULL0
+#
+bgp 65000
+ undo default ipv4-unicast
+ private-4-byte-as enable
+ peer 1.1.1.1 as-number 65000
+ peer 1.1.1.1 connect-interface LoopBack0
+ #
+ ipv4-family unicast
+  undo synchronization
+  undo peer 1.1.1.1 enable
+ #
+ ipv4-family vpnv4
+  policy vpn-target
+  peer 1.1.1.1 enable
+ #
+ ipv4-family vpn-instance SZ
+  peer 10.10.100.10 as-number 65003
+#
+snmp-agent local-engineid 800007DB0338BA7D09F601
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512 x509v3-rsa2048-sha256
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256
+#
+user-interface maximum-vty 21
+#
+user-interface con 0
+#
+user-interface aux 0
+#
+netconf
+ activate module huawei-ip
+#
+local-aaa-server
+#
+pki domain default
+#
+set license LCR5S40VA5C00 threshold 50
+#
+return
+
+2026-07-29T12:30:37.337957Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.1 seconds
+Output:
+command timed out after 12080 milliseconds
+
+2026-07-29T12:30:37.342739Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.5 seconds
+Output:
+command timed out after 12515 milliseconds
+
+2026-07-29T12:30:37.381981Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.5 seconds
+Output:
+command timed out after 12513 milliseconds
+
+2026-07-29T12:30:37.795877Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.5 seconds
+Output:
+command timed out after 12532 milliseconds
+
+2026-07-29T12:30:38.018945Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14036 milliseconds
+
+2026-07-29T12:30:38.150353Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.9 seconds
+Output:
+command timed out after 13854 milliseconds
+
+2026-07-29T12:30:38.177260Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14025 milliseconds
+
+2026-07-29T12:30:38.510483Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14034 milliseconds
+
+2026-07-29T12:30:38.511114Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14033 milliseconds
+
+2026-07-29T12:30:38.558513Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14041 milliseconds
+
+2026-07-29T12:30:38.647916Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.8 seconds
+Output:
+command timed out after 12763 milliseconds
+
+2026-07-29T12:30:38.649054Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14028 milliseconds
+
+2026-07-29T12:30:38.673928Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.4 seconds
+Output:
+command timed out after 13404 milliseconds
+
+2026-07-29T12:30:38.674768Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14028 milliseconds
+
+2026-07-29T12:30:38.699797Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14015 milliseconds
+
+2026-07-29T12:30:38.762397Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14025 milliseconds
+
+2026-07-29T12:30:38.837557Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14028 milliseconds
+
+2026-07-29T12:30:38.838125Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14034 milliseconds
+
+2026-07-29T12:30:38.857256Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14029 milliseconds
+
+2026-07-29T12:30:38.857896Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14039 milliseconds
+
+2026-07-29T12:30:38.858500Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14016 milliseconds
+
+2026-07-29T12:30:38.889013Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14036 milliseconds
+
+2026-07-29T12:30:38.890307Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14022 milliseconds
+
+2026-07-29T12:30:38.891497Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14019 milliseconds
+
+2026-07-29T12:30:38.892252Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14020 milliseconds
+
+2026-07-29T12:30:38.948440Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.6 seconds
+Output:
+command timed out after 13566 milliseconds
+
+2026-07-29T12:30:38.965192Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.7 seconds
+Output:
+command timed out after 13691 milliseconds
+
+2026-07-29T12:30:38.965839Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14024 milliseconds
+
+2026-07-29T12:30:39.033258Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.3 seconds
+Output:
+command timed out after 12326 milliseconds
+
+2026-07-29T12:30:39.034113Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14011 milliseconds
+
+2026-07-29T12:30:39.062626Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14037 milliseconds
+
+2026-07-29T12:30:39.114956Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.9 seconds
+Output:
+command timed out after 12947 milliseconds
+
+2026-07-29T12:30:39.147599Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.5 seconds
+Output:
+command timed out after 13506 milliseconds
+
+2026-07-29T12:30:39.159373Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.3 seconds
+Output:
+command timed out after 13269 milliseconds
+
+2026-07-29T12:30:39.237441Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.6 seconds
+Output:
+command timed out after 13632 milliseconds
+
+2026-07-29T12:30:39.247722Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.6 seconds
+Output:
+command timed out after 13626 milliseconds
+
+2026-07-29T12:30:39.269471Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14010 milliseconds
+
+2026-07-29T12:30:39.285475Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14010 milliseconds
+
+2026-07-29T12:30:39.288080Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 12.8 seconds
+Output:
+command timed out after 12792 milliseconds
+
+2026-07-29T12:30:39.296490Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.1 seconds
+Output:
+command timed out after 13107 milliseconds
+
+2026-07-29T12:30:39.368122Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 13967 milliseconds
+
+2026-07-29T12:30:39.396594Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14022 milliseconds
+
+2026-07-29T12:30:39.397399Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14018 milliseconds
+
+2026-07-29T12:30:39.427593Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14026 milliseconds
+
+2026-07-29T12:30:39.428207Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14022 milliseconds
+
+2026-07-29T12:30:39.464292Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.6 seconds
+Output:
+command timed out after 13589 milliseconds
+
+2026-07-29T12:30:39.522481Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14027 milliseconds
+
+2026-07-29T12:30:39.559982Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.3 seconds
+Output:
+command timed out after 13265 milliseconds
+
+2026-07-29T12:30:39.599086Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.9 seconds
+Output:
+command timed out after 13908 milliseconds
+
+2026-07-29T12:30:39.841456Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13 seconds
+Output:
+command timed out after 13039 milliseconds
+
+2026-07-29T12:30:39.917330Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.6 seconds
+Output:
+command timed out after 13557 milliseconds
+
+2026-07-29T12:30:39.918144Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14031 milliseconds
+
+2026-07-29T12:32:24.179419Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.180886Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.185001Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.191317Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.194347Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.195501Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.195614Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.211699Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.215837Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.225004Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.225138Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.229522Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.229639Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.245353Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.249777Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.261234Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.265593Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.316182Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.325858Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.334334Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.334522Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.338977Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.339094Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.358762Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.363024Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.450461Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.454654Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.483277Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.487788Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.581399Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:24.586579Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.212820Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.223092Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.256500Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.265415Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.525070Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.559131Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.585696Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.587256Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.634219Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.643368Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.665626Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.665732Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.676176Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.682969Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.687553Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.691864Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.695886Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.700009Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.700086Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:32:30.701926Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T12:33:53.474617Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)
+2026-07-29T12:34:09.902165Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)
+2026-07-29T12:34:24.783323Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fadd7-26d7-7e80-af9f-7402f00d3efa turn_id=019fadd7-27aa-7752-b10c-223089b9a1f1 item_id="exec-e7b9a73e-4d55-40a6-ba78-5b1cfb8e0215"
+2026-07-29T12:34:24.783384Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fadd7-26d7-7e80-af9f-7402f00d3efa turn_id=019fadd7-27aa-7752-b10c-223089b9a1f1 item_id="exec-1f111208-1a69-4591-8b22-f97c090c8a77"
+2026-07-29T12:34:24.783394Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fadd7-26d7-7e80-af9f-7402f00d3efa turn_id=019fadd7-27aa-7752-b10c-223089b9a1f1 item_id="exec-1716d5a8-8e10-46ef-88d3-f60e7693d83b"
+2026-07-29T12:34:24.783401Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fadd7-26d7-7e80-af9f-7402f00d3efa turn_id=019fadd7-27aa-7752-b10c-223089b9a1f1 item_id="exec-815033c9-985f-4037-a854-368e350487a2"
+2026-07-29T12:34:25.417611Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fadd7-26d7-7e80-af9f-7402f00d3efa turn_id=019fadd7-27aa-7752-b10c-223089b9a1f1 item_id="exec-228d1ccc-0db9-4af8-8044-c26055120042"

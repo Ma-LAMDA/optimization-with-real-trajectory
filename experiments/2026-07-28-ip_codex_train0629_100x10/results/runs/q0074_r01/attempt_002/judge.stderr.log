@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "D:\IP����\optimization-with-real-trajectory\experiments\2026-07-28-ip_codex_train0629_100x10\scripts\judge_attempt.py", line 77, in main
+    gold = canonical_fault_set(json.loads(row["answer"]))
+  File "D:\IP����\optimization-with-real-trajectory\experiments\2026-07-28-ip_codex_train0629_100x10\scripts\judge_attempt.py", line 27, in canonical_fault_set
+    raise TypeError("result must be a JSON array of strings")
+TypeError: result must be a JSON array of strings
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\IP����\optimization-with-real-trajectory\experiments\2026-07-28-ip_codex_train0629_100x10\scripts\judge_attempt.py", line 97, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\IP����\optimization-with-real-trajectory\experiments\2026-07-28-ip_codex_train0629_100x10\scripts\judge_attempt.py", line 79, in main
+    raise ValueError("source answer is invalid for the established comparator") from exc
+ValueError: source answer is invalid for the established comparator

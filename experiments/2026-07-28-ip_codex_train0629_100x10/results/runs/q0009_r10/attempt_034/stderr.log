@@ -1,0 +1,63 @@
+2026-07-28T22:28:00.541539Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T22:28:00.541637Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T22:28:00.542631Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T22:28:00.557986Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T22:28:00.615981Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T22:28:01.310671Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T22:28:01.310725Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T22:28:01.320217Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T22:28:01.324675Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T22:28:10.672276Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-28T22:28:16.578032Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g "*gns*" -g "*.py" -g "*.ps1" -g "*.md"
+2026-07-28T22:28:31.017721Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get | ConvertTo-Json -Depth 5"
+2026-07-28T22:28:35.321881Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe --silent http://127.0.0.1:3080/v3/projects
+2026-07-28T22:28:42.692981Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-28T22:30:16.035365Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:105
++ ... 080/v3/projects/CampusNetwork_03/nodes' -Method Get; foreach( in ){=. ...
++                                                                  ~
+Missing variable name after foreach.
+At line:1 char:109
++ ... 3/projects/CampusNetwork_03/nodes' -Method Get; foreach( in ){=.node_ ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:625
++ ... on'};=Compare-Object -ReferenceObject  -DifferenceObject ;if(){Write- ...
++                                                                  ~
+Missing condition in if statement after 'if ('.
+At line:1 char:649
++ ... eObject  -DifferenceObject ;if(){Write-Output ('=== '++' ==='); | For ...
++                                                            ~~~~~~
+Unexpected token '' ==='' in expression or statement.
+At line:1 char:649
++ ... ferenceObject  -DifferenceObject ;if(){Write-Output ('=== '++' ==='); ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:626
++ ... '};=Compare-Object -ReferenceObject  -DifferenceObject ;if(){Write-Ou ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:110
++ ... /projects/CampusNetwork_03/nodes' -Method Get; foreach( in ){=.node_i ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:655
++ ... Object  -DifferenceObject ;if(){Write-Output ('=== '++' ==='); | ForE ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:658
++ ... ect  -DifferenceObject ;if(){Write-Output ('=== '++' ==='); | ForEach ...
++                                                                 ~
+An empty pipe element is not allowed.
+At line:1 char:723
++ ... ; | ForEach-Object {Write-Output (.SideIndicator+' '+.InputObject)}}}
++                                                                        ~
+Unexpected token '}' in expression or statement.
+Not all parse errors were reported.  Correct the reported errors and try again.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingVariableNameAfterForeach
+ 
+
+2026-07-28T22:33:20.375571Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'node '; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$projects=Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get;foreach(`$p in `$projects){if(`$p.name -like 'CampusNetwork*'){foreach(`$node in @('PE1','PE2','PE3')){`$u='http://127.0.0.1:3080/v3/projects/'+`$p.project_id+'/nodes/'+`$node+'/command?cmd=display%20current-configuration';try{`$o=(Invoke-RestMethod -Uri `$u -Method Get).output;`$m=`$o -split '\r?\n'|Where-Object{`$_ -match 'route-static|isis cost|preference 255|160\.0\.0\.1'};if(`$m){Write-Output ('=== '+`$p.name+' '+`$node+' ===');`$m}}catch{}}}}"

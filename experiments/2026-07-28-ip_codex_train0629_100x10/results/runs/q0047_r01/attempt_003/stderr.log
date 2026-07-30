@@ -1,0 +1,92 @@
+2026-07-29T15:28:30.614096Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T15:28:30.614171Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T15:28:30.614834Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T15:28:30.617696Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T15:28:30.625947Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T15:28:34.224647Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T15:28:34.224680Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T15:28:34.225350Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T15:28:34.228481Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T15:28:40.271238Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T15:28:45.604229Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g "*"
+2026-07-29T15:28:58.950911Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-29T15:29:28.959515Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Response.StatusCode.value__ : The term '.Exception.Response.StatusCode.value__' is not recognized as the nam
+e of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, v
+erify that the path is correct and try again.
+At line:1 char:148
++ ... rtTo-Json -Depth 8 } catch { .Exception.Response.StatusCode.value__ }
++                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Response.StatusCode.value__:String) [], CommandNotFoundExcep 
+   tion
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T15:29:28.959562Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Response.StatusCode.value__ : The term '.Exception.Response.StatusCode.value__' is not recognized as the nam
+e of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, v
+erify that the path is correct and try again.
+At line:1 char:155
++ ... rtTo-Json -Depth 8 } catch { .Exception.Response.StatusCode.value__ }
++                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Response.StatusCode.value__:String) [], CommandNotFoundExcep 
+   tion
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T15:29:28.959564Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Response.StatusCode.value__ : The term '.Exception.Response.StatusCode.value__' is not recognized as the nam
+e of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, v
+erify that the path is correct and try again.
+At line:1 char:162
++ ... rtTo-Json -Depth 8 } catch { .Exception.Response.StatusCode.value__ }
++                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Response.StatusCode.value__:String) [], CommandNotFoundExcep 
+   tion
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T15:29:34.201275Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T15:30:04.463083Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10.1 seconds
+Output:
+command timed out after 10076 milliseconds
+{
+    "command":  "display interface brief",
+    "output":  "PHY: Physical\r\n*down: administratively down\r\n^down: standby\r\n(l): loopback\r\n(s): spoofing\r\n(E): E-Trunk down\r\n(b): BFD down\r\n(B): Bit-error-detection down\r\n(e): ETHOAM down\r\n(d): Dampening Suppressed\r\n(p): port alarm down\r\n(ld): loop-detect trigger down\r\n(mf): mac-flapping blocked\r\n(c): CFM down\r\n(sd): STP instance discarding\r\nInUti/OutUti: input utility/output utility\r\nInterface                   PHY   Protocol  InUti OutUti   inErrors  outErrors\r\nEthernet1/0/0               up    up           0%     0%          0          0\r\nEthernet1/0/1               up    up           0%     0%          0          0\r\nEthernet1/0/2               down  down         0%     0%          0          0\r\nEthernet1/0/3               down  down         0%     0%          0          0\r\nEthernet1/0/4               down  down         0%     0%          0          0\r\nEthernet1/0/5               down  down         0%     0%          0          0\r\nEthernet1/0/6               down  down         0%     0%          0          0\r\nEthernet1/0/7               down  down         0%     0%          0          0\r\nEthernet1/0/8               down  down         0%     0%          0          0\r\nEthernet1/0/9               down  down         0%     0%          0          0\r\nEthernet1/1/0               down  down         0%     0%          0          0\r\nEthernet1/1/1               down  down         0%     0%          0          0\r\nEthernet1/1/2               down  down         0%     0%          0          0\r\nEthernet1/1/3               down  down         0%     0%          0          0\r\nEthernet1/1/4               down  down         0%     0%          0          0\r\nEthernet1/1/5               down  down         0%     0%          0          0\r\nEthernet1/1/6               down  down         0%     0%          0          0\r\nEthernet1/1/7               down  down         0%     0%          0          0\r\nEthernet1/1/8               down  down         0%     0%          0          0\r\nEthernet1/1/9               down  down         0%     0%          0          0\r\nEthernet2/0/0               down  down         0%     0%          0          0\r\nEthernet2/0/1               down  down         0%     0%          0          0\r\nEthernet2/0/2               down  down         0%     0%          0          0\r\nEthernet2/0/3               down  down         0%     0%          0          0\r\nEthernet2/0/4               down  down         0%     0%          0          0\r\nEthernet2/0/5               down  down         0%     0%          0          0\r\nEthernet2/0/6               down  down         0%     0%          0          0\r\nEthernet2/0/7               down  down         0%     0%          0          0\r\nEthernet2/0/8               down  down         0%     0%          0          0\r\nEthernet2/0/9               down  down         0%     0%          0          0\r\nEthernet2/1/0               down  down         0%     0%          0          0\r\nEthernet2/1/1               down  down         0%     0%          0          0\r\nEthernet2/1/2               down  down         0%     0%          0          0\r\nEthernet2/1/3               down  down         0%     0%          0          0\r\nEthernet2/1/4               down  down         0%     0%          0          0\r\nEthernet2/1/5               down  down         0%     0%          0          0\r\nEthernet2/1/6               down  down         0%     0%          0          0\r\nEthernet2/1/7               down  down         0%     0%          0          0\r\nEthernet2/1/8               down  down         0%     0%          0          0\r\nEthernet2/1/9               up    down         0%     0%          0          0\r\nGigabitEthernet0/0/0        up    down         0%     0%          0          0\r\nNULL0                       up    up(s)        0%     0%          0          0"
+}
+
+2026-07-29T15:30:54.972318Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "& { `$nodes=(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_06/nodes'); foreach (`$n in `$nodes) { `$u='http://127.0.0.1:3080/v3/projects/CampusNetwork_06/nodes/'+`$n.node_id+'/command?cmd=display%20current-configuration'; `$o=(Invoke-RestMethod -Uri `$u).output; Write-Output (`$n.node_id+'|'+`$o.Length+'|'+(`$o -like '*not found in mock data*')) } }"
+2026-07-29T15:31:39.590135Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14009 milliseconds
+
+2026-07-29T15:31:39.590174Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14036 milliseconds
+
+2026-07-29T15:33:36.837726Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$o=(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_06/nodes/PE1/command?cmd=display%20current-configuration').output; `$o -split '\r?\n' | Where-Object { `$_ -match '^static-lsp|^ip route-static 1[56]0\.0\.0\.1' }"
+2026-07-29T15:34:24.893767Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /openapi.json. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "try { Invoke-RestMethod -Uri 'http://127.0.0.1:3080/openapi.json' | ConvertTo-Json -Depth 10 } catch { Write-Output 'ERR' }"
+2026-07-29T15:34:55.847651Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 7.6 seconds
+Output:
+command timed out after 7616 milliseconds
+
