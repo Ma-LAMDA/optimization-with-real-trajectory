@@ -1,0 +1,49 @@
+{
+  "schema_version": "ip-codex-distillation-manifest.v1",
+  "status": "completed",
+  "started_at": "2026-07-28T12:52:02.322+00:00",
+  "experiment_root": "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_100x10",
+  "source_path": "D:\\IP组网\\optimization-with-real-trajectory\\data\\simulation\\train_0629.jsonl",
+  "source_sha256": "79f961a2ce788fa2219e8ee5343b7fa87ca8d79ed3f3dec6049dca0ff7514ad9",
+  "record_count": 100,
+  "row_range": [
+    1,
+    100
+  ],
+  "model": "gpt-5.6-sol",
+  "model_display_name": "GPT-5.6-Sol",
+  "model_confirmation": {
+    "slug": "gpt-5.6-sol",
+    "display_name": "GPT-5.6-Sol",
+    "cache_client_version": "0.146.0",
+    "cache_fetched_at": "2026-07-28T12:51:49.807305400Z"
+  },
+  "codex_cli_version": "codex-cli 0.146.0-alpha.3.1",
+  "codex_cli_sha256": "39e9e041ea33ac34aad9578adfe660c5c7a6dc8f82620b77623960f9352a6ef3",
+  "service_base_url": "http://127.0.0.1:3080",
+  "initial_concurrency": 4,
+  "maximum_concurrency": 4,
+  "target_correct_per_sample": 10,
+  "max_consecutive_wrong": 10,
+  "attempt_timeout_seconds": 2700,
+  "ephemeral_sessions": true,
+  "fresh_process_per_attempt": true,
+  "generator_input_fields": [
+    "question",
+    "output_format",
+    "localized original user prompt",
+    "local API URL"
+  ],
+  "prompt_source": "data/simulation/IP user prompt.txt (repository-documented fallback; source rows have no metadata)",
+  "prompt_localization": {
+    "operation": "service address adaptation only",
+    "from": "http://10.139.194.154:3080",
+    "to": "http://127.0.0.1:3080",
+    "host_occurrences_replaced": 2
+  },
+  "comparator": "established_fault_set_exact_with_alternatives_v2",
+  "comparison_rule": "prediction must be a JSON string array exactly equal to the flat reference or to any explicitly listed nested reference alternative; order ignored; missing, extra, or different items fail",
+  "generator_judge_separation": "separate judge_attempt.py process starts only after Codex exits",
+  "runs_layout": "results/runs/qXXXX_rYY/attempt_ZZZ",
+  "ended_at": "2026-07-30T01:33:45.654+00:00"
+}
