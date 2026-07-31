@@ -29,6 +29,7 @@ MAX_LENGTH="${MAX_LENGTH:-4096}"
 LEARNING_RATE="${LEARNING_RATE:-5e-5}"
 VLLM_MAX_MODEL_LEN="${VLLM_MAX_MODEL_LEN:-16384}"
 VLLM_GPU_MEMORY_UTILIZATION="${VLLM_GPU_MEMORY_UTILIZATION:-0.90}"
+REUSE_COMPLETED_TRAINING="${REUSE_COMPLETED_TRAINING:-0}"
 
 TRAIN_PYTHON="${TRAIN_ENV}/bin/python"
 TRAIN_SWIFT="${TRAIN_ENV}/bin/swift"
@@ -122,18 +123,24 @@ if [[ -n "${ACTIVE_GPU_PROCESSES}" ]]; then
 fi
 
 echo "[$(date -Iseconds)] Starting single-GPU LoRA SFT"
-MODEL_PATH="${MODEL_PATH}" \
-DATA_ROOT="${DATA_ROOT}" \
-OUTPUT_DIR="${TRAIN_OUTPUT_DIR}" \
-PYTHON_BIN="${TRAIN_PYTHON}" \
-SWIFT_BIN="${TRAIN_SWIFT}" \
-CUDA_VISIBLE_DEVICES=0 \
-NUM_TRAIN_EPOCHS="${NUM_TRAIN_EPOCHS}" \
-EVAL_STEPS="${EVAL_STEPS}" \
-EARLY_STOP_INTERVAL="${EARLY_STOP_INTERVAL}" \
-MAX_LENGTH="${MAX_LENGTH}" \
-LEARNING_RATE="${LEARNING_RATE}" \
-bash scripts/train_qwen36_lora_early_stop.sh
+if [[ "${REUSE_COMPLETED_TRAINING}" == "1" ]] \
+  && find "${TRAIN_OUTPUT_DIR}" -type f -name trainer_state.json -print -quit \
+    | grep -q .; then
+  echo "[$(date -Iseconds)] Reusing completed training state in ${TRAIN_OUTPUT_DIR}"
+else
+  MODEL_PATH="${MODEL_PATH}" \
+  DATA_ROOT="${DATA_ROOT}" \
+  OUTPUT_DIR="${TRAIN_OUTPUT_DIR}" \
+  PYTHON_BIN="${TRAIN_PYTHON}" \
+  SWIFT_BIN="${TRAIN_SWIFT}" \
+  CUDA_VISIBLE_DEVICES=0 \
+  NUM_TRAIN_EPOCHS="${NUM_TRAIN_EPOCHS}" \
+  EVAL_STEPS="${EVAL_STEPS}" \
+  EARLY_STOP_INTERVAL="${EARLY_STOP_INTERVAL}" \
+  MAX_LENGTH="${MAX_LENGTH}" \
+  LEARNING_RATE="${LEARNING_RATE}" \
+  bash scripts/train_qwen36_lora_early_stop.sh
+fi
 
 TRAINING_SUMMARY="${RUN_ROOT}/training_summary.json"
 "${TRAIN_PYTHON}" scripts/summarize_sft_training.py \

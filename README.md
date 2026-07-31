@@ -283,6 +283,9 @@ RUN_ID=0731-production \
 `training_summary.json` 记录最低验证 loss 与 checkpoint，
 `validation_eval/validation_summary.json` 记录格式、严格正确率和泄漏率，
 `workflow_summary.json` 汇总提交、数据、训练和评测溯源。`output/` 默认不提交。
+若训练已经完成而后处理被中断，可用同一个 `RUN_ID` 并设置
+`REUSE_COMPLETED_TRAINING=1`，工作流会重新校验最低 loss 与 checkpoint 后继续评测，
+不会重复训练。
 
 ## 推理生成约定
 
@@ -377,7 +380,7 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 - 2026-07-31：固化 SeetaCloud LoRA SFT 端到端工作流，增加按 `eval_loss`
   早停与最佳 checkpoint 校验，并以单实例双并发在固定验证集上执行格式、严格集合
-  匹配及泄漏评测。
+  匹配及泄漏评测；支持安全复用已经完成的训练状态继续后处理。
 - 2026-07-31：从 100×10 实验的 1,313 个 attempt 中过滤 819 条独立判题完全正确轨迹，生成 809 条训练和 10 条题 100 验证 SFT 数据，并增加可复现转换与独立校验脚本。
 - 2026-07-31：合并 `taowen` 的 `saved_configs_service`、10×10 与 100×10 实验，保留完整轨迹和审计产物，并保持数据采集策略独立配置。
 - 2026-07-31：将 Qwen3.6-27B eval 策略固定为单个 vLLM 实例、2 个 eval runner worker、总请求并发 2；该约束不适用于轨迹生成等数据采集任务。

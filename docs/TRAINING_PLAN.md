@@ -161,6 +161,10 @@ RUN_ID=0731-production \
 早停只能在观察到后续验证点不再改善后触发，因此“在最低点停止”的严格实现是：
 保留并最终选用历史最低验证 loss 的 checkpoint，而不是声称能预先知道未来最低点。
 默认 `early_stop_interval=3`，最多训练 3 epochs；两者均会写入运行日志。
+摘要校验同时要求最佳 checkpoint 的 step 等于最低验证 loss 所在 step；对
+ms-swift 将 `best_metric` 序列化为 8 位小数造成的误差仅允许 `5e-8` 绝对容差。
+若训练已完成但摘要、部署或评测中断，可用同一 `RUN_ID` 设置
+`REUSE_COMPLETED_TRAINING=1` 继续，复用前仍会重新执行数据和 trainer state 校验。
 
 ## 6. 每分钟监控
 

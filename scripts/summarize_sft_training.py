@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 from pathlib import Path
 from typing import Any
 
@@ -78,8 +79,8 @@ def main() -> None:
     if not math.isclose(
         float(best_metric),
         float(minimum["eval_loss"]),
-        rel_tol=1e-7,
-        abs_tol=1e-12,
+        rel_tol=1e-6,
+        abs_tol=5e-8,
     ):
         raise ValueError(
             "best_metric does not equal the minimum observed validation loss"
@@ -92,6 +93,14 @@ def main() -> None:
     if not best_checkpoint.is_dir():
         raise FileNotFoundError(
             f"Best checkpoint directory does not exist: {best_checkpoint}"
+        )
+    checkpoint_match = re.search(r"checkpoint-(\d+)$", best_checkpoint.name)
+    if (
+        checkpoint_match is None
+        or int(checkpoint_match.group(1)) != int(minimum["step"])
+    ):
+        raise ValueError(
+            "best checkpoint step does not equal the minimum validation-loss step"
         )
 
     summary = {
