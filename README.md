@@ -323,6 +323,12 @@ LORA_TARGETS="step500=/path/to/checkpoint-500 step600=/path/to/checkpoint-600" \
   bash scripts/run_seetacloud_validation_sweep.sh
 ```
 
+需要在不恢复已经衰减结束的优化器和学习率调度器时继续训练，可向
+`scripts/train_qwen36_lora_early_stop.sh` 传入 `RESUME_FROM_CHECKPOINT`、
+`RESUME_ONLY_MODEL=true` 与正整数 `MAX_STEPS`。这种运行只加载 LoRA 权重并从
+step 0 建立新的优化器和调度器，因此结果应标记为“额外训练步数”，不得伪装成原
+训练曲线的无缝续接。
+
 当前 759/60 分层划分已完成一轮 2-epoch 实跑：step 760 / epoch 2.0 取得最低
 验证 loss `0.0045663742`，最终 checkpoint-760 即最佳 checkpoint。随后在同一
 单实例 TP=2 服务内执行 5 次验证，每次严格匹配均为 49/60；汇总 300/300 请求
@@ -437,6 +443,8 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：训练脚本支持只加载既有 LoRA 权重并以独立优化器执行指定
+  `MAX_STEPS` 的额外训练，用于在原调度器已经衰减结束后复现实验性 step 扩展。
 - 2026-07-31：增加原始 27B 基座与多个 LoRA checkpoint 的统一验证扫描脚本；
   同一单实例 TP=2 服务中，基座默认按双并发重复 5 次，checkpoint 默认各验证
   1 次，并汇总严格正确率及相对基座变化。
