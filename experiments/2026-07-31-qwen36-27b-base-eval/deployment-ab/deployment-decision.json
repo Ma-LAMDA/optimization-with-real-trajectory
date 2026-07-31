@@ -1,0 +1,21 @@
+{
+  "schema_version": "qwen-deployment-decision.v1",
+  "decided_at": "2026-07-30T20:56:12.171319+00:00",
+  "rule": "select tp1x2 iff B timeouts <= A timeouts and B average 60-minute-capped runtime < A",
+  "accuracy_assumption": "Deployment topology is assumed not to change the model's underlying answer-quality distribution; strict accuracy remains reported but is not used in this speed-based selection.",
+  "selected": "tp2x1",
+  "a_tp2x1": {
+    "timeouts": 0,
+    "completed_within_60m": 20,
+    "avg_capped_minutes": 26.6559,
+    "strict_correct": 3,
+    "accuracy_percent": 15.0
+  },
+  "b_tp1x2": {
+    "timeouts": 2,
+    "completed_within_60m": 18,
+    "avg_capped_minutes": 34.372,
+    "strict_correct": 5,
+    "accuracy_percent": 25.0
+  }
+}

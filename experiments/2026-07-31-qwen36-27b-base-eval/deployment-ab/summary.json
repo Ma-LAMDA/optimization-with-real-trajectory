@@ -1,0 +1,1072 @@
+{
+  "cases": [
+    4,
+    5,
+    20,
+    89
+  ],
+  "summary": {
+    "tp2x1": {
+      "attempts": 20,
+      "completed_within_60m": 20,
+      "timeouts": 0,
+      "strict_correct": 3,
+      "accuracy_percent": 15.0,
+      "avg_capped_minutes": 26.6559,
+      "median_capped_minutes": 26.7215,
+      "avg_events": 127.65,
+      "avg_commands": 54.1,
+      "per_case": {
+        "4": {
+          "attempts": 5,
+          "completed_within_60m": 5,
+          "timeouts": 0,
+          "strict_correct": 0,
+          "accuracy_percent": 0.0,
+          "avg_capped_minutes": 31.315,
+          "median_capped_minutes": 32.098,
+          "avg_events": 129.8,
+          "avg_commands": 55,
+          "runs": [
+            "❌",
+            "❌",
+            "❌",
+            "❌",
+            "❌"
+          ]
+        },
+        "5": {
+          "attempts": 5,
+          "completed_within_60m": 5,
+          "timeouts": 0,
+          "strict_correct": 0,
+          "accuracy_percent": 0.0,
+          "avg_capped_minutes": 26.136,
+          "median_capped_minutes": 27.335,
+          "avg_events": 151,
+          "avg_commands": 66.4,
+          "runs": [
+            "❌",
+            "❌",
+            "❌",
+            "❌",
+            "❌"
+          ]
+        },
+        "20": {
+          "attempts": 5,
+          "completed_within_60m": 5,
+          "timeouts": 0,
+          "strict_correct": 1,
+          "accuracy_percent": 20.0,
+          "avg_capped_minutes": 27.7742,
+          "median_capped_minutes": 27.335,
+          "avg_events": 126,
+          "avg_commands": 54.8,
+          "runs": [
+            "❌",
+            "❌",
+            "❌",
+            "❌",
+            "✅"
+          ]
+        },
+        "89": {
+          "attempts": 5,
+          "completed_within_60m": 5,
+          "timeouts": 0,
+          "strict_correct": 2,
+          "accuracy_percent": 40.0,
+          "avg_capped_minutes": 21.3984,
+          "median_capped_minutes": 21.679,
+          "avg_events": 103.8,
+          "avg_commands": 40.2,
+          "runs": [
+            "❌",
+            "✅",
+            "❌",
+            "❌",
+            "✅"
+          ]
+        }
+      }
+    },
+    "tp1x2": {
+      "attempts": 20,
+      "completed_within_60m": 18,
+      "timeouts": 2,
+      "strict_correct": 5,
+      "accuracy_percent": 25.0,
+      "avg_capped_minutes": 34.372,
+      "median_capped_minutes": 30.551000000000002,
+      "avg_events": 123.75,
+      "avg_commands": 52.7,
+      "per_case": {
+        "4": {
+          "attempts": 5,
+          "completed_within_60m": 3,
+          "timeouts": 2,
+          "strict_correct": 0,
+          "accuracy_percent": 0.0,
+          "avg_capped_minutes": 41.4538,
+          "median_capped_minutes": 57.335,
+          "avg_events": 105.4,
+          "avg_commands": 46,
+          "runs": [
+            "⏱",
+            "❌",
+            "⏱",
+            "❌",
+            "❌"
+          ]
+        },
+        "5": {
+          "attempts": 5,
+          "completed_within_60m": 5,
+          "timeouts": 0,
+          "strict_correct": 0,
+          "accuracy_percent": 0.0,
+          "avg_capped_minutes": 33.0744,
+          "median_capped_minutes": 33.335,
+          "avg_events": 140.6,
+          "avg_commands": 60,
+          "runs": [
+            "❌",
+            "❌",
+            "❌",
+            "❌",
+            "❌"
+          ]
+        },
+        "20": {
+          "attempts": 5,
+          "completed_within_60m": 5,
+          "timeouts": 0,
+          "strict_correct": 4,
+          "accuracy_percent": 80.0,
+          "avg_capped_minutes": 39.4638,
+          "median_capped_minutes": 42.346,
+          "avg_events": 148.6,
+          "avg_commands": 63,
+          "runs": [
+            "✅",
+            "✅",
+            "❌",
+            "✅",
+            "✅"
+          ]
+        },
+        "89": {
+          "attempts": 5,
+          "completed_within_60m": 5,
+          "timeouts": 0,
+          "strict_correct": 1,
+          "accuracy_percent": 20.0,
+          "avg_capped_minutes": 23.496,
+          "median_capped_minutes": 22.432,
+          "avg_events": 100.4,
+          "avg_commands": 41.8,
+          "runs": [
+            "❌",
+            "✅",
+            "❌",
+            "❌",
+            "❌"
+          ]
+        }
+      }
+    }
+  },
+  "runs": [
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 4,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 2016.852,
+      "capped_minutes": 33.614,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 169,
+      "commands": 66,
+      "prediction": [
+        "PE3;ISIS配置错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q4-r01"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 4,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1925.904,
+      "capped_minutes": 32.098,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 166,
+      "commands": 72,
+      "prediction": [
+        "PE2;ISIS配置错误",
+        "PE3;ISIS配置错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q4-r02"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 4,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1789.049,
+      "capped_minutes": 29.817,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 103,
+      "commands": 48,
+      "prediction": [
+        "PE2;ISIS配置错误",
+        "PE3;ISIS配置错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q4-r03"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 4,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1566.113,
+      "capped_minutes": 26.102,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 84,
+      "commands": 39,
+      "prediction": [
+        "FW_02;VRRP Track配置缺失或错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q4-r04"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 4,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 2096.649,
+      "capped_minutes": 34.944,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 127,
+      "commands": 50,
+      "prediction": [
+        "PE1;L3VPN配置错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q4-r05"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 5,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1566.469,
+      "capped_minutes": 26.108,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 141,
+      "commands": 68,
+      "prediction": [
+        "PE2;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q5-r01"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 5,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1640.083,
+      "capped_minutes": 27.335,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 124,
+      "commands": 56,
+      "prediction": [
+        "BJHQ_CSR1000V_GW_01;L3VPN配置错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q5-r02"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 5,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1926.03,
+      "capped_minutes": 32.1,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 160,
+      "commands": 68,
+      "prediction": [
+        "PE1;L3VPN配置错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q5-r03"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 5,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 804.571,
+      "capped_minutes": 13.41,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 142,
+      "commands": 57,
+      "prediction": [
+        "PE2;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q5-r04"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 5,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 1903.595,
+      "capped_minutes": 31.727,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 188,
+      "commands": 83,
+      "prediction": [
+        "PE2;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q5-r05"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 20,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1640.086,
+      "capped_minutes": 27.335,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 157,
+      "commands": 71,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤",
+        "Core_SW_01;VRRP Track配置缺失或错误"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q20-r01"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 20,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1257.676,
+      "capped_minutes": 20.961,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 123,
+      "commands": 49,
+      "prediction": [
+        "Core_SW_01;MST配置标识-域名和其他交换机不一致",
+        "Core_SW_02;MST配置标识-域名和其他交换机不一致",
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q20-r02"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 20,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1866.185,
+      "capped_minutes": 31.103,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 138,
+      "commands": 58,
+      "prediction": [
+        "FW_01;NAT内网接口属性配置错误或者缺失",
+        "FW_02;NAT内网接口属性配置错误或者缺失"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q20-r03"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 20,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1385.701,
+      "capped_minutes": 23.095,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 111,
+      "commands": 51,
+      "prediction": [
+        "FW_01;安全策略规则未放通对应的用户",
+        "FW_02;安全策略规则未放通对应的用户"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q20-r04"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 20,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 2182.625,
+      "capped_minutes": 36.377,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": true,
+      "result": "✅",
+      "events": 101,
+      "commands": 45,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q20-r05"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 89,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1028.246,
+      "capped_minutes": 17.137,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 89,
+      "commands": 34,
+      "prediction": [
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q89-r01"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 89,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1175.032,
+      "capped_minutes": 19.584,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": true,
+      "result": "✅",
+      "events": 81,
+      "commands": 31,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q89-r02"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 89,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1477.632,
+      "capped_minutes": 24.627,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 117,
+      "commands": 49,
+      "prediction": [
+        "Core_SW_01;STP 端口下实例根路径开销规划不合理",
+        "Core_SW_02;STP 端口下实例根路径开销规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q89-r03"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 89,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1437.886,
+      "capped_minutes": 23.965,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 121,
+      "commands": 46,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q89-r04"
+    },
+    {
+      "condition": "tp2x1",
+      "deployment": "1 instance, TP=2",
+      "case_id": 89,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 1300.742,
+      "capped_minutes": 21.679,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": true,
+      "result": "✅",
+      "events": 111,
+      "commands": 41,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-c2-q89-r05"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 4,
+      "repeat": 1,
+      "runner_status": "failed",
+      "duration_seconds": 3603.3,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_60m": false,
+      "correct": false,
+      "result": "⏱",
+      "events": 94,
+      "commands": 44,
+      "prediction": null,
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q4-r01"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 4,
+      "repeat": 2,
+      "runner_status": "failed",
+      "duration_seconds": 10.045,
+      "capped_minutes": 0.167,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 5,
+      "commands": 0,
+      "prediction": null,
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q4-r02"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 4,
+      "repeat": 3,
+      "runner_status": "failed",
+      "duration_seconds": 3603.199,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_60m": false,
+      "correct": false,
+      "result": "⏱",
+      "events": 141,
+      "commands": 61,
+      "prediction": null,
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q4-r03"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 4,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 3440.086,
+      "capped_minutes": 57.335,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 166,
+      "commands": 72,
+      "prediction": [
+        "BJHQ_CSR1000V_GW_01;OSPF配置错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q4-r04"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 4,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 1786.038,
+      "capped_minutes": 29.767,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 121,
+      "commands": 53,
+      "prediction": [
+        "PE2;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q4-r05"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 5,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1440.503,
+      "capped_minutes": 24.008,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 125,
+      "commands": 51,
+      "prediction": [
+        "PE2;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q5-r01"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 5,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 2666.351,
+      "capped_minutes": 44.439,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 187,
+      "commands": 71,
+      "prediction": [
+        "PE2;SRV6-Policy隧道规划错误",
+        "PE3;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q5-r02"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 5,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 2128.945,
+      "capped_minutes": 35.482,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 135,
+      "commands": 64,
+      "prediction": [
+        "PE1;BGP配置错误",
+        "BJHQ_CSR1000V_GW_01;BGP配置错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q5-r03"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 5,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1686.469,
+      "capped_minutes": 28.108,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 139,
+      "commands": 60,
+      "prediction": [
+        "PE1;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q5-r04"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 5,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 2000.081,
+      "capped_minutes": 33.335,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 117,
+      "commands": 54,
+      "prediction": [
+        "PE2;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_01;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q5-r05"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 20,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1880.086,
+      "capped_minutes": 31.335,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": true,
+      "result": "✅",
+      "events": 133,
+      "commands": 50,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q20-r01"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 20,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 3289.472,
+      "capped_minutes": 54.825,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": true,
+      "result": "✅",
+      "events": 184,
+      "commands": 78,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q20-r02"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 20,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 2926.377,
+      "capped_minutes": 48.773,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 190,
+      "commands": 87,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤",
+        "HQ_MKT_AP01;全局STP未使能"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q20-r03"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 20,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 2540.766,
+      "capped_minutes": 42.346,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": true,
+      "result": "✅",
+      "events": 158,
+      "commands": 63,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q20-r04"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 20,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 1202.422,
+      "capped_minutes": 20.04,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": true,
+      "result": "✅",
+      "events": 78,
+      "commands": 37,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q20-r05"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 89,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1245.13,
+      "capped_minutes": 20.752,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 79,
+      "commands": 37,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理",
+        "Core_SW_02;VRRP Master角色规划不合理",
+        "Core_SW_01;STP 端口下实例根路径开销规划不合理",
+        "Core_SW_02;STP 端口下实例根路径开销规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q89-r01"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 89,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1749.432,
+      "capped_minutes": 29.157,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": true,
+      "result": "✅",
+      "events": 125,
+      "commands": 51,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q89-r02"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 89,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1475.546,
+      "capped_minutes": 24.592,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 116,
+      "commands": 51,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q89-r03"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 89,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1345.936,
+      "capped_minutes": 22.432,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 104,
+      "commands": 39,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理",
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q89-r04"
+    },
+    {
+      "condition": "tp1x2",
+      "deployment": "2 instances, TP=1 each",
+      "case_id": 89,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 1232.8,
+      "capped_minutes": 20.547,
+      "timeout": false,
+      "completed_within_60m": true,
+      "correct": false,
+      "result": "❌",
+      "events": 78,
+      "commands": 31,
+      "prediction": [
+        "Core_SW_01;STP 端口下实例根路径开销规划不合理",
+        "Core_SW_02;STP 端口下实例根路径开销规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/ab-base-concurrency2-vs4-20260730T072739Z-tp1x2-q89-r05"
+    }
+  ]
+}

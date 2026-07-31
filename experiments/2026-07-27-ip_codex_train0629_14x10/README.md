@@ -128,23 +128,7 @@ token 为 3,750,029 / 77,832，总耗时 2,615.144 秒，加权端到端输出�
 [`../../docs/2026-07-28_Q94_EPOCH10_VALIDATION.md`](../../docs/2026-07-28_Q94_EPOCH10_VALIDATION.md)。
 本轮没有原始基座同条件 A/B，因此不得用 4/5 量化 LoRA 相对提升。
 
-## 基座全量评测终止快照（2026-07-31）
+## 相关基座评测
 
-基座模型全量评测原计划覆盖其余 92 题、每题 5 次，共 460 次。实验在用户要求下
-停止，watchdog、worker、活动任务和专用 vLLM 服务均已终止；停止时已结束 381 次，
-另有 8 个进行中样本作为未完成样本排除，不进入准确率或耗时统计。
-
-已结束样本中，成功输出 45 次、runner 失败 4 次、60 分钟超时 332 次；严格正确
-2/381（0.52%），成功输出中的命中率为 2/45（4.44%）。超时按 60 分钟封顶后，
-平均耗时 57.39 分钟，中位耗时 60.00 分钟。严格判分解析最终 `<result>` JSON，
-要求与 `json.loads(source_record.answer)` 整体精确相等，超时和失败一律计错。
-
-冻结结果保存在 `results/reports/`：
-
-- [`base-train0629-remaining92-20260728T150305Z_terminated_20260731T021338Z_completed_trajectories_report.md`](results/reports/base-train0629-remaining92-20260728T150305Z_terminated_20260731T021338Z_completed_trajectories_report.md)：便于阅读的总体与逐题报告；
-- [`base-train0629-remaining92-20260728T150305Z_terminated_20260731T021338Z_completed_trajectories_summary.json`](results/reports/base-train0629-remaining92-20260728T150305Z_terminated_20260731T021338Z_completed_trajectories_summary.json)：总体、逐题、终止状态和 A/B 参考数据；
-- [`base-train0629-remaining92-20260728T150305Z_terminated_20260731T021338Z_completed_trajectories_attempts.csv`](results/reports/base-train0629-remaining92-20260728T150305Z_terminated_20260731T021338Z_completed_trajectories_attempts.csv)：381 条已结束样本的逐次明细。
-
-部署 A/B 参考实验同样使用题 4、5、20、89 各 5 次：单实例 TP=2 为 3/20
-严格正确、0 超时、平均 26.66 分钟；双实例 TP=1 为 5/20 严格正确、2 超时、
-平均 34.37 分钟。速度选择规则最终保留单实例 TP=2。
+2026-07-30 至 2026-07-31 的 Qwen3.6-27B 基座部署 A/B 和全量评测属于独立实验，
+已统一归档到 [`../2026-07-31-qwen36-27b-base-eval/`](../2026-07-31-qwen36-27b-base-eval/)。
