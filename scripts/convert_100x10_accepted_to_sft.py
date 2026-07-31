@@ -956,12 +956,30 @@ def main() -> None:
     )
     label_case_ids: defaultdict[str, set[int]] = defaultdict(set)
     label_trajectory_counts: Counter[str] = Counter()
+    fault_type_labels: defaultdict[str, set[str]] = defaultdict(set)
+    fault_type_case_ids: defaultdict[str, set[int]] = defaultdict(set)
+    fault_type_trajectory_counts: Counter[str] = Counter()
     for item in processed:
         if not item["selected"]:
             continue
+        trajectory_fault_types: set[str] = set()
         for answer_label in item["actual_result_items"]:
+            fault_node, separator, fault_type = answer_label.partition(";")
+            if (
+                not separator
+                or not fault_node
+                or not fault_type
+                or fault_node != fault_node.strip()
+                or fault_type != fault_type.strip()
+            ):
+                raise ValueError(f"answer label has no fault type: {answer_label!r}")
             label_case_ids[answer_label].add(item["case_id"])
             label_trajectory_counts[answer_label] += 1
+            fault_type_labels[fault_type].add(answer_label)
+            fault_type_case_ids[fault_type].add(item["case_id"])
+            trajectory_fault_types.add(fault_type)
+        for fault_type in trajectory_fault_types:
+            fault_type_trajectory_counts[fault_type] += 1
     report_lines = [
         "# 100×10 完全正确轨迹过滤与 SFT 转换报告",
         "",
@@ -1033,6 +1051,25 @@ def main() -> None:
         ],
         (
             f"| **去重总计** | **{len(eligible_case_ids)}** | "
+            f"**{len(train_rows) + len(validation_rows)}** |"
+        ),
+        "",
+        "## 按故障类型合并统计",
+        "",
+        "以答案 label 中第一个分号后的故障原因为合并键，忽略故障节点。"
+        "同一题或同一轨迹内的多个设备级 label 若属于同一故障类型，只计 1 次。",
+        "",
+        "| 故障类型 | 合并的设备级 label 数 | 题目数量 | 轨迹数量 |",
+        "| --- | ---: | ---: | ---: |",
+        *[
+            f"| `{fault_type}` | {len(fault_type_labels[fault_type])} | "
+            f"{len(fault_type_case_ids[fault_type])} | "
+            f"{fault_type_trajectory_counts[fault_type]} |"
+            for fault_type in sorted(fault_type_labels)
+        ],
+        (
+            f"| **去重总计** | **{len(label_case_ids)}** | "
+            f"**{len(eligible_case_ids)}** | "
             f"**{len(train_rows) + len(validation_rows)}** |"
         ),
         "",

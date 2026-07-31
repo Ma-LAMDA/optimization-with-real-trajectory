@@ -162,6 +162,9 @@ def validate_filter_report(
     splits_by_case: defaultdict[int, set[str]] = defaultdict(set)
     label_case_ids: defaultdict[str, set[int]] = defaultdict(set)
     label_trajectory_counts: Counter[str] = Counter()
+    fault_type_labels: defaultdict[str, set[str]] = defaultdict(set)
+    fault_type_case_ids: defaultdict[str, set[int]] = defaultdict(set)
+    fault_type_trajectory_counts: Counter[str] = Counter()
     for item in trajectories:
         if not isinstance(item, dict) or item.get("selected") is not True:
             continue
@@ -176,9 +179,24 @@ def validate_filter_report(
             or len(set(answer_labels)) != len(answer_labels)
         ):
             raise ValueError("selected trajectory answer labels are malformed")
+        trajectory_fault_types: set[str] = set()
         for answer_label in answer_labels:
+            fault_node, separator, fault_type = answer_label.partition(";")
+            if (
+                not separator
+                or not fault_node
+                or not fault_type
+                or fault_node != fault_node.strip()
+                or fault_type != fault_type.strip()
+            ):
+                raise ValueError(f"answer label has no fault type: {answer_label!r}")
             label_case_ids[answer_label].add(case_id)
             label_trajectory_counts[answer_label] += 1
+            fault_type_labels[fault_type].add(answer_label)
+            fault_type_case_ids[fault_type].add(case_id)
+            trajectory_fault_types.add(fault_type)
+        for fault_type in trajectory_fault_types:
+            fault_type_trajectory_counts[fault_type] += 1
 
     report_lines = report_path.read_text(encoding="utf-8-sig").splitlines()
     case_rows: dict[int, list[str]] = {}
@@ -187,6 +205,8 @@ def validate_filter_report(
     success_distribution_total_cells: list[str] | None = None
     label_rows: dict[str, list[str]] = {}
     label_total_cells: list[str] | None = None
+    fault_type_rows: dict[str, list[str]] = {}
+    fault_type_total_cells: list[str] | None = None
     for line in report_lines:
         if not line.startswith("|"):
             continue
@@ -223,6 +243,22 @@ def validate_filter_report(
             label_rows[answer_label] = cells
         elif cells and cells[0] == "**去重总计**" and len(cells) == 3:
             label_total_cells = [cell.replace("**", "") for cell in cells]
+        elif (
+            cells
+            and len(cells) == 4
+            and cells[0].startswith("`")
+            and cells[0].endswith("`")
+        ):
+            fault_type = cells[0][1:-1]
+            if fault_type in fault_type_rows:
+                raise ValueError(
+                    f"filter report repeats fault type {fault_type!r}"
+                )
+            fault_type_rows[fault_type] = cells
+        elif cells and cells[0] == "**去重总计**" and len(cells) == 4:
+            fault_type_total_cells = [
+                cell.replace("**", "") for cell in cells
+            ]
 
     expected_case_ids = set(state_by_case)
     if set(case_rows) != expected_case_ids:
@@ -338,6 +374,25 @@ def validate_filter_report(
     ]
     if label_total_cells != expected_label_total:
         raise ValueError("filter report answer-label total mismatch")
+    expected_fault_type_rows = {
+        fault_type: [
+            f"`{fault_type}`",
+            str(len(fault_type_labels[fault_type])),
+            str(len(fault_type_case_ids[fault_type])),
+            str(fault_type_trajectory_counts[fault_type]),
+        ]
+        for fault_type in fault_type_labels
+    }
+    if fault_type_rows != expected_fault_type_rows:
+        raise ValueError("filter report fault-type distribution mismatch")
+    expected_fault_type_total = [
+        "去重总计",
+        str(len(label_case_ids)),
+        str(len(selected_by_case)),
+        str(sum(selected_by_case.values())),
+    ]
+    if fault_type_total_cells != expected_fault_type_total:
+        raise ValueError("filter report fault-type total mismatch")
 
 
 def check_row(
@@ -595,7 +650,9 @@ def main() -> None:
         f"{manifest['filtered_nonaccepted_attempt_count']}"
     )
     print("- train/validation case overlap: 0")
-    print("- per-case, success-count, and answer-label reports verified")
+    print(
+        "- per-case, success-count, answer-label, and fault-type reports verified"
+    )
 
 
 if __name__ == "__main__":
