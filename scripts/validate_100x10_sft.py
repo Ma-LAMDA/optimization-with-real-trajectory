@@ -170,17 +170,30 @@ def validate_filter_report(
     report_lines = report_path.read_text(encoding="utf-8-sig").splitlines()
     case_rows: dict[int, list[str]] = {}
     total_cells: list[str] | None = None
+    success_distribution_rows: dict[int, list[str]] = {}
+    success_distribution_total_cells: list[str] | None = None
     for line in report_lines:
         if not line.startswith("|"):
             continue
         cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
-        if cells and cells[0].isdigit():
+        if cells and cells[0].isdigit() and len(cells) == 13:
             case_id = int(cells[0])
             if case_id in case_rows:
                 raise ValueError(f"filter report repeats case {case_id}")
             case_rows[case_id] = cells
-        elif cells and cells[0] == "**总计**":
+        elif cells and cells[0].isdigit() and len(cells) == 3:
+            success_count = int(cells[0])
+            if success_count in success_distribution_rows:
+                raise ValueError(
+                    f"filter report repeats success count {success_count}"
+                )
+            success_distribution_rows[success_count] = cells
+        elif cells and cells[0] == "**总计**" and len(cells) == 13:
             total_cells = [cell.replace("**", "") for cell in cells]
+        elif cells and cells[0] == "**总计**" and len(cells) == 3:
+            success_distribution_total_cells = [
+                cell.replace("**", "") for cell in cells
+            ]
 
     expected_case_ids = set(state_by_case)
     if set(case_rows) != expected_case_ids:
@@ -256,6 +269,29 @@ def validate_filter_report(
     ]
     if total_cells != expected_total_cells:
         raise ValueError("filter report total row mismatch")
+    expected_success_distribution = Counter(
+        status_by_case[case_id]["accepted"] for case_id in expected_case_ids
+    )
+    expected_success_distribution_rows = {
+        successes: [
+            str(successes),
+            str(question_count),
+            str(successes * question_count),
+        ]
+        for successes, question_count in expected_success_distribution.items()
+    }
+    if success_distribution_rows != expected_success_distribution_rows:
+        raise ValueError("filter report success-count distribution mismatch")
+    expected_success_distribution_total = [
+        "总计",
+        str(len(expected_case_ids)),
+        str(total_status_counts["accepted"]),
+    ]
+    if (
+        success_distribution_total_cells
+        != expected_success_distribution_total
+    ):
+        raise ValueError("filter report success-count distribution total mismatch")
 
 
 def check_row(
@@ -513,7 +549,7 @@ def main() -> None:
         f"{manifest['filtered_nonaccepted_attempt_count']}"
     )
     print("- train/validation case overlap: 0")
-    print("- per-case filter report: 100 rows and totals verified")
+    print("- per-case filter report and success-count distribution verified")
 
 
 if __name__ == "__main__":

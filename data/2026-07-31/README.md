@@ -46,7 +46,8 @@ python scripts/validate_100x10_sft.py
 ```
 
 转换器只读取 `data/simulation/train_0629.jsonl`，不会编辑、覆盖、移动或删除该不可变
-来源文件。逐题 attempt、成功数、成功率、全部/成功 attempt 平均执行耗时、耗时覆盖、
-状态分布、SFT 入选数、划分和终态见 `curation/FILTER_REPORT.md`。报告中的耗时不含
+来源文件。按成功次数汇总的题目数量，以及逐题 attempt、成功数、成功率、全部/成功
+attempt 平均执行耗时、耗时覆盖、状态分布、SFT 入选数、划分和终态见
+`curation/FILTER_REPORT.md`。报告中的耗时不含
 随后启动的独立判题；11 条 interrupted attempt 没有耗时记录，也不会以 0 计入均值。
 输出哈希与来源审计信息见 `sft/manifest.json`。

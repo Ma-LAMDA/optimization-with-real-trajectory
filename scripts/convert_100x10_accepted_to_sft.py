@@ -951,6 +951,9 @@ def main() -> None:
         if all_successful_attempt_durations
         else None
     )
+    success_count_distribution = Counter(
+        item["successes"] for item in case_report_rows
+    )
     report_lines = [
         "# 100×10 完全正确轨迹过滤与 SFT 转换报告",
         "",
@@ -1004,6 +1007,22 @@ def main() -> None:
             f"| {status} | {count} |"
             for status, count in sorted(attempt_status_counts.items())
         ],
+        "",
+        "## 按成功次数统计题目数量",
+        "",
+        "| 每题成功次数 | 题目数量 | 成功轨迹小计 |",
+        "| ---: | ---: | ---: |",
+        *[
+            f"| {successes} | {question_count} | "
+            f"{successes * question_count} |"
+            for successes, question_count in sorted(
+                success_count_distribution.items()
+            )
+        ],
+        (
+            f"| **总计** | **{len(case_report_rows)}** | "
+            f"**{attempt_status_counts['accepted']}** |"
+        ),
         "",
         "## 逐题过滤统计",
         "",
