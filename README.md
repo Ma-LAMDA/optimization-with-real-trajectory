@@ -237,6 +237,15 @@ swift sft \
 
 8,000 token 是最大允许长度，不会强制模型生成满该长度；模型输出 EOS 时正常提前结束。采样温度等参数由具体任务单独指定。当前原始基座模型在单卡 Transformers 环境、`temperature=0.7`、5,000-token 上限下的单样本实测生成速度约为 21.2 token/s；长上下文下的实际速度可能下降。详细约束与测试口径见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
 
+## 后续运行并发策略
+
+自 2026-07-31 起，离线评估、Codex CLI 批量验证、轨迹生成和服务请求固定使用
+单实例双并发：只启动 1 个 vLLM 实例，当前双卡部署采用 `tp2x1`；固定 2 个
+runner worker，总请求并发为 2。所有待运行样本排队进入这两个槽位，重试也必须
+复用已有槽位。禁止启动 8 个 worker、8 路请求或任何等效的 8 并发配置，也禁止
+runner 自动扩容。完整启动与遥测约束见
+[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md#后续运行拓扑)。
+
 ## Codex CLI 验证遥测
 
 使用完整 user prompt、Codex CLI 和本地模型进行多次验证时，应同时保留原始事件流、服务日志和逐次遥测。必须区分 Codex turn、Responses API 调用、Agent 消息段与工具 loop，并记录 TTFT、TPOT、每轮 token、采样参数、上下文峰值、工具耗时、GPU 时间序列、KV cache、prefix cache、错误重试和严格 label 判定。缺失指标统一写为 `null`，不得以 0 或其他计数替代。
@@ -286,6 +295,7 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：将后续运行策略固定为单个 vLLM 实例、2 个 runner worker、总请求并发 2，明确禁止 8 worker、8 路请求及自动扩容。
 - 2026-07-31：建立独立的 Qwen3.6-27B 基座评测实验目录，分开归档部署 A/B 与终止时的 381 个全量已结束样本，并提供 JSON、CSV、Markdown 统计。
 - 2026-07-28：将题 94 epoch-10 LoRA 的 5 次实测结果同步到 Training Plan 和实验 README，补充运行命令、严格 4/5 判定、耗时/token/工具 loop、外部产物路径及基座 A/B 缺口。
 - 2026-07-28：归档 Qwen3.6-27B epoch-10 LoRA 在题 94 上的 5 次 Codex CLI 验证报告，记录原始 label/输出、严格 4/5 结果、耗时、token、工具 loop、vLLM 指标、哈希与评测局限。
