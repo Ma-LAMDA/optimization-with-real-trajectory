@@ -58,7 +58,10 @@
     ├── convert_trajectories.py
     ├── evaluate_sft_validation.py
     ├── finalize_lora_workflow.py
+    ├── run_agent_validation.sh
+    ├── run_seetacloud_agent_checkpoint_eval.sh
     ├── run_seetacloud_lora_workflow.sh
+    ├── summarize_agent_validation.py
     ├── summarize_sft_training.py
     ├── train_qwen36_lora_early_stop.sh
     ├── train_qwen36_lora_smoke.sh
@@ -279,8 +282,11 @@ tokenizer 的实际统计调整。Qwen3.6 的线性注意力训练还需要
 各留一题划分，
 执行单卡 LoRA SFT，每 100 个优化步骤计算一次验证 loss，并在连续 3 次无改进时
 早停。脚本始终按最低 `eval_loss` 选择 checkpoint，而不是直接使用最后一次保存；
-之后启动单个 TP=2 vLLM 实例，以两个 worker、总并发 2 在 6 个验证题的 60 条样本
-上执行确定性严格集合匹配评测。
+之后启动单个 TP=2 vLLM 实例，复用原 `qwen36-27b-base-eval` 的 Codex CLI
+Agent runner、完整调查 prompt、离线 `saved_configs` 工具和 60 分钟上限，以两个
+worker、总并发 2 在 6 个留出题上各运行 5 次。最终能力结论来自完整 Agent 工具
+循环的 30 次严格集合匹配，不再来自向模型直接提供既有证据的 60 条 SFT 补全请求。
+SFT 验证集仍只用于训练期 `eval_loss`、早停和最佳 checkpoint 选择。
 
 ```bash
 cd /root/autodl-tmp/optimization-with-real-trajectory
@@ -288,9 +294,9 @@ RUN_ID=0731-production \
   bash scripts/run_seetacloud_lora_workflow.sh
 ```
 
-需要在同一个单实例 TP=2 服务中连续验证多次时，设置
-`VALIDATION_REPEATS`。每次仍严格使用两个 worker、总并发 2；工作流分别保存
-逐次预测与摘要，并在 `validation_eval/validation_summary.json` 生成跨次汇总：
+`VALIDATION_REPEATS` 表示每个留出题执行完整 Agent 调查的次数，默认值为 5。
+所有运行严格使用两个 worker、总并发 2；原始事件流保存在 `agent_runs/`，并在
+`validation_eval/validation_summary.json` 生成逐次与聚合结果：
 
 ```bash
 RUN_ID=0731-2epoch-repeat5 \
@@ -301,7 +307,8 @@ VALIDATION_REPEATS=5 \
 
 运行产物写入 `output/qwen36-27b-lora-0731-<RUN_ID>/`，其中
 `training_summary.json` 记录最低验证 loss 与 checkpoint，
-`validation_eval/validation_summary.json` 记录格式、严格正确率和泄漏率，
+`validation_eval/validation_summary.json` 记录完整 Agent 的严格正确率、超时、
+runner 失败、false positive/negative、工具循环、token 和耗时统计，
 `workflow_summary.json` 汇总提交、数据、训练和评测溯源。`output/` 默认不提交。
 若训练已经完成而后处理被中断，可用同一个 `RUN_ID` 并设置
 `REUSE_COMPLETED_TRAINING=1`，工作流会核对训练时与当前 manifest 哈希，并重新校验
@@ -311,6 +318,19 @@ FlashInfer 0.6.13 在 Blackwell sm_120 上错误报告低于 sm75 的采样器 J
 兼容问题；该设置只切换采样器实现，不改变单实例 TP=2 与双并发评测拓扑。
 新运行会在输出目录保存训练源码提交；复用早期未保存该字段的训练时，须一次性设置
 `TRAINING_GIT_COMMIT=<训练时提交>`，避免后处理提交被误记成训练提交。
+
+要对一个既有 LoRA checkpoint 单独执行与历史 base-eval 同条件的端到端 A/B，可用：
+
+```bash
+CHECKPOINT=/path/to/checkpoint \
+RUN_PREFIX=agent-ab-checkpoint-name \
+  bash scripts/run_seetacloud_agent_checkpoint_eval.sh
+```
+
+该入口默认复用 base-eval 已归档的题 4、5、20、89 各 5 次 TP2 基线，仅运行
+LoRA 侧 20 次并生成对比，避免重复消耗 base 推理时间。这里的四题已进入当前训练集，
+因此该 A/B 只衡量与历史 Agent 基线的端到端变化；正式泛化验收仍以工作流从 manifest
+读取的题 12、24、40、72、86、100 为准。
 
 原始基座与多个 LoRA checkpoint 的同口径对比使用
 `scripts/run_seetacloud_validation_sweep.sh`。脚本只启动一个 TP=2 vLLM 实例，
@@ -451,6 +471,10 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：将训练工作流的最终验证改为复用 base-eval 的完整 Codex Agent
+  runner、调查 prompt、离线工具和严格判分；最新 6 个留出题默认各跑 5 次，固定
+  单实例 TP2、双并发、单次 60 分钟，并增加复用历史 base 20 次结果的 checkpoint
+  端到端 A/B 入口。训练期 SFT validation loss 仍仅用于早停和 checkpoint 选择。
 - 2026-07-31：在当前 60 条验证集上完成原始 27B 基座的 5 次双并发验证，
   扫描原训练 step500/600/700/760，并从 checkpoint-760 独立续训
   +100/+200 steps；严格正确率从基座均值 7.33% 提升至 86.67%，推荐 +100。

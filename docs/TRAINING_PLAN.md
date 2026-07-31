@@ -154,10 +154,12 @@ RUN_ID=0731-production \
    `load_best_model_at_end=true`；连续 3 次评估无改进时早停；
 6. 解析 `trainer_state.json`，验证 `best_metric` 等于全部已观测验证 loss 的最小值，
    且对应 checkpoint 仍然存在；
-7. 训练结束后启动一个使用两张 GPU 的 vLLM 实例，以两个 worker 和总并发 2
-   对 6 个验证题的 60 条验证样本执行确定性生成评测；
-8. 输出 `training_summary.json`、逐条预测、`validation_summary.json` 和
-   `workflow_summary.json`。
+7. 训练结束后启动一个使用两张 GPU 的 TP2 vLLM 实例，从 manifest 读取题
+   12、24、40、72、86、100，复用历史 base-eval 的 Codex CLI Agent runner、
+   完整调查 prompt、离线 `saved_configs` 工具和严格判分，每题默认运行 5 次；
+8. 两个 Agent worker 总并发固定为 2，单次硬上限 60 分钟；保存完整事件流、
+   最终答案和逐次判分，并输出 `training_summary.json`、
+   `validation_summary.json` 和 `workflow_summary.json`。
 
 早停只能在观察到后续验证点不再改善后触发，因此“在最低点停止”的严格实现是：
 保留并最终选用历史最低验证 loss 的 checkpoint，而不是声称能预先知道未来最低点。
@@ -189,17 +191,21 @@ ms-swift 将 `best_metric` 序列化为 8 位小数造成的误差仅允许 `5e-
 
 ## 7. 训练后的评估
 
-训练不以训练 loss 作为能力结论。固定工作流先在按故障类型留出的 6 个题号上报告：
+训练不以训练 loss 作为能力结论。60 条 SFT validation 只用于训练期 `eval_loss`、
+早停和 checkpoint 选择。最终能力验证从相同划分读取 6 个留出题号，使用完整
+Codex Agent 自行查询离线工具，每题默认运行 5 次，共 30 次，并报告：
 
-- 60 条请求的完成率；
-- `<result>` 格式通过率；
-- 解析后的根因集合严格匹配率；
-- 工具名、命令和操作标记泄漏率；
-- 逐条延迟及均值、中位数和 P95。
+- 30 次 Agent 调查的 60 分钟内完成率、超时和 runner 失败数；
+- `<result>` 解析后的根因 JSON 列表严格匹配率；
+- false positive/negative、逐题五次结果和原始最终答案；
+- Agent 消息段、工具命令、input/output token；
+- 逐次封顶耗时及均值、中位数、P95、标准差和变异系数。
 
-该生成评测固定使用 `temperature=0`、`seed=42`、`max_tokens=8000`，并强制记录
-`instance_count=1`、`worker_count=2`、`request_concurrency=2`。进一步的能力结论
-仍至少比较基座和 LoRA adapter：
+该 Agent 评测沿用 `qwen36-27b-base-eval` 的 Codex 模型配置和 Responses API
+采样设置，不用直接 chat-completion 的 `temperature=0`、`seed=42`、
+`max_tokens=8000` 口径。摘要强制记录 `instance_count=1`、
+`tensor_parallel_size=2`、`worker_count=2`、`request_concurrency=2`。
+进一步的能力结论仍至少比较基座和 LoRA adapter：
 
 - 输出结构通过率；
 - 工具名、命令和 API 泄漏率；
@@ -406,6 +412,15 @@ vLLM 周期日志给出的吞吐是时间窗口采样值，必须与逐请求精
 - 均值、中位数、P95、标准差和变异系数；
 - prefix cache 开启/关闭状态及命中率；
 - 原始逐次结果和聚合结果，不能只报告最优一次。
+
+`scripts/run_agent_validation.sh` 是固定的完整 Agent 验证控制器；
+`scripts/run_seetacloud_agent_checkpoint_eval.sh` 负责启动单实例 TP2 服务并评估
+既有 checkpoint。若题集、prompt、模型基座、Codex 配置、工具快照、60 分钟上限
+和双并发拓扑均一致，可以直接复用
+`experiments/2026-07-31-qwen36-27b-base-eval/deployment-ab/summary.json` 中的
+20 次 `tp2x1` base 结果，只补跑 LoRA 侧。默认复用题 4、5、20、89 各 5 次；
+这四题属于当前训练集，因此只用于与历史 base Agent 行为对比，不作为当前划分的
+留出泛化结论。正式工作流必须按 manifest 运行题 12、24、40、72、86、100。
 
 ### 9.5 已完成的题 94 epoch-10 验证
 
