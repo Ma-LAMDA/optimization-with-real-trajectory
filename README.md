@@ -276,12 +276,18 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 实验仍从仓库根目录的共享 `saved_configs/` 快照读取离线配置。完整目录结构、轨迹文件说明、重试规则、恢复命令和耗时 CSV 生成方式见 `experiments/2026-07-27-ip_codex_train0629_14x10/README.md`。
 
+2026-07-31 按用户要求终止基座全量评测并冻结已结束结果：计划 460 次，实际纳入
+381 次，其中成功输出 45、失败 4、超时 332，严格正确 2/381（0.52%）；停止时
+8 个进行中样本未纳入统计。总体、逐题和逐次明细见
+[`experiments/2026-07-27-ip_codex_train0629_14x10/results/reports/base-train0629-remaining92-20260728T150305Z_terminated_20260731T021338Z_completed_trajectories_report.md`](experiments/2026-07-27-ip_codex_train0629_14x10/results/reports/base-train0629-remaining92-20260728T150305Z_terminated_20260731T021338Z_completed_trajectories_report.md)。
+
 ## 提交维护规则
 
 每次创建并推送 GitHub 提交时，必须在同一个提交中同步更新本 README，记录该次变更对项目内容、数据、脚本或使用方式的影响。
 
 ### 更新记录
 
+- 2026-07-31：终止基座全量评测，归档 381 个已结束样本的 JSON/CSV/Markdown 冻结统计，并记录严格准确率、超时和停止时未完成样本。
 - 2026-07-28：将题 94 epoch-10 LoRA 的 5 次实测结果同步到 Training Plan 和实验 README，补充运行命令、严格 4/5 判定、耗时/token/工具 loop、外部产物路径及基座 A/B 缺口。
 - 2026-07-28：归档 Qwen3.6-27B epoch-10 LoRA 在题 94 上的 5 次 Codex CLI 验证报告，记录原始 label/输出、严格 4/5 结果、耗时、token、工具 loop、vLLM 指标、哈希与评测局限。
 - 2026-07-28：增加 Codex CLI 多次验证遥测规范，统一 turn、API 调用、Agent 消息和工具 loop 口径，并规定 TTFT、TPOT、token、缓存、GPU、质量判定及基座/LoRA A/B 的记录要求。
