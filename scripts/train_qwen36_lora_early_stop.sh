@@ -83,6 +83,9 @@ if [[ -n "${RESUME_FROM_CHECKPOINT}" ]]; then
     --resume_from_checkpoint "${RESUME_FROM_CHECKPOINT}"
     --resume_only_model "${RESUME_ONLY_MODEL}"
   )
+  if [[ "${RESUME_ONLY_MODEL}" == "true" ]]; then
+    continuation_args+=(--ignore_data_skip true)
+  fi
 fi
 
 mkdir -p "${OUTPUT_DIR}"

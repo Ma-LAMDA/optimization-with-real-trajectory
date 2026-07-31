@@ -326,8 +326,8 @@ LORA_TARGETS="step500=/path/to/checkpoint-500 step600=/path/to/checkpoint-600" \
 需要在不恢复已经衰减结束的优化器和学习率调度器时继续训练，可向
 `scripts/train_qwen36_lora_early_stop.sh` 传入 `RESUME_FROM_CHECKPOINT`、
 `RESUME_ONLY_MODEL=true` 与正整数 `MAX_STEPS`。这种运行只加载 LoRA 权重并从
-step 0 建立新的优化器和调度器，因此结果应标记为“额外训练步数”，不得伪装成原
-训练曲线的无缝续接。
+step 0 建立新的优化器和调度器，同时忽略旧 trainer 的数据游标，因此结果应标记为
+“额外训练步数”，不得伪装成原训练曲线的无缝续接。
 
 当前 759/60 分层划分已完成一轮 2-epoch 实跑：step 760 / epoch 2.0 取得最低
 验证 loss `0.0045663742`，最终 checkpoint-760 即最佳 checkpoint。随后在同一
