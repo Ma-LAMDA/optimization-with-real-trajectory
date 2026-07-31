@@ -30,6 +30,7 @@ SCRIPTS_DIR = EXPERIMENT_ROOT / "scripts"
 RUNTIME_DIR = EXPERIMENT_ROOT / "runtime"
 REPORT_DIR = EXPERIMENT_ROOT / "results" / "report"
 RUNS_DIR = EXPERIMENT_ROOT / "results" / "runs"
+QUESTIONS_DIR = EXPERIMENT_ROOT / "results" / "questions"
 DATASET = REPOSITORY_ROOT / "data" / "simulation" / "train_0629.jsonl"
 SOURCE_TEMPLATE = REPOSITORY_ROOT / "data" / "simulation" / "IP user prompt.txt"
 SERVICE_SCRIPT = REPOSITORY_ROOT / "saved_configs_service" / "serve_saved_configs.py"
@@ -676,7 +677,7 @@ def recover_interrupted(state: dict[str, Any]) -> None:
                 "ended_at": utc_now(),
             }
         )
-        for name in ("events.jsonl", "stdout.log", "stderr.log", "final_answer.txt"):
+        for name in ("events.jsonl", "stderr.log", "final_answer.txt"):
             path = attempt_dir / name
             if not path.exists():
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -691,6 +692,9 @@ def recover_interrupted(state: dict[str, Any]) -> None:
                 "resume": "a new monotonically larger attempt number will be used",
             },
         )
+        workspace = attempt_dir / "workspace"
+        if workspace.exists():
+            shutil.rmtree(workspace)
         sample["current_attempt"] = None
         sample["infrastructure_failures"] += 1
         sample["status"] = "pending"
@@ -770,16 +774,20 @@ def create_attempt(
         "output_format": record["output_format"],
         "contains_ground_answer": False,
     }
-    if not (slot_dir / "prompt.txt").exists():
-        atomic_text(slot_dir / "prompt.txt", prompt)
-        atomic_json(slot_dir / "source_record.json", source_record)
-    elif (slot_dir / "prompt.txt").read_text(encoding="utf-8") != prompt:
-        raise RuntimeError(f"resume prompt mismatch in {slot_dir}")
-    atomic_text(attempt_dir / "prompt.txt", prompt)
-    atomic_json(attempt_dir / "source_record.json", source_record)
+    question_dir = QUESTIONS_DIR / sample["sample_key"]
+    question_dir.mkdir(parents=True, exist_ok=True)
+    prompt_path = question_dir / "prompt.txt"
+    source_record_path = question_dir / "source_record.json"
+    if not prompt_path.exists():
+        atomic_text(prompt_path, prompt)
+    elif prompt_path.read_text(encoding="utf-8") != prompt:
+        raise RuntimeError(f"resume prompt mismatch in {question_dir}")
+    if not source_record_path.exists():
+        atomic_json(source_record_path, source_record)
+    elif load_json(source_record_path) != source_record:
+        raise RuntimeError(f"resume source record mismatch in {question_dir}")
     for name in (
         "events.jsonl",
-        "stdout.log",
         "stderr.log",
         "final_answer.txt",
         "hook_audit.jsonl",
@@ -810,6 +818,7 @@ def create_attempt(
             },
         },
     )
+    runtime_hook_config_sha256 = sha256(hooks_dir / "hooks.json")
     command = codex_command(workspace, attempt_dir / "final_answer.txt")
     metadata = {
         "schema_version": "ip-distill-attempt.v1",
@@ -830,14 +839,18 @@ def create_attempt(
         "working_directory": str(workspace.resolve()),
         "ephemeral_session": True,
         "command": command,
-        "prompt_sha256": sha256(attempt_dir / "prompt.txt"),
-        "source_record_sha256": sha256(attempt_dir / "source_record.json"),
+        "prompt_sha256": sha256(prompt_path),
+        "source_record_sha256": sha256(source_record_path),
         "contains_ground_answer": False,
         "api_only_hook_sha256": sha256(SCRIPTS_DIR / "api_only_hook.py"),
+        "runtime_hook_config_sha256": runtime_hook_config_sha256,
         "files": {
-            "prompt": "prompt.txt",
+            "prompt": Path(os.path.relpath(prompt_path, attempt_dir)).as_posix(),
+            "source_record": Path(
+                os.path.relpath(source_record_path, attempt_dir)
+            ).as_posix(),
             "events": "events.jsonl",
-            "stdout": "stdout.log",
+            "stdout": "events.jsonl",
             "stderr": "stderr.log",
             "final_answer": "final_answer.txt",
             "hook_audit": "hook_audit.jsonl",
@@ -1015,7 +1028,6 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
     try:
         with (
             (attempt_dir / "events.jsonl").open("w", encoding="utf-8", newline="\n") as events_handle,
-            (attempt_dir / "stdout.log").open("w", encoding="utf-8", newline="\n") as stdout_handle,
             (attempt_dir / "stderr.log").open("w", encoding="utf-8", newline="\n") as stderr_handle,
         ):
             process = subprocess.Popen(
@@ -1057,8 +1069,6 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
                 for line in process.stdout:
                     events_handle.write(line)
                     events_handle.flush()
-                    stdout_handle.write(line)
-                    stdout_handle.flush()
                 exit_code = process.wait()
             finally:
                 timeout_timer.cancel()
@@ -1169,16 +1179,25 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
             "error_event_count": event_info["error_event_count"],
             "hook_audit": audit,
             "sha256": {
-                name: sha256(attempt_dir / filename)
-                for name, filename in {
-                    "prompt": "prompt.txt",
-                    "source_record": "source_record.json",
+                **{
+                    "prompt": sha256(
+                        QUESTIONS_DIR / task["sample_key"] / "prompt.txt"
+                    ),
+                    "source_record": sha256(
+                        QUESTIONS_DIR
+                        / task["sample_key"]
+                        / "source_record.json"
+                    ),
+                },
+                **{
+                    name: sha256(attempt_dir / filename)
+                    for name, filename in {
                     "events": "events.jsonl",
-                    "stdout": "stdout.log",
                     "stderr": "stderr.log",
                     "final_answer": "final_answer.txt",
                     "hook_audit": "hook_audit.jsonl",
-                }.items()
+                    }.items()
+                },
             },
         }
     )
@@ -1727,6 +1746,9 @@ def run_scheduler(manifest: dict[str, Any], state: dict[str, Any], safe_index: d
                         }
                     )
                     atomic_json(reserved["attempt_dir"] / "metadata.json", metadata)
+                workspace = reserved["workspace"]
+                if workspace.exists():
+                    shutil.rmtree(workspace)
                 log(
                     f"finished {result['sample_key']} attempt={result['attempt_index']:03d} outcome={result['outcome']} error={result.get('error_class')}"
                 )

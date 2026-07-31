@@ -169,7 +169,22 @@ def main() -> int:
     checks["hook_command_script"] = str(hook_script)
     checks["hook_command_script_exists"] = hook_script.is_file()
     if not hook_script.is_file():
-        errors.append("hook command script path does not exist after relocation")
+        archived_hook_script = (
+            EXPERIMENT_ROOT
+            / "runtime"
+            / "workspace"
+            / ".codex"
+            / "hooks"
+            / "api_only_hook.py"
+        )
+        checks["archived_hook_script_exists"] = archived_hook_script.is_file()
+        if archived_hook_script.is_file():
+            warnings.append(
+                "historical hook command keeps its original absolute path; "
+                "the archived hook script is present at the normalized experiment path"
+            )
+        else:
+            errors.append("archived hook script is missing")
     expected_slots = [
         (case_id, repeat_index)
         for repeat_index in range(1, EXPECTED_REPEATS + 1)
@@ -221,8 +236,14 @@ def main() -> int:
         if run.get("status") != "succeeded":
             errors.append(f"{slot.name}: slot did not succeed")
             continue
-        prompt_path = slot / "prompt.txt"
-        source_record_path = slot / "source_record.json"
+        question_dir = (
+            EXPERIMENT_ROOT
+            / "results"
+            / "questions"
+            / f"q{case_id:04d}"
+        )
+        prompt_path = question_dir / "prompt.txt"
+        source_record_path = question_dir / "source_record.json"
         expected_prompt = instantiate(localized_template, rows[case_id])
         actual_prompt = prompt_path.read_text(encoding="utf-8")
         if actual_prompt != expected_prompt:

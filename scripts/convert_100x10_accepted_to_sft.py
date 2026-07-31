@@ -299,6 +299,7 @@ def raw_path(raw_dir: Path, case_id: int, success_slot: int) -> Path:
 def candidate_reasons(
     *,
     attempt_dir: Path,
+    source_record_path: Path,
     index_item: Mapping[str, Any],
     sample: Mapping[str, Any],
     source_row: Mapping[str, Any],
@@ -306,17 +307,18 @@ def candidate_reasons(
     required_names = (
         "metadata.json",
         "judgment.json",
-        "source_record.json",
         "events.jsonl",
         "final_answer.txt",
     )
     missing = [name for name in required_names if not (attempt_dir / name).is_file()]
+    if not source_record_path.is_file():
+        missing.append("canonical_source_record.json")
     if missing:
         return [f"missing_artifact:{name}" for name in missing], {}
 
     metadata = load_json(attempt_dir / "metadata.json")
     judgment = load_json(attempt_dir / "judgment.json")
-    safe_record = load_json(attempt_dir / "source_record.json")
+    safe_record = load_json(source_record_path)
     final_text = normalize_text(
         (attempt_dir / "final_answer.txt").read_text(encoding="utf-8")
     )
@@ -353,7 +355,7 @@ def candidate_reasons(
     ):
         reasons.append("metadata_events_hash_mismatch")
     if metadata.get("sha256", {}).get("source_record") != stable_digest(
-        attempt_dir / "source_record.json"
+        source_record_path
     ):
         reasons.append("metadata_source_record_hash_mismatch")
     if prediction is None or prediction not in references:
@@ -524,8 +526,16 @@ def main() -> None:
             seen_thread_ids.add(thread_id)
 
             attempt_dir = experiment_root / attempt_relative
+            source_record_path = (
+                experiment_root
+                / "results"
+                / "questions"
+                / f"q{case_id:04d}"
+                / "source_record.json"
+            )
             reasons, details = candidate_reasons(
                 attempt_dir=attempt_dir,
+                source_record_path=source_record_path,
                 index_item=index_item,
                 sample=sample,
                 source_row=source_row,
@@ -577,10 +587,10 @@ def main() -> None:
                         if (attempt_dir / "final_answer.txt").is_file()
                         else None
                     ),
-                    "source_record_file": label(attempt_dir / "source_record.json"),
+                    "source_record_file": label(source_record_path),
                     "source_record_sha256_lf_normalized": (
-                        stable_digest(attempt_dir / "source_record.json")
-                        if (attempt_dir / "source_record.json").is_file()
+                        stable_digest(source_record_path)
+                        if source_record_path.is_file()
                         else None
                     ),
                     "thread_id": thread_id,

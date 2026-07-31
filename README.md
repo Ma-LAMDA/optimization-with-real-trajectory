@@ -400,6 +400,15 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 不受 Qwen3.6-27B eval 的单实例双并发约束。819 条 accepted 轨迹已经转换为
 `data/2026-07-31/` 下的严格正确 SFT 数据。
 
+三个 Codex 轨迹实验已采用统一的紧凑归档：`prompt.txt` 和
+`source_record.json` 按“实验 + 题号”各保留一份；100×10 实验只保留
+`events.jsonl` 作为 Codex 原始标准输出流，并将共享 hooks 配置集中到
+`config/hooks.json`。迁移删除 7,412 个重复文件、新建 249 个规范文件，净减少
+7,163 个文件项和 971,494,909 字节（926.49 MiB），不修改事件、答案或判题证据。
+逐实验统计见
+[`experiments/ARCHIVE_COMPACTION_REPORT.json`](experiments/ARCHIVE_COMPACTION_REPORT.json)；
+可用 `python scripts/compact_experiment_archives.py` 只读复核。
+
 2026-07-30 至 2026-07-31 的 Qwen3.6-27B 基座部署 A/B 和全量评测已作为独立实验
 归档到 [`experiments/2026-07-31-qwen36-27b-base-eval/`](experiments/2026-07-31-qwen36-27b-base-eval/)。
 目录将部署对比与全量结果分开保存，并提供总体、逐题和逐次明细。
@@ -410,6 +419,9 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：压缩三个 Codex 轨迹实验归档，删除与 `events.jsonl` 完全相同的
+  1,313 份 `stdout.log`，并按题号集中 prompt/source record、集中共享 hooks；
+  同步更新 metadata、转换器、校验器和后续 runner，净释放 926.49 MiB。
 - 2026-07-31：将 0731 的 819 条严格正确轨迹重新按故障类型分层并以题号整组划分，
   每种故障类型确定性留出 1 题，生成 759 条训练样本和 60 条验证样本；同步固化
   六类覆盖、题号隔离、选择规则和报告校验。

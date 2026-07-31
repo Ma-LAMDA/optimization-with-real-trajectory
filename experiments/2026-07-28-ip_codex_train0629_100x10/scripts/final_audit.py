@@ -84,7 +84,7 @@ def main() -> int:
 
     missing_events: list[str] = []
     invalid_events: list[dict[str, Any]] = []
-    stdout_event_mismatches: list[str] = []
+    unexpected_stdout_files: list[str] = []
     missing_metadata: list[str] = []
     wrong_models: list[str] = []
     non_ephemeral_calls: list[str] = []
@@ -109,12 +109,14 @@ def main() -> int:
 
     for attempt_dir in attempt_dirs:
         rel = relative(attempt_dir)
+        question_key = attempt_dir.parent.name.split('_r', 1)[0]
         metadata: dict[str, Any] = {}
         events = attempt_dir / 'events.jsonl'
         stdout = attempt_dir / 'stdout.log'
         metadata_path = attempt_dir / 'metadata.json'
-        safe_record_path = attempt_dir / 'source_record.json'
-        prompt_path = attempt_dir / 'prompt.txt'
+        question_dir = EXPERIMENT / 'results' / 'questions' / question_key
+        safe_record_path = question_dir / 'source_record.json'
+        prompt_path = question_dir / 'prompt.txt'
         hook_path = attempt_dir / 'hook_audit.jsonl'
         if not events.exists():
             missing_events.append(rel)
@@ -127,8 +129,8 @@ def main() -> int:
                     except (json.JSONDecodeError, UnicodeDecodeError):
                         invalid_events.append({'attempt_path': rel, 'line': line_number})
                         break
-        if stdout.exists() and events.exists() and stdout.read_bytes() != events.read_bytes():
-            stdout_event_mismatches.append(rel)
+        if stdout.exists():
+            unexpected_stdout_files.append(rel)
         if not metadata_path.exists():
             missing_metadata.append(rel)
         else:
@@ -144,8 +146,11 @@ def main() -> int:
                     thread_ids.append(str(thread_id))
             workdir = metadata.get('working_directory')
             if workdir:
-                resolved = Path(workdir).resolve()
-                if attempt_dir.resolve() not in (resolved, *resolved.parents):
+                normalized_workdir = str(workdir).replace('\\', '/').casefold()
+                expected_suffix = (
+                    relative(attempt_dir) + '/workspace'
+                ).casefold()
+                if not normalized_workdir.endswith(expected_suffix):
                     unsafe_workdirs.append(rel)
         if safe_record_path.exists():
             safe_record = load(safe_record_path)
@@ -270,7 +275,7 @@ def main() -> int:
         'accepted_index_sequential_and_state_consistent': not index_errors,
         'all_attempt_directories_have_events': not missing_events,
         'all_nonempty_event_lines_are_json': not invalid_events,
-        'events_are_raw_stdout_streams': not stdout_event_mismatches,
+        'events_are_single_raw_stdout_streams': not unexpected_stdout_files,
         'all_attempts_have_metadata': not missing_metadata,
         'all_started_model_calls_use_exact_model': not wrong_models,
         'all_started_model_calls_are_ephemeral': not non_ephemeral_calls,
@@ -284,7 +289,7 @@ def main() -> int:
         'runner_protected_tree_integrity_passed': bool(summary['integrity']['passed']),
     }
     audit = {
-        'schema_version': 'ip-distill-final-audit.v1',
+        'schema_version': 'ip-distill-final-audit.v2',
         'experiment_root': str(EXPERIMENT),
         'source_path': str(DATASET),
         'source_sha256': source_hash,
@@ -304,7 +309,7 @@ def main() -> int:
         'failures': {
             'missing_events': missing_events,
             'invalid_events': invalid_events,
-            'stdout_event_mismatches': stdout_event_mismatches,
+            'unexpected_stdout_files': unexpected_stdout_files,
             'missing_metadata': missing_metadata,
             'wrong_models': wrong_models,
             'non_ephemeral_calls': non_ephemeral_calls,

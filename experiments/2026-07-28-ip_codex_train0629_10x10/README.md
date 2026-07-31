@@ -28,6 +28,10 @@
 │   ├── run_codex_ip_trajectories.py
 │   └── validate_experiment.py
 └── results/
+    ├── questions/
+    │   └── qXXXX/
+    │       ├── prompt.txt
+    │       └── source_record.json
     ├── reports/
     └── runs/
         └── fullaccess/
@@ -35,11 +39,12 @@
             ├── runner.stdout.log
             ├── runner.stderr.log
             └── qXXXX_rXX/
-                ├── prompt.txt
-                ├── source_record.json
                 ├── run.json
                 └── attempt_XXX/
 ```
+
+同题共享的 `prompt.txt` 和 `source_record.json` 只在
+`results/questions/qXXXX/` 保留一份；attempt metadata 以相对路径引用规范副本。
 
 `runtime/codex.exe` 是为绕过 WindowsApps 包路径执行限制而从本机 Codex Desktop
 只读复制的本地 CLI。它只用于本次实验，不是模型数据或旧实验产物。
@@ -72,6 +77,8 @@ python -B experiments/2026-07-28-ip_codex_train0629_10x10/scripts/validate_exper
 - The resumed 40 successful calls used a reviewed PreToolUse API-only hook. The
   earlier 60 successful calls were audited from their full event streams.
 - results/reports/validation.json is the machine-readable final integrity report.
+- The protected-file baseline was refreshed after the verified archive compaction;
+  canonical question files preserve the original content hashes.
 
 ## Directory relocation
 

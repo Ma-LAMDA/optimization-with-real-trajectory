@@ -35,6 +35,7 @@ DEFAULT_TEMPLATE = (
     EXPERIMENT_ROOT / "inputs" / "IP user prompt with saved configs skills.txt"
 )
 DEFAULT_OUTPUT_ROOT = EXPERIMENT_ROOT / "results" / "runs"
+QUESTIONS_DIR = EXPERIMENT_ROOT / "results" / "questions"
 DEFAULT_CASE_IDS = (13, 14, 17, 18, 25, 26, 27, 28, 87, 88, 91, 92, 93, 94)
 DEFAULT_REPEATS = 10
 DEFAULT_CREDIT_RETRY_SECONDS = 30 * 60
@@ -330,8 +331,10 @@ def prepare_slot(
     identifier = row["id"]
     slot_dir = run_dir / f"q{identifier:04d}_r{repeat_index:02d}"
     slot_dir.mkdir(exist_ok=True)
-    prompt_path = slot_dir / "prompt.txt"
-    record_path = slot_dir / "source_record.json"
+    question_dir = QUESTIONS_DIR / f"q{identifier:04d}"
+    question_dir.mkdir(parents=True, exist_ok=True)
+    prompt_path = question_dir / "prompt.txt"
+    record_path = question_dir / "source_record.json"
     if prompt_path.is_file():
         if prompt_path.read_text(encoding="utf-8") != prompt:
             raise ValueError(f"Existing prompt differs during resume: {prompt_path}")
@@ -357,8 +360,9 @@ def prepare_attempt(
 ) -> tuple[Path, dict[str, Any]]:
     attempt_dir = slot_dir / f"attempt_{attempt_index:03d}"
     attempt_dir.mkdir()
-    prompt_path = slot_dir / "prompt.txt"
-    record_path = slot_dir / "source_record.json"
+    question_dir = QUESTIONS_DIR / f"q{row['id']:04d}"
+    prompt_path = question_dir / "prompt.txt"
+    record_path = question_dir / "source_record.json"
     metadata = base_case_metadata(
         row["id"],
         repeat_index,
@@ -372,6 +376,12 @@ def prepare_attempt(
         "prompt": digest(prompt_path),
         "source_record": digest(record_path),
     }
+    metadata["files"]["prompt"] = Path(
+        os.path.relpath(prompt_path, attempt_dir)
+    ).as_posix()
+    metadata["files"]["source_record"] = Path(
+        os.path.relpath(record_path, attempt_dir)
+    ).as_posix()
     return attempt_dir, metadata
 
 
@@ -798,9 +808,13 @@ def main() -> int:
                     "case_id": identifier,
                     "repeat_index": repeat_index,
                     "status": "prepared",
-                    "prompt_sha256": digest(slot_dir / "prompt.txt"),
+                    "prompt_sha256": digest(
+                        QUESTIONS_DIR / f"q{identifier:04d}" / "prompt.txt"
+                    ),
                     "source_record_sha256": digest(
-                        slot_dir / "source_record.json"
+                        QUESTIONS_DIR
+                        / f"q{identifier:04d}"
+                        / "source_record.json"
                     ),
                 },
             )

@@ -15,12 +15,17 @@ prompt 模板。唯一内容适配是把远程服务地址换成本次本地服�
 scripts/                 输入代理、生成调度、独立判题和验证脚本
 runtime/                 本地运行时目录；codex.exe 启动时生成且不提交
 results/report/          manifest、状态、heartbeat、服务日志和最终报告
+results/questions/       每题唯一的 prompt 和脱敏 source_record
 results/runs/            每题的 success slot、所有 attempt 和原始事件流
+config/hooks.json        历史运行共享的唯一 hooks 配置副本
 ```
 
 每个成功槽位沿用旧实验名称 `qXXXX_rYY`；同一道题的 attempt 编号跨槽位单调递增。
-每个 attempt 都有原始 `events.jsonl`、`stdout.log`、`stderr.log`、`final_answer.txt`、
-`metadata.json`、`timing.json`、`exit_code.txt`、独立 prompt 和判题记录。
+每个 attempt 保留唯一原始流 `events.jsonl`，以及 `stderr.log`、`final_answer.txt`、
+`metadata.json`、`timing.json`、`exit_code.txt` 和判题记录。原先与 `events.jsonl`
+逐字节相同的 `stdout.log` 已删除；metadata 的 `stdout` 字段兼容性指向
+`events.jsonl`。prompt 与脱敏 source record 按题号集中保存，临时 hooks workspace
+在 attempt 结束后清理。
 
 ## 运行与恢复
 

@@ -350,7 +350,12 @@ def main() -> None:
             raise ValueError(f"{source_id}: malformed run manifest entry")
         trajectory_dir = run_dir / relative_run_dir
         attempt_dir = trajectory_dir / f"attempt_{successful_attempt:03d}"
-        source_record_path = trajectory_dir / "source_record.json"
+        source_record_path = (
+            run_dir.parents[1]
+            / "questions"
+            / f"q{case_id:04d}"
+            / "source_record.json"
+        )
         run_json_path = trajectory_dir / "run.json"
         events_path = attempt_dir / "events.jsonl"
         final_answer_path = attempt_dir / "final_answer.txt"

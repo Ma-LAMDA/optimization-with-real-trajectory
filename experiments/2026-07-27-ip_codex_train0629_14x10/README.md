@@ -14,6 +14,10 @@
 │   ├── run_codex_ip_trajectories.py
 │   └── summarize_durations.py
 └── results/
+    ├── questions/
+    │   └── q0013/
+    │       ├── prompt.txt
+    │       └── source_record.json
     ├── reports/
     │   ├── 各题准确率统计.csv
     │   └── 各题耗时统计.csv
@@ -21,8 +25,6 @@
         └── fullaccess/
             ├── manifest.json
             ├── q0013_r01/
-            │   ├── prompt.txt
-            │   ├── source_record.json
             │   ├── run.json
             │   └── attempt_001/
             └── ...
@@ -31,6 +33,9 @@
 `fullaccess` 是完成的 full-access 运行，包含 14 个题号各 10 条成功轨迹，共
 140 条。后续新运行会直接写入
 `results/runs/<运行目录>/`，日期由实验目录名和运行目录名记录。
+
+`prompt.txt` 和 `source_record.json` 按题号集中保存在 `results/questions/qXXXX/`；
+各 attempt 的 `metadata.json` 使用相对路径引用它们，不再为每个重复运行保存相同副本。
 
 每个运行目录内同时保存 `manifest.json`、对应的 `runner.stdout.log`/`runner.stderr.log`，以及按 `q<题号>_r<轮次>/attempt_<序号>/` 组织的完整事件、最终答案、元数据和哈希。
 

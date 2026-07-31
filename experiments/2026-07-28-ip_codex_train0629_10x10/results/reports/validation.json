@@ -1,9 +1,10 @@
 {
   "schema_version": "codex-ip-trajectory-validation.v1",
-  "validated_at": "2026-07-28T11:22:08+00:00",
+  "validated_at": "2026-07-31T07:57:28+00:00",
   "status": "passed",
   "errors": [],
   "warnings": [
+    "historical hook command keeps its original absolute path; the archived hook script is present at the normalized experiment path",
     "hook audit contains three trailing fragments from concurrent appends; raw lines are preserved at [187, 357, 925]"
   ],
   "checks": {
@@ -12,8 +13,9 @@
     "experiment_directory_name": "2026-07-28-ip_codex_train0629_10x10",
     "old_experiment_directory_exists": false,
     "hook_command_script": "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_10x10\\runtime\\workspace\\.codex\\hooks\\api_only_hook.py",
-    "hook_command_script_exists": true,
-    "baseline_file_count": 1001,
+    "hook_command_script_exists": false,
+    "archived_hook_script_exists": true,
+    "baseline_file_count": 750,
     "baseline_changed": [],
     "baseline_missing": [],
     "expected_slots": 100,
