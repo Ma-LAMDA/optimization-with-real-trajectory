@@ -288,6 +288,17 @@ RUN_ID=0731-production \
   bash scripts/run_seetacloud_lora_workflow.sh
 ```
 
+需要在同一个单实例 TP=2 服务中连续验证多次时，设置
+`VALIDATION_REPEATS`。每次仍严格使用两个 worker、总并发 2；工作流分别保存
+逐次预测与摘要，并在 `validation_eval/validation_summary.json` 生成跨次汇总：
+
+```bash
+RUN_ID=0731-2epoch-repeat5 \
+NUM_TRAIN_EPOCHS=2 \
+VALIDATION_REPEATS=5 \
+  bash scripts/run_seetacloud_lora_workflow.sh
+```
+
 运行产物写入 `output/qwen36-27b-lora-0731-<RUN_ID>/`，其中
 `training_summary.json` 记录最低验证 loss 与 checkpoint，
 `validation_eval/validation_summary.json` 记录格式、严格正确率和泄漏率，

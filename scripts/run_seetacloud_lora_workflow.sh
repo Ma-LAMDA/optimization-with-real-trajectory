@@ -31,6 +31,7 @@ VLLM_MAX_MODEL_LEN="${VLLM_MAX_MODEL_LEN:-16384}"
 VLLM_GPU_MEMORY_UTILIZATION="${VLLM_GPU_MEMORY_UTILIZATION:-0.90}"
 REUSE_COMPLETED_TRAINING="${REUSE_COMPLETED_TRAINING:-0}"
 TRAINING_GIT_COMMIT="${TRAINING_GIT_COMMIT:-}"
+VALIDATION_REPEATS="${VALIDATION_REPEATS:-1}"
 
 TRAIN_PYTHON="${TRAIN_ENV}/bin/python"
 TRAIN_SWIFT="${TRAIN_ENV}/bin/swift"
@@ -62,6 +63,10 @@ GIT_COMMIT="$(git rev-parse HEAD)"
 CURRENT_BRANCH="$(git branch --show-current)"
 if [[ "${CURRENT_BRANCH}" != "${BRANCH}" ]]; then
   echo "Expected branch ${BRANCH}, found ${CURRENT_BRANCH}." >&2
+  exit 1
+fi
+if [[ ! "${VALIDATION_REPEATS}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "VALIDATION_REPEATS must be a positive integer." >&2
   exit 1
 fi
 
@@ -251,18 +256,40 @@ PY
   sleep 5
 done
 
-echo "[$(date -Iseconds)] Evaluating with two workers and concurrency two"
-"${TRAIN_PYTHON}" scripts/evaluate_sft_validation.py \
-  --dataset "${VALIDATION_DATASET_PATH}" \
-  --output-dir "${EVAL_OUTPUT_DIR}" \
-  --model "${SERVED_MODEL_NAME}" \
-  --base-url "http://${VLLM_HOST}:${VLLM_PORT}/v1" \
-  --max-tokens 8000 \
-  --instance-count 1 \
-  --workers 2 \
-  --request-concurrency 2 \
-  --git-commit "${GIT_COMMIT}" \
-  --checkpoint "${BEST_CHECKPOINT}"
+echo "[$(date -Iseconds)] Evaluating ${VALIDATION_REPEATS} time(s) with two workers and concurrency two"
+if [[ "${VALIDATION_REPEATS}" == "1" ]]; then
+  "${TRAIN_PYTHON}" scripts/evaluate_sft_validation.py \
+    --dataset "${VALIDATION_DATASET_PATH}" \
+    --output-dir "${EVAL_OUTPUT_DIR}" \
+    --model "${SERVED_MODEL_NAME}" \
+    --base-url "http://${VLLM_HOST}:${VLLM_PORT}/v1" \
+    --max-tokens 8000 \
+    --instance-count 1 \
+    --workers 2 \
+    --request-concurrency 2 \
+    --git-commit "${GIT_COMMIT}" \
+    --checkpoint "${BEST_CHECKPOINT}"
+else
+  for repeat_index in $(seq 1 "${VALIDATION_REPEATS}"); do
+    repeat_name="$(printf 'repeat_%02d' "${repeat_index}")"
+    echo "[$(date -Iseconds)] Validation ${repeat_index}/${VALIDATION_REPEATS}"
+    "${TRAIN_PYTHON}" scripts/evaluate_sft_validation.py \
+      --dataset "${VALIDATION_DATASET_PATH}" \
+      --output-dir "${EVAL_OUTPUT_DIR}/${repeat_name}" \
+      --model "${SERVED_MODEL_NAME}" \
+      --base-url "http://${VLLM_HOST}:${VLLM_PORT}/v1" \
+      --max-tokens 8000 \
+      --instance-count 1 \
+      --workers 2 \
+      --request-concurrency 2 \
+      --git-commit "${GIT_COMMIT}" \
+      --checkpoint "${BEST_CHECKPOINT}"
+  done
+  "${TRAIN_PYTHON}" scripts/summarize_repeated_validation.py \
+    --input-root "${EVAL_OUTPUT_DIR}" \
+    --repeats "${VALIDATION_REPEATS}" \
+    --output "${EVAL_OUTPUT_DIR}/validation_summary.json"
+fi
 
 cleanup_vllm
 VLLM_PID=""
