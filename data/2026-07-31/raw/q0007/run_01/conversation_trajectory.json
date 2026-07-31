@@ -1,0 +1,77 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0007_success_01",
+  "case_id": 7,
+  "row_index": 7,
+  "success_slot": 1,
+  "attempt_index": 3,
+  "source_record": {
+    "row_index": 7,
+    "original_id": 7,
+    "sample_id": 7,
+    "sample_key": "q0007",
+    "question": "在CampusNetwork_03组网中，从SH_FAC_PC01 ping北京区域核心交换机（10.1.10.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先定位 CampusNetwork_03 项目和节点，再对比 PE2/PE3 的当前配置、路由与隧道回显，沿 SH_FAC_PC01 到 10.1.10.254 的实际路径确认最小根因集合。"
+    },
+    {
+      "event_line": 6,
+      "item_id": "item_3",
+      "text": "环境限制了通用 PowerShell HTTP 调用；我正在使用仓库允许的固定客户端方式访问同一只读接口，不会改动仿真数据。"
+    },
+    {
+      "event_line": 13,
+      "item_id": "item_7",
+      "text": "项目已确认。下一步重点核验上海出口与三台 PE 的转发选择：高时延本身不是根因，只有配置把业务流量错误引到 PE2-PE3 长距离链路时，才应归入题目给定的具体故障类别。"
+    },
+    {
+      "event_line": 38,
+      "item_id": "item_20",
+      "text": "PE2 到 PE1 的现行 IGP/LDP 主路径确实是直连，说明需要继续检查“长链路度量是否按规划配置”以及是否还有回程或备用路径配置异常；我会用同系列项目的配置框架做只读对照，避免把正常设计误判为故障。"
+    },
+    {
+      "event_line": 107,
+      "item_id": "item_55",
+      "text": "现有转发表进一步确认往返 MPLS 路径均走 PE2-PE1 直连，PE2-PE3 的高时延链路没有进入该 ping 路径。当前唯一直接异常是 Core_SW_02 配置了 MST 根角色，却缺少全局 `stp enable`；我再核验其运行状态和同框架多数配置后收敛答案。"
+    },
+    {
+      "event_line": 120,
+      "item_id": "item_62",
+      "text": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_02;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_02;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0007_r01/attempt_003/judgment.json",
+    "judgment_sha256_lf_normalized": "899a6eb28601eca48f2ff2052ebfdcbc79be5972d91251e9e6fe3caff6ac7f3d"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0007_r01/attempt_003",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0007_r01/attempt_003/events.jsonl",
+    "events_sha256_lf_normalized": "69139244a911730c77c72b9dab60a31dceaefc15817b3ea308d82895b8d020b2",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0007_r01/attempt_003/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "2509e1c35e9533c628144e7fbcbc0545091d0675435e864cac25b6386663bed7",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0007_r01/attempt_003/source_record.json",
+    "source_record_sha256_lf_normalized": "4d118d70fad0d70f44dbe63086acde6e3daf76a227452de377563316fa4328ae",
+    "thread_id": "019fa9a3-5640-79c0-868c-182ba47055c9",
+    "duration_seconds": 392.222
+  }
+}

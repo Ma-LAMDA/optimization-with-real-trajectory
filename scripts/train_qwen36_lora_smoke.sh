@@ -5,8 +5,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 MODEL_PATH="${MODEL_PATH:-/root/autodl-tmp/qwen3.6-27b/models/Qwen3.6-27B}"
-DATASET_PATH="${DATASET_PATH:-${REPO_ROOT}/data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_train.jsonl}"
-VALIDATION_DATASET_PATH="${VALIDATION_DATASET_PATH:-${REPO_ROOT}/data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_validation.jsonl}"
+DATA_ROOT="${DATA_ROOT:-${REPO_ROOT}/data/2026-07-31}"
+DATASET_PATH="${DATASET_PATH:-${DATA_ROOT}/sft/qwen3_6_27b_reasoning_decision_train.jsonl}"
+VALIDATION_DATASET_PATH="${VALIDATION_DATASET_PATH:-${DATA_ROOT}/sft/qwen3_6_27b_reasoning_decision_validation.jsonl}"
 OUTPUT_DIR="${OUTPUT_DIR:-${REPO_ROOT}/output/qwen36-27b-reasoning-lora-smoke}"
 CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
@@ -40,7 +41,7 @@ if [[ ! -f "${VALIDATION_DATASET_PATH}" ]]; then
 fi
 
 cd "${REPO_ROOT}"
-python scripts/validate_codex_run_sft.py
+python scripts/validate_100x10_sft.py --data-root "${DATA_ROOT}"
 
 exec swift sft \
   --model "${MODEL_PATH}" \

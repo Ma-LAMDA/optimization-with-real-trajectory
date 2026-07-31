@@ -1,0 +1,72 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0011_success_02",
+  "case_id": 11,
+  "row_index": 11,
+  "success_slot": 2,
+  "attempt_index": 4,
+  "source_record": {
+    "row_index": 11,
+    "original_id": 11,
+    "sample_id": 11,
+    "sample_key": "q0011",
+    "question": "在CampusNetwork_03组网中，从SH_STO_PC01 ping北京区域核心交换机（10.1.30.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我先定位CampusNetwork_03项目及相关节点，再结合端到端路由、SRv6 Policy和PE2/PE3链路时延信息判断实际绕行原因，最后只输出最小根因集合。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_5",
+      "text": "已确认目标项目和设备均在线。下一步重点核对SH_STO_PC01的实际转发路径，以及PE1/PE2/PE3的SRv6 Policy候选路径；题干中特别指出的PE2-PE3高时延，更像是“路径规划错误”的判据，而非链路自身故障。"
+    },
+    {
+      "event_line": 69,
+      "item_id": "item_35",
+      "text": "配置对照显示，CampusNetwork_03相较多数同框架项目在PE1上多出一条指向PE3的静态主机路由，但还需确认它是否直接影响本次目的流量。现在继续对照相邻基准项目的北京、上海及骨干节点配置，排除无关差异后再定根因。"
+    },
+    {
+      "event_line": 375,
+      "item_id": "item_195",
+      "text": "目前已确认两点：PE2到北京PE1的VPN隧道实际走直连Ethernet1/0/1，并未经过PE2-PE3长时延链路；与此同时，北京核心Core_SW_02的STP状态明确为Disabled，且接入口存在大量循环多播报文。再做一次同框架快照差异核验，以判断是否还有与本次症状同时引入的配置故障。"
+    },
+    {
+      "event_line": 564,
+      "item_id": "item_290",
+      "text": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_02;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_02;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r02/attempt_004/judgment.json",
+    "judgment_sha256_lf_normalized": "899a6eb28601eca48f2ff2052ebfdcbc79be5972d91251e9e6fe3caff6ac7f3d"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r02/attempt_004",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r02/attempt_004/events.jsonl",
+    "events_sha256_lf_normalized": "b677cda79f5af22fcdf6de2fcc0f35858e3b33a12207c6ae24b8b08686efc627",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r02/attempt_004/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "2509e1c35e9533c628144e7fbcbc0545091d0675435e864cac25b6386663bed7",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r02/attempt_004/source_record.json",
+    "source_record_sha256_lf_normalized": "b8e935d4d9e3fefa483f59ffac2a5d53fbda3c1c961b1e61f0a991e7ea6d2104",
+    "thread_id": "019faa4e-9bd4-7071-994a-611eeb96849d",
+    "duration_seconds": 589.315
+  }
+}

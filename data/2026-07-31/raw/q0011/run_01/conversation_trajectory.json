@@ -1,0 +1,72 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0011_success_01",
+  "case_id": 11,
+  "row_index": 11,
+  "success_slot": 1,
+  "attempt_index": 1,
+  "source_record": {
+    "row_index": 11,
+    "original_id": 11,
+    "sample_id": 11,
+    "sample_key": "q0011",
+    "question": "在CampusNetwork_03组网中，从SH_STO_PC01 ping北京区域核心交换机（10.1.30.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先读取 CampusNetwork_03 的节点清单，再围绕端到端路径、SRv6 Policy 和 PE2/PE3 选路检查配置与回显，目标是把“高延迟”定位到最小且最具体的根因集合。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_5",
+      "text": "节点范围已确认。已知高时延链路只在 PE2—PE3，下一步关键是判断上海到 10.1.30.254 的业务是否被错误地引入这段链路；我将优先核查 SH_AR、PE1、PE2、PE3 的路由与 SRv6 Policy。"
+    },
+    {
+      "event_line": 232,
+      "item_id": "item_138",
+      "text": "当前控制平面显示上海 PE2 到北京 PE1 的实际下一跳是直连链路，排除了“现态普通 ISIS 最短路直接绕经 PE3”的简单解释。为避免把症状误判为根因，我会把同一拓扑的基准配置和题目实例逐项比对，重点寻找只在本实例出现、且会让业务经过 PE2—PE3 的异常配置。"
+    },
+    {
+      "event_line": 840,
+      "item_id": "item_449",
+      "text": "基准与现态比对只发现 PE1 上一条指向 160.0.0.1 的孤立静态路由；它不匹配本次 10.1.30.254/10.2.30.1 会话，不能单凭“异常配置存在”就列入最小根因。现在我在核验目标 VIP 的主设备与返回路由，确认是否存在非显式的绕行关系。"
+    },
+    {
+      "event_line": 1007,
+      "item_id": "item_533",
+      "text": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_02;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_02;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r01/attempt_001/judgment.json",
+    "judgment_sha256_lf_normalized": "899a6eb28601eca48f2ff2052ebfdcbc79be5972d91251e9e6fe3caff6ac7f3d"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r01/attempt_001",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r01/attempt_001/events.jsonl",
+    "events_sha256_lf_normalized": "2128a0e88f7fdbf12d53aa4bc87b7cfb2c92d3e2123b582a1b0885235a759e40",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r01/attempt_001/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "2509e1c35e9533c628144e7fbcbc0545091d0675435e864cac25b6386663bed7",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0011_r01/attempt_001/source_record.json",
+    "source_record_sha256_lf_normalized": "b8e935d4d9e3fefa483f59ffac2a5d53fbda3c1c961b1e61f0a991e7ea6d2104",
+    "thread_id": "019faa3c-0712-7290-ad9f-70d69469b8b2",
+    "duration_seconds": 740.151
+  }
+}

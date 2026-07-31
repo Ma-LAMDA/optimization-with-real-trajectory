@@ -1,0 +1,77 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0018_success_03",
+  "case_id": 18,
+  "row_index": 18,
+  "success_slot": 3,
+  "attempt_index": 3,
+  "source_record": {
+    "row_index": 18,
+    "original_id": 18,
+    "sample_id": 18,
+    "sample_key": "q0018",
+    "question": "在CampusNetwork_04组网中，从 GUEST_WIFI_CLIENT01 ping节点 Outside_FTP_Client01（200.200.200.100）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。\n## 已定位的信息\n\nL2转发路径：\nGUEST_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/2) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/8) -> FW_01(GigabitEthernet1/0/1) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/3) -> Outside_FTP_Client01(Ethernet1/0/0),\nGUEST_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/2) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/9) -> FW_02(GigabitEthernet1/0/1) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/3) -> Outside_FTP_Client01(Ethernet1/0/0),\nGUEST_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/2) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/8) -> FW_01(GigabitEthernet1/0/2) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/3) -> Outside_FTP_Client01(Ethernet1/0/0),\nGUEST_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/2) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/9) -> FW_02(GigabitEthernet1/0/2) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/3) -> Outside_FTP_Client01(Ethernet1/0/0)",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会查询 CampusNetwork_04 的设备清单、相关路径节点配置与接口状态，重点比对会引发“可达但高延迟”的带宽拥塞、STP/VRRP路径规划及环路类异常。"
+    },
+    {
+      "event_line": 6,
+      "item_id": "item_3",
+      "text": "直接请求被环境策略拦截；我改用仓库允许的固定 PowerShell HTTP 客户端来读取同一套只读接口。"
+    },
+    {
+      "event_line": 11,
+      "item_id": "item_6",
+      "text": "项目与节点均已确认。下一步我会并行读取四条候选路径上的关键设备配置，先找共同瓶颈，再判断是否只需一个根因即可解释全部高延迟。"
+    },
+    {
+      "event_line": 130,
+      "item_id": "item_66",
+      "text": "目前已排除路径两端与接入 AP 的端口拥塞：相关利用率均低于 1%。我正在缩小到汇聚、核心、防火墙及出口路由器的实际转发端口，并只提取关键计数以避免配置噪声。"
+    },
+    {
+      "event_line": 225,
+      "item_id": "item_114",
+      "text": "发现一个与时延直接相关的异常：VLAN120 属于 MST 实例3，VRRP Master 与规划根桥都在 Core_SW_01，但 AGG_SW_01 的实例3实际根端口却指向 Core_SW_02，导致来宾流量先到 Core_SW_02 再跨核心转发。现在继续核对 MST 标识摘要，以区分“端口根路径开销”与“MST域配置不一致”这两类根因。"
+    },
+    {
+      "event_line": 264,
+      "item_id": "item_134",
+      "text": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>",
+  "actual_result_items": [
+    "AGG_SW_01;STP BPDU被过滤"
+  ],
+  "reference_answer_options": [
+    [
+      "AGG_SW_01;STP BPDU被过滤"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0018_r03/attempt_003/judgment.json",
+    "judgment_sha256_lf_normalized": "c5d07b52aad23b1bbbdb8478f61db502a21f665eeaaed9759adb6028790e843b"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0018_r03/attempt_003",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0018_r03/attempt_003/events.jsonl",
+    "events_sha256_lf_normalized": "d22312185f803b34cbc51f04411e71598340253bf3bd923eb4b3ce93772bc498",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0018_r03/attempt_003/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "523884ef5991fe92f2c031d5baabc1ffa3753b2eb205362450fbea961460542a",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0018_r03/attempt_003/source_record.json",
+    "source_record_sha256_lf_normalized": "ddc1fa8a364ef020e8eee7dbf3bd86340cd14d96cea66081baed081e5c9ae526",
+    "thread_id": "019fac49-70d9-7dd0-a25f-a0cf9942bde5",
+    "duration_seconds": 288.434
+  }
+}

@@ -2,8 +2,9 @@
 
 本项目按日期保存网络故障分析轨迹及其 SFT 数据。`2026-07-27` 数据由
 `q0014`、`q0017`、`q0018` 三段轨迹人工策展为多阶段样本；`2026-07-28`
-数据由最新一次 14×10 Codex 完整运行转换而来，并按题号执行留一验证划分。
-两批训练输出均不包含工具调用协议。训练目标是让模型学会：
+数据由 14×10 Codex 完整运行转换而来；`2026-07-31` 数据从 100×10 实验的
+819 条独立判题严格正确轨迹转换，并按题号执行留一验证划分。训练输出均不包含
+工具调用协议。训练目标是让模型学会：
 
 - 根据当前信息判断还缺少哪些事实；
 - 说明下一步需要核验什么以及为什么核验；
@@ -36,6 +37,10 @@
 │   │       ├── manifest.json
 │   │       ├── qwen3_6_27b_reasoning_decision_train.jsonl
 │   │       └── qwen3_6_27b_reasoning_decision_validation.jsonl
+│   ├── 2026-07-31/
+│   │   ├── raw/
+│   │   ├── curation/
+│   │   └── sft/
 │   └── simulation/
 │       └── prompts, evaluation trajectories, configs and JSONL data
 ├── experiments/
@@ -49,8 +54,15 @@
 ├── saved_configs_service/
 └── scripts/
     ├── convert_codex_run_trajectories.py
+    ├── convert_100x10_accepted_to_sft.py
     ├── convert_trajectories.py
+    ├── evaluate_sft_validation.py
+    ├── finalize_lora_workflow.py
+    ├── run_seetacloud_lora_workflow.sh
+    ├── summarize_sft_training.py
+    ├── train_qwen36_lora_early_stop.sh
     ├── train_qwen36_lora_smoke.sh
+    ├── validate_100x10_sft.py
     ├── validate_codex_run_sft.py
     └── validate_sft.py
 ```
@@ -175,6 +187,24 @@ SHA-256 来源信息。
 源答案中的 Markdown 代码围栏会规范化为严格的 `<result>` 格式，原文仍保存在
 `raw/`。全部样本当前标记为 `draft`，正式训练前仍需领域审核。
 
+## 2026-07-31 严格正确轨迹 SFT 数据
+
+`data/2026-07-31/` 来自
+`experiments/2026-07-28-ip_codex_train0629_100x10/`。转换器扫描 1,313 个
+attempt，过滤 473 个 rejected、11 个 interrupted 和 10 个 infrastructure failure，
+保留 819 条 accepted 轨迹。所有保留轨迹均再次核对独立判题、参考答案精确集合匹配、
+最终事件、文件哈希和前置证据清洁性。
+
+| 集合 | 题号 | 样本数 |
+| --- | --- | ---: |
+| 训练集 | 1–40、57–99 中有 accepted 轨迹的 83 个题号 | 809 |
+| 验证集 | 100 | 10 |
+| 过滤 | 非 accepted attempt | 494 |
+
+训练和验证按 `case_id` 分组，题号交集为 0。819 条样本均为 `decision` 类型并标记为
+`draft`；完整统计见
+[`data/2026-07-31/curation/FILTER_REPORT.md`](data/2026-07-31/curation/FILTER_REPORT.md)。
+
 ## 重新生成与校验
 
 脚本只依赖 Python 标准库：
@@ -185,6 +215,9 @@ python scripts/validate_sft.py
 
 python scripts/convert_codex_run_trajectories.py
 python scripts/validate_codex_run_sft.py
+
+python scripts/convert_100x10_accepted_to_sft.py
+python scripts/validate_100x10_sft.py
 ```
 
 也可以指定其他目录：
@@ -207,22 +240,49 @@ python scripts/validate_sft.py --sft-dir D:\path\to\sft
 - API 文档已从原始问题中移除；
 - 证据来源、样本数量、类型统计和文件哈希一致；
 - 0727 数据全部进入训练集，验证集为 0；
-- 0728 数据按题号留一，训练集与验证集题号交集为 0。
+- 0728 和 0731 数据均按题号留一，训练集与验证集题号交集为 0；
+- 0731 数据只接收独立判题完全正确、最终事件一致且证据清洁的 accepted 轨迹。
 
 ## ms-swift 训练示例
 
 ```bash
 swift sft \
   --model Qwen/Qwen3.6-27B \
-  --dataset data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_train.jsonl \
-  --val_dataset data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_validation.jsonl \
+  --dataset data/2026-07-31/sft/qwen3_6_27b_reasoning_decision_train.jsonl \
+  --val_dataset data/2026-07-31/sft/qwen3_6_27b_reasoning_decision_validation.jsonl \
   --split_dataset_ratio 0 \
   --tuner_type lora \
   --torch_dtype bfloat16 \
   --output_dir output/qwen36-27b-reasoning-lora
 ```
 
-批大小、梯度累积、LoRA 参数、分布式策略和 `max_length` 应按训练硬件及目标 tokenizer 的实际统计调整。Qwen3.6 的线性注意力训练还需要 `flash-linear-attention`；当前环境基线固定为 0.5.1。完整训练门槛、服务器资源假设、冒烟训练参数、逐分钟监控项和验收标准见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。仓库提供的 `scripts/train_qwen36_lora_smoke.sh` 会预检该依赖，并只执行单卡一轮 LoRA 链路验证，不代表正式能力训练。
+批大小、梯度累积、LoRA 参数、分布式策略和 `max_length` 应按训练硬件及目标
+tokenizer 的实际统计调整。Qwen3.6 的线性注意力训练还需要
+`flash-linear-attention`；当前环境基线固定为 0.5.1。完整训练门槛、服务器资源
+假设、早停参数、逐分钟监控项和验收标准见
+[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
+
+仓库保留两个入口：
+
+- `scripts/train_qwen36_lora_smoke.sh`：单卡单轮链路冒烟；
+- `scripts/run_seetacloud_lora_workflow.sh`：SeetaCloud 端到端工作流。
+
+端到端工作流会快进同步 `2026-07-31-sft`、重新生成并校验 809/10 的按题号划分，
+执行单卡 LoRA SFT，每 100 个优化步骤计算一次验证 loss，并在连续 3 次无改进时
+早停。脚本始终按最低 `eval_loss` 选择 checkpoint，而不是直接使用最后一次保存；
+之后启动单个 TP=2 vLLM 实例，以两个 worker、总并发 2 在题 100 的 10 条验证样本
+上执行确定性严格集合匹配评测。
+
+```bash
+cd /root/autodl-tmp/optimization-with-real-trajectory
+RUN_ID=0731-production \
+  bash scripts/run_seetacloud_lora_workflow.sh
+```
+
+运行产物写入 `output/qwen36-27b-lora-0731-<RUN_ID>/`，其中
+`training_summary.json` 记录最低验证 loss 与 checkpoint，
+`validation_eval/validation_summary.json` 记录格式、严格正确率和泄漏率，
+`workflow_summary.json` 汇总提交、数据、训练和评测溯源。`output/` 默认不提交。
 
 ## 推理生成约定
 
@@ -262,6 +322,8 @@ Codex 轨迹生成及其他数据采集任务；数据采集策略由各实验�
 
 - 0727 数据只有 3 条来源轨迹、12 条阶段样本，不单独划分验证集。
 - 0728 数据包含 90 条训练样本和 10 条验证样本；按题号整组留一，禁止将同题重复运行拆到两个集合。
+- 0731 数据包含 809 条训练样本和 10 条验证样本；默认作为当前 SFT 输入，题 100
+  整组留作验证。
 - 题 25、26、27、28 的原始运行只用于审计，不进入训练或验证数据。
 - 三条来源轨迹的最终标签相同。正式数据集必须补充不同设备、故障类型、正确配置和难负例，避免模型记忆固定答案。
 - 同一轨迹拆出的阶段样本高度相关，训练时应按来源轨迹控制采样权重，避免长轨迹过度影响模型。
@@ -300,7 +362,8 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 10 条正确轨迹的完整实验。历史运行共保留 819 条 accepted 正确轨迹：79 题完成
 10 条正确轨迹，21 题在连续 10 次错误后停止；全部 attempt、事件流、回答、判题结果
 和运行审计均原样归档。该实验属于数据采集，历史运行及后续恢复均使用独立采集策略，
-不受 Qwen3.6-27B eval 的单实例双并发约束。
+不受 Qwen3.6-27B eval 的单实例双并发约束。819 条 accepted 轨迹已经转换为
+`data/2026-07-31/` 下的严格正确 SFT 数据。
 
 2026-07-30 至 2026-07-31 的 Qwen3.6-27B 基座部署 A/B 和全量评测已作为独立实验
 归档到 [`experiments/2026-07-31-qwen36-27b-base-eval/`](experiments/2026-07-31-qwen36-27b-base-eval/)。
@@ -312,6 +375,10 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：固化 SeetaCloud LoRA SFT 端到端工作流，增加按 `eval_loss`
+  早停与最佳 checkpoint 校验，并以单实例双并发在固定验证集上执行格式、严格集合
+  匹配及泄漏评测。
+- 2026-07-31：从 100×10 实验的 1,313 个 attempt 中过滤 819 条独立判题完全正确轨迹，生成 809 条训练和 10 条题 100 验证 SFT 数据，并增加可复现转换与独立校验脚本。
 - 2026-07-31：合并 `taowen` 的 `saved_configs_service`、10×10 与 100×10 实验，保留完整轨迹和审计产物，并保持数据采集策略独立配置。
 - 2026-07-31：将 Qwen3.6-27B eval 策略固定为单个 vLLM 实例、2 个 eval runner worker、总请求并发 2；该约束不适用于轨迹生成等数据采集任务。
 - 2026-07-31：建立独立的 Qwen3.6-27B 基座评测实验目录，分开归档部署 A/B 与终止时的 381 个全量已结束样本，并提供 JSON、CSV、Markdown 统计。

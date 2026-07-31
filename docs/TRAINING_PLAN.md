@@ -3,8 +3,8 @@
 ## 1. 目标与边界
 
 本方案默认使用
-`data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_train.jsonl` 训练，并使用
-`data/2026-07-28/sft/qwen3_6_27b_reasoning_decision_validation.jsonl` 验证。
+`data/2026-07-31/sft/qwen3_6_27b_reasoning_decision_train.jsonl` 训练，并使用
+`data/2026-07-31/sft/qwen3_6_27b_reasoning_decision_validation.jsonl` 验证。
 `data/2026-07-27/` 的 12 条人工策展多阶段样本继续作为独立基线保留。
 目标是对 `Qwen3.6-27B` 进行 LoRA SFT，使模型学习：
 
@@ -20,14 +20,16 @@
 
 ### 数据
 
-- 最新完整实验运行包含 14 道题、每题 10 条，共 140 条原始轨迹；
-- 题 25、26、27、28 因准确率未达到 100% 而整题排除；
-- 剩余 10 道题均为 10/10 正确，共形成 100 条 `decision` 样本；
-- 训练集：题 13、14、17、18、87、88、91、92、93，共 90 条；
-- 验证集：留出题 94，共 10 条；
+- 最新 100×10 实验包含 100 条输入和 1,313 个 attempt；
+- 独立判题严格正确的 accepted 轨迹为 819 条，另有 rejected 473 条、
+  interrupted 11 条和 infrastructure failure 10 条；
+- 819 条 accepted 轨迹全部通过最终事件一致性、判题哈希和证据清洁检查；
+- 训练集：83 个题号，共 809 条；
+- 验证集：留出题 100，共 10 条；
 - 划分键为 `case_id`，训练与验证题号交集为 0；
-- 100 条样本均为 `draft`，正式训练前需要领域审核；
-- 0728 样本完整消息文本为 1568–3401 个字符，均值约 2314 个字符；
+- 819 条样本均为 `draft`，正式训练前需要领域审核；
+- 0731 SFT 样本完整消息文本为 1559–3944 个字符，均值约 2289 个字符；
+- 0728 的 90/10 留一数据继续作为历史基线保留；
 - 0727 基线仍包含 7 条 `planning`、2 条 `reasoning` 和 3 条 `decision`。
 
 训练脚本暂用 `max_length=4096`。开始训练前仍必须使用目标模型 tokenizer
@@ -46,10 +48,10 @@
 
 冒烟训练前：
 
-1. 运行 `scripts/convert_codex_run_trajectories.py` 重新生成 0728 数据；
-2. 运行 `scripts/validate_codex_run_sft.py`，要求全部检查通过；
+1. 运行 `scripts/convert_100x10_accepted_to_sft.py` 重新生成 0731 数据；
+2. 运行 `scripts/validate_100x10_sft.py`，要求全部检查通过；
 3. 记录 Git 提交、数据文件 SHA-256、模型路径和软件版本；
-4. 检查 ms-swift 预处理后的有效样本数仍为训练 90、验证 10；
+4. 检查 ms-swift 预处理后的有效样本数仍为训练 809、验证 10；
 5. 如果 `max_length=4096` 删除任何样本，停止训练并重新检查模板与 tokenizer 统计。
 
 正式训练前还必须：
@@ -112,7 +114,7 @@ GPU 上执行 LoRA；不使用 QLoRA，不启用双卡 DDP，也不启用 packin
 | warmup ratio | 0.1 |
 | epochs | 1 |
 | gradient checkpointing | 开启 |
-| validation split | 固定题 94，共 10 条 |
+| validation split | 固定题 100，共 10 条 |
 | seed | 42 |
 
 执行入口：
@@ -123,13 +125,42 @@ source /root/autodl-tmp/envs/qwen36-sft/bin/activate
 bash scripts/train_qwen36_lora_smoke.sh
 ```
 
-90 条训练样本、梯度累积 2 时，预计每个 epoch 约 45 个优化步骤。这一轮只验证：
+809 条训练样本、梯度累积 2 时，预计每个 epoch 约 405 个优化步骤。这一轮只验证：
 
 - 模型、模板和数据能够正确加载；
-- 有效训练样本仍为 90，验证样本仍为 10；
+- 有效训练样本仍为 809，验证样本仍为 10；
 - loss 为有限值并能正常反向传播；
 - 没有 OOM、NaN 或进程异常；
 - checkpoint 和训练日志能够正常保存。
+
+### 5.1 固定的早停训练工作流
+
+正式执行入口为：
+
+```bash
+cd /root/autodl-tmp/optimization-with-real-trajectory
+RUN_ID=0731-production \
+  bash scripts/run_seetacloud_lora_workflow.sh
+```
+
+该入口按顺序完成：
+
+1. 快进同步 `2026-07-31-sft`，拒绝覆盖服务器上的 tracked 修改；
+2. 从 100×10 来源实验重新生成 SFT，并校验训练 809、验证 10、题号交集 0；
+3. 在 GPU 0 上执行 BF16 LoRA SFT，上限 3 epochs；
+4. 每 100 个优化步骤在固定验证集上计算 `eval_loss`，并在同一步保存 checkpoint；
+5. 使用 `metric_for_best_model=eval_loss`、`greater_is_better=false`、
+   `load_best_model_at_end=true`；连续 3 次评估无改进时早停；
+6. 解析 `trainer_state.json`，验证 `best_metric` 等于全部已观测验证 loss 的最小值，
+   且对应 checkpoint 仍然存在；
+7. 训练结束后启动一个使用两张 GPU 的 vLLM 实例，以两个 worker 和总并发 2
+   对题 100 的 10 条验证样本执行确定性生成评测；
+8. 输出 `training_summary.json`、逐条预测、`validation_summary.json` 和
+   `workflow_summary.json`。
+
+早停只能在观察到后续验证点不再改善后触发，因此“在最低点停止”的严格实现是：
+保留并最终选用历史最低验证 loss 的 checkpoint，而不是声称能预先知道未来最低点。
+默认 `early_stop_interval=3`，最多训练 3 epochs；两者均会写入运行日志。
 
 ## 6. 每分钟监控
 
@@ -144,14 +175,24 @@ bash scripts/train_qwen36_lora_smoke.sh
 
 - loss 为 NaN/Inf；
 - OOM；
-- 有效训练样本数小于 90，或验证样本数小于 10；
+- 有效训练样本数小于 809，或验证样本数小于 10；
 - 模型或模板识别错误；
 - 非训练 GPU 出现意外占用；
 - 连续多个监控周期没有 step 推进且进程无有效计算。
 
-## 7. 冒烟训练后的评估
+## 7. 训练后的评估
 
-冒烟训练不以训练 loss 作为能力结论。至少比较基座和 LoRA adapter：
+训练不以训练 loss 作为能力结论。固定工作流先在留出的题 100 上报告：
+
+- 10 条请求的完成率；
+- `<result>` 格式通过率；
+- 解析后的根因集合严格匹配率；
+- 工具名、命令和操作标记泄漏率；
+- 逐条延迟及均值、中位数和 P95。
+
+该生成评测固定使用 `temperature=0`、`seed=42`、`max_tokens=8000`，并强制记录
+`instance_count=1`、`worker_count=2`、`request_concurrency=2`。进一步的能力结论
+仍至少比较基座和 LoRA adapter：
 
 - 输出结构通过率；
 - 工具名、命令和 API 泄漏率；
@@ -386,9 +427,8 @@ Codex CLI 使用完整调查 prompt 和离线配置工具，与直接 validation
 
 ## 10. 正式训练扩展
 
-数据完成审核并扩充后，再考虑：
+当前工作流已经采用 3 epochs 上限和验证集早停。数据完成审核并扩充后，再考虑：
 
-- 3 epochs 起步并按验证集早停；
 - 使用 42、43、44 三个种子评估波动；
 - 双卡 DDP；
 - 按 `case_id` 控制 0728 重复轨迹的采样权重；混合 0727 数据时再按 `target_type` 控制阶段样本权重；

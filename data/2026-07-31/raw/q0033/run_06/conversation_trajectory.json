@@ -1,0 +1,76 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0033_success_06",
+  "case_id": 33,
+  "row_index": 33,
+  "success_slot": 6,
+  "attempt_index": 7,
+  "source_record": {
+    "row_index": 33,
+    "original_id": 33,
+    "sample_id": 33,
+    "sample_key": "q0033",
+    "question": "在CampusNetwork_05组网中，从 SH_FAC_PC01 ping北京区域核心交换机（10.1.20.254）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先定位 CampusNetwork_05 项目和相关节点，再围绕端到端路径、接口状态、路由与拥塞回显逐层收敛到“最小故障根因集合”。只读取配置和命令回显，不修改仿真数据。"
+    },
+    {
+      "event_line": 6,
+      "item_id": "item_3",
+      "text": "接口调用被环境的固定 HTTP 客户端规则拦截了；我正在确认仓库内允许的客户端入口，然后继续读取同一套只读数据。"
+    },
+    {
+      "event_line": 13,
+      "item_id": "item_7",
+      "text": "项目中 47 个节点均已启动。接下来重点检查 SH_FAC_PC01 的地址/网关和实际逐跳时延，并同步核对上海核心、上海出口、PE 路径以及北京核心的路由和接口利用率，以区分路由绕行、环路与端口带宽挤占。"
+    },
+    {
+      "event_line": 88,
+      "item_id": "item_45",
+      "text": "当前逐跳链路均为 UP，路由也能正确覆盖目标前缀；SH_Core、SH_AR、PE2、PE1 的关键接口没有丢包或明显利用率异常。为避免把正常冗余设计误判为故障，我正在与同一配置框架的基准项目做差异比对，重点找仅出现在 CampusNetwork_05 的配置偏差。"
+    },
+    {
+      "event_line": 167,
+      "item_id": "item_85",
+      "text": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在IP路由环路",
+    "PE2;存在IP路由环路",
+    "PE3;存在IP路由环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在IP路由环路",
+      "PE2;存在IP路由环路",
+      "PE3;存在IP路由环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0033_r06/attempt_007/judgment.json",
+    "judgment_sha256_lf_normalized": "050978bbcdc4aaff66c6e58088554aabc04a644876cab2b91e6c70d04b02d800"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0033_r06/attempt_007",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0033_r06/attempt_007/events.jsonl",
+    "events_sha256_lf_normalized": "36f5b7ea2e01213df9f49b3000f427849141b2937a270dcacc4579d4e29c5961",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0033_r06/attempt_007/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "18538f112ded8bb0406026ca2cac688f04a8b8a8acccb00ae8ebbefca14fc4f4",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0033_r06/attempt_007/source_record.json",
+    "source_record_sha256_lf_normalized": "30276d4125b824e03656d26c66d80fda19d19fff100a738e77be07f6da79d949",
+    "thread_id": "019fadba-5783-78a1-bbdf-49ad81a515fa",
+    "duration_seconds": 245.97
+  }
+}

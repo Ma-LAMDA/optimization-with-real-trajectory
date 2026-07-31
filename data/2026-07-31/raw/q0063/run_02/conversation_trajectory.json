@@ -1,0 +1,71 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0063_success_02",
+  "case_id": 63,
+  "row_index": 63,
+  "success_slot": 2,
+  "attempt_index": 2,
+  "source_record": {
+    "row_index": 63,
+    "original_id": 63,
+    "sample_id": 63,
+    "sample_key": "q0063",
+    "question": "在CampusNetwork_07组网中，从 EMPLOYEE_WIFI_CLIENT03 ping节点 SZ_Server_Cluster3（10.3.30.1）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先定位 CampusNetwork_07 项目及节点，再围绕客户端到 10.3.30.1 的转发路径检查路由、接口、STP/VRRP 和带宽状态，最后只输出能够共同解释高延迟的最小根因集合。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_5",
+      "text": "项目包含 47 个节点，端到端路径很可能跨越园区汇聚/核心、PE 广域网以及深圳侧路由。先从源端的地址、实际 ping/traceroute 回显入手，可避免仅凭拓扑名称猜测故障节点。"
+    },
+    {
+      "event_line": 94,
+      "item_id": "item_48",
+      "text": "已确认到达目标子网的控制平面路由完整，SZ_Core 的 VLAN30 与接入口也处于启用状态。因此下一步重点核实目标接入口及终端的实时吞吐/丢包；这类指标能直接区分“配置绕路”和“端口带宽被挤占”。"
+    },
+    {
+      "event_line": 230,
+      "item_id": "item_117",
+      "text": "<result>\n[\n\"PE1;存在MPLS标签环路\",\n\"PE2;存在MPLS标签环路\",\n\"PE3;存在MPLS标签环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在MPLS标签环路\",\n\"PE2;存在MPLS标签环路\",\n\"PE3;存在MPLS标签环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在MPLS标签环路",
+    "PE2;存在MPLS标签环路",
+    "PE3;存在MPLS标签环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在MPLS标签环路",
+      "PE2;存在MPLS标签环路",
+      "PE3;存在MPLS标签环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0063_r02/attempt_002/judgment.json",
+    "judgment_sha256_lf_normalized": "6c9e9860d886800866f35884ee3b6d85cef7d1735adae82cedfdc8d04ba4a2c8"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0063_r02/attempt_002",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0063_r02/attempt_002/events.jsonl",
+    "events_sha256_lf_normalized": "f8ea950abf66a1a482c72aee0eb01f3c557050ecd82fccc6fa6c337ca7c8f0ea",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0063_r02/attempt_002/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "8cc0892cac4e3054e0535a2c54ec1075548cd0a4cedd844a0eaa660ca41a73cd",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0063_r02/attempt_002/source_record.json",
+    "source_record_sha256_lf_normalized": "7d45f9f1820e4c59405557d297aa3ec196c1ac5d30955db966598ce3e7c8515f",
+    "thread_id": "019faf63-09a6-7401-81cf-44d38dd49762",
+    "duration_seconds": 287.191
+  }
+}

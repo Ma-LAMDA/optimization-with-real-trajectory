@@ -1,0 +1,67 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0001_success_02",
+  "case_id": 1,
+  "row_index": 1,
+  "success_slot": 2,
+  "attempt_index": 10,
+  "source_record": {
+    "row_index": 1,
+    "original_id": 1,
+    "sample_id": 1,
+    "sample_key": "q0001",
+    "question": "在CampusNetwork_02组网中，从SH_SAL_PC01 ping北京区域核心交换机（10.1.10.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先定位 CampusNetwork_02 项目及节点，再重点核对 SH_SAL_PC01 到 10.1.10.254 的实际转发路径、PE2/PE3 间高时延链路，以及当前隧道/路由规划，最后只输出最小根因集合。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_5",
+      "text": "项目与设备已确认。下一步我会从终端侧先看地址、路由、ping/tracert 回显，再沿 SH_Core→SH_AR→PE 边界核对；题干特别指出 PE2–PE3 的物理长时延，因此关键是确认业务是否被错误规划为绕经该段，而不只是看到高 RTT 就把物理链路本身当故障。"
+    },
+    {
+      "event_line": 126,
+      "item_id": "item_64",
+      "text": "当前控制面回显显示 10.1.10.0/24 的 BGP 下一跳和 MPLS/LDP 出接口均为 PE2→PE1 直连，未经过 PE2→PE3；因此我正在排除“单纯由长链路自然时延导致”的表象，并比对同框架的基准配置，寻找导致流量异常绕行的最小配置差异。"
+    },
+    {
+      "event_line": 431,
+      "item_id": "item_217",
+      "text": "<result>\n[\n\"Core_SW_01;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_01;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_01;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_01;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0001_r02/attempt_010/judgment.json",
+    "judgment_sha256_lf_normalized": "3e2cc79933409258c409961dfe79cb8a770eb3edb5c874d8e2aafa49c4a387e9"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0001_r02/attempt_010",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0001_r02/attempt_010/events.jsonl",
+    "events_sha256_lf_normalized": "2d35525eed7c3818d22ed5f6519a4d1d89d7fe7cce03287cf85474ff1780a642",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0001_r02/attempt_010/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "bfde251d11a776ff63ec6caee8768d198b2cb43258e1b53a639536b4b7adc6f6",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0001_r02/attempt_010/source_record.json",
+    "source_record_sha256_lf_normalized": "0948e8029f20b1719f8890970f1d0495b6da393f28a9db7f7cba1bfcf939551f",
+    "thread_id": "019fa909-09a9-7133-ba83-6e310d1031c7",
+    "duration_seconds": 572.225
+  }
+}

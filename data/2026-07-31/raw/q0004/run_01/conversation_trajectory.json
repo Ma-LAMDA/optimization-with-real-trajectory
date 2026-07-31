@@ -1,0 +1,67 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0004_success_01",
+  "case_id": 4,
+  "row_index": 4,
+  "success_slot": 1,
+  "attempt_index": 3,
+  "source_record": {
+    "row_index": 4,
+    "original_id": 4,
+    "sample_id": 4,
+    "sample_key": "q0004",
+    "question": "在CampusNetwork_02组网中，从SH_FAC_PC01 ping北京区域核心交换机（10.1.20.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。\n## 已定位的信息\n\nL2转发路径：\nSH_FAC_PC01(Ethernet0) -> SH_Core(GE1/0/2) -> SH_Core(GE1/0/4) -> SH_AR(Ethernet1/0/0) -> SH_AR(Ethernet1/0/1) -> PE2(Ethernet1/0/0) -> PE2(Ethernet1/0/1) -> PE1(Ethernet1/0/1) -> PE1(Ethernet2/0/1) -> BJHQ_CSR1000V_GW_01(GigabitEthernet5) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> FW_01(GigabitEthernet1/0/3) -> FW_01(GigabitEthernet1/0/1) -> Core_SW_01(GE1/0/8),\nSH_FAC_PC01(Ethernet0) -> SH_Core(GE1/0/2) -> SH_Core(GE1/0/4) -> SH_AR(Ethernet1/0/0) -> SH_AR(Ethernet1/0/1) -> PE2(Ethernet1/0/0) -> PE2(Ethernet1/0/1) -> PE1(Ethernet1/0/1) -> PE1(Ethernet2/0/1) -> BJHQ_CSR1000V_GW_01(GigabitEthernet5) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> FW_01(GigabitEthernet1/0/3) -> FW_01(GigabitEthernet1/0/2) -> Core_SW_02(GE1/0/8)",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会查询 CampusNetwork_02 的设备清单、PE2/PE3 及相关路由配置与路径回显，重点判断流量为何绕经已知高时延链路，并收敛到最小根因集合。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_5",
+      "text": "设备均在线。当前已知正向二层路径走 PE2->PE1，并未直接经过 PE2-PE3，因此我会同时核对去程/回程路由、MPLS标签及隧道选路；高时延也可能由回程绕行或环路触发，而不只是已给出的正向路径。"
+    },
+    {
+      "event_line": 329,
+      "item_id": "item_165",
+      "text": "现有表项显示 PE2 到 PE1 的 VPN 与 MPLS 转发均为直连，未发现标签环路；但 PE1 存在一条基线中没有的高优先级静态路由。为避免把无关注入项误判为根因，我再核对接口时延/利用率及完整转发表回显。"
+    },
+    {
+      "event_line": 642,
+      "item_id": "item_322",
+      "text": "<result>\n[\n\"Core_SW_01;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_01;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_01;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_01;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0004_r01/attempt_003/judgment.json",
+    "judgment_sha256_lf_normalized": "3e2cc79933409258c409961dfe79cb8a770eb3edb5c874d8e2aafa49c4a387e9"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0004_r01/attempt_003",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0004_r01/attempt_003/events.jsonl",
+    "events_sha256_lf_normalized": "a6b2ba6a0052be2202ae954f5ab9f2bda0ac2a17fcea12567718253d7242c63d",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0004_r01/attempt_003/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "bfde251d11a776ff63ec6caee8768d198b2cb43258e1b53a639536b4b7adc6f6",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0004_r01/attempt_003/source_record.json",
+    "source_record_sha256_lf_normalized": "ce07f3a3a7c26d2144d7866a14f77e41f0b40cf1a3555914d3ff59934a8c4345",
+    "thread_id": "019fa8d7-76cf-70e0-976f-725c43de68d1",
+    "duration_seconds": 455.765
+  }
+}

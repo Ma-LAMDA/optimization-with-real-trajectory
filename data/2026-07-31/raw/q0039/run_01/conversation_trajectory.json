@@ -1,0 +1,81 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0039_success_01",
+  "case_id": 39,
+  "row_index": 39,
+  "success_slot": 1,
+  "attempt_index": 1,
+  "source_record": {
+    "row_index": 39,
+    "original_id": 39,
+    "sample_id": 39,
+    "sample_key": "q0039",
+    "question": "在CampusNetwork_05组网中，从 SZ_Server_Cluster1 ping北京区域核心交换机（10.1.40.254）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我先定位 CampusNetwork_05 项目及相关节点，再沿 SZ_Server_Cluster1 到 10.1.40.254 的路径核对配置与接口回显，最后只输出能解释高延迟的最小根因集合。"
+    },
+    {
+      "event_line": 6,
+      "item_id": "item_3",
+      "text": "接口访问被环境的固定客户端策略拦截了一次；我会改用允许的调用方式继续查询，不改动任何网络配置或仿真数据。"
+    },
+    {
+      "event_line": 11,
+      "item_id": "item_6",
+      "text": "项目内已确认 47 个节点。下一步我会对源服务器做 ping/traceroute，并读取深圳出口、承载网 PE 与北京核心侧的当前配置，区分“绕路/环路”与“链路拥塞”等高延迟根因。"
+    },
+    {
+      "event_line": 56,
+      "item_id": "item_30",
+      "text": "现有路由表显示深圳到北京的 VPN 路由可达，未见缺失/黑洞；但 PE1 出现了一条异常静态 LSP。为确认它是本场景注入故障而不是基线配置，我正在与同拓扑基线项目逐项比对 PE 配置，并继续核对端口负载回显。"
+    },
+    {
+      "event_line": 201,
+      "item_id": "item_105",
+      "text": "跨项目比对表明那组测试用静态路由/LSP并非 CampusNetwork_05 的独有异常，且正常业务 VPN 标签与该测试标签不匹配，因此不能把它直接算入本题最小根因。当前端到端接口概览也未显示 PE 或北京核心拥塞；我正在补查两端接入口/出口的详细计数器和实际转发路径。"
+    },
+    {
+      "event_line": 540,
+      "item_id": "item_275",
+      "text": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在IP路由环路",
+    "PE2;存在IP路由环路",
+    "PE3;存在IP路由环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在IP路由环路",
+      "PE2;存在IP路由环路",
+      "PE3;存在IP路由环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0039_r01/attempt_001/judgment.json",
+    "judgment_sha256_lf_normalized": "050978bbcdc4aaff66c6e58088554aabc04a644876cab2b91e6c70d04b02d800"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0039_r01/attempt_001",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0039_r01/attempt_001/events.jsonl",
+    "events_sha256_lf_normalized": "b915f69ddff37b80dd7f7826f0333cccfc3229d442bcdeed0bd8ab6a53bd0798",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0039_r01/attempt_001/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "18538f112ded8bb0406026ca2cac688f04a8b8a8acccb00ae8ebbefca14fc4f4",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0039_r01/attempt_001/source_record.json",
+    "source_record_sha256_lf_normalized": "442fb1cb9c2751988f6bce9b262c1bb28f72806170a8d0d4933af9695381da56",
+    "thread_id": "019fadf0-587c-7580-a556-9e6869541cf5",
+    "duration_seconds": 650.599
+  }
+}

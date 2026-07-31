@@ -1,0 +1,77 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0024_success_03",
+  "case_id": 24,
+  "row_index": 24,
+  "success_slot": 3,
+  "attempt_index": 14,
+  "source_record": {
+    "row_index": 24,
+    "original_id": 24,
+    "sample_id": 24,
+    "sample_key": "q0024",
+    "question": "在CampusNetwork_04组网中，从 EMPLOYEE_WIFI_CLIENT01 ping节点 SZ_Server_Cluster1（10.3.10.1）出现高延迟。已知，设备PE1 和 PE2之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。\n## 已定位的信息\n\nL2转发路径：\nEMPLOYEE_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/1) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/8) -> FW_01(GigabitEthernet1/0/1) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/1) -> SZ_Server_Cluster1(Ethernet0),\nEMPLOYEE_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/1) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/9) -> FW_02(GigabitEthernet1/0/1) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/1) -> SZ_Server_Cluster1(Ethernet0),\nEMPLOYEE_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/1) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/8) -> FW_01(GigabitEthernet1/0/2) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/1) -> SZ_Server_Cluster1(Ethernet0),\nEMPLOYEE_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/1) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/9) -> FW_02(GigabitEthernet1/0/2) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/1) -> SZ_Server_Cluster1(Ethernet0)",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会查询 CampusNetwork_04 的节点配置与路由回显，重点核对 PE1 当前实际选路是否错误绕经已知高时延的 PE1-PE2 链路，并定位造成该选路的最小配置根因。"
+    },
+    {
+      "event_line": 6,
+      "item_id": "item_3",
+      "text": "直接的 PowerShell HTTP 调用被环境策略拦截了；我正在改用仓库提供的固定 API 客户端路径继续查询，不改变诊断范围。"
+    },
+    {
+      "event_line": 21,
+      "item_id": "item_12",
+      "text": "三台 PE 的配置显示核心为三角形 ISIS/MPLS 骨干。前向已定位路径走 PE1-PE3 直连，因此高时延更可能由回程选路或到 PE3 的 MPLS/IGP 路径不对称引入；我会用两端路由表和回显交叉验证，避免把“高时延链路存在”误判成根因。"
+    },
+    {
+      "event_line": 56,
+      "item_id": "item_30",
+      "text": "目前 VPN 路由、ISIS 路由和 MPLS LSP 的现态都确认 PE1↔PE3 双向直达，未经过 PE2。为找出配置框架中的异常项，我正在与同系列 CampusNetwork 基线逐项对比 PE 间链路度量；这一步可以判断是当前实例缺失了长距离链路的度量规划，还是另有单点配置错误。"
+    },
+    {
+      "event_line": 329,
+      "item_id": "item_167",
+      "text": "对比同系列基线后发现 CampusNetwork_04 的唯一沿途配置异常出现在 AGG_SW_01：额外配置了 `stp port bpdu-filter enable`。我正在确认它所在的具体端口及其对冗余二层拓扑的影响；若该命令位于上联/互联口，它会阻断 BPDU、破坏 STP 选路并形成异常转发，这是比 PE 链路时延本身更直接的配置根因。"
+    },
+    {
+      "event_line": 342,
+      "item_id": "item_174",
+      "text": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>",
+  "actual_result_items": [
+    "AGG_SW_01;STP BPDU被过滤"
+  ],
+  "reference_answer_options": [
+    [
+      "AGG_SW_01;STP BPDU被过滤"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0024_r03/attempt_014/judgment.json",
+    "judgment_sha256_lf_normalized": "c5d07b52aad23b1bbbdb8478f61db502a21f665eeaaed9759adb6028790e843b"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0024_r03/attempt_014",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0024_r03/attempt_014/events.jsonl",
+    "events_sha256_lf_normalized": "057b606296121ba4f8ccf716aa3d73ea67afd8345148489f2c70c3565d6a6b7c",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0024_r03/attempt_014/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "523884ef5991fe92f2c031d5baabc1ffa3753b2eb205362450fbea961460542a",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0024_r03/attempt_014/source_record.json",
+    "source_record_sha256_lf_normalized": "634e1eb3ecf34614d579bdaac565aa840c3063da2d33b777ab13a7f04953ea97",
+    "thread_id": "019facca-9232-7673-8907-c467462cceb9",
+    "duration_seconds": 320.985
+  }
+}

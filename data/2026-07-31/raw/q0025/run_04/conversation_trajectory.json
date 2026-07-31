@@ -1,0 +1,76 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0025_success_04",
+  "case_id": 25,
+  "row_index": 25,
+  "success_slot": 4,
+  "attempt_index": 4,
+  "source_record": {
+    "row_index": 25,
+    "original_id": 25,
+    "sample_id": 25,
+    "sample_key": "q0025",
+    "question": "在CampusNetwork_05组网中，从 HQ_FIN_PC01 ping节点 SZ_Server_Cluster1（10.3.10.1）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会通过只读的 GNS3 接口定位 CampusNetwork_05 的节点、配置与相关 ping/链路回显，再按“最小根因集合”筛除仅为症状或冗余的故障项。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_5",
+      "text": "项目含 47 个节点；目标流量大致跨越总部接入/核心、广域网 PE、深圳出口与核心。先从源端 ping/traceroute 确认延迟出现在哪一跳，再针对该跳设备核查接口、路由和带宽状态。"
+    },
+    {
+      "event_line": 231,
+      "item_id": "item_118",
+      "text": "源与目标主机的地址、掩码、默认网关均正常，且 ARP 已解析，因此端主机配置不是根因。下一步重点检查实际转发链路上的接口统计；高延迟而非中断通常需要以带宽利用率/丢弃计数来区分“拥塞”与路由类故障。"
+    },
+    {
+      "event_line": 404,
+      "item_id": "item_205",
+      "text": "转发表显示到 10.3.10.0/24 的业务路由本身正确，但 PE 三角形链路的累计单播计数呈闭环方向增长。配置中又存在 150.0.0.1 与 160.0.0.1 的三节点递归静态下一跳；我正在用各 PE 的实际路由表确认这是 IP 层闭环，而不是目标路由、MPLS 标签或接口拥塞本身的独立故障。"
+    },
+    {
+      "event_line": 417,
+      "item_id": "item_212",
+      "text": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在IP路由环路",
+    "PE2;存在IP路由环路",
+    "PE3;存在IP路由环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在IP路由环路",
+      "PE2;存在IP路由环路",
+      "PE3;存在IP路由环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0025_r04/attempt_004/judgment.json",
+    "judgment_sha256_lf_normalized": "050978bbcdc4aaff66c6e58088554aabc04a644876cab2b91e6c70d04b02d800"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0025_r04/attempt_004",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0025_r04/attempt_004/events.jsonl",
+    "events_sha256_lf_normalized": "ca69d6e5450c7690d1f7d4c493dbb09f0fbb18e44e6fda1fec595388442d0e4a",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0025_r04/attempt_004/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "18538f112ded8bb0406026ca2cac688f04a8b8a8acccb00ae8ebbefca14fc4f4",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0025_r04/attempt_004/source_record.json",
+    "source_record_sha256_lf_normalized": "23fd604534b6ca0585a9ebdbec671e15115e4d1408568333b699fa0a1d45e98d",
+    "thread_id": "019fad0f-e6c0-7231-86a4-8b2d42dc5c54",
+    "duration_seconds": 423.633
+  }
+}

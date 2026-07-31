@@ -1,0 +1,76 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0037_success_09",
+  "case_id": 37,
+  "row_index": 37,
+  "success_slot": 9,
+  "attempt_index": 9,
+  "source_record": {
+    "row_index": 37,
+    "original_id": 37,
+    "sample_id": 37,
+    "sample_key": "q0037",
+    "question": "在CampusNetwork_05组网中，从 SZ_Server_Cluster2 ping北京区域核心交换机（10.1.10.254）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先定位CampusNetwork_05项目及相关设备，再对比SZ_Server_Cluster2到10.1.10.254路径上的配置与运行回显，筛选能同时解释“可达但高延迟”的最小根因集合。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_5",
+      "text": "项目内相关节点均在线。下一步我会先确认源服务器的地址、网关和实际逐跳时延，再针对异常跳点核验接口带宽/利用率、路由及二层配置，避免把无关的配置偏差纳入答案。"
+    },
+    {
+      "event_line": 63,
+      "item_id": "item_32",
+      "text": "当前路径的基础三层配置（源地址、网关、接入口、BGP可达性）未见异常；但PE1存在可疑的静态MPLS转发表项。我要继续核对PE2的对应标签转发及实际标签表，判断它是否构成闭环，而不是仅凭单条配置下结论。"
+    },
+    {
+      "event_line": 194,
+      "item_id": "item_98",
+      "text": "进一步核验发现，PE三角环网的两组静态路由分别形成PE1→PE2→PE3→PE1和反向闭环；接口单播计数也沿这两个方向持续累积。该闭环会制造无效转发并抬高承载SZ到北京流量链路的排队时延，因此应归因于IP路由环路，而不是把低利用率的普通端口或未命中业务标签的静态LSP列入最小集合。"
+    },
+    {
+      "event_line": 203,
+      "item_id": "item_103",
+      "text": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在IP路由环路",
+    "PE2;存在IP路由环路",
+    "PE3;存在IP路由环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在IP路由环路",
+      "PE2;存在IP路由环路",
+      "PE3;存在IP路由环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_v1",
+    "judgment_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0037_r09/attempt_009/judgment.json",
+    "judgment_sha256_lf_normalized": "050978bbcdc4aaff66c6e58088554aabc04a644876cab2b91e6c70d04b02d800"
+  },
+  "source": {
+    "experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
+    "attempt_directory": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0037_r09/attempt_009",
+    "events_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0037_r09/attempt_009/events.jsonl",
+    "events_sha256_lf_normalized": "b4a9bfdca1ae0fcd4b02e5da392df9b58cdb283af40d1c340b0871d998a536e8",
+    "final_answer_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0037_r09/attempt_009/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "18538f112ded8bb0406026ca2cac688f04a8b8a8acccb00ae8ebbefca14fc4f4",
+    "source_record_file": "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/q0037_r09/attempt_009/source_record.json",
+    "source_record_sha256_lf_normalized": "4f58da1b7a18a8f3dc0235aeaa2637bd68e44d659ce80745603d7f6538d7b326",
+    "thread_id": "019fae11-c112-7af2-a96b-107218702c8c",
+    "duration_seconds": 606.533
+  }
+}
