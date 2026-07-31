@@ -50,7 +50,8 @@
 │   │   └── results/
 │   ├── 2026-07-28-ip_codex_train0629_10x10/
 │   ├── 2026-07-28-ip_codex_train0629_100x10/
-│   └── 2026-07-31-qwen36-27b-base-eval/
+│   ├── 2026-07-31-qwen36-27b-base-eval/
+│   └── 2026-07-31-qwen36-27b-agent-ab/
 ├── saved_configs_service/
 └── scripts/
     ├── convert_codex_run_trajectories.py
@@ -332,6 +333,12 @@ LoRA 侧 20 次并生成对比，避免重复消耗 base 推理时间。这里�
 因此该 A/B 只衡量与历史 Agent 基线的端到端变化；正式泛化验收仍以工作流从 manifest
 读取的题 12、24、40、72、86、100 为准。
 
+推荐的 checkpoint-760 +100 已按上述完整 Agent 口径实跑：LoRA 为 15/20
+（75.00%），复用的 base 为 3/20（15.00%），提升 60.00 个百分点；两侧均无超时，
+LoRA 平均封顶耗时由 26.66 分钟降至 13.95 分钟。分题结果、逐次预测和遥测归档在
+[`experiments/2026-07-31-qwen36-27b-agent-ab/`](experiments/2026-07-31-qwen36-27b-agent-ab/)。
+该结论只适用于已进入训练集的历史四题兼容 A/B，留出集结论仍须使用上述六题工作流。
+
 原始基座与多个 LoRA checkpoint 的同口径对比使用
 `scripts/run_seetacloud_validation_sweep.sh`。脚本只启动一个 TP=2 vLLM 实例，
 所有目标均固定两个 worker、总并发 2；基座默认重复 5 次，LoRA checkpoint
@@ -465,12 +472,21 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 归档到 [`experiments/2026-07-31-qwen36-27b-base-eval/`](experiments/2026-07-31-qwen36-27b-base-eval/)。
 目录将部署对比与全量结果分开保存，并提供总体、逐题和逐次明细。
 
+checkpoint-760 +100 与历史 base 的完整 Agent A/B 已归档到
+[`experiments/2026-07-31-qwen36-27b-agent-ab/`](experiments/2026-07-31-qwen36-27b-agent-ab/)。
+该实验复用 base 的 20 次 TP2 结果，只实跑 LoRA 侧；所有运行固定单实例 TP2、双并发
+和 60 分钟上限。
+
 ## 提交维护规则
 
 每次创建并推送 GitHub 提交时，必须在同一个提交中同步更新本 README，记录该次变更对项目内容、数据、脚本或使用方式的影响。
 
 ### 更新记录
 
+- 2026-08-01：完成 checkpoint-760 +100 与历史 base-eval 的同条件完整 Agent A/B；
+  LoRA 严格正确率 15/20（75%），较复用 base 的 3/20（15%）提升 60 个百分点，
+  平均耗时由 26.66 分钟降至 13.95 分钟，20 次均无超时；归档逐次结果并明确该四题
+  已进入训练集，正式泛化验收仍使用当前六题留出集。
 - 2026-07-31：将训练工作流的最终验证改为复用 base-eval 的完整 Codex Agent
   runner、调查 prompt、离线工具和严格判分；最新 6 个留出题默认各跑 5 次，固定
   单实例 TP2、双并发、单次 60 分钟，并增加复用历史 base 20 次结果的 checkpoint
