@@ -60,6 +60,7 @@
     ├── evaluate_sft_validation.py
     ├── finalize_lora_workflow.py
     ├── run_agent_validation.sh
+    ├── run_seetacloud_base_agent_eval.sh
     ├── run_seetacloud_agent_checkpoint_eval.sh
     ├── run_seetacloud_lora_workflow.sh
     ├── summarize_agent_validation.py
@@ -339,6 +340,18 @@ LoRA 平均封顶耗时由 26.66 分钟降至 13.95 分钟。分题结果、逐�
 [`experiments/2026-07-31-qwen36-27b-agent-ab/`](experiments/2026-07-31-qwen36-27b-agent-ab/)。
 该结论只适用于已进入训练集的历史四题兼容 A/B，留出集结论仍须使用上述六题工作流。
 
+要从零重跑历史 base-eval 的其余 92 题（题 1–88、91–94，每题 5 次），使用：
+
+```bash
+bash scripts/run_seetacloud_base_agent_eval.sh
+```
+
+该入口只启动一个 `Qwen3.6-27B-base` vLLM TP=2 实例，并复用
+`scripts/run_agent_validation.sh` 固定的两个 Agent worker；总请求并发严格为 2，单次
+上限 60 分钟。运行使用全新前缀，不复用或混入旧全量批次的 8-worker 轨迹；支持以
+同一 `RUN_PREFIX` 重启后跳过已结束任务、继续非终态任务。旧 8 并发结果仅保留作历史
+审计，不得作为这次双并发重跑的组成部分。
+
 原始基座与多个 LoRA checkpoint 的同口径对比使用
 `scripts/run_seetacloud_validation_sweep.sh`。脚本只启动一个 TP=2 vLLM 实例，
 所有目标均固定两个 worker、总并发 2；基座默认重复 5 次，LoRA checkpoint
@@ -483,6 +496,8 @@ checkpoint-760 +100 与历史 base 的完整 Agent A/B 已归档到
 
 ### 更新记录
 
+- 2026-08-01：增加 27B base 全量 Agent eval 的单实例 TP2、双并发重跑入口；重新
+  覆盖历史相同的 92 题×5 次范围，明确与旧 8-worker 轨迹隔离，并保留断点恢复能力。
 - 2026-08-01：完成 checkpoint-760 +100 与历史 base-eval 的同条件完整 Agent A/B；
   LoRA 严格正确率 15/20（75%），较复用 base 的 3/20（15%）提升 60 个百分点，
   平均耗时由 26.66 分钟降至 13.95 分钟，20 次均无超时；归档逐次结果并明确该四题
