@@ -312,6 +312,13 @@ FlashInfer 0.6.13 在 Blackwell sm_120 上错误报告低于 sm75 的采样器 J
 新运行会在输出目录保存训练源码提交；复用早期未保存该字段的训练时，须一次性设置
 `TRAINING_GIT_COMMIT=<训练时提交>`，避免后处理提交被误记成训练提交。
 
+当前 759/60 分层划分已完成一轮 2-epoch 实跑：step 760 / epoch 2.0 取得最低
+验证 loss `0.0045663742`，最终 checkpoint-760 即最佳 checkpoint。随后在同一
+单实例 TP=2 服务内执行 5 次验证，每次严格匹配均为 49/60；汇总 300/300 请求
+成功、245/300 严格匹配、300/300 格式正确且无泄漏。完整 loss 曲线、逐次结果、
+按故障类型统计和 11 条稳定错误分析见
+[`docs/2026-07-31_QWEN36_27B_LORA_SFT_759X60_2EPOCH_REPEAT5_RESULT.md`](docs/2026-07-31_QWEN36_27B_LORA_SFT_759X60_2EPOCH_REPEAT5_RESULT.md)。
+
 历史 809/10 划分的 SeetaCloud 实跑在 step 600（epoch 1.4821）取得最低验证 loss
 `0.0057987166`，随后按 patience 继续观察至 step 900 并早停，最终加载
 checkpoint-600。该 checkpoint 在题 100 的 10 条验证样本上达到格式、严格集合
@@ -419,6 +426,9 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：按最新 759/60 分层划分完成 2-epoch LoRA SFT，最低验证 loss
+  位于 checkpoint-760；在同一单实例 TP=2 服务中完成 5 次双并发验证，每次严格
+  匹配 49/60，并归档按题号、故障类型和稳定错误模式的分析。
 - 2026-07-31：压缩三个 Codex 轨迹实验归档，删除与 `events.jsonl` 完全相同的
   1,313 份 `stdout.log`，并按题号集中 prompt/source record、集中共享 hooks；
   同步更新 metadata、转换器、校验器和后续 runner，净释放 926.49 MiB。
