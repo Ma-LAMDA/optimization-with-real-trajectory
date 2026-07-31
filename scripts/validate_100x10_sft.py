@@ -6,8 +6,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,13 @@ CURATION_NAME = "accepted_trajectory_selection.json"
 TRAIN_NAME = "qwen3_6_27b_reasoning_decision_train.jsonl"
 VALIDATION_NAME = "qwen3_6_27b_reasoning_decision_validation.jsonl"
 MANIFEST_NAME = "manifest.json"
+FILTER_REPORT_NAME = "FILTER_REPORT.md"
+ATTEMPT_STATUSES = {
+    "accepted",
+    "rejected",
+    "interrupted",
+    "infrastructure_failure",
+}
 RESULT_RE = re.compile(r"<result>\s*([\s\S]*?)\s*</result>")
 FORBIDDEN_ASSISTANT_MARKERS = (
     "tool_call",
@@ -85,6 +93,169 @@ def parse_result(text: str) -> list[str] | None:
     if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
         return None
     return sorted(set(value))
+
+
+def format_duration(value: float | None) -> str:
+    return "—" if value is None else f"{value:.3f}"
+
+
+def validate_filter_report(
+    *,
+    report_path: Path,
+    experiment_root: Path,
+    curation: dict[str, Any],
+) -> None:
+    runs_dir = experiment_root / "results" / "runs"
+    state = load_json(experiment_root / "results" / "report" / "state.json")
+    if state.get("status") != "completed":
+        raise ValueError("filter report source state is not completed")
+
+    state_by_case = {
+        int(item["original_id"]): item
+        for item in state.get("samples", [])
+        if isinstance(item, dict)
+    }
+    status_by_case: defaultdict[int, Counter[str]] = defaultdict(Counter)
+    durations_by_case: defaultdict[int, list[float]] = defaultdict(list)
+    successful_durations_by_case: defaultdict[int, list[float]] = defaultdict(
+        list
+    )
+    for metadata_path in runs_dir.glob("q*_r*/attempt_*/metadata.json"):
+        metadata = load_json(metadata_path)
+        run_key = metadata_path.relative_to(runs_dir).parts[0]
+        run_match = re.fullmatch(r"q(\d+)_r\d+", run_key)
+        if run_match is None:
+            raise ValueError(f"cannot determine case id from {metadata_path}")
+        case_id = int(run_match.group(1))
+        if int(metadata.get("original_id", -1)) != case_id:
+            raise ValueError(f"{metadata_path}: case identity mismatch")
+        state_item = state_by_case.get(case_id)
+        if (
+            state_item is None
+            or int(metadata.get("row_index", -1))
+            != int(state_item.get("row_index", -2))
+        ):
+            raise ValueError(f"{metadata_path}: row identity mismatch")
+        status = str(metadata.get("status", "unknown"))
+        if status not in ATTEMPT_STATUSES:
+            raise ValueError(f"{metadata_path}: unexpected status {status!r}")
+        status_by_case[case_id][status] += 1
+        duration = metadata.get("duration_seconds")
+        if duration is None:
+            continue
+        if (
+            isinstance(duration, bool)
+            or not isinstance(duration, (int, float))
+            or duration < 0
+            or not math.isfinite(duration)
+        ):
+            raise ValueError(f"{metadata_path}: invalid duration_seconds")
+        duration_value = float(duration)
+        durations_by_case[case_id].append(duration_value)
+        if status == "accepted":
+            successful_durations_by_case[case_id].append(duration_value)
+
+    trajectories = curation.get("trajectories")
+    if not isinstance(trajectories, list):
+        raise ValueError("curation trajectories are missing")
+    selected_by_case: Counter[int] = Counter()
+    splits_by_case: defaultdict[int, set[str]] = defaultdict(set)
+    for item in trajectories:
+        if not isinstance(item, dict) or item.get("selected") is not True:
+            continue
+        case_id = int(item["case_id"])
+        selected_by_case[case_id] += 1
+        splits_by_case[case_id].add(str(item["split"]))
+
+    report_lines = report_path.read_text(encoding="utf-8-sig").splitlines()
+    case_rows: dict[int, list[str]] = {}
+    total_cells: list[str] | None = None
+    for line in report_lines:
+        if not line.startswith("|"):
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if cells and cells[0].isdigit():
+            case_id = int(cells[0])
+            if case_id in case_rows:
+                raise ValueError(f"filter report repeats case {case_id}")
+            case_rows[case_id] = cells
+        elif cells and cells[0] == "**总计**":
+            total_cells = [cell.replace("**", "") for cell in cells]
+
+    expected_case_ids = set(state_by_case)
+    if set(case_rows) != expected_case_ids:
+        raise ValueError("filter report case ids do not match source state")
+    all_durations: list[float] = []
+    all_successful_durations: list[float] = []
+    total_status_counts: Counter[str] = Counter()
+    for case_id in sorted(expected_case_ids):
+        status_counts = status_by_case[case_id]
+        attempts = sum(status_counts.values())
+        state_item = state_by_case[case_id]
+        if attempts != int(state_item.get("total_attempts", -1)):
+            raise ValueError(f"case {case_id}: attempt count mismatch")
+        successes = status_counts["accepted"]
+        if successes != int(state_item.get("accepted_count", -1)):
+            raise ValueError(f"case {case_id}: accepted count mismatch")
+        durations = durations_by_case[case_id]
+        successful_durations = successful_durations_by_case[case_id]
+        all_durations.extend(durations)
+        all_successful_durations.extend(successful_durations)
+        total_status_counts.update(status_counts)
+        average_duration = sum(durations) / len(durations) if durations else None
+        successful_average_duration = (
+            sum(successful_durations) / len(successful_durations)
+            if successful_durations
+            else None
+        )
+        split_values = splits_by_case[case_id]
+        if len(split_values) > 1:
+            raise ValueError(f"case {case_id}: selected trajectories cross splits")
+        split = next(iter(split_values), "excluded")
+        expected_cells = [
+            str(case_id),
+            str(attempts),
+            str(successes),
+            f"{successes / attempts:.2%}",
+            format_duration(average_duration),
+            format_duration(successful_average_duration),
+            f"{len(durations)}/{attempts}",
+            str(status_counts["rejected"]),
+            str(status_counts["interrupted"]),
+            str(status_counts["infrastructure_failure"]),
+            str(selected_by_case[case_id]),
+            split,
+            str(state_item.get("status")),
+        ]
+        if case_rows[case_id] != expected_cells:
+            raise ValueError(f"filter report row mismatch for case {case_id}")
+
+    total_attempts = sum(total_status_counts.values())
+    average_duration = (
+        sum(all_durations) / len(all_durations) if all_durations else None
+    )
+    successful_average_duration = (
+        sum(all_successful_durations) / len(all_successful_durations)
+        if all_successful_durations
+        else None
+    )
+    expected_total_cells = [
+        "总计",
+        str(total_attempts),
+        str(total_status_counts["accepted"]),
+        f"{total_status_counts['accepted'] / total_attempts:.2%}",
+        format_duration(average_duration),
+        format_duration(successful_average_duration),
+        f"{len(all_durations)}/{total_attempts}",
+        str(total_status_counts["rejected"]),
+        str(total_status_counts["interrupted"]),
+        str(total_status_counts["infrastructure_failure"]),
+        str(sum(selected_by_case.values())),
+        "—",
+        "—",
+    ]
+    if total_cells != expected_total_cells:
+        raise ValueError("filter report total row mismatch")
 
 
 def check_row(
@@ -186,6 +357,7 @@ def main() -> None:
     data_root = options.data_root.resolve()
     raw_dir = data_root / "raw"
     curation_path = data_root / "curation" / CURATION_NAME
+    filter_report_path = data_root / "curation" / FILTER_REPORT_NAME
     train_path = data_root / "sft" / TRAIN_NAME
     validation_path = data_root / "sft" / VALIDATION_NAME
     manifest_path = data_root / "sft" / MANIFEST_NAME
@@ -301,6 +473,13 @@ def main() -> None:
     ):
         raise ValueError("manifest selection counts mismatch")
 
+    experiment_root = ROOT / manifest["source_experiment"]
+    validate_filter_report(
+        report_path=filter_report_path,
+        experiment_root=experiment_root,
+        curation=curation,
+    )
+
     expected_outputs = {
         train_path.relative_to(ROOT).as_posix(): train_rows,
         validation_path.relative_to(ROOT).as_posix(): validation_rows,
@@ -334,6 +513,7 @@ def main() -> None:
         f"{manifest['filtered_nonaccepted_attempt_count']}"
     )
     print("- train/validation case overlap: 0")
+    print("- per-case filter report: 100 rows and totals verified")
 
 
 if __name__ == "__main__":

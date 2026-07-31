@@ -6,8 +6,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
-from collections import Counter
+from collections import Counter, defaultdict
 from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
@@ -31,6 +32,12 @@ FILTER_REPORT_NAME = "FILTER_REPORT.md"
 TRAIN_NAME = "qwen3_6_27b_reasoning_decision_train.jsonl"
 VALIDATION_NAME = "qwen3_6_27b_reasoning_decision_validation.jsonl"
 MANIFEST_NAME = "manifest.json"
+ATTEMPT_STATUSES = {
+    "accepted",
+    "rejected",
+    "interrupted",
+    "infrastructure_failure",
+}
 
 SYSTEM = (
     "你是一名网络故障分析专家。请根据题目和当前已知证据逐步分析。"
@@ -152,6 +159,10 @@ def write_jsonl(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
 def write_text(path: Path, value: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(value.rstrip() + "\n", encoding="utf-8", newline="\n")
+
+
+def format_duration(value: float | None) -> str:
+    return "—" if value is None else f"{value:.3f}"
 
 
 def parse_result(text: str) -> list[str] | None:
@@ -414,9 +425,53 @@ def main() -> None:
         raise ValueError("source experiment state is not completed")
 
     attempt_status_counts: Counter[str] = Counter()
+    attempt_status_counts_by_case: defaultdict[int, Counter[str]] = defaultdict(
+        Counter
+    )
+    attempt_durations_by_case: defaultdict[int, list[float]] = defaultdict(list)
+    successful_attempt_durations_by_case: defaultdict[int, list[float]] = (
+        defaultdict(list)
+    )
     for metadata_path in runs_dir.glob("q*_r*/attempt_*/metadata.json"):
         metadata = load_json(metadata_path)
-        attempt_status_counts[str(metadata.get("status", "unknown"))] += 1
+        run_key = metadata_path.relative_to(runs_dir).parts[0]
+        run_match = re.fullmatch(r"q(\d+)_r\d+", run_key)
+        if run_match is None:
+            raise ValueError(f"cannot determine case id from {metadata_path}")
+        case_id = int(run_match.group(1))
+        status = str(metadata.get("status", "unknown"))
+        if status not in ATTEMPT_STATUSES:
+            raise ValueError(f"{metadata_path}: unexpected attempt status {status!r}")
+        if int(metadata.get("original_id", -1)) != case_id:
+            raise ValueError(
+                f"{metadata_path}: original_id does not match its case directory"
+            )
+        metadata_row_index = int(metadata.get("row_index", -1))
+        metadata_source_row = source_by_index.get(metadata_row_index)
+        if (
+            metadata_source_row is None
+            or int(metadata_source_row.get("id", -1)) != case_id
+        ):
+            raise ValueError(
+                f"{metadata_path}: row_index does not resolve to its case id"
+            )
+        attempt_status_counts[status] += 1
+        attempt_status_counts_by_case[case_id][status] += 1
+        duration = metadata.get("duration_seconds")
+        if duration is None:
+            continue
+        if (
+            isinstance(duration, bool)
+            or not isinstance(duration, (int, float))
+            or duration < 0
+            or not math.isfinite(duration)
+        ):
+            raise ValueError(
+                f"{metadata_path}: duration_seconds must be non-negative or null"
+            )
+        attempt_durations_by_case[case_id].append(float(duration))
+        if status == "accepted":
+            successful_attempt_durations_by_case[case_id].append(float(duration))
 
     processed: list[dict[str, Any]] = []
     seen_attempt_paths: set[str] = set()
@@ -632,6 +687,7 @@ def main() -> None:
         if isinstance(item, dict)
     }
     case_quality = []
+    case_report_rows = []
     for row_index, source_row in source_by_index.items():
         case_id = int(source_row["id"])
         case_items = [
@@ -639,13 +695,57 @@ def main() -> None:
         ]
         selected_items = [item for item in case_items if item["selected"]]
         state_item = state_by_row.get(row_index, {})
+        status_counts = attempt_status_counts_by_case[case_id]
+        source_attempts = sum(status_counts.values())
+        state_attempts = int(state_item.get("total_attempts", 0))
+        if source_attempts != state_attempts:
+            raise ValueError(
+                f"case {case_id}: metadata attempt count {source_attempts} "
+                f"does not match state count {state_attempts}"
+            )
+        successful_attempts = status_counts["accepted"]
+        if successful_attempts != len(case_items):
+            raise ValueError(
+                f"case {case_id}: accepted metadata count {successful_attempts} "
+                f"does not match accepted index count {len(case_items)}"
+            )
+        durations = attempt_durations_by_case[case_id]
+        successful_durations = successful_attempt_durations_by_case[case_id]
         case_quality.append(
             {
                 "case_id": case_id,
                 "row_index": row_index,
-                "source_attempts": int(state_item.get("total_attempts", 0)),
+                "source_attempts": source_attempts,
                 "accepted_candidates": len(case_items),
                 "selected_trajectories": len(selected_items),
+                "terminal_status": state_item.get("status"),
+                "split": (
+                    selected_items[0]["split"]
+                    if selected_items
+                    else "excluded"
+                ),
+            }
+        )
+        case_report_rows.append(
+            {
+                "case_id": case_id,
+                "attempts": source_attempts,
+                "successes": successful_attempts,
+                "duration_count": len(durations),
+                "average_duration_seconds": (
+                    sum(durations) / len(durations) if durations else None
+                ),
+                "successful_average_duration_seconds": (
+                    sum(successful_durations) / len(successful_durations)
+                    if successful_durations
+                    else None
+                ),
+                "rejected": status_counts["rejected"],
+                "interrupted": status_counts["interrupted"],
+                "infrastructure_failure": status_counts[
+                    "infrastructure_failure"
+                ],
+                "selected": len(selected_items),
                 "terminal_status": state_item.get("status"),
                 "split": (
                     selected_items[0]["split"]
@@ -830,6 +930,27 @@ def main() -> None:
     }
     write_json(manifest_path, output_manifest)
 
+    all_attempt_durations = [
+        duration
+        for durations in attempt_durations_by_case.values()
+        for duration in durations
+    ]
+    average_attempt_duration = (
+        sum(all_attempt_durations) / len(all_attempt_durations)
+        if all_attempt_durations
+        else None
+    )
+    all_successful_attempt_durations = [
+        duration
+        for durations in successful_attempt_durations_by_case.values()
+        for duration in durations
+    ]
+    average_successful_attempt_duration = (
+        sum(all_successful_attempt_durations)
+        / len(all_successful_attempt_durations)
+        if all_successful_attempt_durations
+        else None
+    )
     report_lines = [
         "# 100×10 完全正确轨迹过滤与 SFT 转换报告",
         "",
@@ -842,6 +963,38 @@ def main() -> None:
         f"- 训练集：{len(train_rows)} 条，{len(train_case_ids)} 个题号",
         f"- 验证集：{len(validation_rows)} 条，题号 {validation_case_id}",
         "- 训练/验证题号交集：0",
+        (
+            f"- 全部 attempt 平均耗时：{average_attempt_duration:.3f} 秒"
+            f"（{len(all_attempt_durations)}/"
+            f"{sum(attempt_status_counts.values())} 条有有效耗时）"
+            if average_attempt_duration is not None
+            else "- 全部 attempt 平均耗时：无有效耗时"
+        ),
+        (
+            f"- 成功 attempt 平均耗时："
+            f"{average_successful_attempt_duration:.3f} 秒"
+            f"（{len(all_successful_attempt_durations)}/"
+            f"{attempt_status_counts['accepted']} 条有有效耗时）"
+            if average_successful_attempt_duration is not None
+            else "- 成功 attempt 平均耗时：无有效耗时"
+        ),
+        "",
+        "## 统计口径",
+        "",
+        "- `Attempt`：题号目录下存在 `metadata.json` 的独立尝试；"
+        "全局及逐题数量均与实验 `state.json` 复核一致。",
+        "- `成功`：来源 attempt 状态为 `accepted`；`SFT` 列才表示进入候选后继续"
+        "通过独立判题、参考答案严格集合匹配、最终事件一致性、文件哈希和"
+        "前置证据清洁检查的最终保留数。",
+        "- `平均耗时`：该题所有 `duration_seconds` 非空且非负 attempt 的算术平均，"
+        "包含 accepted、rejected 和 infrastructure failure；"
+        "`成功平均耗时` 只统计 accepted attempt。",
+        "- `duration_seconds` 由 runner 的单调时钟记录，覆盖 Codex 子进程执行及其"
+        "输出实时落盘，不包含退出后的事件解析、审计整理和随后启动的独立判题，"
+        "因此不是完整端到端耗时。",
+        "- 缺失耗时的 interrupted attempt 不以 0 计入。",
+        "- `有效耗时`：以 `有耗时记录数/Attempt` 展示平均值的实际分母；"
+        "`SFT` 是最终保留并转换的轨迹数。",
         "",
         "## 来源 attempt 状态",
         "",
@@ -851,6 +1004,41 @@ def main() -> None:
             f"| {status} | {count} |"
             for status, count in sorted(attempt_status_counts.items())
         ],
+        "",
+        "## 逐题过滤统计",
+        "",
+        "| 题号 | Attempt | 成功 | 成功率 | 平均耗时（秒） | "
+        "成功平均耗时（秒） | 有效耗时 | Rejected | Interrupted | "
+        "Infrastructure failure | SFT | 划分 | 终态 |",
+        "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | "
+        "---: | ---: | ---: | ---: | --- | --- |",
+        *[
+            (
+                f"| {item['case_id']} | {item['attempts']} | "
+                f"{item['successes']} | "
+                f"{item['successes'] / item['attempts']:.2%} | "
+                f"{format_duration(item['average_duration_seconds'])} | "
+                f"{format_duration(item['successful_average_duration_seconds'])} | "
+                f"{item['duration_count']}/{item['attempts']} | "
+                f"{item['rejected']} | {item['interrupted']} | "
+                f"{item['infrastructure_failure']} | {item['selected']} | "
+                f"{item['split']} | {item['terminal_status']} |"
+            )
+            for item in case_report_rows
+        ],
+        (
+            f"| **总计** | **{sum(attempt_status_counts.values())}** | "
+            f"**{attempt_status_counts['accepted']}** | "
+            f"**{attempt_status_counts['accepted'] / sum(attempt_status_counts.values()):.2%}** | "
+            f"**{format_duration(average_attempt_duration)}** | "
+            f"**{format_duration(average_successful_attempt_duration)}** | "
+            f"**{len(all_attempt_durations)}/"
+            f"{sum(attempt_status_counts.values())}** | "
+            f"**{attempt_status_counts['rejected']}** | "
+            f"**{attempt_status_counts['interrupted']}** | "
+            f"**{attempt_status_counts['infrastructure_failure']}** | "
+            f"**{len(train_rows) + len(validation_rows)}** | — | — |"
+        ),
         "",
         "## 候选排除原因",
         "",

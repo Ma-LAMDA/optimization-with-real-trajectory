@@ -202,7 +202,9 @@ attempt，过滤 473 个 rejected、11 个 interrupted 和 10 个 infrastructure
 | 过滤 | 非 accepted attempt | 494 |
 
 训练和验证按 `case_id` 分组，题号交集为 0。819 条样本均为 `decision` 类型并标记为
-`draft`；完整统计见
+`draft`。过滤报告逐题列出 1–100 的 attempt 数、成功数、成功率、全部/成功 attempt
+平均执行耗时、耗时覆盖、状态分布、SFT 入选数、划分和实验终态；其中 11 条
+interrupted attempt 缺失耗时，不以 0 计入平均值。完整统计见
 [`data/2026-07-31/curation/FILTER_REPORT.md`](data/2026-07-31/curation/FILTER_REPORT.md)。
 
 ## 重新生成与校验
@@ -241,7 +243,9 @@ python scripts/validate_sft.py --sft-dir D:\path\to\sft
 - 证据来源、样本数量、类型统计和文件哈希一致；
 - 0727 数据全部进入训练集，验证集为 0；
 - 0728 和 0731 数据均按题号留一，训练集与验证集题号交集为 0；
-- 0731 数据只接收独立判题完全正确、最终事件一致且证据清洁的 accepted 轨迹。
+- 0731 数据只接收独立判题完全正确、最终事件一致且证据清洁的 accepted 轨迹；
+- 0731 过滤报告的 100 行逐题统计和总计均与原始 attempt metadata、实验 state
+  及最终 SFT 划分一致。
 
 ## ms-swift 训练示例
 
