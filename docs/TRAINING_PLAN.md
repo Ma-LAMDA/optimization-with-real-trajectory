@@ -261,6 +261,9 @@ eval，包括通过 Codex CLI 发起的 27B eval，一律采用单实例双并�
   runner 根据积压任务自动扩容；
 - 每次运行的元数据必须明确记录 `instance_count=1`、`worker_count=2` 和
   `request_concurrency=2`，启动前后均需核对实际进程数与在途请求数。
+- 当前 SeetaCloud 的 Blackwell sm_120 环境固定设置
+  `VLLM_USE_FLASHINFER_SAMPLER=0`，避免 FlashInfer 0.6.13 采样器 JIT
+  错误报告 GPU 低于 sm75；仅改用 vLLM 原生采样器，不改变 TP 或并发数。
 
 除非后续计划被明确修订，否则不得偏离上述实例数和并发数。
 该约束不适用于 Codex 轨迹生成或其他数据采集任务；数据采集的 worker 数、

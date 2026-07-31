@@ -167,7 +167,8 @@ cleanup_vllm() {
 trap cleanup_vllm EXIT INT TERM
 
 echo "[$(date -Iseconds)] Starting one TP=2 vLLM instance"
-CUDA_VISIBLE_DEVICES=0,1 "${VLLM_BIN}" serve "${MODEL_PATH}" \
+VLLM_USE_FLASHINFER_SAMPLER=0 CUDA_VISIBLE_DEVICES=0,1 \
+  "${VLLM_BIN}" serve "${MODEL_PATH}" \
   --host "${VLLM_HOST}" \
   --port "${VLLM_PORT}" \
   --dtype bfloat16 \

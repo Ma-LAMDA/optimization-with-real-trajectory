@@ -285,7 +285,9 @@ RUN_ID=0731-production \
 `workflow_summary.json` 汇总提交、数据、训练和评测溯源。`output/` 默认不提交。
 若训练已经完成而后处理被中断，可用同一个 `RUN_ID` 并设置
 `REUSE_COMPLETED_TRAINING=1`，工作流会重新校验最低 loss 与 checkpoint 后继续评测，
-不会重复训练。
+不会重复训练。vLLM 服务固定设置 `VLLM_USE_FLASHINFER_SAMPLER=0`，绕过
+FlashInfer 0.6.13 在 Blackwell sm_120 上错误报告低于 sm75 的采样器 JIT
+兼容问题；该设置只切换采样器实现，不改变单实例 TP=2 与双并发评测拓扑。
 
 ## 推理生成约定
 
