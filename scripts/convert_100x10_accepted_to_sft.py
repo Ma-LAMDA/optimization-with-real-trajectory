@@ -954,6 +954,14 @@ def main() -> None:
     success_count_distribution = Counter(
         item["successes"] for item in case_report_rows
     )
+    label_case_ids: defaultdict[str, set[int]] = defaultdict(set)
+    label_trajectory_counts: Counter[str] = Counter()
+    for item in processed:
+        if not item["selected"]:
+            continue
+        for answer_label in item["actual_result_items"]:
+            label_case_ids[answer_label].add(item["case_id"])
+            label_trajectory_counts[answer_label] += 1
     report_lines = [
         "# 100×10 完全正确轨迹过滤与 SFT 转换报告",
         "",
@@ -1007,6 +1015,26 @@ def main() -> None:
             f"| {status} | {count} |"
             for status, count in sorted(attempt_status_counts.items())
         ],
+        "",
+        "## 按答案 label 统计题目与轨迹",
+        "",
+        "仅统计最终进入 SFT 的严格正确轨迹。`题目数量` 是包含该 label 的去重题号数，"
+        "`轨迹数量` 是包含该 label 的保留轨迹数。多标签答案会分别计入各 label，"
+        "因此各行不能直接相加；"
+        f"去重总计为 {len(eligible_case_ids)} 题、"
+        f"{len(train_rows) + len(validation_rows)} 条轨迹。",
+        "",
+        "| 答案 label | 题目数量 | 轨迹数量 |",
+        "| --- | ---: | ---: |",
+        *[
+            f"| `{answer_label}` | {len(label_case_ids[answer_label])} | "
+            f"{label_trajectory_counts[answer_label]} |"
+            for answer_label in sorted(label_case_ids)
+        ],
+        (
+            f"| **去重总计** | **{len(eligible_case_ids)}** | "
+            f"**{len(train_rows) + len(validation_rows)}** |"
+        ),
         "",
         "## 按成功次数统计题目数量",
         "",

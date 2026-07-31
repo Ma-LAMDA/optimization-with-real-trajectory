@@ -160,18 +160,33 @@ def validate_filter_report(
         raise ValueError("curation trajectories are missing")
     selected_by_case: Counter[int] = Counter()
     splits_by_case: defaultdict[int, set[str]] = defaultdict(set)
+    label_case_ids: defaultdict[str, set[int]] = defaultdict(set)
+    label_trajectory_counts: Counter[str] = Counter()
     for item in trajectories:
         if not isinstance(item, dict) or item.get("selected") is not True:
             continue
         case_id = int(item["case_id"])
         selected_by_case[case_id] += 1
         splits_by_case[case_id].add(str(item["split"]))
+        answer_labels = item.get("actual_result_items")
+        if (
+            not isinstance(answer_labels, list)
+            or not answer_labels
+            or any(not isinstance(label, str) for label in answer_labels)
+            or len(set(answer_labels)) != len(answer_labels)
+        ):
+            raise ValueError("selected trajectory answer labels are malformed")
+        for answer_label in answer_labels:
+            label_case_ids[answer_label].add(case_id)
+            label_trajectory_counts[answer_label] += 1
 
     report_lines = report_path.read_text(encoding="utf-8-sig").splitlines()
     case_rows: dict[int, list[str]] = {}
     total_cells: list[str] | None = None
     success_distribution_rows: dict[int, list[str]] = {}
     success_distribution_total_cells: list[str] | None = None
+    label_rows: dict[str, list[str]] = {}
+    label_total_cells: list[str] | None = None
     for line in report_lines:
         if not line.startswith("|"):
             continue
@@ -194,6 +209,20 @@ def validate_filter_report(
             success_distribution_total_cells = [
                 cell.replace("**", "") for cell in cells
             ]
+        elif (
+            cells
+            and len(cells) == 3
+            and cells[0].startswith("`")
+            and cells[0].endswith("`")
+        ):
+            answer_label = cells[0][1:-1]
+            if answer_label in label_rows:
+                raise ValueError(
+                    f"filter report repeats answer label {answer_label!r}"
+                )
+            label_rows[answer_label] = cells
+        elif cells and cells[0] == "**去重总计**" and len(cells) == 3:
+            label_total_cells = [cell.replace("**", "") for cell in cells]
 
     expected_case_ids = set(state_by_case)
     if set(case_rows) != expected_case_ids:
@@ -292,6 +321,23 @@ def validate_filter_report(
         != expected_success_distribution_total
     ):
         raise ValueError("filter report success-count distribution total mismatch")
+    expected_label_rows = {
+        answer_label: [
+            f"`{answer_label}`",
+            str(len(label_case_ids[answer_label])),
+            str(label_trajectory_counts[answer_label]),
+        ]
+        for answer_label in label_case_ids
+    }
+    if label_rows != expected_label_rows:
+        raise ValueError("filter report answer-label distribution mismatch")
+    expected_label_total = [
+        "去重总计",
+        str(len(selected_by_case)),
+        str(sum(selected_by_case.values())),
+    ]
+    if label_total_cells != expected_label_total:
+        raise ValueError("filter report answer-label total mismatch")
 
 
 def check_row(
@@ -549,7 +595,7 @@ def main() -> None:
         f"{manifest['filtered_nonaccepted_attempt_count']}"
     )
     print("- train/validation case overlap: 0")
-    print("- per-case filter report and success-count distribution verified")
+    print("- per-case, success-count, and answer-label reports verified")
 
 
 if __name__ == "__main__":

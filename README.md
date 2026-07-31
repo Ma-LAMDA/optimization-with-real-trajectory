@@ -202,9 +202,10 @@ attempt，过滤 473 个 rejected、11 个 interrupted 和 10 个 infrastructure
 | 过滤 | 非 accepted attempt | 494 |
 
 训练和验证按 `case_id` 分组，题号交集为 0。819 条样本均为 `decision` 类型并标记为
-`draft`。过滤报告先按每题成功次数汇总题目数量，再逐题列出 1–100 的 attempt 数、
-成功数、成功率、全部/成功 attempt 平均执行耗时、耗时覆盖、状态分布、SFT 入选数、
-划分和实验终态；其中 11 条 interrupted attempt 缺失耗时，不以 0 计入平均值。完整统计见
+`draft`。过滤报告按答案 label 汇总去重题目数与正确轨迹数，按每题成功次数汇总题目
+数量，再逐题列出 1–100 的 attempt 数、成功数、成功率、全部/成功 attempt
+平均执行耗时、耗时覆盖、状态分布、SFT 入选数、划分和实验终态；其中 11 条
+interrupted attempt 缺失耗时，不以 0 计入平均值。完整统计见
 [`data/2026-07-31/curation/FILTER_REPORT.md`](data/2026-07-31/curation/FILTER_REPORT.md)。
 
 ## 重新生成与校验
