@@ -336,6 +336,14 @@ step 0 建立新的优化器和调度器，同时忽略旧 trainer 的数据游�
 按故障类型统计和 11 条稳定错误分析见
 [`docs/2026-07-31_QWEN36_27B_LORA_SFT_759X60_2EPOCH_REPEAT5_RESULT.md`](docs/2026-07-31_QWEN36_27B_LORA_SFT_759X60_2EPOCH_REPEAT5_RESULT.md)。
 
+同一 60 条验证集上的基座 5 次对比汇总为严格正确 22/300（7.33%）、格式正确
+55/300（18.33%）；原训练 checkpoint-500/600/700/760 分别为
+47/48/49/49。以 `1e-5` 学习率从 checkpoint-760 只加载 LoRA 权重并重建
+优化器，额外训练 +100/+200 steps 后均达到 52/60（86.67%），但 +200 只继续
+降低验证 loss，没有提高严格正确率，因此当前推荐 +100 checkpoint。完整逐次、
+逐题与错误变化见
+[`docs/2026-07-31_QWEN36_27B_BASE_AND_STEP_SWEEP_RESULT.md`](docs/2026-07-31_QWEN36_27B_BASE_AND_STEP_SWEEP_RESULT.md)。
+
 历史 809/10 划分的 SeetaCloud 实跑在 step 600（epoch 1.4821）取得最低验证 loss
 `0.0057987166`，随后按 patience 继续观察至 step 900 并早停，最终加载
 checkpoint-600。该 checkpoint 在题 100 的 10 条验证样本上达到格式、严格集合
@@ -443,6 +451,9 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：在当前 60 条验证集上完成原始 27B 基座的 5 次双并发验证，
+  扫描原训练 step500/600/700/760，并从 checkpoint-760 独立续训
+  +100/+200 steps；严格正确率从基座均值 7.33% 提升至 86.67%，推荐 +100。
 - 2026-07-31：训练脚本支持只加载既有 LoRA 权重并以独立优化器执行指定
   `MAX_STEPS` 的额外训练，用于在原调度器已经衰减结束后复现实验性 step 扩展。
 - 2026-07-31：增加原始 27B 基座与多个 LoRA checkpoint 的统一验证扫描脚本；
