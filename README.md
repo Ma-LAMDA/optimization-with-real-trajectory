@@ -288,6 +288,14 @@ RUN_ID=0731-production \
 不会重复训练。vLLM 服务固定设置 `VLLM_USE_FLASHINFER_SAMPLER=0`，绕过
 FlashInfer 0.6.13 在 Blackwell sm_120 上错误报告低于 sm75 的采样器 JIT
 兼容问题；该设置只切换采样器实现，不改变单实例 TP=2 与双并发评测拓扑。
+新运行会在输出目录保存训练源码提交；复用早期未保存该字段的训练时，须一次性设置
+`TRAINING_GIT_COMMIT=<训练时提交>`，避免后处理提交被误记成训练提交。
+
+本轮 SeetaCloud 实跑在 step 600（epoch 1.4821）取得最低验证 loss
+`0.0057987166`，随后按 patience 继续观察至 step 900 并早停，最终加载
+checkpoint-600。该 checkpoint 在题 100 的 10 条验证样本上达到格式、严格集合
+匹配和无泄漏均 10/10。完整参数、loss 曲线、运行路径及适用边界见
+[`docs/2026-07-31_QWEN36_27B_LORA_SFT_RESULT.md`](docs/2026-07-31_QWEN36_27B_LORA_SFT_RESULT.md)。
 
 ## 推理生成约定
 
@@ -380,6 +388,9 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：完成 Qwen3.6-27B LoRA SFT 实跑，选定最低验证 loss 的
+  checkpoint-600，并在单实例 TP=2、双并发验证中取得严格匹配 10/10；固化实际
+  参数、结果、远端路径和训练/后处理提交分离的溯源规则。
 - 2026-07-31：固化 SeetaCloud LoRA SFT 端到端工作流，增加按 `eval_loss`
   早停与最佳 checkpoint 校验，并以单实例双并发在固定验证集上执行格式、严格集合
   匹配及泄漏评测；支持安全复用已经完成的训练状态继续后处理。

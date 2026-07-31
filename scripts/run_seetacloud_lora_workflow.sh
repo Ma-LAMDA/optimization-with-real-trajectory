@@ -30,6 +30,7 @@ LEARNING_RATE="${LEARNING_RATE:-5e-5}"
 VLLM_MAX_MODEL_LEN="${VLLM_MAX_MODEL_LEN:-16384}"
 VLLM_GPU_MEMORY_UTILIZATION="${VLLM_GPU_MEMORY_UTILIZATION:-0.90}"
 REUSE_COMPLETED_TRAINING="${REUSE_COMPLETED_TRAINING:-0}"
+TRAINING_GIT_COMMIT="${TRAINING_GIT_COMMIT:-}"
 
 TRAIN_PYTHON="${TRAIN_ENV}/bin/python"
 TRAIN_SWIFT="${TRAIN_ENV}/bin/swift"
@@ -123,11 +124,22 @@ if [[ -n "${ACTIVE_GPU_PROCESSES}" ]]; then
 fi
 
 echo "[$(date -Iseconds)] Starting single-GPU LoRA SFT"
+TRAINING_COMMIT_FILE="${TRAIN_OUTPUT_DIR}/training_git_commit.txt"
 if [[ "${REUSE_COMPLETED_TRAINING}" == "1" ]] \
   && find "${TRAIN_OUTPUT_DIR}" -type f -name trainer_state.json -print -quit \
     | grep -q .; then
   echo "[$(date -Iseconds)] Reusing completed training state in ${TRAIN_OUTPUT_DIR}"
+  if [[ -z "${TRAINING_GIT_COMMIT}" && -s "${TRAINING_COMMIT_FILE}" ]]; then
+    TRAINING_GIT_COMMIT="$(tr -d '[:space:]' <"${TRAINING_COMMIT_FILE}")"
+  fi
+  if [[ -z "${TRAINING_GIT_COMMIT}" ]]; then
+    echo "Reused training has no source commit. Set TRAINING_GIT_COMMIT once." >&2
+    exit 1
+  fi
 else
+  TRAINING_GIT_COMMIT="${GIT_COMMIT}"
+  mkdir -p "${TRAIN_OUTPUT_DIR}"
+  printf '%s\n' "${TRAINING_GIT_COMMIT}" >"${TRAINING_COMMIT_FILE}"
   MODEL_PATH="${MODEL_PATH}" \
   DATA_ROOT="${DATA_ROOT}" \
   OUTPUT_DIR="${TRAIN_OUTPUT_DIR}" \
@@ -146,12 +158,12 @@ TRAINING_SUMMARY="${RUN_ROOT}/training_summary.json"
 "${TRAIN_PYTHON}" scripts/summarize_sft_training.py \
   --output-dir "${TRAIN_OUTPUT_DIR}" \
   --result "${TRAINING_SUMMARY}" \
-  --git-commit "${GIT_COMMIT}"
+  --git-commit "${TRAINING_GIT_COMMIT}"
 BEST_CHECKPOINT="$(
   "${TRAIN_PYTHON}" scripts/summarize_sft_training.py \
     --output-dir "${TRAIN_OUTPUT_DIR}" \
     --result "${TRAINING_SUMMARY}" \
-    --git-commit "${GIT_COMMIT}" \
+    --git-commit "${TRAINING_GIT_COMMIT}" \
     --print-best-only
 )"
 echo "[$(date -Iseconds)] Best checkpoint: ${BEST_CHECKPOINT}"
