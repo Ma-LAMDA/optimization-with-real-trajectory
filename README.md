@@ -312,6 +312,17 @@ FlashInfer 0.6.13 在 Blackwell sm_120 上错误报告低于 sm75 的采样器 J
 新运行会在输出目录保存训练源码提交；复用早期未保存该字段的训练时，须一次性设置
 `TRAINING_GIT_COMMIT=<训练时提交>`，避免后处理提交被误记成训练提交。
 
+原始基座与多个 LoRA checkpoint 的同口径对比使用
+`scripts/run_seetacloud_validation_sweep.sh`。脚本只启动一个 TP=2 vLLM 实例，
+所有目标均固定两个 worker、总并发 2；基座默认重复 5 次，LoRA checkpoint
+默认各验证 1 次，并生成统一的 `validation_sweep_summary.json`：
+
+```bash
+OUTPUT_ROOT="$PWD/output/qwen36-27b-step-sweep-0731" \
+LORA_TARGETS="step500=/path/to/checkpoint-500 step600=/path/to/checkpoint-600" \
+  bash scripts/run_seetacloud_validation_sweep.sh
+```
+
 当前 759/60 分层划分已完成一轮 2-epoch 实跑：step 760 / epoch 2.0 取得最低
 验证 loss `0.0045663742`，最终 checkpoint-760 即最佳 checkpoint。随后在同一
 单实例 TP=2 服务内执行 5 次验证，每次严格匹配均为 49/60；汇总 300/300 请求
@@ -426,6 +437,9 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
+- 2026-07-31：增加原始 27B 基座与多个 LoRA checkpoint 的统一验证扫描脚本；
+  同一单实例 TP=2 服务中，基座默认按双并发重复 5 次，checkpoint 默认各验证
+  1 次，并汇总严格正确率及相对基座变化。
 - 2026-07-31：按最新 759/60 分层划分完成 2-epoch LoRA SFT，最低验证 loss
   位于 checkpoint-760；在同一单实例 TP=2 服务中完成 5 次双并发验证，每次严格
   匹配 49/60，并归档按题号、故障类型和稳定错误模式的分析。
