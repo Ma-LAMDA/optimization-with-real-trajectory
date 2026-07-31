@@ -1,5 +1,10 @@
 # 2026-07-31 Qwen3.6-27B LoRA SFT 结果
 
+> 历史结果说明：本报告对应训练时的 809/10 划分（题 100 为唯一验证题）。
+> 当前数据已改为按 6 种故障类型各留一题的 759/60 划分，因此本文的 loss、
+> checkpoint 和 10/10 结果不能作为新划分的训练或验证结果，也不得复用旧
+> checkpoint 冒充新划分训练产物。
+
 ## 1. 结论
 
 SeetaCloud 端到端工作流已完成。训练以验证集 `eval_loss` 为选择指标，
@@ -115,9 +120,10 @@ vllm.log
 这些文件包含模型权重、逐条输出和运行日志，保留在 SeetaCloud 的 `output/`
 目录，不推送到 GitHub。
 
-## 7. 工作流复现
+## 7. 工作流复现边界
 
-新训练：
+当前分支执行以下命令会使用新的 759/60 划分，只能产生一轮新实验，不能复现本文
+旧划分的数值：
 
 ```bash
 cd /root/autodl-tmp/optimization-with-real-trajectory
@@ -125,23 +131,14 @@ RUN_ID=<唯一运行编号> \
   bash scripts/run_seetacloud_lora_workflow.sh
 ```
 
-若训练已经完成，只恢复摘要、部署或评测：
-
-```bash
-cd /root/autodl-tmp/optimization-with-real-trajectory
-RUN_ID=20260731-bb2a819e \
-REUSE_COMPLETED_TRAINING=1 \
-TRAINING_GIT_COMMIT=bb2a819ea \
-  bash scripts/run_seetacloud_lora_workflow.sh
-```
-
-新工作流会在训练输出目录自动保存训练源码提交；只有复用未带该记录的旧训练时
-才需要手工给出 `TRAINING_GIT_COMMIT`。本次权重由 `bb2a819ea` 训练，最终验证
-与工作流汇总由 `79dffb1d0` 执行，两者应分开解释。
+本文权重由 `bb2a819ea` 训练，最终验证与工作流汇总由 `79dffb1d0` 执行，两者应
+分开解释。旧输出目录未记录当前工作流要求的训练 manifest 哈希，因此当前脚本会
+主动拒绝将旧 checkpoint 复用于新划分。若只做历史审计，应在隔离 worktree 中检出
+对应旧提交和旧 manifest，不要覆盖当前数据。
 
 ## 8. 适用边界
 
 题 100 的 10 条数据同时承担训练过程的早停/选点和最终生成验证，因此结果回答的
 是“所选 checkpoint 在该验证集上的表现”，不是独立测试集上的泛化结论。后续若
 要比较基座与 LoRA 的真实提升，应另行冻结不参与早停和调参的测试集，并执行同条件
-A/B 评测。
+A/B 评测。仓库当前采用 759/60 新划分；本报告仅用于追溯旧划分实验。

@@ -1,5 +1,5 @@
 {
-  "schema_version": "qwen36-reasoning-decision-sft.v4",
+  "schema_version": "qwen36-reasoning-decision-sft.v5",
   "source_experiment": "experiments/2026-07-28-ip_codex_train0629_100x10",
   "source_dataset": "data/simulation/train_0629.jsonl",
   "source_dataset_sha256_lf_normalized": "b08f7e24262fe52db28f9cc768298ffeb2c1b619abd9f1e687b67dfed4797ccf",
@@ -13,20 +13,22 @@
   "excluded_candidate_count": 0,
   "filtered_nonaccepted_attempt_count": 494,
   "curation_file": "data/2026-07-31/curation/accepted_trajectory_selection.json",
-  "curation_sha256_lf_normalized": "b86271a1aede9b7b1505768218ccbfeac6b9bf0ac5c08d8294a483f5df0ec49a",
+  "curation_sha256_lf_normalized": "0cf15cff5bc6d43735913b2d30879c01852c3bb087fae600cca01a2c284ff02f",
   "target_type_counts": {
     "train": {
-      "decision": 809
+      "decision": 759
     },
     "validation": {
-      "decision": 10
+      "decision": 60
     }
   },
   "split": {
-    "strategy": "leave_one_case_out",
+    "strategy": "leave_one_case_out_per_fault_type",
     "group_key": "case_id",
-    "train": 809,
-    "validation": 10,
+    "stratification_key": "fault_type",
+    "selection_rule": "max_selected_trajectories_then_max_case_id",
+    "train": 759,
+    "validation": 60,
     "train_case_ids": [
       1,
       2,
@@ -39,7 +41,6 @@
       9,
       10,
       11,
-      12,
       13,
       14,
       15,
@@ -51,7 +52,6 @@
       21,
       22,
       23,
-      24,
       25,
       26,
       27,
@@ -67,7 +67,6 @@
       37,
       38,
       39,
-      40,
       57,
       58,
       59,
@@ -83,7 +82,6 @@
       69,
       70,
       71,
-      72,
       73,
       74,
       75,
@@ -97,7 +95,6 @@
       83,
       84,
       85,
-      86,
       87,
       88,
       89,
@@ -113,8 +110,21 @@
       99
     ],
     "validation_case_ids": [
+      12,
+      24,
+      40,
+      72,
+      86,
       100
     ],
+    "validation_cases_by_fault_type": {
+      "STP BPDU被过滤": 24,
+      "VRRP Master角色规划不合理": 86,
+      "VRRP工作在非抢占模式": 100,
+      "全局STP未使能": 12,
+      "存在IP路由环路": 40,
+      "存在MPLS标签环路": 72
+    },
     "case_groups_disjoint": true
   },
   "selection": {
@@ -132,15 +142,15 @@
   "outputs": [
     {
       "path": "data/2026-07-31/sft/qwen3_6_27b_reasoning_decision_train.jsonl",
-      "samples": 809,
-      "normalized_bytes": 4579608,
-      "sha256_lf_normalized": "5a0edb7cb1fc5818755c630aee756b70d9ab00c85cfe88b523fece75bd2249aa"
+      "samples": 759,
+      "normalized_bytes": 4272365,
+      "sha256_lf_normalized": "3caf493d6b6aebbdf824066dfcbe6a4b94cdc90004cfb3f20a38d18027384197"
     },
     {
       "path": "data/2026-07-31/sft/qwen3_6_27b_reasoning_decision_validation.jsonl",
-      "samples": 10,
-      "normalized_bytes": 60224,
-      "sha256_lf_normalized": "794b0cb258ccd18c80b06ddf1afd6c4ba7b51d7501e9164c0889c04148329b16"
+      "samples": 60,
+      "normalized_bytes": 367717,
+      "sha256_lf_normalized": "22681c3252b9f8ac7c79f62d8895a165212d99e5521d2a3b535e37caae8a45a6"
     }
   ]
 }

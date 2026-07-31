@@ -93,11 +93,6 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_OUTPUT_ROOT,
         help="Date-scoped output data directory.",
     )
-    parser.add_argument(
-        "--validation-case-id",
-        type=int,
-        help="Held-out case id. Defaults to the highest eligible case id.",
-    )
     return parser.parse_args()
 
 
@@ -163,6 +158,19 @@ def write_text(path: Path, value: str) -> None:
 
 def format_duration(value: float | None) -> str:
     return "—" if value is None else f"{value:.3f}"
+
+
+def answer_label_fault_type(answer_label: str) -> str:
+    fault_node, separator, fault_type = answer_label.partition(";")
+    if (
+        not separator
+        or not fault_node
+        or not fault_type
+        or fault_node != fault_node.strip()
+        or fault_type != fault_type.strip()
+    ):
+        raise ValueError(f"answer label has no fault type: {answer_label!r}")
+    return fault_type
 
 
 def parse_result(text: str) -> list[str] | None:
@@ -642,36 +650,62 @@ def main() -> None:
     )
     if len(eligible_case_ids) < 2:
         raise ValueError("at least two cases with eligible trajectories are required")
-    validation_case_id = (
-        int(options.validation_case_id)
-        if options.validation_case_id is not None
-        else max(eligible_case_ids)
-    )
-    if validation_case_id not in eligible_case_ids:
-        raise ValueError(
-            f"validation case {validation_case_id} has no eligible trajectory"
+
+    selected_counts_by_case: Counter[int] = Counter()
+    fault_types_by_case: defaultdict[int, set[str]] = defaultdict(set)
+    for item in processed:
+        if not item["selected"]:
+            continue
+        case_id = int(item["case_id"])
+        selected_counts_by_case[case_id] += 1
+        fault_types_by_case[case_id].update(
+            answer_label_fault_type(answer_label)
+            for answer_label in item["actual_result_items"]
         )
+    if any(len(fault_types_by_case[case_id]) != 1 for case_id in eligible_case_ids):
+        raise ValueError("each eligible case must belong to exactly one fault type")
+
+    case_fault_types = {
+        case_id: next(iter(fault_types_by_case[case_id]))
+        for case_id in eligible_case_ids
+    }
+    cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
+    for case_id, fault_type in case_fault_types.items():
+        cases_by_fault_type[fault_type].append(case_id)
+    if any(len(case_ids) < 2 for case_ids in cases_by_fault_type.values()):
+        raise ValueError(
+            "each fault type needs at least two eligible cases for grouped holdout"
+        )
+    validation_cases_by_fault_type = {
+        fault_type: max(
+            case_ids,
+            key=lambda case_id: (selected_counts_by_case[case_id], case_id),
+        )
+        for fault_type, case_ids in sorted(cases_by_fault_type.items())
+    }
+    validation_case_ids = sorted(validation_cases_by_fault_type.values())
+    validation_case_id_set = set(validation_case_ids)
     for item in processed:
         if not item["selected"]:
             continue
         item["split"] = (
             "validation"
-            if item["case_id"] == validation_case_id
+            if item["case_id"] in validation_case_id_set
             else "train"
         )
 
     train_case_ids = sorted(
         {item["case_id"] for item in processed if item["split"] == "train"}
     )
-    validation_case_ids = sorted(
+    actual_validation_case_ids = sorted(
         {
             item["case_id"]
             for item in processed
             if item["split"] == "validation"
         }
     )
-    if validation_case_ids != [validation_case_id]:
-        raise ValueError("validation split must contain exactly one case group")
+    if actual_validation_case_ids != validation_case_ids:
+        raise ValueError("validation split does not match fault-type holdout")
     if set(train_case_ids) & set(validation_case_ids):
         raise ValueError("train and validation case ids overlap")
 
@@ -756,7 +790,7 @@ def main() -> None:
         )
 
     curation_document = {
-        "schema_version": "codex-ip-accepted-trajectory-curation.v2",
+        "schema_version": "codex-ip-accepted-trajectory-curation.v3",
         "source_experiment": label(experiment_root),
         "source_dataset": label(dataset_path),
         "source_dataset_sha256_lf_normalized": stable_digest(dataset_path),
@@ -778,8 +812,13 @@ def main() -> None:
             "review_status": "draft",
         },
         "split": {
-            "strategy": "leave_one_case_out",
+            "strategy": "leave_one_case_out_per_fault_type",
             "group_key": "case_id",
+            "stratification_key": "fault_type",
+            "selection_rule": (
+                "max_selected_trajectories_then_max_case_id"
+            ),
+            "validation_cases_by_fault_type": validation_cases_by_fault_type,
             "validation_case_ids": validation_case_ids,
             "train_case_ids": train_case_ids,
             "case_groups_disjoint": True,
@@ -876,7 +915,7 @@ def main() -> None:
     write_jsonl(train_path, train_rows)
     write_jsonl(validation_path, validation_rows)
     output_manifest = {
-        "schema_version": "qwen36-reasoning-decision-sft.v4",
+        "schema_version": "qwen36-reasoning-decision-sft.v5",
         "source_experiment": label(experiment_root),
         "source_dataset": label(dataset_path),
         "source_dataset_sha256_lf_normalized": stable_digest(dataset_path),
@@ -902,12 +941,17 @@ def main() -> None:
             "validation": {"decision": len(validation_rows)},
         },
         "split": {
-            "strategy": "leave_one_case_out",
+            "strategy": "leave_one_case_out_per_fault_type",
             "group_key": "case_id",
+            "stratification_key": "fault_type",
+            "selection_rule": (
+                "max_selected_trajectories_then_max_case_id"
+            ),
             "train": len(train_rows),
             "validation": len(validation_rows),
             "train_case_ids": train_case_ids,
             "validation_case_ids": validation_case_ids,
+            "validation_cases_by_fault_type": validation_cases_by_fault_type,
             "case_groups_disjoint": True,
         },
         "selection": {
@@ -964,15 +1008,7 @@ def main() -> None:
             continue
         trajectory_fault_types: set[str] = set()
         for answer_label in item["actual_result_items"]:
-            fault_node, separator, fault_type = answer_label.partition(";")
-            if (
-                not separator
-                or not fault_node
-                or not fault_type
-                or fault_node != fault_node.strip()
-                or fault_type != fault_type.strip()
-            ):
-                raise ValueError(f"answer label has no fault type: {answer_label!r}")
+            fault_type = answer_label_fault_type(answer_label)
             label_case_ids[answer_label].add(item["case_id"])
             label_trajectory_counts[answer_label] += 1
             fault_type_labels[fault_type].add(answer_label)
@@ -990,7 +1026,11 @@ def main() -> None:
         f"- 候选中排除：{split_counts['excluded']}",
         f"- 非 accepted attempt 过滤：{sum(attempt_status_counts.values()) - len(processed)}",
         f"- 训练集：{len(train_rows)} 条，{len(train_case_ids)} 个题号",
-        f"- 验证集：{len(validation_rows)} 条，题号 {validation_case_id}",
+        (
+            f"- 验证集：{len(validation_rows)} 条，"
+            f"{len(validation_case_ids)} 个题号（"
+            f"{'、'.join(str(case_id) for case_id in validation_case_ids)}）"
+        ),
         "- 训练/验证题号交集：0",
         (
             f"- 全部 attempt 平均耗时：{average_attempt_duration:.3f} 秒"
@@ -1073,6 +1113,24 @@ def main() -> None:
             f"**{len(train_rows) + len(validation_rows)}** |"
         ),
         "",
+        "## 按故障类型划分验证题",
+        "",
+        "每种合并后的故障类型整题留出 1 题。先选择该类型中严格正确轨迹数最多的"
+        "题；若并列，则选择题号最大的题。训练集与验证集继续以 `case_id` 隔离。",
+        "",
+        "| 故障类型 | 验证题号 | 验证轨迹 | 训练题数 | 训练轨迹 |",
+        "| --- | ---: | ---: | ---: | ---: |",
+        *[
+            (
+                f"| `{fault_type}` | "
+                f"{validation_cases_by_fault_type[fault_type]} | "
+                f"{selected_counts_by_case[validation_cases_by_fault_type[fault_type]]} | "
+                f"{len(fault_type_case_ids[fault_type]) - 1} | "
+                f"{fault_type_trajectory_counts[fault_type] - selected_counts_by_case[validation_cases_by_fault_type[fault_type]]} |"
+            )
+            for fault_type in sorted(validation_cases_by_fault_type)
+        ],
+        "",
         "## 按成功次数统计题目数量",
         "",
         "| 每题成功次数 | 题目数量 | 成功轨迹小计 |",
@@ -1144,7 +1202,10 @@ def main() -> None:
     print(f"Excluded accepted candidates: {split_counts['excluded']}")
     print(f"Filtered non-accepted attempts: {sum(attempt_status_counts.values()) - len(processed)}")
     print(f"Train: {len(train_rows)} across {len(train_case_ids)} cases")
-    print(f"Validation: {len(validation_rows)} from case {validation_case_id}")
+    print(
+        f"Validation: {len(validation_rows)} across "
+        f"{len(validation_case_ids)} cases ({validation_case_ids})"
+    )
 
 
 if __name__ == "__main__":

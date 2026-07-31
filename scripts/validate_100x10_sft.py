@@ -99,6 +99,19 @@ def format_duration(value: float | None) -> str:
     return "—" if value is None else f"{value:.3f}"
 
 
+def answer_label_fault_type(answer_label: str) -> str:
+    fault_node, separator, fault_type = answer_label.partition(";")
+    if (
+        not separator
+        or not fault_node
+        or not fault_type
+        or fault_node != fault_node.strip()
+        or fault_type != fault_type.strip()
+    ):
+        raise ValueError(f"answer label has no fault type: {answer_label!r}")
+    return fault_type
+
+
 def validate_filter_report(
     *,
     report_path: Path,
@@ -165,6 +178,7 @@ def validate_filter_report(
     fault_type_labels: defaultdict[str, set[str]] = defaultdict(set)
     fault_type_case_ids: defaultdict[str, set[int]] = defaultdict(set)
     fault_type_trajectory_counts: Counter[str] = Counter()
+    fault_types_by_case: defaultdict[int, set[str]] = defaultdict(set)
     for item in trajectories:
         if not isinstance(item, dict) or item.get("selected") is not True:
             continue
@@ -181,22 +195,17 @@ def validate_filter_report(
             raise ValueError("selected trajectory answer labels are malformed")
         trajectory_fault_types: set[str] = set()
         for answer_label in answer_labels:
-            fault_node, separator, fault_type = answer_label.partition(";")
-            if (
-                not separator
-                or not fault_node
-                or not fault_type
-                or fault_node != fault_node.strip()
-                or fault_type != fault_type.strip()
-            ):
-                raise ValueError(f"answer label has no fault type: {answer_label!r}")
+            fault_type = answer_label_fault_type(answer_label)
             label_case_ids[answer_label].add(case_id)
             label_trajectory_counts[answer_label] += 1
             fault_type_labels[fault_type].add(answer_label)
             fault_type_case_ids[fault_type].add(case_id)
             trajectory_fault_types.add(fault_type)
+            fault_types_by_case[case_id].add(fault_type)
         for fault_type in trajectory_fault_types:
             fault_type_trajectory_counts[fault_type] += 1
+    if any(len(fault_types) != 1 for fault_types in fault_types_by_case.values()):
+        raise ValueError("each selected case must belong to exactly one fault type")
 
     report_lines = report_path.read_text(encoding="utf-8-sig").splitlines()
     case_rows: dict[int, list[str]] = {}
@@ -207,6 +216,7 @@ def validate_filter_report(
     label_total_cells: list[str] | None = None
     fault_type_rows: dict[str, list[str]] = {}
     fault_type_total_cells: list[str] | None = None
+    validation_split_rows: dict[str, list[str]] = {}
     for line in report_lines:
         if not line.startswith("|"):
             continue
@@ -259,6 +269,18 @@ def validate_filter_report(
             fault_type_total_cells = [
                 cell.replace("**", "") for cell in cells
             ]
+        elif (
+            cells
+            and len(cells) == 5
+            and cells[0].startswith("`")
+            and cells[0].endswith("`")
+        ):
+            fault_type = cells[0][1:-1]
+            if fault_type in validation_split_rows:
+                raise ValueError(
+                    f"filter report repeats validation fault type {fault_type!r}"
+                )
+            validation_split_rows[fault_type] = cells
 
     expected_case_ids = set(state_by_case)
     if set(case_rows) != expected_case_ids:
@@ -393,6 +415,32 @@ def validate_filter_report(
     ]
     if fault_type_total_cells != expected_fault_type_total:
         raise ValueError("filter report fault-type total mismatch")
+    validation_cases_by_fault_type: dict[str, int] = {}
+    for case_id, splits in splits_by_case.items():
+        if splits != {"validation"}:
+            continue
+        fault_type = next(iter(fault_types_by_case[case_id]))
+        if fault_type in validation_cases_by_fault_type:
+            raise ValueError(
+                f"multiple validation cases for fault type {fault_type!r}"
+            )
+        validation_cases_by_fault_type[fault_type] = case_id
+    expected_validation_split_rows = {
+        fault_type: [
+            f"`{fault_type}`",
+            str(validation_case_id),
+            str(selected_by_case[validation_case_id]),
+            str(len(fault_type_case_ids[fault_type]) - 1),
+            str(
+                fault_type_trajectory_counts[fault_type]
+                - selected_by_case[validation_case_id]
+            ),
+        ]
+        for fault_type, validation_case_id
+        in validation_cases_by_fault_type.items()
+    }
+    if validation_split_rows != expected_validation_split_rows:
+        raise ValueError("filter report validation split mismatch")
 
 
 def check_row(
@@ -504,9 +552,9 @@ def main() -> None:
     train_rows = load_jsonl(train_path)
     validation_rows = load_jsonl(validation_path)
     curation_digest = stable_digest(curation_path)
-    if curation.get("schema_version") != "codex-ip-accepted-trajectory-curation.v2":
+    if curation.get("schema_version") != "codex-ip-accepted-trajectory-curation.v3":
         raise ValueError("unexpected curation schema")
-    if manifest.get("schema_version") != "qwen36-reasoning-decision-sft.v4":
+    if manifest.get("schema_version") != "qwen36-reasoning-decision-sft.v5":
         raise ValueError("unexpected manifest schema")
     if (
         manifest.get("curation_file")
@@ -536,6 +584,8 @@ def main() -> None:
     source_ids: set[str] = set()
     train_cases: set[int] = set()
     validation_cases: set[int] = set()
+    selected_counts_by_case: Counter[int] = Counter()
+    fault_types_by_case: defaultdict[int, set[str]] = defaultdict(set)
     for split, rows, cases in (
         ("train", train_rows, train_cases),
         ("validation", validation_rows, validation_cases),
@@ -554,22 +604,79 @@ def main() -> None:
             identifiers.add(identifier)
             source_ids.add(source_id)
             cases.add(case_id)
+            selected_counts_by_case[case_id] += 1
+            metadata = row["metadata"]
+            fault_types_by_case[case_id].update(
+                answer_label_fault_type(answer_label)
+                for answer_label in metadata["actual_result_items"]
+            )
     if train_cases & validation_cases:
         raise ValueError("train and validation case groups overlap")
+    all_cases = train_cases | validation_cases
+    if (
+        set(fault_types_by_case) != all_cases
+        or any(
+            len(fault_types_by_case[case_id]) != 1
+            for case_id in all_cases
+        )
+    ):
+        raise ValueError("each selected case must belong to one fault type")
+    case_fault_types = {
+        case_id: next(iter(fault_types_by_case[case_id]))
+        for case_id in all_cases
+    }
+    cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
+    for case_id, fault_type in case_fault_types.items():
+        cases_by_fault_type[fault_type].append(case_id)
+    expected_validation_cases_by_fault_type = {
+        fault_type: max(
+            case_ids,
+            key=lambda case_id: (selected_counts_by_case[case_id], case_id),
+        )
+        for fault_type, case_ids in sorted(cases_by_fault_type.items())
+    }
+    actual_validation_cases_by_fault_type: dict[str, int] = {}
+    for case_id in validation_cases:
+        fault_type = case_fault_types[case_id]
+        if fault_type in actual_validation_cases_by_fault_type:
+            raise ValueError(
+                f"multiple validation cases for fault type {fault_type!r}"
+            )
+        actual_validation_cases_by_fault_type[fault_type] = case_id
+    if (
+        actual_validation_cases_by_fault_type
+        != expected_validation_cases_by_fault_type
+    ):
+        raise ValueError(
+            "validation must contain the deterministic holdout for every fault type"
+        )
 
     split = manifest.get("split")
     if (
         not isinstance(split, dict)
-        or split.get("strategy") != "leave_one_case_out"
+        or split.get("strategy") != "leave_one_case_out_per_fault_type"
         or split.get("group_key") != "case_id"
+        or split.get("stratification_key") != "fault_type"
+        or split.get("selection_rule")
+        != "max_selected_trajectories_then_max_case_id"
         or split.get("train") != len(train_rows)
         or split.get("validation") != len(validation_rows)
         or split.get("train_case_ids") != sorted(train_cases)
         or split.get("validation_case_ids") != sorted(validation_cases)
+        or split.get("validation_cases_by_fault_type")
+        != expected_validation_cases_by_fault_type
         or split.get("case_groups_disjoint") is not True
-        or len(validation_cases) != 1
+        or len(validation_cases) != len(cases_by_fault_type)
     ):
         raise ValueError("manifest split metadata mismatch")
+    curation_split = curation.get("split")
+    expected_curation_split = {
+        key: value
+        for key, value in split.items()
+        if key not in {"train", "validation"}
+    }
+    if curation_split != expected_curation_split:
+        raise ValueError("curation split metadata mismatch")
 
     trajectories = curation.get("trajectories")
     counts = curation.get("counts")
@@ -642,8 +749,8 @@ def main() -> None:
     print(f"- accepted candidates: {manifest['accepted_candidate_count']}")
     print(f"- train: {len(train_rows)} across {len(train_cases)} cases")
     print(
-        f"- validation: {len(validation_rows)} from case "
-        f"{next(iter(validation_cases))}"
+        f"- validation: {len(validation_rows)} across "
+        f"{len(validation_cases)} cases ({sorted(validation_cases)})"
     )
     print(
         f"- filtered non-accepted attempts: "
@@ -651,7 +758,7 @@ def main() -> None:
     )
     print("- train/validation case overlap: 0")
     print(
-        "- per-case, success-count, answer-label, and fault-type reports verified"
+        "- per-case, success-count, answer-label, fault-type, and split reports verified"
     )
 
 

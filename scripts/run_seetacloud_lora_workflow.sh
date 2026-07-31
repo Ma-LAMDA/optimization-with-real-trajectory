@@ -86,6 +86,16 @@ echo "[$(date -Iseconds)] Regenerating the grouped train/validation split"
   --output-root "${DATA_ROOT}"
 "${TRAIN_PYTHON}" scripts/validate_100x10_sft.py \
   --data-root "${DATA_ROOT}"
+CURRENT_MANIFEST_SHA="$(
+  "${TRAIN_PYTHON}" - "${MANIFEST_PATH}" <<'PY'
+import hashlib
+import pathlib
+import sys
+
+content = pathlib.Path(sys.argv[1]).read_bytes().replace(b"\r\n", b"\n")
+print(hashlib.sha256(content).hexdigest())
+PY
+)"
 
 if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
   echo "Data regeneration changed tracked repository files." >&2
@@ -125,6 +135,7 @@ fi
 
 echo "[$(date -Iseconds)] Starting single-GPU LoRA SFT"
 TRAINING_COMMIT_FILE="${TRAIN_OUTPUT_DIR}/training_git_commit.txt"
+TRAINING_MANIFEST_SHA_FILE="${TRAIN_OUTPUT_DIR}/training_manifest_sha256.txt"
 if [[ "${REUSE_COMPLETED_TRAINING}" == "1" ]] \
   && find "${TRAIN_OUTPUT_DIR}" -type f -name trainer_state.json -print -quit \
     | grep -q .; then
@@ -136,10 +147,22 @@ if [[ "${REUSE_COMPLETED_TRAINING}" == "1" ]] \
     echo "Reused training has no source commit. Set TRAINING_GIT_COMMIT once." >&2
     exit 1
   fi
+  if [[ ! -s "${TRAINING_MANIFEST_SHA_FILE}" ]]; then
+    echo "Reused training has no manifest hash; refusing cross-split reuse." >&2
+    exit 1
+  fi
+  TRAINING_MANIFEST_SHA="$(
+    tr -d '[:space:]' <"${TRAINING_MANIFEST_SHA_FILE}"
+  )"
+  if [[ "${TRAINING_MANIFEST_SHA}" != "${CURRENT_MANIFEST_SHA}" ]]; then
+    echo "Training manifest differs from the current data split." >&2
+    exit 1
+  fi
 else
   TRAINING_GIT_COMMIT="${GIT_COMMIT}"
   mkdir -p "${TRAIN_OUTPUT_DIR}"
   printf '%s\n' "${TRAINING_GIT_COMMIT}" >"${TRAINING_COMMIT_FILE}"
+  printf '%s\n' "${CURRENT_MANIFEST_SHA}" >"${TRAINING_MANIFEST_SHA_FILE}"
   MODEL_PATH="${MODEL_PATH}" \
   DATA_ROOT="${DATA_ROOT}" \
   OUTPUT_DIR="${TRAIN_OUTPUT_DIR}" \

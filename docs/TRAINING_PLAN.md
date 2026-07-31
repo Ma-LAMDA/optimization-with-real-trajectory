@@ -24,9 +24,9 @@
 - 独立判题严格正确的 accepted 轨迹为 819 条，另有 rejected 473 条、
   interrupted 11 条和 infrastructure failure 10 条；
 - 819 条 accepted 轨迹全部通过最终事件一致性、判题哈希和证据清洁检查；
-- 训练集：83 个题号，共 809 条；
-- 验证集：留出题 100，共 10 条；
-- 划分键为 `case_id`，训练与验证题号交集为 0；
+- 训练集：78 个题号，共 759 条；
+- 验证集：按 6 种合并故障类型分别留出题 12、24、40、72、86、100，共 60 条；
+- 划分键为 `case_id`，训练与验证题号交集为 0，每种故障类型恰有一个验证题；
 - 819 条样本均为 `draft`，正式训练前需要领域审核；
 - 0731 SFT 样本完整消息文本为 1559–3944 个字符，均值约 2289 个字符；
 - 0728 的 90/10 留一数据继续作为历史基线保留；
@@ -51,7 +51,7 @@
 1. 运行 `scripts/convert_100x10_accepted_to_sft.py` 重新生成 0731 数据；
 2. 运行 `scripts/validate_100x10_sft.py`，要求全部检查通过；
 3. 记录 Git 提交、数据文件 SHA-256、模型路径和软件版本；
-4. 检查 ms-swift 预处理后的有效样本数仍为训练 809、验证 10；
+4. 检查 ms-swift 预处理后的有效样本数仍为训练 759、验证 60；
 5. 如果 `max_length=4096` 删除任何样本，停止训练并重新检查模板与 tokenizer 统计。
 
 正式训练前还必须：
@@ -114,7 +114,7 @@ GPU 上执行 LoRA；不使用 QLoRA，不启用双卡 DDP，也不启用 packin
 | warmup ratio | 0.1 |
 | epochs | 1 |
 | gradient checkpointing | 开启 |
-| validation split | 固定题 100，共 10 条 |
+| validation split | 6 种故障类型各固定留一题，共 60 条 |
 | seed | 42 |
 
 执行入口：
@@ -125,10 +125,10 @@ source /root/autodl-tmp/envs/qwen36-sft/bin/activate
 bash scripts/train_qwen36_lora_smoke.sh
 ```
 
-809 条训练样本、梯度累积 2 时，预计每个 epoch 约 405 个优化步骤。这一轮只验证：
+759 条训练样本、梯度累积 2 时，预计每个 epoch 约 380 个优化步骤。这一轮只验证：
 
 - 模型、模板和数据能够正确加载；
-- 有效训练样本仍为 809，验证样本仍为 10；
+- 有效训练样本仍为 759，验证样本仍为 60；
 - loss 为有限值并能正常反向传播；
 - 没有 OOM、NaN 或进程异常；
 - checkpoint 和训练日志能够正常保存。
@@ -146,7 +146,8 @@ RUN_ID=0731-production \
 该入口按顺序完成：
 
 1. 快进同步 `2026-07-31-sft`，拒绝覆盖服务器上的 tracked 修改；
-2. 从 100×10 来源实验重新生成 SFT，并校验训练 809、验证 10、题号交集 0；
+2. 从 100×10 来源实验重新生成 SFT，并校验训练 759、验证 60、题号交集 0，
+   且 6 种故障类型各有且仅有一个验证题；
 3. 在 GPU 0 上执行 BF16 LoRA SFT，上限 3 epochs；
 4. 每 100 个优化步骤在固定验证集上计算 `eval_loss`，并在同一步保存 checkpoint；
 5. 使用 `metric_for_best_model=eval_loss`、`greater_is_better=false`、
@@ -154,7 +155,7 @@ RUN_ID=0731-production \
 6. 解析 `trainer_state.json`，验证 `best_metric` 等于全部已观测验证 loss 的最小值，
    且对应 checkpoint 仍然存在；
 7. 训练结束后启动一个使用两张 GPU 的 vLLM 实例，以两个 worker 和总并发 2
-   对题 100 的 10 条验证样本执行确定性生成评测；
+   对 6 个验证题的 60 条验证样本执行确定性生成评测；
 8. 输出 `training_summary.json`、逐条预测、`validation_summary.json` 和
    `workflow_summary.json`。
 
@@ -164,7 +165,9 @@ RUN_ID=0731-production \
 摘要校验同时要求最佳 checkpoint 的 step 等于最低验证 loss 所在 step；对
 ms-swift 将 `best_metric` 序列化为 8 位小数造成的误差仅允许 `5e-8` 绝对容差。
 若训练已完成但摘要、部署或评测中断，可用同一 `RUN_ID` 设置
-`REUSE_COMPLETED_TRAINING=1` 继续，复用前仍会重新执行数据和 trainer state 校验。
+`REUSE_COMPLETED_TRAINING=1` 继续，复用前仍会重新执行数据、训练时 manifest
+哈希和 trainer state 校验。旧 809/10 划分训练出的 checkpoint 不得复用于当前
+759/60 划分的结果汇总。
 
 ## 6. 每分钟监控
 
@@ -179,16 +182,16 @@ ms-swift 将 `best_metric` 序列化为 8 位小数造成的误差仅允许 `5e-
 
 - loss 为 NaN/Inf；
 - OOM；
-- 有效训练样本数小于 809，或验证样本数小于 10；
+- 有效训练样本数小于 759，或验证样本数小于 60；
 - 模型或模板识别错误；
 - 非训练 GPU 出现意外占用；
 - 连续多个监控周期没有 step 推进且进程无有效计算。
 
 ## 7. 训练后的评估
 
-训练不以训练 loss 作为能力结论。固定工作流先在留出的题 100 上报告：
+训练不以训练 loss 作为能力结论。固定工作流先在按故障类型留出的 6 个题号上报告：
 
-- 10 条请求的完成率；
+- 60 条请求的完成率；
 - `<result>` 格式通过率；
 - 解析后的根因集合严格匹配率；
 - 工具名、命令和操作标记泄漏率；
