@@ -1,0 +1,54 @@
+2026-07-28T15:49:03.794785Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T15:49:03.794858Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T15:49:03.795512Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T15:49:03.798429Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T15:49:03.805840Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T15:49:04.602440Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T15:49:04.602475Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T15:49:04.603196Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T15:49:04.606667Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T15:49:12.131268Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 6
+2026-07-28T15:49:16.637430Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg -n "3080|GNS3|fixed PowerShell HTTP client" -S .
+2026-07-28T15:49:28.365862Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-28T15:51:18.127088Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+At line:1 char:100
++ ... .0.1:3080/v3/projects/CampusNetwork_02/nodes').name; foreach( in ){=' ...
++                                                                  ~
+Missing variable name after foreach.
+At line:1 char:104
++ ... 3080/v3/projects/CampusNetwork_02/nodes').name; foreach( in ){='http: ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:1053
++ ... }); =Compare-Object -ReferenceObject  -DifferenceObject ; if(){Write- ...
++                                                                  ~
+Missing condition in if statement after 'if ('.
+At line:1 char:1076
++ ... ferenceObject  -DifferenceObject ; if(){Write-Output ('### '+); | For ...
++                                                                  ~
+You must provide a value expression following the '+' operator.
+At line:1 char:1079
++ ... nceObject  -DifferenceObject ; if(){Write-Output ('### '+); | Format- ...
++                                                                 ~
+An empty pipe element is not allowed.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingVariableNameAfterForeach
+ 
+
+2026-07-28T15:51:51.645425Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -EncodedCommand JABuAHMAPQAoAEkAbgB2AG8AawBlAC0AUgBlAHMAdABNAGUAdABoAG8AZAAgAC0AVQByAGkAIAAnAGgAdAB0AHAAOgAvAC8AMQAyADcALgAwAC4AMAAuADEAOgAzADAAOAAwAC8AdgAzAC8AcAByAG8AagBlAGMAdABzAC8AQwBhAG0AcAB1AHMATgBlAHQAdwBvAHIAawBfADAAMgAvAG4AbwBkAGUAcwAnACkALgBuAGEAbQBlADsAIABmAG8AcgBlAGEAYwBoACgAJABuACAAaQBuACAAJABuAHMAKQB7ACQAdQAxAD0AJwBoAHQAdABwADoALwAvADEAMgA3AC4AMAAuADAALgAxADoAMwAwADgAMAAvAHYAMwAvAHAAcgBvAGoAZQBjAHQAcwAvAEMAYQBtAHAAdQBzAE4AZQB0AHcAbwByAGsAXwAwADIALwBuAG8AZABlAHMALwAnACsAJABuACsAJwAvAGMAbwBtAG0AYQBuAGQAPwBjAG0AZAA9AGQAaQBzAHAAbABhAHkAJQAyADAAYwB1AHIAcgBlAG4AdAAtAGMAbwBuAGYAaQBnAHUAcgBhAHQAaQBvAG4AJwA7ACAAJAB1ADAAPQAnAGgAdAB0AHAAOgAvAC8AMQAyADcALgAwAC4AMAAuADEAOgAzADAAOAAwAC8AdgAzAC8AcAByAG8AagBlAGMAdABzAC8AQwBhAG0AcAB1AHMATgBlAHQAdwBvAHIAawAtAGYAbwByAC0AcABlAHIAZgBfADAAMgAvAG4AbwBkAGUAcwAvACcAKwAkAG4AKwAnAC8AYwBvAG0AbQBhAG4AZAA/AGMAbQBkAD0AZABpAHMAcABsAGEAeQAlADIAMABjAHUAcgByAGUAbgB0AC0AYwBvAG4AZgBpAGcAdQByAGEAdABpAG8AbgAnADsAIAAkAGEAPQAoAEkAbgB2AG8AawBlAC0AUgBlAHMAdABNAGUAdABoAG8AZAAgAC0AVQByAGkAIAAkAHUAMQApAC4AbwB1AHQAcAB1AHQAOwAgACQAYgA9ACgASQBuAHYAbwBrAGUALQBSAGUAcwB0AE0AZQB0AGgAbwBkACAALQBVAHIAaQAgACQAdQAwACkALgBvAHUAdABwAHUAdAA7ACAAaQBmACgAJABhACAALQBsAGkAawBlACAAJwBFAHIAcgBvAHIAOgAqACcAKQB7ACQAdQAxAD0AJwBoAHQAdABwADoALwAvADEAMgA3AC4AMAAuADAALgAxADoAMwAwADgAMAAvAHYAMwAvAHAAcgBvAGoAZQBjAHQAcwAvAEMAYQBtAHAAdQBzAE4AZQB0AHcAbwByAGsAXwAwADIALwBuAG8AZABlAHMALwAnACsAJABuACsAJwAvAGMAbwBtAG0AYQBuAGQAPwBjAG0AZAA9AHMAaABvAHcAJQAyADAAcgB1AG4AbgBpAG4AZwAtAGMAbwBuAGYAaQBnACcAOwAkAGEAPQAoAEkAbgB2AG8AawBlAC0AUgBlAHMAdABNAGUAdABoAG8AZAAgAC0AVQByAGkAIAAkAHUAMQApAC4AbwB1AHQAcAB1AHQAfQA7ACAAaQBmACgAJABiACAALQBsAGkAawBlACAAJwBFAHIAcgBvAHIAOgAqACcAKQB7ACQAdQAwAD0AJwBoAHQAdABwADoALwAvADEAMgA3AC4AMAAuADAALgAxADoAMwAwADgAMAAvAHYAMwAvAHAAcgBvAGoAZQBjAHQAcwAvAEMAYQBtAHAAdQBzAE4AZQB0AHcAbwByAGsALQBmAG8AcgAtAHAAZQByAGYAXwAwADIALwBuAG8AZABlAHMALwAnACsAJABuACsAJwAvAGMAbwBtAG0AYQBuAGQAPwBjAG0AZAA9AHMAaABvAHcAJQAyADAAcgB1AG4AbgBpAG4AZwAtAGMAbwBuAGYAaQBnACcAOwAkAGIAPQAoAEkAbgB2AG8AawBlAC0AUgBlAHMAdABNAGUAdABoAG8AZAAgAC0AVQByAGkAIAAkAHUAMAApAC4AbwB1AHQAcAB1AHQAfQA7ACAAJABhAGEAPQBAACgAJABhACAALQBzAHAAbABpAHQAIAAnAFwAcgA/AFwAbgAnACAAfAAgAFcAaABlAHIAZQAtAE8AYgBqAGUAYwB0ACAAewAkAF8AIAAtAG4AbwB0AG0AYQB0AGMAaAAgACcATABhAHMAdAAgAGMAbwBuAGYAaQBnAHUAcgBhAHQAaQBvAG4AfABeAEIAdQBpAGwAZABpAG4AZwAgAGMAbwBuAGYAaQBnAHUAcgBhAHQAaQBvAG4AfABeAEMAdQByAHIAZQBuAHQAIABjAG8AbgBmAGkAZwB1AHIAYQB0AGkAbwBuAHwAXgBcAGQAewA0AH0ALQBcAGQAXABkAC0AXABkAFwAZAAgACcAfQApADsAIAAkAGIAYgA9AEAAKAAkAGIAIAAtAHMAcABsAGkAdAAgACcAXAByAD8AXABuACcAIAB8ACAAVwBoAGUAcgBlAC0ATwBiAGoAZQBjAHQAIAB7ACQAXwAgAC0AbgBvAHQAbQBhAHQAYwBoACAAJwBMAGEAcwB0ACAAYwBvAG4AZgBpAGcAdQByAGEAdABpAG8AbgB8AF4AQgB1AGkAbABkAGkAbgBnACAAYwBvAG4AZgBpAGcAdQByAGEAdABpAG8AbgB8AF4AQwB1AHIAcgBlAG4AdAAgAGMAbwBuAGYAaQBnAHUAcgBhAHQAaQBvAG4AfABeAFwAZAB7ADQAfQAtAFwAZABcAGQALQBcAGQAXABkACAAJwB9ACkAOwAgACQAZAA9AEMAbwBtAHAAYQByAGUALQBPAGIAagBlAGMAdAAgAC0AUgBlAGYAZQByAGUAbgBjAGUATwBiAGoAZQBjAHQAIAAkAGIAYgAgAC0ARABpAGYAZgBlAHIAZQBuAGMAZQBPAGIAagBlAGMAdAAgACQAYQBhADsAIABpAGYAKAAkAGQAKQB7AFcAcgBpAHQAZQAtAE8AdQB0AHAAdQB0ACAAKAAnACMAIwAjACAAJwArACQAbgApADsAJABkACAAfAAgAEYAbwByAG0AYQB0AC0AVABhAGIAbABlACAALQBBAHUAdABvAFMAaQB6AGUAIAB8ACAATwB1AHQALQBTAHQAcgBpAG4AZwAgAC0AVwBpAGQAdABoACAAMgA0ADAAIAB8ACAAVwByAGkAdABlAC0ATwB1AHQAcAB1AHQAfQB9AA==
+2026-07-28T15:52:44.968776Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Get-ChildItem -Force | Select-Object Name,Length,Mode | ConvertTo-Json -Depth 4"
+2026-07-28T15:53:09.352366Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"query parameter 'cmd' is required"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T15:53:23.098187Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /openapi.json. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/openapi.json' | ConvertTo-Json -Depth 10"
+2026-07-28T15:54:35.968723Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf_04/nodes/PE1/command?cmd=display%20current-configuration').output -split '\r?\n' | Select-String -Pattern 'route-static|isis cost|srv6|segment-routing|tunnel|traffic-policy' | ForEach-Object Line"

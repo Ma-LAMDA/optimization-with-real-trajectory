@@ -1,0 +1,51 @@
+2026-07-29T07:21:14.063490Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T07:21:14.063563Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T07:21:14.064282Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T07:21:14.067439Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T07:21:14.076007Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T07:21:15.143164Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T07:21:15.143198Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T07:21:15.143875Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T07:21:15.146620Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T07:21:23.615116Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T07:21:30.164150Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: & 'C:\Windows\System32\curl.exe' -s 'http://127.0.0.1:3080/v3/projects'
+2026-07-29T07:21:33.894985Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg --files
+2026-07-29T07:22:09.710711Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'node '; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "$base='http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes'; foreach($node in @('PE1','PE2','PE3')) { $cmd=[uri]::EscapeDataString('display current-configuration'); $u=$base+'/'+$node+'/command?cmd='+$cmd; $x=Invoke-RestMethod -Uri $u; '===== '+$node+' ====='; $x.output }"
+2026-07-29T07:22:17.256775Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:70
++ ... /127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes'; foreach( in @('P ...
++                                                                  ~
+Missing variable name after foreach.
+At line:1 char:94
++ ... ts/CampusNetwork_04/nodes'; foreach( in @('PE1','PE2','PE3')) { =[uri ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:218
++ ... /command?cmd='+; =Invoke-RestMethod -Uri ; '===== '++' ====='; .outpu ...
++                                                          ~~~~~~~~
+Unexpected token '' ====='' in expression or statement.
+At line:1 char:208
++ ... ; =+'/'++'/command?cmd='+; =Invoke-RestMethod -Uri ; '===== '++' ==== ...
++                                                          ~~~~~~~~
+The '++' operator works only on variables or on properties.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingVariableNameAfterForeach
+ 
+
+2026-07-29T07:23:02.556403Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$b='http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes'; `$qs=@(@('HQ_MKT_PC01','ping 10.3.30.1'),@('HQ_MKT_PC01','tracert 10.3.30.1'),@('PE1','display ip routing-table 3.3.3.3'),@('PE1','display ip routing-table vpn-instance BJ_In 10.3.30.1'),@('PE1','display isis route'),@('PE1','display isis peer'),@('PE1','display mpls lsp'),@('PE1','display mpls ldp lsp'),@('PE1','display interface Ethernet1/0/1'),@('PE1','display interface Ethernet1/0/2'),@('PE2','display interface Ethernet1/0/1'),@('PE2','display interface Ethernet1/0/2'),@('PE3','display interface Ethernet1/0/1'),@('PE3','display interface Ethernet1/0/2')); foreach(`$q in `$qs){`$u=`$b+'/'+`$q[0]+'/command?cmd='+[uri]::EscapeDataString(`$q[1]); `$x=Invoke-RestMethod -Uri `$u; '===== '+`$q[0]+' :: '+`$q[1]+' ====='; `$x.output}"
+2026-07-29T07:23:49.737277Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_03/nodes/PE1/command?cmd=display%20current-configuration').output | Select-String -Pattern 'isis cost|interface Ethernet1/0/1|interface Ethernet1/0/2|description to_PE' -Context 0,8"
+2026-07-29T07:24:25.346313Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /docs. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "try { Invoke-RestMethod -Uri 'http://127.0.0.1:3080/docs' | ConvertTo-Json -Depth 6 } catch { Write-Output ERROR }"
+2026-07-29T07:24:25.346318Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /openapi.json. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "try { Invoke-RestMethod -Uri 'http://127.0.0.1:3080/openapi.json' | ConvertTo-Json -Depth 6 } catch { Write-Output ERROR }"
+2026-07-29T07:26:07.925480Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.6 seconds
+Output:
+Invoke-RestMethod : {"error":"node not found: FW_02"}
+At line:1 char:2
++ (Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetw ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+

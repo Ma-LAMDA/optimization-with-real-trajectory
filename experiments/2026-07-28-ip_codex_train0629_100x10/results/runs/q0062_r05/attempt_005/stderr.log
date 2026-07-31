@@ -1,0 +1,178 @@
+2026-07-29T19:41:46.524048Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T19:41:46.524126Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T19:41:46.524896Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T19:41:46.528071Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T19:41:46.536459Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T19:41:47.302971Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T19:41:47.303020Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T19:41:47.303962Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T19:41:47.307453Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T19:41:54.913814Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-29T19:41:59.751120Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-29T19:42:04.095205Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; Get-ChildItem -Recurse -Force -File | Select-Object -First 200 -ExpandProperty FullName
+2026-07-29T19:42:10.211737Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get | ConvertTo-Json -Depth 5"
+2026-07-29T19:42:18.331690Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: (Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content
+2026-07-29T19:42:22.724922Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-29T19:43:20.159673Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: shell redirection is forbidden. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '$a=(Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_07/nodes/AGG_SW_03/command?cmd=display%20current-configuration" -Method Get).output -split "`r?`n"; $b=(Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_06/nodes/AGG_SW_03/command?cmd=display%20current-configuration" -Method Get).output -split "`r?`n"; Compare-Object $b $a | Where-Object SideIndicator -EQ "=>" | Format-Table -AutoSize'
+2026-07-29T19:43:29.384996Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:165
++ ... md=display%20current-configuration -Method Get).output -split `r?`n;  ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:166
++ ... play%20current-configuration -Method Get).output -split `r?`n; $b=(In ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:337
++ ... md=display%20current-configuration -Method Get).output -split `r?`n;  ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:338
++ ... play%20current-configuration -Method Get).output -split `r?`n; Compar ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-29T19:44:18.273021Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10.2 seconds
+Output:
+command timed out after 10197 milliseconds
+{"command":"display current-configuration","output":"!Software Version V800R022C10SPC100B315\r\n!Last configuration was updated at 2026-06-11 07:34:17+00:00\r\n#\r\nsysname PE3\r\n#\r\nundo FTP server-source all-interface\r\nundo FTP ipv6 server-source all-interface\r\n#\r\nntp-service server source-interface all disable\r\nntp-service ipv6 server source-interface all disable\r\n#\r\nrouter id 3.3.3.3\r\n#\r\nundo telnet server enable\r\nundo telnet ipv6 server enable\r\ntelnet server-source all-interface\r\ntelnet ipv6 server-source all-interface\r\n#\r\nip vpn-instance SZ\r\n ipv4-family\r\n  route-distinguisher 3:3\r\n  apply-label per-instance\r\n  vpn-target 2:2 export-extcommunity\r\n  vpn-target 1:1 import-extcommunity\r\n#\r\nmpls lsr-id 3.3.3.3\r\n#\r\nmpls\r\n#\r\nmpls ldp\r\n #\r\n ipv4-family\r\n#\r\ndhcp server request-packet all-interface disable\r\n#\r\naaa\r\n #\r\n authentication-scheme default0\r\n #\r\n authentication-scheme default1\r\n #\r\n authentication-scheme default\r\n  authentication-mode local radius\r\n #\r\n authorization-scheme default\r\n #\r\n accounting-scheme default0\r\n #\r\n accounting-scheme default1\r\n #\r\n domain default0\r\n #\r\n domain default1\r\n #\r\n domain default_admin\r\n#\r\nlicense\r\n#\r\nwarranty\r\n#\r\nisis 1\r\n is-level level-2\r\n cost-style wide\r\n network-entity 49.0001.0030.0000.0003.00\r\n#\r\ninterface Ethernet1/0/0\r\n description to_SZ_AR_Ethernet1/0/1\r\n undo shutdown\r\n ip binding vpn-instance SZ\r\n ip address 10.10.100.9 255.255.255.252\r\n#\r\ninterface Ethernet1/0/1\r\n description to_PE1_Ethernet1/0/2\r\n undo shutdown\r\n ip address 10.10.0.6 255.255.255.252\r\n isis enable 1\r\n isis circuit-type p2p\r\n isis ppp-negotiation 2-way\r\n mpls\r\n mpls ldp\r\n#\r\ninterface Ethernet1/0/2\r\n description to_PE2_Ethernet1/0/2\r\n undo shutdown\r\n ip address 10.10.0.10 255.255.255.252\r\n isis enable 1\r\n isis circuit-type p2p\r\n isis ppp-negotiation 2-way\r\n mpls\r\n mpls ldp\r\n#\r\ninterface Ethernet1/0/3\r\n undo shutdown\r\n#\r\ninterface Ethernet1/0/4\r\n undo shutdown\r\n#\r\ninterface Ethernet1/0/5\r\n undo shutdown\r\n#\r\ninterface Ethernet1/0/6\r\n undo shutdown\r\n#\r\ninterface Ethernet1/0/7\r\n undo shutdown\r\n#\r\ninterface Ethernet1/0/8\r\n undo shutdown\r\n#\r\ninterface Ethernet1/0/9\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/0\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/1\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/2\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/3\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/4\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/5\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/6\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/7\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/8\r\n undo shutdown\r\n#\r\ninterface Ethernet1/1/9\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/0\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/1\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/2\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/3\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/4\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/5\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/6\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/7\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/8\r\n undo shutdown\r\n#\r\ninterface Ethernet2/0/9\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/0\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/1\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/2\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/3\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/4\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/5\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/6\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/7\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/8\r\n undo shutdown\r\n#\r\ninterface Ethernet2/1/9\r\n undo shutdown\r\n#\r\ninterface GigabitEthernet0/0/0\r\n undo shutdown\r\n#\r\ninterface LoopBack0\r\n ip address 3.3.3.3 255.255.255.255\r\n isis enable 1\r\n#\r\ninterface NULL0\r\n#\r\nbgp 65000\r\n undo default ipv4-unicast\r\n private-4-byte-as enable\r\n peer 1.1.1.1 as-number 65000\r\n peer 1.1.1.1 connect-interface LoopBack0\r\n #\r\n ipv4-family unicast\r\n  undo synchronization\r\n  undo peer 1.1.1.1 enable\r\n #\r\n ipv4-family vpnv4\r\n  policy vpn-target\r\n  peer 1.1.1.1 enable\r\n #\r\n ipv4-family vpn-instance SZ\r\n  peer 10.10.100.10 as-number 65003\r\n#\r\nsnmp-agent local-engineid 800007DB0338BA7D09F601\r\n#\r\nsnmp-agent sys-info version v3\r\n#\r\nundo snmp-agent protocol source-status all-interface\r\nundo snmp-agent protocol source-status ipv6 all-interface\r\n#\r\nundo snmp-agent proxy protocol source-status all-interface\r\nundo snmp-agent proxy protocol source-status ipv6 all-interface\r\n#\r\nlldp enable\r\n#\r\nundo ssh server-source all-interface\r\nundo ssh ipv6 server-source all-interface\r\nssh authorization-type default aaa\r\n#\r\nssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc\r\nssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96\r\nssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256\r\n#\r\nssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512 x509v3-rsa2048-sha256\r\n#\r\nssh server dh-exchange min-len 1024\r\n#\r\nssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512\r\n#\r\nssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc\r\nssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96\r\nssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep curve25519_sha256\r\n#\r\nuser-interface maximum-vty 21\r\n#\r\nuser-interface con 0\r\n#\r\nuser-interface aux 0\r\n#\r\nnetconf\r\n activate module huawei-ip\r\n#\r\nlocal-aaa-server\r\n#\r\npki domain default\r\n#\r\nset license LCR5S40VA5C00 threshold 50\r\n#\r\nreturn"}
+
+2026-07-29T19:44:52.778681Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:52.781975Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:52.807601Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.017490Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.024896Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.078058Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.184545Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.196790Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.209165Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.325573Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.333869Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.337042Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.386597Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.389688Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.474647Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.478480Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.489242Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.492985Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.529651Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:53.533851Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.043768Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.139333Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.160139Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.176785Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.180000Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.223409Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.348069Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.351141Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.451587Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.456265Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.471948Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.475603Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.555282Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.558614Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.591211Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.594245Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.870521Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.890811Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.967885Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.967970Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:54.994575Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.120170Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.123282Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.203293Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.206533Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.209552Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.270787Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.273969Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.277299Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.282984Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.301044Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.305265Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:55.722525Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:56.444053Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:56.466125Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:56.470454Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:56.606265Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:56.721897Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:56.733055Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:56.909264Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:56.913054Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.040734Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.041954Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.044444Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.044555Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.161423Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.165487Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.191502Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.194944Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.212741Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.216878Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:57.964446Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.052656Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.055838Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.072992Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.178176Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.227186Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.231281Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.241276Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.245684Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.311301Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.408076Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.411956Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.654758Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.722464Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.731570Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:44:58.861880Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:21.505672Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:21.505732Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:22.147176Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:22.147256Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:22.409724Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:22.413057Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:22.415362Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:22.415462Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:22.418128Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:22.418197Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:23.080191Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:23.339987Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:23.344261Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:23.350694Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:23.350694Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:23.353524Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:23.353601Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.009025Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.279658Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.279658Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.279661Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.284024Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.284082Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.284131Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.938655Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:45:24.938759Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T19:46:24.877131Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-77bdfee5-36e6-437b-9e63-c98e59c35af1"
+2026-07-29T19:46:24.877174Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-42e9e257-94e6-4365-8056-fcf28f89c428"
+2026-07-29T19:46:24.877197Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-379bfba6-725f-401a-8973-088bc6c6f5aa"
+2026-07-29T19:46:25.368932Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-062c64d2-a97c-4730-abd9-28aa00e82dd6"
+2026-07-29T19:46:25.368963Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-87fa857b-fb0c-4f50-b0fe-3c5f5f134b8c"
+2026-07-29T19:46:25.368971Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-b2619ae1-1bc7-42d2-8678-2164a9041a72"
+2026-07-29T19:46:25.880100Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-35b36797-de23-4523-8078-0e54282716e7"
+2026-07-29T19:46:25.880132Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-a500ef32-6c6d-4070-9c0e-901fb4557825"
+2026-07-29T19:46:28.363237Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-8ca92b06-a02e-44d7-97f4-ff12150a89b8"
+2026-07-29T19:46:28.363267Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-9acefc20-0848-4d82-a336-d3d43b31a872"
+2026-07-29T19:46:28.363277Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-45c189fb-68ba-4ae6-b3f8-9eda84574790"
+2026-07-29T19:46:28.363285Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-7fd383ae-83da-4d36-ae9a-a6e07c92e4e4"
+2026-07-29T19:46:28.363292Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-bddeb554-6b5b-4cd1-b6f4-06e7496dd660"
+2026-07-29T19:46:28.828224Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-dc642b7f-1138-41a8-aa7d-872c58ad7635"
+2026-07-29T19:46:42.807871Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-4f31414d-38f4-4dbe-bcd6-abecbaea4121"
+2026-07-29T19:46:42.807905Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-eccc222d-6c24-4c9d-a2b7-40c92121bb5f"
+2026-07-29T19:46:42.807915Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-6756a6e3-ca4e-400f-b2d2-ca1880d2f46f"
+2026-07-29T19:46:42.807922Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-f392678f-989f-405e-8e9e-70d0322aca01"
+2026-07-29T19:46:42.807929Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-736d251f-4771-4b7a-9729-e6dc1cd730d0"
+2026-07-29T19:46:42.807937Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faf65-b645-7b62-8967-285aca4d615c turn_id=019faf65-b705-7a81-ad33-c7603e75b13d item_id="exec-dd89a72f-04a4-4180-b6f0-3332f71074c5"

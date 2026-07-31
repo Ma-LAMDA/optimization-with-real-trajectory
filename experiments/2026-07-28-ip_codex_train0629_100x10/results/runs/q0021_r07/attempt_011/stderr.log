@@ -1,0 +1,40 @@
+2026-07-29T06:49:32.166957Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T06:49:32.167039Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T06:49:32.167767Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T06:49:32.170894Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T06:49:32.179563Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T06:49:32.925811Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T06:49:32.925847Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T06:49:32.926581Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T06:49:32.929835Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T06:49:46.146484Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $ErrorActionPreference='Stop'; Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 6
+2026-07-29T06:49:58.155582Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg -n --hidden --glob '!data/simulation/**' "GNS3|3080|Invoke-RestMethod|projects/.*/nodes" .
+2026-07-29T06:51:10.303501Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Message : The term '.Exception.Message' is not recognized as the name of a cmdlet, function, script file, or
+ operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try a
+gain.
+At line:1 char:143
++ ... nfiguration' | ConvertTo-Json -Depth 8 } catch { .Exception.Message }
++                                                      ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Message:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T06:51:10.303501Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+.Exception.Message : The term '.Exception.Message' is not recognized as the name of a cmdlet, function, script file, or
+ operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try a
+gain.
+At line:1 char:136
++ ... /PE1/config' | ConvertTo-Json -Depth 8 } catch { .Exception.Message }
++                                                      ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.Exception.Message:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2026-07-29T06:53:52.320752Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Get-ChildItem -Force | Select-Object Name,Mode,Length | ConvertTo-Json -Depth 4"
+2026-07-29T06:55:01.244261Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'node '; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$nodes=Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes'; foreach (`$node in `$nodes) { `$n=`$node.name; `$cl=Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/'+`$n+'/commands'); `$keys=@(`$cl.commands.command_key); if (`$keys -contains 'display_current-configuration') { `$cmd='display%20current-configuration' } elseif (`$keys -contains 'show_running-config') { `$cmd='show%20running-config' } else { continue }; try { `$a=(Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/'+`$n+'/command?cmd='+`$cmd)).output -split '\r?\n'; `$b=(Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf_04/nodes/'+`$n+'/command?cmd='+`$cmd)).output -split '\r?\n'; `$d=Compare-Object -ReferenceObject `$b -DifferenceObject `$a | Where-Object { `$_.InputObject -match '(?i)(isis|mpls|static|route|ospf|bgp|interface|shutdown|vlan|stp|mst|vrrp|nat|ip address|vpn|policy|track|mtu|traffic|bandwidth|edge|bpdu|hrp|prefix|access-list|security|cost)' -and `$_.InputObject -notmatch '(?i)(certificate|trustpoint|license|Current configuration|Last configuration)' }; if (`$d) { Write-Output ('=== '+`$n+' ==='); `$d | Format-Table -AutoSize } } catch { Write-Output ('=== '+`$n+' compare failed ===') } }"
+2026-07-29T06:56:19.971286Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$ps=@('CampusNetwork-for-perf_04','CampusNetwork_02','CampusNetwork_03','CampusNetwork_04','CampusNetwork_05','CampusNetwork_06','CampusNetwork_07','CampusNetwork_08','CampusNetwork_09'); foreach (`$p in `$ps) { `$o=(Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/'+`$p+'/nodes/Core_SW_01/command?cmd=display%20current-configuration')).output; Write-Output ('=== '+`$p+' ==='); (`$o -split '\r?\n') | Select-String -Pattern 'ospf cost|interface Vlanif201|interface Vlanif202' }"

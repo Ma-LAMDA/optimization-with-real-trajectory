@@ -1,0 +1,53 @@
+2026-07-28T21:44:25.917855Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T21:44:25.917919Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T21:44:25.918726Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T21:44:25.922313Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T21:44:25.930707Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T21:44:26.564770Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T21:44:26.564806Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T21:44:26.565540Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T21:44:26.568839Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T21:44:34.033371Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: (Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects') | ConvertTo-Json -Depth 5
+2026-07-28T21:44:38.217562Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg --files
+2026-07-28T21:44:45.700393Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "(Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects') | ConvertTo-Json -Depth 5"
+2026-07-28T21:44:50.367630Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-28T21:47:32.996063Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:347
++ ... rrent-configuration).output; Compare-Object ($baseline -split `r?`n)  ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:348
++ ... configuration).output; Compare-Object ($baseline -split `r?`n) ($targ ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:347
++ ... rrent-configuration).output; Compare-Object ($baseline -split `r?`n)  ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:353
++ ... onfiguration).output; Compare-Object ($baseline -split `r?`n) ($targe ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:370
++ ... utput; Compare-Object ($baseline -split `r?`n) ($target -split `r?`n)
++                                                                   ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:371
++ ... utput; Compare-Object ($baseline -split `r?`n) ($target -split `r?`n)
++                                                                    ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:370
++ ... utput; Compare-Object ($baseline -split `r?`n) ($target -split `r?`n)
++                                                                   ~
+Missing closing ')' in expression.
+At line:1 char:376
++ ... utput; Compare-Object ($baseline -split `r?`n) ($target -split `r?`n)
++                                                                         ~
+Unexpected token ')' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-28T21:47:40.940573Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '$baseline=(Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf/nodes/Core_SW_02/command?cmd=display%20current-configuration").output; $target=(Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_03/nodes/Core_SW_02/command?cmd=display%20current-configuration").output; Compare-Object ($baseline.Split([char]10)) ($target.Split([char]10))'

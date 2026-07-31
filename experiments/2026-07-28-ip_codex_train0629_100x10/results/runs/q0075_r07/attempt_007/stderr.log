@@ -1,0 +1,41 @@
+2026-07-29T22:43:48.977427Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:43:48.977494Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:43:48.978219Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:43:48.981230Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:43:48.989433Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T22:43:49.665826Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:43:49.665858Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:43:49.666552Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:43:49.669934Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:43:57.708651Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T22:44:03.224647Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg --files -g '*gns3*' -g '*api*' -g '*.ps1'
+2026-07-29T22:44:10.743278Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-29T22:44:15.871760Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5"
+2026-07-29T22:44:38.377970Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:112
++ ... 08/nodes/'; ='?cmd=display%20current-configuration'; foreach( in @('C ...
++                                                                  ~
+Missing variable name after foreach.
+At line:1 char:204
++ ... 'AGG_SW_01','AGG_SW_02','HQ_PROC_PC01','SZ_Server_Cluster1')){ Write- ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:227
++ ... ','HQ_PROC_PC01','SZ_Server_Cluster1')){ Write-Output ('###'+); (Invo ...
++                                                                  ~
+You must provide a value expression following the '+' operator.
+At line:1 char:268
++ ... Write-Output ('###'+); (Invoke-RestMethod -Uri (++'/command'+)).outpu ...
++                                                                  ~
+You must provide a value expression following the '+' operator.
+At line:1 char:257
++ ...  Write-Output ('###'+); (Invoke-RestMethod -Uri (++'/command'+)).outp ...
++                                                        ~~~~~~~~~~
+The '++' operator works only on variables or on properties.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingVariableNameAfterForeach
+ 
+
+2026-07-29T22:45:10.598830Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "((Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_03/nodes/Core_SW_01/command?cmd=display%20current-configuration').output -split [Environment]::NewLine) | Select-String -Pattern 'sysname|stp instance [0-9] root|interface Vlanif(10|20|30|40|110|120)$|vrrp vrid [1-6] (priority|virtual-ip|preempt-mode|preempt timer|track)' | ForEach-Object { $_.Line }"

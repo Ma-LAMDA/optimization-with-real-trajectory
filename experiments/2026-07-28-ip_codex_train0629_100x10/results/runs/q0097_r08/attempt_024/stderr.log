@@ -1,0 +1,24 @@
+2026-07-30T01:05:40.720021Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-30T01:05:40.720092Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-30T01:05:40.720858Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-30T01:05:40.723875Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-30T01:05:40.731911Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-30T01:05:41.407733Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-30T01:05:41.407766Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-30T01:05:41.408491Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-30T01:05:41.411919Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-30T01:05:51.787161Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-30T01:05:57.792716Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg -n --hidden "3080|GNS3|Invoke-RestMethod|http client" .
+2026-07-30T01:06:04.156495Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:77
++ ... thod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get;  | Convert ...
++                                                                 ~
+An empty pipe element is not allowed.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : EmptyPipeElement
+ 
+
+2026-07-30T01:06:10.830202Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command '$projects = Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects" -Method Get; $projects | ConvertTo-Json -Depth 5'
+2026-07-30T01:07:06.944521Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$queries = @(@('Core_SW_01','display vrrp'),@('Core_SW_02','display vrrp'),@('Core_SW_01','display stp brief'),@('Core_SW_02','display stp brief'),@('Core_SW_01','display stp instance 1'),@('Core_SW_02','display stp instance 1'),@('HQ_HR_PC01','show ip'),@('HQ_HR_PC01','ping 200.200.200.200'),@('HQ_HR_PC01','trace 200.200.200.200')); foreach (`$q in `$queries) { `$node = `$q[0]; `$command = `$q[1]; `$encoded = [uri]::EscapeDataString(`$command); `$uri = 'http://127.0.0.1:3080/v3/projects/CampusNetwork_09/nodes/' + `$node + '/command?cmd=' + `$encoded; `$response = Invoke-RestMethod -Uri `$uri -Method Get; Write-Output ('=== ' + `$node + ' | ' + `$command + ' ==='); Write-Output `$response.output }"

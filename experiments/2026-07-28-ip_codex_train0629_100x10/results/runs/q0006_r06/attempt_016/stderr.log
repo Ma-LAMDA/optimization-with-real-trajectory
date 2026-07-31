@@ -1,0 +1,54 @@
+2026-07-28T17:46:10.125725Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T17:46:10.125793Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T17:46:10.126444Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T17:46:10.129976Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T17:46:10.139813Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T17:46:10.833573Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T17:46:10.833608Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T17:46:10.834342Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T17:46:10.838366Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T17:46:23.647732Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-28T17:46:29.472647Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-28T17:46:34.777723Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g "*.ps1" -g "*gns3*" -g "*api*"
+2026-07-28T17:48:25.408191Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:120
++ ... _CSR1000V_GW_01','FW_01','Core_SW_01','Core_SW_02'); foreach( in ){=' ...
++                                                                  ~
+Missing variable name after foreach.
+At line:1 char:124
++ ... 000V_GW_01','FW_01','Core_SW_01','Core_SW_02'); foreach( in ){='http: ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:479
++ ... Uri ).output -split '\r?\n'; Write-Output ('===== '++' ====='); Compa ...
++                                                          ~~~~~~~~
+Unexpected token '' ====='' in expression or statement.
+At line:1 char:479
++ ... Method -Uri ).output -split '\r?\n'; Write-Output ('===== '++' =====' ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:125
++ ... 00V_GW_01','FW_01','Core_SW_01','Core_SW_02'); foreach( in ){='http:/ ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:487
++ ... ri ).output -split '\r?\n'; Write-Output ('===== '++' ====='); Compar ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:630
++ ... ation|^Error:'} | Format-Table -AutoSize | Out-String | Write-Output}
++                                                                         ~
+Unexpected token '}' in expression or statement.
+At line:1 char:469
++ ... stMethod -Uri ).output -split '\r?\n'; Write-Output ('===== '++' ==== ...
++                                                          ~~~~~~~~
+The '++' operator works only on variables or on properties.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingVariableNameAfterForeach
+ 
+
+2026-07-28T17:48:55.383458Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Get-ChildItem -Force | Select-Object Mode,Length,Name | Format-Table -AutoSize"
+2026-07-28T17:51:29.032573Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "foreach(`$p in @('/openapi.json','/docs','/v3/openapi.json')){try{Write-Output ('===== '+`$p+' ====='); (Invoke-WebRequest -UseBasicParsing -Uri ('http://127.0.0.1:3080'+`$p)).Content}catch{Write-Output `$_.Exception.Message}}"
+2026-07-28T17:51:36.657252Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed:. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "foreach(`$p in @('/openapi.json','/v3/openapi.json')){try{Write-Output ('===== '+`$p+' ====='); Invoke-RestMethod -Uri ('http://127.0.0.1:3080'+`$p) | ConvertTo-Json -Depth 10}catch{Write-Output `$_.Exception.Message}}"

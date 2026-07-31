@@ -1,0 +1,87 @@
+{
+  "schema_version": "ip-distill-final-audit.v1",
+  "experiment_root": "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-07-28-ip_codex_train0629_100x10",
+  "source_path": "D:\\IP组网\\optimization-with-real-trajectory\\data\\simulation\\train_0629.jsonl",
+  "source_sha256": "79f961a2ce788fa2219e8ee5343b7fa87ca8d79ed3f3dec6049dca0ff7514ad9",
+  "source_record_count": 100,
+  "sample_count": 100,
+  "status_counts": {
+    "abandoned_after_10_consecutive_wrong": 21,
+    "completed_with_10_correct": 79
+  },
+  "accepted_total": 819,
+  "attempt_directory_count": 1313,
+  "model_process_started_count": 1302,
+  "raw_event_line_count": 320605,
+  "thread_id_count": 1301,
+  "unique_thread_id_count": 1301,
+  "accepted_comparator_counts": {
+    "established_fault_set_exact_v1": 530,
+    "established_fault_set_exact_with_alternatives_v2": 289
+  },
+  "hook_allowed_count": 158693,
+  "hook_denied_count": 11557,
+  "checks": {
+    "source_record_count_100": true,
+    "source_hash_unchanged": true,
+    "scheduled_sample_count_100": true,
+    "all_samples_terminal": true,
+    "accepted_count_matches_index": true,
+    "accepted_attempt_paths_unique": true,
+    "accepted_event_paths_unique": true,
+    "accepted_artifacts_and_judgments_valid": true,
+    "accepted_independent_answer_recheck_passed": true,
+    "accepted_index_sequential_and_state_consistent": true,
+    "all_attempt_directories_have_events": true,
+    "all_nonempty_event_lines_are_json": true,
+    "events_are_raw_stdout_streams": true,
+    "all_attempts_have_metadata": true,
+    "all_started_model_calls_use_exact_model": true,
+    "all_started_model_calls_are_ephemeral": true,
+    "all_model_thread_ids_unique": true,
+    "attempt_workdirs_are_isolated": true,
+    "safe_source_records_exclude_answers": true,
+    "prompts_exclude_source_and_remote_paths": true,
+    "allowed_hook_calls_are_local_api_only": true,
+    "hook_audit_invalid_lines_confined_to_recorded_infrastructure_failures": true,
+    "no_sensitive_credential_patterns_found": true,
+    "runner_protected_tree_integrity_passed": true
+  },
+  "failures": {
+    "missing_events": [],
+    "invalid_events": [],
+    "stdout_event_mismatches": [],
+    "missing_metadata": [],
+    "wrong_models": [],
+    "non_ephemeral_calls": [],
+    "duplicate_thread_ids": [],
+    "unsafe_workdirs": [],
+    "unsafe_source_records": [],
+    "unsafe_prompts": [],
+    "allowed_hook_violations": [],
+    "invalid_hook_audit": [
+      {
+        "attempt_path": "results/runs/q0001_r01/attempt_002",
+        "line": 103,
+        "expected_infrastructure_failure": true
+      },
+      {
+        "attempt_path": "results/runs/q0003_r01/attempt_003",
+        "line": 191,
+        "expected_infrastructure_failure": true
+      },
+      {
+        "attempt_path": "results/runs/q0004_r01/attempt_002",
+        "line": 115,
+        "expected_infrastructure_failure": true
+      }
+    ],
+    "unexpected_invalid_hook_audit": [],
+    "accepted_errors": [],
+    "independent_recheck_failures": [],
+    "index_errors": [],
+    "final_state_errors": [],
+    "sensitive_hits": []
+  },
+  "passed": true
+}

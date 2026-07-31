@@ -1,0 +1,137 @@
+2026-07-29T13:44:59.150559Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:44:59.150668Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:44:59.151590Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:44:59.154694Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:44:59.163549Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T13:44:59.832885Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:44:59.832918Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T13:44:59.833591Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:44:59.836542Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T13:45:07.681554Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 6
+2026-07-29T13:45:14.505102Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg --files -g '*gns3*' -g '*.ps1' -g '*.py' -g '*.json' | Select-Object -First 200
+2026-07-29T13:45:27.201043Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 6"
+2026-07-29T13:46:46.661705Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.5 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T13:46:46.663275Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.5 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T13:47:35.612213Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10 seconds
+Output:
+command timed out after 10012 milliseconds
+PHY: Physical
+*down: administratively down
+^down: standby
+(l): loopback
+(s): spoofing
+(E): E-Trunk down
+(b): BFD down
+(B): Bit-error-detection down
+(e): ETHOAM down
+(d): Dampening Suppressed
+(p): port alarm down
+(ld): loop-detect trigger down
+(mf): mac-flapping blocked
+(c): CFM down
+(sd): STP instance discarding
+InUti/OutUti: input utility/output utility
+Interface                   PHY   Protocol  InUti OutUti   inErrors  outErrors
+Ethernet1/0/0               down  down         0%     0%          0          0
+Ethernet1/0/1               up    up         0.53% 0.36%          0          0
+Ethernet1/0/2               up    up         0.36% 0.53%          0          0
+Ethernet1/0/3               down  down         0%     0%          0          0
+Ethernet1/0/4               down  down         0%     0%          0          0
+Ethernet1/0/5               down  down         0%     0%          0          0
+Ethernet1/0/6               down  down         0%     0%          0          0
+Ethernet1/0/7               down  down         0%     0%          0          0
+Ethernet1/0/8               down  down         0%     0%          0          0
+Ethernet1/0/9               down  down         0%     0%          0          0
+Ethernet1/1/0               down  down         0%     0%          0          0
+Ethernet1/1/1               down  down         0%     0%          0          0
+Ethernet1/1/2               down  down         0%     0%          0          0
+Ethernet1/1/3               down  down         0%     0%          0          0
+Ethernet1/1/4               down  down         0%     0%          0          0
+Ethernet1/1/5               down  down         0%     0%          0          0
+Ethernet1/1/6               down  down         0%     0%          0          0
+Ethernet1/1/7               down  down         0%     0%          0          0
+Ethernet1/1/8               down  down         0%     0%          0          0
+Ethernet1/1/9               down  down         0%     0%          0          0
+Ethernet2/0/0               up    up           0%     0%          0          0
+Ethernet2/0/1               up    up           0%     0%          0          0
+Ethernet2/0/2               down  down         0%     0%          0          0
+Ethernet2/0/3               down  down         0%     0%          0          0
+Ethernet2/0/4               down  down         0%     0%          0          0
+Ethernet2/0/5               down  down         0%     0%          0          0
+Ethernet2/0/6               down  down         0%     0%          0          0
+Ethernet2/0/7               down  down         0%     0%          0          0
+Ethernet2/0/8               down  down         0%     0%          0          0
+Ethernet2/0/9               down  down         0%     0%          0          0
+Ethernet2/1/0               down  down         0%     0%          0          0
+Ethernet2/1/1               down  down         0%     0%          0          0
+Ethernet2/1/2               down  down         0%     0%          0          0
+Ethernet2/1/3               down  down         0%     0%          0          0
+Ethernet2/1/4               down  down         0%     0%          0          0
+Ethernet2/1/5               down  down         0%     0%          0          0
+Ethernet2/1/6               down  down         0%     0%          0          0
+Ethernet2/1/7               down  down         0%     0%          0          0
+Ethernet2/1/8               down  down         0%     0%          0          0
+Ethernet2/1/9               up    down         0%     0%          0          0
+GigabitEthernet0/0/0        up    down         0%     0%          0          0
+LoopBack0                   up    up(s)        0%     0%          0          0
+NULL0                       up    up(s)        0%     0%          0          0
+
+2026-07-29T13:48:15.898945Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:15.910401Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:15.953968Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.053911Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.059099Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.120805Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.194242Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.237531Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.403365Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.465717Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.503963Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.540416Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.576409Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.648087Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.740569Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.781881Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.810985Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.822787Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.889319Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.912045Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.912138Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.923570Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.945285Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.970628Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.970691Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.970726Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.983020Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:16.986130Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:30.324900Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:30.359421Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:30.359501Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:30.360880Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:30.364941Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:41.104351Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:41.110565Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:41.110638Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:48:41.112482Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T13:49:44.495905Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)

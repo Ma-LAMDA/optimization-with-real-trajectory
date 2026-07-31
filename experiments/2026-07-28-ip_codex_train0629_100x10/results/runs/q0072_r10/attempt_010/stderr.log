@@ -1,0 +1,129 @@
+2026-07-29T22:25:29.561955Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:25:29.562028Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:25:29.562777Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:25:29.565950Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:25:29.574302Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T22:25:30.273112Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:25:30.273156Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T22:25:30.274046Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:25:30.277762Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T22:25:41.313990Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get; $projects | ConvertTo-Json -Depth 5
+2026-07-29T22:25:46.420301Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g "*.ps1" -g "*.md" -g "*.py" -g "*.json" | Select-Object -First 200
+2026-07-29T22:25:55.731121Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get | ConvertTo-Json -Depth 5"
+2026-07-29T22:27:28.892736Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:23
++ $ps=@(CampusNetwork_05,CampusNetwork_06,CampusNetwork_07,CampusNetwor ...
++                       ~
+Missing argument in parameter list.
+At line:1 char:282
++ ... uration -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)| ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:283
++ ... n -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)|Where- ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:282
++ ... uration -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)| ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:111
++ ... ork_07,CampusNetwork_08,CampusNetwork_09);foreach($p in $ps){$r=Invok ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:288
++ ...  -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)|Where-O ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:289
++ ... -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)|Where-Ob ...
++                                                                 ~
+An empty pipe element is not allowed.
+At line:1 char:312
++ ... ut PROJECT=$p;($r.output -split `r?`n)|Where-Object{$_ -match static- ...
++                                                                  ~
+You must provide a value expression following the '-match' operator.
+At line:1 char:313
++ ... OJECT=$p;($r.output -split `r?`n)|Where-Object{$_ -match static-lsp}}
++                                                              ~~~~~~~~~~
+Unexpected token 'static-lsp' in expression or statement.
+At line:1 char:324
++ ... OJECT=$p;($r.output -split `r?`n)|Where-Object{$_ -match static-lsp}}
++                                                                         ~
+Unexpected token '}' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingArgument
+ 
+
+2026-07-29T22:27:28.893826Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:23
++ $ps=@(CampusNetwork_05,CampusNetwork_06,CampusNetwork_07,CampusNetwor ...
++                       ~
+Missing argument in parameter list.
+At line:1 char:282
++ ... uration -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)| ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:283
++ ... n -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)|Where- ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:282
++ ... uration -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)| ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:111
++ ... ork_07,CampusNetwork_08,CampusNetwork_09);foreach($p in $ps){$r=Invok ...
++                                                                 ~
+Missing closing '}' in statement block or type definition.
+At line:1 char:288
++ ...  -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)|Where-O ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:289
++ ... -Method Get;Write-Output PROJECT=$p;($r.output -split `r?`n)|Where-Ob ...
++                                                                 ~
+An empty pipe element is not allowed.
+At line:1 char:312
++ ... ut PROJECT=$p;($r.output -split `r?`n)|Where-Object{$_ -match static- ...
++                                                                  ~
+You must provide a value expression following the '-match' operator.
+At line:1 char:313
++ ... OJECT=$p;($r.output -split `r?`n)|Where-Object{$_ -match static-lsp}}
++                                                              ~~~~~~~~~~
+Unexpected token 'static-lsp' in expression or statement.
+At line:1 char:324
++ ... OJECT=$p;($r.output -split `r?`n)|Where-Object{$_ -match static-lsp}}
++                                                                         ~
+Unexpected token '}' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingArgument
+ 
+
+2026-07-29T22:29:14.773592Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /openapi.json. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "try { Invoke-RestMethod -Uri 'http://127.0.0.1:3080/openapi.json' -Method Get | ConvertTo-Json -Depth 8 } catch { Write-Output ('ERROR '+$_.Exception.Message) }"
+2026-07-29T22:29:23.853440Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"query parameter 'cmd' is required"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T22:29:29.329091Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Invoke-RestMethod : {"error":"route not found"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+

@@ -1,0 +1,95 @@
+2026-07-28T19:46:43.382440Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T19:46:43.382516Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T19:46:43.383209Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T19:46:43.386437Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T19:46:43.394179Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-28T19:46:45.213734Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-28T19:46:45.213768Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-28T19:46:45.214468Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T19:46:45.217829Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-28T19:46:53.722007Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force | Select-Object Mode,Length,LastWriteTime,Name; rg --files -g '!data/simulation/**'
+2026-07-28T19:46:58.488448Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get | ConvertTo-Json -Depth 10
+2026-07-28T19:47:04.899523Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' -Method Get | ConvertTo-Json -Depth 10"
+2026-07-28T19:48:44.373671Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:421
++ ... on; $a=(Invoke-RestMethod -Uri $u1 -Method Get).output -split `r?`n | ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:422
++ ... =(Invoke-RestMethod -Uri $u1 -Method Get).output -split `r?`n | Where ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:456
++ ... -Method Get).output -split `r?`n | Where-Object {$_ -notmatch ^!Last  ...
++                                                                  ~
+You must provide a value expression following the '-notmatch' operator.
+At line:1 char:457
++ ...  Get).output -split `r?`n | Where-Object {$_ -notmatch ^!Last configu ...
++                                                            ~~~~~~
+Unexpected token '^!Last' in expression or statement.
+At line:1 char:537
++ ... n}; $b=(Invoke-RestMethod -Uri $u0 -Method Get).output -split `r?`n | ...
++                                                                  ~
+You must provide a value expression following the '-split' operator.
+At line:1 char:538
++ ... =(Invoke-RestMethod -Uri $u0 -Method Get).output -split `r?`n | Where ...
++                                                             ~~~~~
+Unexpected token '`r?`n' in expression or statement.
+At line:1 char:572
++ ... -Method Get).output -split `r?`n | Where-Object {$_ -notmatch ^!Last  ...
++                                                                  ~
+You must provide a value expression following the '-notmatch' operator.
+At line:1 char:573
++ ...  Get).output -split `r?`n | Where-Object {$_ -notmatch ^!Last configu ...
++                                                            ~~~~~~
+Unexpected token '^!Last' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-28T19:49:01.931298Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$ns=Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_03/nodes' -Method Get; foreach(`$n in `$ns){`$u='http://127.0.0.1:3080/v3/projects/CampusNetwork_03/nodes/'+`$n.node_id+'/command?cmd=display%20current-configuration'; `$o=(Invoke-RestMethod -Uri `$u -Method Get).output; `$line=(`$o -split [char]10 | Select-String -SimpleMatch 'Last configuration').Line.Trim(); Write-Output (`$n.node_id+'|'+`$line)}"
+2026-07-28T19:49:11.221591Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$ns=Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_03/nodes' -Method Get; foreach(`$n in `$ns){`$u='http://127.0.0.1:3080/v3/projects/CampusNetwork_03/nodes/'+`$n.node_id+'/command?cmd=display%20current-configuration'; `$o=(Invoke-RestMethod -Uri `$u -Method Get).output; `$line=(Select-String -InputObject `$o -Pattern 'Last configuration[^\r\n]*').Matches.Value; Write-Output (`$n.node_id+'|'+`$line)}"
+2026-07-28T19:49:53.202098Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.5 seconds
+Output:
+Invoke-RestMethod : {"error":"node not found: FW_02"}
+At line:1 char:1
++ Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-28T19:50:31.928393Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:31.929698Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:31.932392Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:31.932483Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:31.944026Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:31.947409Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.445682Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.462545Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.466669Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.469178Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.533016Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.533287Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.774469Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.802554Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.830457Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.834761Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.854567Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.857553Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.858874Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.858983Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.874074Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:32.878812Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:33.193893Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:33.193902Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:33.198151Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:33.376631Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:33.384006Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:33.384143Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:33.408952Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:50:33.885205Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-28T19:52:17.474182Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019faa43-e1d9-7dc1-b827-9b78983f1430 turn_id=019faa43-e2ae-7c13-bec5-8f08d44aed40 item_id="exec-6cc6841c-801f-4f65-afc1-026d67b0a86d"

@@ -1,0 +1,38 @@
+{
+  "schema_version": "ip-distill-events-format-audit.v1",
+  "audited_at": "2026-07-28T13:08:24.774+00:00",
+  "old_experiment_statistics": {
+    "old_14x10": {
+      "file_count": 140,
+      "line_count": {
+        "min": 16,
+        "median": 44.5,
+        "max": 385
+      },
+      "command_event_count": {
+        "min": 10,
+        "median": 38.0,
+        "max": 377
+      },
+      "invalid_json_lines": 0
+    },
+    "old_10x10": {
+      "file_count": 105,
+      "line_count": {
+        "min": 9,
+        "median": 18,
+        "max": 340
+      },
+      "command_event_count": {
+        "min": 6,
+        "median": 12,
+        "max": 331
+      },
+      "invalid_json_lines": 0
+    }
+  },
+  "finding": "Both old runners write each raw codex exec --json stdout line exactly once; item.started and item.completed are distinct raw events, not writer duplication.",
+  "prompt_hash_matches_old_10x10": true,
+  "new_writer": "single for-line loop; events write once and flush; stderr direct; stdout.log is a separate audit tee",
+  "raw_events_must_not_be_filtered": true
+}

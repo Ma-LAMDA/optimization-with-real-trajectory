@@ -1,0 +1,43 @@
+{
+  "schema_version": "codex-ip-trajectory-policy-audit.v1",
+  "audited_at": "2026-07-28T09:00:37.285+00:00",
+  "status": "rejected",
+  "reason": "direct filesystem access bypassed the local API",
+  "violations": [
+    {
+      "line": 21,
+      "command": "\"C:\\\\windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command \"Get-ChildItem -Path 'D:\\\\IP组网\\\\optimization-with-real-trajectory' -Recurse -Filter serve_saved_configs.py -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName\"",
+      "reasons": [
+        "saved_configs path named"
+      ]
+    },
+    {
+      "line": 23,
+      "command": "\"C:\\\\windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command \"Get-Content -Raw 'D:\\\\IP组网\\\\optimization-with-real-trajectory\\\\saved_configs_service\\\\serve_saved_configs.py'\"",
+      "reasons": [
+        "saved_configs path named"
+      ]
+    },
+    {
+      "line": 29,
+      "command": "\"C:\\\\windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$root='\"'D:\\\\IP组网\\\\optimization-with-real-trajectory\\\\saved_configs\\\\CampusNetwork_04'; Get-ChildItem -Path \"'$root -Recurse -Filter '\"'*interface*.txt' | ForEach-Object { \"'$file=$_.FullName; $matches=Select-String -Path $file -Pattern '\"'(utility rate:|bandwidth utilization\\\\s*:)[ ]+([1-9][0-9](\\\\.[0-9]+)?%|100(\\\\.0+)?%)'; if(\"'$matches){\"===== $($_.Directory.Name) / $($_.Name) =====\"; $matches | ForEach-Object {$_.Line.Trim()}}}'",
+      "reasons": [
+        "saved_configs path named"
+      ]
+    },
+    {
+      "line": 31,
+      "command": "\"C:\\\\windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$root='\"'D:\\\\IP组网\\\\optimization-with-real-trajectory\\\\saved_configs\\\\CampusNetwork_04'; Get-ChildItem -Path \"'$root -Recurse -Filter '\"'display_interface.txt' | ForEach-Object {\"'$node=$_.Directory.Name;$lines=Get-Content $_.FullName;$iface='\"'';\"'$desc='\"'';foreach(\"'$line in $lines){if($line -match '\"'\"'^([''^ ]+) current state'\"'){\"'$iface=$matches[1];$desc='\"''}elseif(\"'$line -match '\"'\"'^Description: ?(.*)'\"'){\"'$desc=$matches[1]}elseif($line -match '\"'Last 300 seconds (input|output) rate.*?([0-9]+) packets/sec'){\"'$pps=[int]$matches[2];if($pps -ge 1000){[pscustomobject]@{Node=$node;Interface=$iface;Direction=$matches[1];PPS=$pps;Description=$desc}}}}} | Sort-Object PPS -Descending | Format-Table -AutoSize'",
+      "reasons": [
+        "saved_configs path named"
+      ]
+    },
+    {
+      "line": 33,
+      "command": "\"C:\\\\windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$root='\"'D:\\\\IP组网\\\\optimization-with-real-trajectory\\\\saved_configs\\\\CampusNetwork_04'; foreach(\"'$n in @('\"'AGG_SW_01','AGG_SW_02','AGG_SW_03','AGG_SW_04','Core_SW_01','Core_SW_02','HQ_MKT_AP01','HQ_HR_AP01','HQ_PROC_AP01')){\"'$f=Join-Path $root \"$n'\"\\\\display_current-configuration.txt\\\";\\\"===== \"'$n =====\";Get-Content $f | Select-String -Pattern '\"'stp|region-name|revision-level|instance [0-9]+ vlan|port trunk|port link-type|port access' | ForEach-Object {\"'$_.Line.Trim()}}'",
+      "reasons": [
+        "saved_configs path named"
+      ]
+    }
+  ]
+}

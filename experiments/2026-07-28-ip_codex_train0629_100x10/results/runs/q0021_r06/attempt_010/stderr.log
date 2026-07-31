@@ -1,0 +1,1485 @@
+2026-07-29T06:42:45.431093Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T06:42:45.431166Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T06:42:45.431853Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T06:42:45.434791Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T06:42:45.442999Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T06:42:46.177035Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T06:42:46.177069Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T06:42:46.177809Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T06:42:46.180812Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T06:42:54.947611Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5
+2026-07-29T06:43:02.542302Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Get-ChildItem -Force; rg -n "3080|GNS3|Invoke-RestMethod|HTTP client" -S .
+2026-07-29T06:43:09.032974Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -sS http://127.0.0.1:3080/v3/projects
+2026-07-29T06:43:16.871754Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-29T06:47:05.035750Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 7.7 seconds
+Output:
+Invoke-RestMethod : {"error":"node not found: FW_02"}
+At line:1 char:2
++ (Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetw ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc 
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+2026-07-29T06:47:05.096020Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 7.9 seconds
+Output:
+display current-configuration
+#
+ version 7.1.070, Release 7639P06
+#
+mdc Admin id 1
+#
+ sysname AGG_SW_01
+#
+ irf mac-address persistent timer
+ irf auto-update enable
+ irf auto-merge enable
+ undo irf link-delay
+ irf member 1 priority 1
+#
+ lldp global enable
+#
+ reserve-vlan-interface 3000 to 3500
+#
+ system-working-mode standard
+ xbar load-single
+ lpu-type f-series
+#
+vlan 1
+#
+vlan 10
+#
+vlan 100
+#
+vlan 110
+#
+vlan 120
+#
+stp region-configuration
+ region-name huawei
+ instance 1 vlan 10 20
+ instance 2 vlan 30 40
+ instance 3 vlan 100 110 120
+ active region-configuration
+#
+ stp global enable
+#
+ftth
+#
+interface NULL0
+#
+interface HundredGigE1/0/6
+ port link-mode route
+#
+interface HundredGigE1/0/7
+ port link-mode route
+#
+interface HundredGigE1/0/8
+ port link-mode route
+#
+interface HundredGigE1/0/9
+ port link-mode route
+#
+interface HundredGigE1/0/10
+ port link-mode route
+#
+interface HundredGigE1/0/11
+ port link-mode route
+#
+interface HundredGigE1/0/12
+ port link-mode route
+#
+interface HundredGigE1/0/13
+ port link-mode route
+#
+interface HundredGigE1/0/14
+ port link-mode route
+#
+interface HundredGigE1/0/15
+ port link-mode route
+#
+interface HundredGigE1/0/16
+ port link-mode route
+#
+interface HundredGigE1/0/17
+ port link-mode route
+#
+interface HundredGigE1/0/18
+ port link-mode route
+#
+interface HundredGigE1/0/19
+ port link-mode route
+#
+interface HundredGigE1/0/20
+ port link-mode route
+#
+interface HundredGigE1/0/21
+ port link-mode route
+#
+interface HundredGigE1/0/22
+ port link-mode route
+#
+interface HundredGigE1/0/23
+ port link-mode route
+#
+interface HundredGigE1/0/24
+ port link-mode route
+#
+interface HundredGigE1/0/25
+ port link-mode route
+#
+interface HundredGigE1/0/26
+ port link-mode route
+#
+interface HundredGigE1/0/27
+ port link-mode route
+#
+interface HundredGigE1/0/28
+ port link-mode route
+#
+interface HundredGigE1/0/29
+ port link-mode route
+#
+interface HundredGigE1/0/30
+ port link-mode route
+#
+interface HundredGigE1/0/31
+ port link-mode route
+#
+interface HundredGigE1/0/32
+ port link-mode route
+#
+interface HundredGigE1/0/33
+ port link-mode route
+#
+interface HundredGigE1/0/34
+ port link-mode route
+#
+interface HundredGigE1/0/35
+ port link-mode route
+#
+interface HundredGigE1/0/36
+ port link-mode route
+#
+interface HundredGigE1/0/37
+ port link-mode route
+#
+interface HundredGigE1/0/38
+ port link-mode route
+#
+interface HundredGigE1/0/39
+ port link-mode route
+#
+interface HundredGigE1/0/40
+ port link-mode route
+#
+interface HundredGigE1/0/41
+ port link-mode route
+#
+interface HundredGigE1/0/42
+ port link-mode route
+#
+interface HundredGigE1/0/43
+ port link-mode route
+#
+interface HundredGigE1/0/44
+ port link-mode route
+#
+interface HundredGigE1/0/45
+ port link-mode route
+#
+interface HundredGigE1/0/46
+ port link-mode route
+#
+interface HundredGigE1/0/47
+ port link-mode route
+#
+interface HundredGigE1/0/48
+ port link-mode route
+#
+interface HundredGigE1/0/49
+ port link-mode route
+#
+interface HundredGigE1/0/50
+ port link-mode route
+#
+interface HundredGigE1/0/51
+ port link-mode route
+#
+interface HundredGigE1/0/52
+ port link-mode route
+#
+interface HundredGigE1/0/53
+ port link-mode route
+#
+interface HundredGigE1/0/54
+ port link-mode route
+#
+interface HundredGigE1/0/55
+ port link-mode route
+#
+interface HundredGigE1/0/56
+ port link-mode route
+#
+interface HundredGigE1/0/57
+ port link-mode route
+#
+interface HundredGigE1/0/58
+ port link-mode route
+#
+interface HundredGigE1/0/59
+ port link-mode route
+#
+interface HundredGigE1/0/60
+ port link-mode route
+#
+interface HundredGigE1/0/61
+ port link-mode route
+#
+interface HundredGigE1/0/62
+ port link-mode route
+#
+interface HundredGigE1/0/63
+ port link-mode route
+#
+interface HundredGigE1/0/64
+ port link-mode route
+#
+interface HundredGigE1/0/65
+ port link-mode route
+#
+interface HundredGigE1/0/66
+ port link-mode route
+#
+interface HundredGigE1/0/67
+ port link-mode route
+#
+interface HundredGigE1/0/68
+ port link-mode route
+#
+interface HundredGigE1/0/69
+ port link-mode route
+#
+interface HundredGigE1/0/70
+ port link-mode route
+#
+interface HundredGigE1/0/71
+ port link-mode route
+#
+interface HundredGigE1/0/72
+ port link-mode route
+#
+interface HundredGigE1/0/73
+ port link-mode route
+#
+interface HundredGigE1/0/74
+ port link-mode route
+#
+interface HundredGigE1/0/75
+ port link-mode route
+#
+interface HundredGigE1/0/76
+ port link-mode route
+#
+interface HundredGigE1/0/77
+ port link-mode route
+#
+interface HundredGigE1/0/78
+ port link-mode route
+#
+interface HundredGigE1/0/79
+ port link-mode route
+#
+interface HundredGigE1/0/80
+ port link-mode route
+#
+interface HundredGigE1/0/81
+ port link-mode route
+#
+interface HundredGigE1/0/82
+ port link-mode route
+#
+interface HundredGigE1/0/83
+ port link-mode route
+#
+interface HundredGigE1/0/84
+ port link-mode route
+#
+interface HundredGigE1/0/85
+ port link-mode route
+#
+interface HundredGigE1/0/86
+ port link-mode route
+#
+interface HundredGigE1/0/87
+ port link-mode route
+#
+interface HundredGigE1/0/88
+ port link-mode route
+#
+interface HundredGigE1/0/89
+ port link-mode route
+#
+interface HundredGigE1/0/90
+ port link-mode route
+#
+interface HundredGigE1/0/91
+ port link-mode route
+#
+interface HundredGigE1/0/92
+ port link-mode route
+#
+interface HundredGigE1/0/93
+ port link-mode route
+#
+interface HundredGigE1/0/94
+ port link-mode route
+#
+interface HundredGigE1/0/95
+ port link-mode route
+#
+interface HundredGigE1/0/96
+ port link-mode route
+#
+interface HundredGigE1/0/97
+ port link-mode route
+#
+interface HundredGigE1/0/98
+ port link-mode route
+#
+interface HundredGigE1/0/99
+ port link-mode route
+#
+interface HundredGigE1/0/100
+ port link-mode route
+#
+interface HundredGigE1/0/101
+ port link-mode route
+#
+interface HundredGigE1/0/102
+ port link-mode route
+#
+interface HundredGigE1/0/103
+ port link-mode route
+#
+interface HundredGigE1/0/104
+ port link-mode route
+#
+interface HundredGigE1/0/105
+ port link-mode route
+#
+interface HundredGigE1/0/106
+ port link-mode route
+#
+interface HundredGigE1/0/107
+ port link-mode route
+#
+interface HundredGigE1/0/108
+ port link-mode route
+#
+interface HundredGigE1/0/109
+ port link-mode route
+#
+interface HundredGigE1/0/110
+ port link-mode route
+#
+interface HundredGigE1/0/111
+ port link-mode route
+#
+interface HundredGigE1/0/112
+ port link-mode route
+#
+interface HundredGigE1/0/113
+ port link-mode route
+#
+interface HundredGigE1/0/114
+ port link-mode route
+#
+interface HundredGigE1/0/115
+ port link-mode route
+#
+interface HundredGigE1/0/116
+ port link-mode route
+#
+interface HundredGigE1/0/117
+ port link-mode route
+#
+interface HundredGigE1/0/118
+ port link-mode route
+#
+interface HundredGigE1/0/119
+ port link-mode route
+#
+interface HundredGigE1/0/120
+ port link-mode route
+#
+interface HundredGigE1/0/121
+ port link-mode route
+#
+interface HundredGigE1/0/122
+ port link-mode route
+#
+interface HundredGigE1/0/123
+ port link-mode route
+#
+interface HundredGigE1/0/124
+ port link-mode route
+#
+interface HundredGigE1/0/125
+ port link-mode route
+#
+interface HundredGigE1/0/126
+ port link-mode route
+#
+interface HundredGigE1/0/127
+ port link-mode route
+#
+interface HundredGigE1/0/128
+ port link-mode route
+#
+interface HundredGigE1/0/129
+ port link-mode route
+#
+interface HundredGigE1/0/130
+ port link-mode route
+#
+interface HundredGigE1/0/131
+ port link-mode route
+#
+interface HundredGigE1/0/132
+ port link-mode route
+#
+interface HundredGigE1/0/133
+ port link-mode route
+#
+interface HundredGigE1/0/134
+ port link-mode route
+#
+interface HundredGigE1/0/135
+ port link-mode route
+#
+interface HundredGigE1/0/136
+ port link-mode route
+#
+interface HundredGigE1/0/137
+ port link-mode route
+#
+interface HundredGigE1/0/138
+ port link-mode route
+#
+interface HundredGigE1/0/139
+ port link-mode route
+#
+interface HundredGigE1/0/140
+ port link-mode route
+#
+interface HundredGigE1/0/141
+ port link-mode route
+#
+interface HundredGigE1/0/142
+ port link-mode route
+#
+interface HundredGigE1/0/143
+ port link-mode route
+#
+interface HundredGigE1/0/144
+ port link-mode route
+#
+interface HundredGigE1/0/145
+ port link-mode route
+#
+interface HundredGigE1/0/146
+ port link-mode route
+#
+interface HundredGigE1/0/147
+ port link-mode route
+#
+interface HundredGigE1/0/148
+ port link-mode route
+#
+interface HundredGigE1/0/149
+ port link-mode route
+#
+interface HundredGigE1/0/150
+ port link-mode route
+#
+interface HundredGigE1/0/151
+ port link-mode route
+#
+interface HundredGigE1/0/152
+ port link-mode route
+#
+interface HundredGigE1/0/153
+ port link-mode route
+#
+interface HundredGigE1/0/154
+ port link-mode route
+#
+interface HundredGigE1/0/155
+ port link-mode route
+#
+interface HundredGigE1/0/156
+ port link-mode route
+#
+interface HundredGigE1/0/157
+ port link-mode route
+#
+interface HundredGigE1/0/158
+ port link-mode route
+#
+interface HundredGigE1/0/159
+ port link-mode route
+#
+interface HundredGigE1/0/160
+ port link-mode route
+#
+interface HundredGigE1/0/161
+ port link-mode route
+#
+interface HundredGigE1/0/162
+ port link-mode route
+#
+interface HundredGigE1/0/163
+ port link-mode route
+#
+interface HundredGigE1/0/164
+ port link-mode route
+#
+interface HundredGigE1/0/165
+ port link-mode route
+#
+interface HundredGigE1/0/166
+ port link-mode route
+#
+interface HundredGigE1/0/167
+ port link-mode route
+#
+interface HundredGigE1/0/168
+ port link-mode route
+#
+interface HundredGigE1/0/169
+ port link-mode route
+#
+interface HundredGigE1/0/170
+ port link-mode route
+#
+interface HundredGigE1/0/171
+ port link-mode route
+#
+interface HundredGigE1/0/172
+ port link-mode route
+#
+interface HundredGigE1/0/173
+ port link-mode route
+#
+interface HundredGigE1/0/174
+ port link-mode route
+#
+interface HundredGigE1/0/175
+ port link-mode route
+#
+interface HundredGigE1/0/176
+ port link-mode route
+#
+interface HundredGigE1/0/177
+ port link-mode route
+#
+interface HundredGigE1/0/178
+ port link-mode route
+#
+interface HundredGigE1/0/179
+ port link-mode route
+#
+interface HundredGigE1/0/180
+ port link-mode route
+#
+interface HundredGigE1/0/181
+ port link-mode route
+#
+interface HundredGigE1/0/182
+ port link-mode route
+#
+interface HundredGigE1/0/183
+ port link-mode route
+#
+interface HundredGigE1/0/184
+ port link-mode route
+#
+interface HundredGigE1/0/185
+ port link-mode route
+#
+interface HundredGigE1/0/186
+ port link-mode route
+#
+interface HundredGigE1/0/187
+ port link-mode route
+#
+interface HundredGigE1/0/188
+ port link-mode route
+#
+interface HundredGigE1/0/189
+ port link-mode route
+#
+interface HundredGigE1/0/190
+ port link-mode route
+#
+interface HundredGigE1/0/191
+ port link-mode route
+#
+interface HundredGigE1/0/192
+ port link-mode route
+#
+interface HundredGigE1/0/193
+ port link-mode route
+#
+interface HundredGigE1/0/194
+ port link-mode route
+#
+interface HundredGigE1/0/195
+ port link-mode route
+#
+interface HundredGigE1/0/196
+ port link-mode route
+#
+interface HundredGigE1/0/197
+ port link-mode route
+#
+interface HundredGigE1/0/198
+ port link-mode route
+#
+interface HundredGigE1/0/199
+ port link-mode route
+#
+interface HundredGigE1/0/200
+ port link-mode route
+#
+interface HundredGigE1/0/201
+ port link-mode route
+#
+interface HundredGigE1/0/202
+ port link-mode route
+#
+interface HundredGigE1/0/203
+ port link-mode route
+#
+interface HundredGigE1/0/204
+ port link-mode route
+#
+interface HundredGigE1/0/205
+ port link-mode route
+#
+interface HundredGigE1/0/206
+ port link-mode route
+#
+interface HundredGigE1/0/207
+ port link-mode route
+#
+interface HundredGigE1/0/208
+ port link-mode route
+#
+interface HundredGigE1/0/209
+ port link-mode route
+#
+interface HundredGigE1/0/210
+ port link-mode route
+#
+interface HundredGigE1/0/211
+ port link-mode route
+#
+interface HundredGigE1/0/212
+ port link-mode route
+#
+interface HundredGigE1/0/213
+ port link-mode route
+#
+interface HundredGigE1/0/214
+ port link-mode route
+#
+interface HundredGigE1/0/215
+ port link-mode route
+#
+interface HundredGigE1/0/216
+ port link-mode route
+#
+interface HundredGigE1/0/217
+ port link-mode route
+#
+interface HundredGigE1/0/218
+ port link-mode route
+#
+interface HundredGigE1/0/219
+ port link-mode route
+#
+interface HundredGigE1/0/220
+ port link-mode route
+#
+interface HundredGigE1/0/221
+ port link-mode route
+#
+interface HundredGigE1/0/222
+ port link-mode route
+#
+interface HundredGigE1/0/223
+ port link-mode route
+#
+interface HundredGigE1/0/224
+ port link-mode route
+#
+interface HundredGigE1/0/225
+ port link-mode route
+#
+interface HundredGigE1/0/226
+ port link-mode route
+#
+interface HundredGigE1/0/227
+ port link-mode route
+#
+interface HundredGigE1/0/228
+ port link-mode route
+#
+interface HundredGigE1/0/229
+ port link-mode route
+#
+interface HundredGigE1/0/230
+ port link-mode route
+#
+interface HundredGigE1/0/231
+ port link-mode route
+#
+interface HundredGigE1/0/232
+ port link-mode route
+#
+interface HundredGigE1/0/233
+ port link-mode route
+#
+interface HundredGigE1/0/234
+ port link-mode route
+#
+interface HundredGigE1/0/235
+ port link-mode route
+#
+interface HundredGigE1/0/236
+ port link-mode route
+#
+interface HundredGigE1/0/237
+ port link-mode route
+#
+interface HundredGigE1/0/238
+ port link-mode route
+#
+interface HundredGigE1/0/239
+ port link-mode route
+#
+interface HundredGigE1/0/240
+ port link-mode route
+#
+interface HundredGigE1/0/241
+ port link-mode route
+#
+interface HundredGigE1/0/242
+ port link-mode route
+#
+interface HundredGigE1/0/243
+ port link-mode route
+#
+interface HundredGigE1/0/244
+ port link-mode route
+#
+interface HundredGigE1/0/245
+ port link-mode route
+#
+interface HundredGigE1/0/246
+ port link-mode route
+#
+interface HundredGigE1/0/247
+ port link-mode route
+#
+interface HundredGigE1/0/248
+ port link-mode route
+#
+interface HundredGigE1/0/249
+ port link-mode route
+#
+interface HundredGigE1/0/250
+ port link-mode route
+#
+interface HundredGigE1/0/251
+ port link-mode route
+#
+interface HundredGigE1/0/252
+ port link-mode route
+#
+interface HundredGigE1/0/253
+ port link-mode route
+#
+interface HundredGigE1/0/254
+ port link-mode route
+#
+interface HundredGigE1/0/255
+ port link-mode route
+#
+interface HundredGigE1/0/256
+ port link-mode route
+#
+interface HundredGigE1/0/1
+ port link-mode bridge
+ description to_Core_SW_01_GE1/0/3
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 10 100 110 120
+#
+interface HundredGigE1/0/2
+ port link-mode bridge
+ description to_Core_SW_02_GE1/0/3
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 10 100 110 120
+#
+interface HundredGigE1/0/3
+ port link-mode bridge
+ description to_HQ_MKT_PC01_eth0
+ port access vlan 10
+ stp edged-port
+#
+interface HundredGigE1/0/4
+ port link-mode bridge
+ description to_HQ_MKT_AP01_GE1/0/0
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 100 110 120
+ port trunk pvid vlan 100
+#
+interface HundredGigE1/0/5
+ port link-mode bridge
+ description to_HQ_MKT_Client01_eth0
+ port access vlan 10
+ stp edged-port
+#
+interface M-GigabitEthernet0/0/0
+#
+ scheduler logfile size 16
+#
+line class aux
+ user-role network-operator
+#
+line class console
+ user-role network-admin
+#
+line class tty
+ user-role network-operator
+#
+line class vty
+ user-role network-operator
+#
+line aux 0
+ authentication-mode none
+ user-role network-admin
+ user-role network-operator
+#
+line con 0
+ user-role network-admin
+#
+line vty 0 63
+ user-role network-operator
+#
+domain system
+#
+ domain default enable system
+#
+role name level-0
+ description Predefined level-0 role
+#
+role name level-1
+ description Predefined level-1 role
+#
+role name level-2
+ description Predefined level-2 role
+#
+role name level-3
+ description Predefined level-3 role
+#
+role name level-4
+ description Predefined level-4 role
+#
+role name level-5
+ description Predefined level-5 role
+#
+role name level-6
+ description Predefined level-6 role
+#
+role name level-7
+ description Predefined level-7 role
+#
+role name level-8
+ description Predefined level-8 role
+#
+role name level-9
+ description Predefined level-9 role
+#
+role name level-10
+ description Predefined level-10 role
+#
+role name level-11
+ description Predefined level-11 role
+#
+role name level-12
+ description Predefined level-12 role
+#
+role name level-13
+ description Predefined level-13 role
+#
+role name level-14
+ description Predefined level-14 role
+#
+user-group system
+#
+ security-enhanced level 1
+#
+ undo ssl renegotiation disable
+ undo ssl version ssl3.0 disable
+ undo ssl version tls1.0 disable
+ undo ssl version tls1.1 disable
+#
+return
+
+2026-07-29T06:47:23.619213Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.619336Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.619410Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.622585Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.622706Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.628577Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.628676Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.631045Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.635609Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.737690Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.737700Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.738356Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.738371Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.738395Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.738404Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.745056Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.745100Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.746082Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.753671Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.753771Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.753836Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.753944Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.753998Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.754050Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.754116Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.754155Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.754233Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.764710Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.769002Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.786292Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.786292Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.790848Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.790952Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.821945Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.826536Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.875921Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.880324Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.889451Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.893847Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.926844Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.926847Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.926854Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.931443Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.931520Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.931571Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.946103Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.950680Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.953377Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:23.957865Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.089048Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.093619Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.096695Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.101046Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.166757Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.171130Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.206522Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.210840Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.276821Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.281289Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.287199Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.291561Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.293910Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.298264Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.298418Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.302627Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.332488Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.336850Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.393962Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.398634Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.404384Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.409626Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.413786Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.418069Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.462329Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.462607Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.462656Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.466773Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.466888Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.466969Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.494938Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.499191Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.545782Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.550347Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.574358Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.578732Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.681045Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.685501Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.696323Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.700491Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.733023Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.737443Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.927798Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.932088Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.932397Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.936663Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.954913Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.956079Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:24.960387Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.097459Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.101928Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.175404Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.179904Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.289270Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.293696Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.465355Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.465455Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.469685Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.469790Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.492510Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:25.496974Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:26.353617Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:27.013863Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:27.872275Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:27.956944Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:27.957038Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:27.979377Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.094961Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.133657Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.163879Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.347591Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.356777Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.643534Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.770259Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.778228Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.829849Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.829978Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.917163Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.934331Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.934451Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:28.963576Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:29.008134Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:29.073259Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:29.222280Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:29.429137Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:29.449467Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:29.470677Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:29.523681Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:33.575958Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10.6 seconds
+Output:
+command timed out after 10621 milliseconds
+2026-06-16 03:05:35.040
+!Software Version V500R005C00SPC100
+#
+sysname FW_01
+#
+ l2tp domain suffix-separator @
+#
+info-center source default channel 0 trap state off
+#
+ ipsec sha2 compatible enable
+#
+undo telnet server enable
+undo telnet ipv6 server enable
+#
+clock timezone UTC add 00:00:00
+#
+ hrp enable
+ hrp interface Eth-Trunk1 remote 1.1.1.2
+ hrp track interface Eth-Trunk2
+ hrp track interface Eth-Trunk3
+ hrp track interface Eth-Trunk4
+ hrp track interface Eth-Trunk5
+#
+ update schedule location-sdb weekly Sun 00:08
+#
+ firewall defend action discard
+#
+ log type traffic enable
+ log type syslog enable
+ log type policy enable
+#
+ undo dataflow enable
+#
+ sa force-detection enable
+#
+ lldp enable
+#
+ banner enable
+#
+password-policy
+ level high
+user-manage single-sign-on radius
+#
+ web-manager security version tlsv1.1 tlsv1.2
+ web-manager enable
+ web-manager security enable
+#
+firewall dataplane to manageplane application-apperceive default-action drop
+#
+ update schedule ips-sdb daily 00:22
+ update schedule av-sdb daily 00:22
+ update schedule sa-sdb daily 00:22
+ update schedule cnc daily 00:22
+ update schedule file-reputation daily 00:22
+#
+ip vpn-instance default
+ ipv4-family
+#
+ time-range worktime
+  period-range 08:00:00 to 18:00:00 working-day
+#
+ike proposal default
+ encryption-algorithm aes-256 aes-192 aes-128
+ dh group14
+ authentication-algorithm sha2-512 sha2-384 sha2-256
+ authentication-method pre-share
+ integrity-algorithm hmac-sha2-256
+ prf hmac-sha2-256
+#
+aaa
+ authentication-scheme default
+ authentication-scheme admin_local
+ authentication-scheme admin_radius_local
+ authentication-scheme admin_hwtacacs_local
+ authentication-scheme admin_ad_local
+ authentication-scheme admin_ldap_local
+ authentication-scheme admin_radius
+ authentication-scheme admin_hwtacacs
+ authentication-scheme admin_ad
+ authentication-scheme admin_ldap
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+  service-type internetaccess ssl-vpn l2tp ike
+  internet-access mode auto-online
+  reference user current-domain
+ manager-user password valid-days 0
+ manager-user audit-admin
+  password cipher @%@%~azhA]irw/F1PxB"-AzX$/*kSD+QK*N{[2TefrAREF6>/*n$@%@%
+  service-type web terminal
+  level 15
+
+ manager-user api-admin
+  password cipher @%@%{Q"0.F*m"J<io9"@!yz3dK]XpNZV-9$DP@^ujm>J2\=UK][d@%@%
+  service-type api
+  level 15
+
+ manager-user admin
+  password cipher @%@%XrQ8#yo!)YQIMR>g;4OS2-dbTYk2$n]hc81Bt0ZCCT<U-de2@%@%
+  service-type web terminal
+  level 15
+
+ role system-admin
+ role device-admin
+ role device-admin(monitor)
+ role audit-admin
+ bind manager-user audit-admin role audit-admin
+ bind manager-user admin role system-admin
+#
+interface Eth-Trunk1
+ ip address 1.1.1.1 255.255.255.252
+ mode lacp-static
+ service-manage ping permit
+#
+interface Eth-Trunk2
+ description to_Core_SW_01_Eth-Trunk2
+ ip address 10.1.200.1 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+ service-manage ssh permit
+ service-manage snmp permit
+ service-manage telnet permit
+ service-manage netconf permit
+#
+interface Eth-Trunk3
+ description to_Core_SW_02_Eth-Trunk3
+ ip address 10.1.200.9 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+ service-manage ssh permit
+ service-manage snmp permit
+ service-manage telnet permit
+ service-manage netconf permit
+#
+interface Eth-Trunk4
+ ip address 10.1.200.25 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+#
+interface Eth-Trunk5
+ ip address 10.1.200.17 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+#
+l2tp-group default-lns
+#
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 20.0.0.2 255.255.255.0
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+#
+interface GigabitEthernet1/0/1
+ description to_Core_SW_01_GE1/0/8
+ undo shutdown
+ eth-trunk 2
+#
+interface GigabitEthernet1/0/2
+ description to_Core_SW_02_GE1/0/8
+ undo shutdown
+ eth-trunk 3
+#
+interface GigabitEthernet1/0/3
+ description to_BJHQ_CSR1000V_GW_01_Gi2
+ undo shutdown
+ eth-trunk 5
+#
+interface GigabitEthernet1/0/4
+ description to_SW-DMZ-ACC-01_GE1/0/1
+ undo shutdown
+ eth-trunk 4
+#
+interface GigabitEthernet1/0/5
+ description to_FW_02_GigabitEthernet1/0/5
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet1/0/6
+ description to_FW_02_GigabitEthernet1/0/6
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet1/0/7
+ undo shutdown
+#
+interface GigabitEthernet1/0/8
+ undo shutdown
+#
+interface GigabitEthernet1/0/9
+ undo shutdown
+#
+interface Virtual-if0
+#
+interface NULL0
+#
+interface LoopBack0
+ ip address 10.1.254.3 255.255.255.255
+#
+firewall zone local
+ set priority 100
+#
+firewall zone trust
+ set priority 85
+ add interface GigabitEthernet0/0/0
+ add interface Eth-Trunk2
+ add interface Eth-Trunk3
+#
+firewall zone untrust
+ set priority 5
+ add interface Eth-Trunk5
+#
+firewall zone dmz
+ set priority 50
+ add interface Eth-Trunk4
+#
+firewall zone name Heartbeat id 4
+ set priority 1
+ add interface Eth-Trunk1
+#
+api
+#
+ospf 1 router-id 10.1.254.3
+ area 0.0.0.0
+  network 10.1.200.1 0.0.0.0
+  network 10.1.200.9 0.0.0.0
+  network 10.1.200.17 0.0.0.0
+ area 0.0.0.3
+  network 10.1.200.25 0.0.0.0
+#
+undo ssh server compatible-ssh1x enable
+ssh authentication-type default password
+#
+user-interface password complexity-check disable
+#
+firewall detect ftp
+#
+user-interface con 0
+ authentication-mode password
+ set authentication password cipher $1c$uMM_BG!%M:$Q+N<0jBRb0!o)C)'@Hj6ASlG%9-a7&9Q"cK!~ig&$
+ idle-timeout 0 0
+ screen-length 0
+user-interface vty 0 4
+ authentication-mode aaa
+ protocol inbound ssh
+user-interface vty 16 20
+#
+pki realm default
+#
+sa
+#
+location
+#
+ multi-linkif
+ mode proportion-of-weight
+#
+right-manager server-group
+#
+security-policy
+ rule name to_Heartbeat
+  source-zone local
+  destination-zone Heartbeat
+  action permit
+ rule name to_DHCP
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.120.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.1.50.1 mask 255.255.255.255
+  action permit
+ rule name to_dmz-server
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.1.60.0 mask 255.255.255.0
+  action permit
+ rule name to_DNS-server
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.120.0 mask 255.255.255.0
+  destination-address 10.1.60.1 mask 255.255.255.255
+  action permit
+ rule name to_60.2
+  source-zone untrust
+  destination-zone dmz
+  source-address 100.100.100.0 mask 255.255.255.0
+  source-address 200.200.200.0 mask 255.255.255.0
+  destination-address 10.1.60.2 mask 255.255.255.255
+  action permit
+ rule name BJ_TO_SH_SZ
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.2.10.0 mask 255.255.255.0
+  destination-address 10.2.20.0 mask 255.255.255.0
+  destination-address 10.2.30.0 mask 255.255.255.0
+  destination-address 10.3.10.0 mask 255.255.255.0
+  destination-address 10.3.20.0 mask 255.255.255.0
+  destination-address 10.3.30.0 mask 255.255.255.0
+  action permit
+ rule name deny_Guest_TO_SH_SZ
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.120.0 mask 255.255.255.0
+  destination-address 10.2.10.0 mask 255.255.255.0
+  destination-address 10.2.20.0 mask 255.255.255.0
+  destination-address 10.2.30.0 mask 255.255.255.0
+  destination-address 10.3.10.0 mask 255.255.255.0
+  destination-address 10.3.20.0 mask 255.255.255.0
+  destination-address 10.3.30.0 mask 255.255.255.0
+  action deny
+ rule name to_internet
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.120.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  action permit
+ rule name SH_SZ_TO_BJ
+  source-zone untrust
+  destination-zone trust
+  source-address 10.2.10.0 mask 255.255.255.0
+  source-address 10.2.20.0 mask 255.255.255.0
+  source-address 10.2.30.0 mask 255.255.255.0
+  source-address 10.3.10.0 mask 255.255.255.0
+  source-address 10.3.20.0 mask 255.255.255.0
+  source-address 10.3.30.0 mask 255.255.255.0
+  destination-address 10.1.10.0 mask 255.255.255.0
+  destination-address 10.1.20.0 mask 255.255.255.0
+  destination-address 10.1.30.0 mask 255.255.255.0
+  destination-address 10.1.40.0 mask 255.255.255.0
+  action permit
+ rule name local
+  source-zone local
+  action permit
+#
+auth-policy
+#
+traffic-policy
+#
+policy-based-route
+#
+nat-policy
+#
+proxy-policy
+#
+pcp-policy
+#
+dns-transparent-policy
+#
+rightm-policy
+#
+return
+
+2026-07-29T06:47:57.121401Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:57.124928Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:57.494814Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:57.765983Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:58.045530Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:58.080273Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:58.087061Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:58.101228Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:58.113957Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:47:58.128819Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-07-29T06:49:14.872646Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-cd6c134b-3eca-4de8-b7c2-f2a1d4a2fb3a"
+2026-07-29T06:49:18.211101Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-a8eaaf30-6fc1-433f-8218-6bbb3c175308"
+2026-07-29T06:49:18.211330Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-193e164a-e7cc-43d7-9dfe-96f0c4b4c95d"
+2026-07-29T06:49:18.211381Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-43cfa6db-3af5-4e4f-a5a4-f6ae9fbedc4f"
+2026-07-29T06:49:18.770724Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-9337ebf4-34aa-4d1b-8558-84f0a5de1601"
+2026-07-29T06:49:21.035607Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-435a5b23-e1bd-486f-858b-d693bacdbed7"
+2026-07-29T06:49:21.579057Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-9cf9b398-5cf2-41ea-b188-53f996ea3c81"
+2026-07-29T06:49:22.173174Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-a68d92c4-ebbf-440c-9556-6ad33667bae0"
+2026-07-29T06:49:22.173214Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-22869be9-be4d-485c-9ee7-c2671d14887a"
+2026-07-29T06:49:22.173232Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-6fa12359-8441-4a88-b2be-c708cdd768f8"
+2026-07-29T06:49:22.173245Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-689b1f4c-2212-4c43-a9f6-5a03006f3c7d"
+2026-07-29T06:49:22.173258Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fac9c-7fdf-7f53-870f-88494e3c53c7 turn_id=019fac9c-80a6-7551-9638-f242d36d74d9 item_id="exec-e11e83c7-5ce3-475b-b085-0ff1f7f79703"

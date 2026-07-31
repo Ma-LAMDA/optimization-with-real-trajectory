@@ -1,0 +1,52 @@
+2026-07-29T05:42:35.658729Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:42:35.658792Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:42:35.659476Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:42:35.662335Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:42:35.670549Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T05:42:36.595972Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:42:36.596016Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T05:42:36.596772Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:42:36.599639Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T05:42:45.262214Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects = Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T05:42:49.379616Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g "*gns3*" -g "*api*" -g "*.ps1" -g "*.py"
+2026-07-29T05:43:26.983601Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:226
++ ... rint','arp -a') | ForEach-Object { =+[uri]::EscapeDataString(); =Invo ...
++                                                                  ~
+An expression was expected after '('.
+At line:1 char:267
++ ... ]::EscapeDataString(); =Invoke-RestMethod -Uri ; 'COMMAND: '+.command ...
++                                                                  ~
+You must provide a value expression following the '+' operator.
+At line:1 char:267
++ ... eDataString(); =Invoke-RestMethod -Uri ; 'COMMAND: '+.command; .outpu ...
++                                                          ~~~~~~~~
+Unexpected token '.command' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedExpression
+ 
+
+2026-07-29T05:45:00.385002Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Select-Object : Property "name" cannot be found.
+At line:1 char:94
++ ... CampusNetwork-for-perf_04/nodes' | Select-Object -ExpandProperty name
++                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (                                        :PSObject) [Select-Object], PS 
+   ArgumentException
+    + FullyQualifiedErrorId : ExpandPropertyNotFound,Microsoft.PowerShell.Commands.SelectObjectCommand
+ 
+
+2026-07-29T05:45:26.638000Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+The string is missing the terminator: ".
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TerminatorExpectedAtEndOfString
+ 
+
+2026-07-29T05:45:36.876820Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$cmd=[uri]::EscapeDataString('display current-configuration'); @('AGG_SW_01','AGG_SW_02','AGG_SW_03','AGG_SW_04','Core_SW_01','Core_SW_02','FW_01','ChinaUnicom_SW') | ForEach-Object { `$u1='http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/'+`$_+'/command?cmd='+`$cmd; `$u0='http://127.0.0.1:3080/v3/projects/CampusNetwork-for-perf_04/nodes/'+`$_+'/command?cmd='+`$cmd; `$a=(Invoke-RestMethod -Uri `$u1).output.Split([char]10); `$b=(Invoke-RestMethod -Uri `$u0).output.Split([char]10); `$d=Compare-Object -ReferenceObject `$b -DifferenceObject `$a; if(`$d){ '===== '+`$_+' ====='; `$d | ForEach-Object { `$_.SideIndicator+' '+`$_.InputObject } } }"
+2026-07-29T05:46:12.216934Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$cmd=[uri]::EscapeDataString('display current-configuration'); @('AGG_SW_01','AGG_SW_02','AGG_SW_03','AGG_SW_04','Core_SW_01','Core_SW_02') | ForEach-Object { `$o=(Invoke-RestMethod -Uri ('http://127.0.0.1:3080/v3/projects/CampusNetwork_04/nodes/'+`$_+'/command?cmd='+`$cmd)).output; `$m=`$o | Select-String -Pattern 'bpdu-filter|root-protection|loop-protection|stp instance .* cost|stp edged-port|stp enable|stp global enable' -AllMatches; '===== '+`$_+' ====='; (`$o -split '\n') | Where-Object { `$_ -match 'bpdu-filter|root-protection|loop-protection|stp instance .* cost|stp edged-port|stp enable|stp global enable' } }"

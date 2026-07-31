@@ -1,0 +1,196 @@
+根据题目描述回答问题：
+
+## 题目
+
+{original_query}
+
+## 本地组网配置查询 Skills
+
+你可以通过本机只读 HTTP 服务查询本题对应的组网配置和设备命令回显。所有数据均来自仓库 `saved_configs` 中预先采集的固定快照，不是实时设备，也不支持执行新的 CLI 命令。
+
+必须通过下面的 HTTP API 查询数据。不得使用文件系统工具直接列出、搜索或读取 `saved_configs`，不得绕过服务访问其中的文件。
+
+### 服务概览
+
+- 基础 URL：`http://127.0.0.1:3080`
+- API 版本：v3
+- 所有路径参数和查询参数都必须进行 URL 编码。
+- 服务严格只读；健康检查为 `GET /healthz`。
+
+### 数据模型
+
+- `project_id`：网络项目名。
+- `node_id`：设备节点名。
+- `command_key`：已采集命令对应的文件标识。
+- `output`：已采集命令的固定完整回显。
+
+CLI 命令中的空格、斜杠、管道符或过滤条件等可能在 `command_key` 中被转换为下划线，不存在通用且完全可逆的转换规则。因此，在请求命令回显前应先调用命令发现接口，不得凭空构造命令标识或回显。
+
+### HTTP API
+
+1. **获取所有项目**
+
+   - 方法：`GET`
+   - 路径：`/v3/projects`
+   - 成功响应：
+
+```json
+[
+  {
+    "name": "CampusNetwork_05",
+    "project_id": "CampusNetwork_05"
+  }
+]
+```
+
+2. **获取项目节点**
+
+   - 方法：`GET`
+   - 路径：`/v3/projects/{project_id}/nodes`
+   - 项目不存在或没有节点数据时返回 `404`。
+   - 成功响应：
+
+```json
+[
+  {
+    "name": "SW-DMZ-ACC-01",
+    "status": "started",
+    "node_id": "SW-DMZ-ACC-01"
+  }
+]
+```
+
+`status` 为兼容旧接口保留的固定字段，不代表设备当前在线。
+
+3. **发现节点上已采集的命令**
+
+   - 方法：`GET`
+   - 路径：`/v3/projects/{project_id}/nodes/{node_id}/commands`
+   - 可选查询参数：
+     - `keyword`：按 CLI 命令或 `command_key` 关键词筛选。
+     - `limit`：返回数量，默认 200，最大 1000。
+     - `offset`：分页起点，默认 0。
+   - 成功响应：
+
+```json
+{
+  "project_id": "CampusNetwork_05",
+  "node_id": "SW-DMZ-ACC-01",
+  "keyword": "interface",
+  "total": 12,
+  "offset": 0,
+  "limit": 200,
+  "commands": [
+    {
+      "command": "display ip interface brief",
+      "command_key": "display_ip_interface_brief"
+    }
+  ]
+}
+```
+`command_key` 始终是快照中真实存在的精确标识。只有快照本身回显了可可靠识别的 CLI 命令时，`command` 才是字符串；否则为 `null`，不得把其他输出正文当成命令。
+
+
+4. **获取节点命令回显**
+
+   - 方法：`GET`
+   - 路径：`/v3/projects/{project_id}/nodes/{node_id}/command`
+   - 必填查询参数：`cmd`。优先传命令发现接口返回的精确 `command_key`；如果 `command` 不为 `null`，也可以传其完整值。
+   - 成功响应：
+
+```json
+{
+  "command": "display ip interface brief",
+  "output": "display ip interface brief\n..."
+}
+```
+
+   - 找不到已采集命令时仍返回 HTTP 200，但 `output` 为：
+
+```json
+{
+  "command": "invalid_cmd",
+  "output": "Error: Command 'invalid_cmd' not found in mock data."
+}
+```
+
+“未找到命令”只表示固定快照没有采集该命令，不能等同于设备不存在、配置不存在或命令执行失败。
+
+5. **在一个项目内搜索快照**
+
+   - 方法：`GET`
+   - 路径：`/v3/projects/{project_id}/search`
+   - 查询参数：
+     - `q`：在快照内容中搜索的文本。
+     - `file_keyword`：按 CLI 命令或 `command_key` 筛选。
+     - `node_id`：可选，只搜索一个精确节点。
+     - `limit`：可选，默认 20，最大 100。
+   - `q` 和 `file_keyword` 至少提供一个。
+   - 成功响应中的 `matches` 给出节点、命令、命中行号和片段；`truncated=true` 表示结果达到上限。
+
+```json
+{
+  "project_id": "CampusNetwork_05",
+  "query": "10.0.0.1",
+  "node_id": null,
+  "file_keyword": "route",
+  "limit": 20,
+  "truncated": false,
+  "matches": [
+    {
+      "node_id": "Core_SW_01",
+      "command": "display ip routing-table",
+      "command_key": "display_ip_routing-table",
+      "line_number": 15,
+      "line": "10.0.0.0/24 ..."
+    }
+  ]
+}
+```
+
+搜索结果仅用于定位证据。形成关键结论前，应使用命中项的 `node_id` 和 `command_key` 调用命令回显接口，取得完整上下文。
+
+### 必须遵循的查询流程
+
+1. **检查服务并锁定项目**
+   - 先请求 `/healthz`；若服务不可访问，应明确报告无法查询，不得转而直接读取 `saved_configs` 或编造数据。
+   - 请求 `/v3/projects`，优先使用题目明确给出的项目名精确匹配。
+   - 若题目没有明确项目名，可根据题目中的节点名查看各候选项目的节点列表；只有证据唯一时才能选定。
+   - 项目选定后，本题所有证据必须来自该项目，不得混用名称相近或不同项目的数据。
+
+2. **确认节点**
+   - 请求目标项目的节点列表，以精确 `node_id` 为准。
+   - 题目中的简称、角色名或大小写与节点名不完全一致时，应先通过节点列表和相邻设备信息核实，不能直接猜测。
+   - 涉及端到端链路、主备设备或多跳路径时，应分别查询每个相关节点。
+
+3. **发现可用命令**
+   - 对目标节点先调用命令发现接口，再按故障现象用 `keyword` 筛选。
+   - 需要跨节点定位 IP、接口、VLAN、VRF、邻居或路由等对象时，可在已经锁定的项目内调用搜索接口；不要跨项目搜索后混合证据。
+   - 只能请求命令发现或搜索结果中真实存在的 `command_key`；不要根据文件名规则自行猜测不存在的 key。
+
+4. **按层取证**
+   - 拓扑与邻接：优先查询 LLDP、接口描述、邻居类回显。
+   - 物理与接口：查询接口简表、接口详情、链路状态和错误计数。
+   - 二层：查询 VLAN、STP、MAC 地址表、Eth-Trunk 或链路聚合。
+   - 三层：查询 IP 地址、ARP/ND、路由表、策略路由和 VPN/VRF。
+   - 控制平面：按题意查询 OSPF、BGP、BFD、EVPN、MPLS、SRv6 等协议状态。
+   - 安全与主机侧：按题意查询 ACL、防火墙/NAT，以及 `ip addr`、`ip route`、`ip neigh`、DNS 等主机回显。
+   - 不要求机械地请求全部命令。优先取得能够验证或排除当前假设的最少充分证据。
+
+5. **交叉验证并定位故障**
+   - 对关键结论至少核对配置意图与运行状态；条件允许时，再用链路另一端或上下游节点数据交叉验证。
+   - 沿真实转发路径逐跳检查，明确故障发生在哪台设备、哪个接口、哪一层或哪个协议环节。
+   - 区分“回显明确显示异常”“回显明确显示正常”“快照没有采集相关命令”三种情况。
+   - 若多个回显相互矛盾，应明确指出矛盾及各自来源，不得擅自选择更符合预期的一份。
+
+6. **形成答案**
+   - 结论必须由 API 实际返回的快照内容支持，不得编造设备状态、配置、拓扑、命令结果或实时变化。
+   - 先给出直接结论，再给出关键证据和因果链；只提出与证据一致、可操作的处置建议。
+   - 如果现有快照不足以唯一判断，应说明已确认的事实、缺失的证据和仍可能的原因，不得把猜测写成确定结论。
+   - 不要在最终答案中输出 URL 遍历过程、工具调用日志或与题目无关的大段原始回显。
+
+## 答案格式约束
+
+{output_format}
+
+最终答案使用```<result>答案</result>```封装

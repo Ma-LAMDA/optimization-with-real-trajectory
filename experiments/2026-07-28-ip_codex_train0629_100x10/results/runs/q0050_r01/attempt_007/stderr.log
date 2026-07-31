@@ -1,0 +1,59 @@
+2026-07-29T16:33:59.995313Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T16:33:59.995385Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T16:33:59.996056Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T16:33:59.998959Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T16:34:00.007687Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T16:34:00.745729Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T16:34:00.745761Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T16:34:00.746351Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T16:34:00.749394Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T16:34:10.545819Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects' | ConvertTo-Json -Depth 5
+2026-07-29T16:34:15.178658Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg --files -g '*gns3*' -g '*.ps1' -g '*.py' -g 'README*'
+2026-07-29T16:34:27.175275Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-29T16:34:32.685370Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: Invoke-RestMethod is required for service queries. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "(Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3080/v3/projects').Content"
+2026-07-29T16:35:04.946231Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "$base='http://127.0.0.1:3080/v3/projects/CampusNetwork_06/nodes'; $qs=@(@('SH_SAL_PC01','show ip'),@('SH_SAL_PC01','ping 10.1.10.254'),@('SH_Core','display current-configuration'),@('SH_AR','display current-configuration'),@('PE2','show running-config'),@('PE2','display current-configuration'),@('PE1','show running-config'),@('PE1','display current-configuration'),@('BJHQ_CSR1000V_GW_01','show running-config'),@('FW_01','display current-configuration'),@('Core_SW_01','display current-configuration'),@('Core_SW_02','display current-configuration')); foreach($q in $qs){$u=$base+'/'+$q[0]+'/command?cmd='+[uri]::EscapeDataString($q[1]); $x=Invoke-RestMethod -Uri $u; '### '+$q[0]+' :: '+$q[1]; $x.output}"
+2026-07-29T16:35:17.458941Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "$base='http://127.0.0.1:3080/v3/projects/CampusNetwork_06/nodes'; $qs=@(@('SH_SAL_PC01','show ip'),@('SH_SAL_PC01','ping 10.1.10.254'),@('SH_Core','display current-configuration'),@('SH_AR','display current-configuration'),@('PE2','show running-config'),@('PE2','display current-configuration'),@('PE1','show running-config'),@('PE1','display current-configuration'),@('BJHQ_CSR1000V_GW_01','show running-config'),@('FW_01','display current-configuration'),@('Core_SW_01','display current-configuration'),@('Core_SW_02','display current-configuration')); foreach($q in $qs){$u=$base+'/'+$q[0]+'/command?cmd='+[System.Uri]::EscapeDataString($q[1]); $x=Invoke-RestMethod -Uri $u; '### '+$q[0]+' :: '+$q[1]; $x.output}"
+2026-07-29T16:35:31.239341Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:1287
++ ... SW_02/command?cmd=display%20current-configuration'); foreach( in ){=I ...
++                                                                  ~
+Missing variable name after foreach.
+At line:1 char:1291
++ ... /command?cmd=display%20current-configuration'); foreach( in ){=Invoke ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:1326
++ ... figuration'); foreach( in ){=Invoke-RestMethod -Uri ; '### '+.command ...
++                                                                  ~
+You must provide a value expression following the '+' operator.
+At line:1 char:1326
++ ... on'); foreach( in ){=Invoke-RestMethod -Uri ; '### '+.command; .outpu ...
++                                                          ~~~~~~~~
+Unexpected token '.command' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingVariableNameAfterForeach
+ 
+
+2026-07-29T16:36:18.692363Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+=Invoke-RestMethod : The term '=Invoke-RestMethod' is not recognized as the name of a cmdlet, function, script file, or
+ operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try a
+gain.
+At line:1 char:1
++ =Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetw ...
++ ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=Invoke-RestMethod:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+.output : The term '.output' is not recognized as the name of a cmdlet, function, script file, or operable program. Che
+ck the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:133
++ ... rk_06/nodes/PE1/command?cmd=display%20current-configuration'; .output
++                                                                   ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (.output:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+

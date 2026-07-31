@@ -39,10 +39,14 @@
 │   └── simulation/
 │       └── prompts, evaluation trajectories, configs and JSONL data
 ├── experiments/
-│   └── 2026-07-27-ip_codex_train0629_14x10/
-│       ├── inputs/
-│       ├── scripts/
-│       └── results/
+│   ├── 2026-07-27-ip_codex_train0629_14x10/
+│   │   ├── inputs/
+│   │   ├── scripts/
+│   │   └── results/
+│   ├── 2026-07-28-ip_codex_train0629_10x10/
+│   ├── 2026-07-28-ip_codex_train0629_100x10/
+│   └── 2026-07-31-qwen36-27b-base-eval/
+├── saved_configs_service/
 └── scripts/
     ├── convert_codex_run_trajectories.py
     ├── convert_trajectories.py
@@ -237,14 +241,14 @@ swift sft \
 
 8,000 token 是最大允许长度，不会强制模型生成满该长度；模型输出 EOS 时正常提前结束。采样温度等参数由具体任务单独指定。当前原始基座模型在单卡 Transformers 环境、`temperature=0.7`、5,000-token 上限下的单样本实测生成速度约为 21.2 token/s；长上下文下的实际速度可能下降。详细约束与测试口径见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
 
-## 后续运行并发策略
+## Qwen3.6-27B eval 并发策略
 
-自 2026-07-31 起，离线评估、Codex CLI 批量验证、轨迹生成和服务请求固定使用
-单实例双并发：只启动 1 个 vLLM 实例，当前双卡部署采用 `tp2x1`；固定 2 个
-runner worker，总请求并发为 2。所有待运行样本排队进入这两个槽位，重试也必须
-复用已有槽位。禁止启动 8 个 worker、8 路请求或任何等效的 8 并发配置，也禁止
-runner 自动扩容。完整启动与遥测约束见
-[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md#后续运行拓扑)。
+凡调用本地 Qwen3.6-27B 基座或 LoRA adapter 服务进行的 eval，固定使用单实例
+双并发：只启动 1 个 vLLM 实例，当前双卡部署采用 `tp2x1`；固定 2 个 eval
+runner worker，总请求并发为 2。所有评测样本排队进入这两个槽位，重试也必须复用
+已有槽位。禁止在 27B eval 中启动 8 个 worker、8 路请求或自动扩容。该约束不适用于
+Codex 轨迹生成及其他数据采集任务；数据采集策略由各实验独立配置。完整约束见
+[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
 
 ## Codex CLI 验证遥测
 
@@ -285,6 +289,19 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 实验仍从仓库根目录的共享 `saved_configs/` 快照读取离线配置。完整目录结构、轨迹文件说明、重试规则、恢复命令和耗时 CSV 生成方式见 `experiments/2026-07-27-ip_codex_train0629_14x10/README.md`。
 
+`experiments/2026-07-28-ip_codex_train0629_10x10/` 保存使用本地 Codex CLI、`gpt-5.6-sol`
+和 `saved_configs_service` 本地 HTTP API 重新生成的 10×10 实验。题号为
+13、14、17、18、87、88、91、92、93、94，每题保留 10 条有效成功轨迹，共 100 条；
+故障集合精确匹配标准答案后为 96/100 正确，准确率 96%。该目录包含完整事件流、最终回答、
+运行/策略审计、逐题准确率 CSV、逐轨迹判分明细和审计工作簿；具体结构与复核命令见
+`experiments/2026-07-28-ip_codex_train0629_10x10/README.md`。
+
+`experiments/2026-07-28-ip_codex_train0629_100x10/` 保存覆盖 100 条输入、每题最多
+10 条正确轨迹的完整实验。历史运行共保留 819 条 accepted 正确轨迹：79 题完成
+10 条正确轨迹，21 题在连续 10 次错误后停止；全部 attempt、事件流、回答、判题结果
+和运行审计均原样归档。该实验属于数据采集，历史运行及后续恢复均使用独立采集策略，
+不受 Qwen3.6-27B eval 的单实例双并发约束。
+
 2026-07-30 至 2026-07-31 的 Qwen3.6-27B 基座部署 A/B 和全量评测已作为独立实验
 归档到 [`experiments/2026-07-31-qwen36-27b-base-eval/`](experiments/2026-07-31-qwen36-27b-base-eval/)。
 目录将部署对比与全量结果分开保存，并提供总体、逐题和逐次明细。
@@ -295,11 +312,13 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 
 ### 更新记录
 
-- 2026-07-31：将后续运行策略固定为单个 vLLM 实例、2 个 runner worker、总请求并发 2，明确禁止 8 worker、8 路请求及自动扩容。
+- 2026-07-31：合并 `taowen` 的 `saved_configs_service`、10×10 与 100×10 实验，保留完整轨迹和审计产物，并保持数据采集策略独立配置。
+- 2026-07-31：将 Qwen3.6-27B eval 策略固定为单个 vLLM 实例、2 个 eval runner worker、总请求并发 2；该约束不适用于轨迹生成等数据采集任务。
 - 2026-07-31：建立独立的 Qwen3.6-27B 基座评测实验目录，分开归档部署 A/B 与终止时的 381 个全量已结束样本，并提供 JSON、CSV、Markdown 统计。
 - 2026-07-28：将题 94 epoch-10 LoRA 的 5 次实测结果同步到 Training Plan 和实验 README，补充运行命令、严格 4/5 判定、耗时/token/工具 loop、外部产物路径及基座 A/B 缺口。
 - 2026-07-28：归档 Qwen3.6-27B epoch-10 LoRA 在题 94 上的 5 次 Codex CLI 验证报告，记录原始 label/输出、严格 4/5 结果、耗时、token、工具 loop、vLLM 指标、哈希与评测局限。
 - 2026-07-28：增加 Codex CLI 多次验证遥测规范，统一 turn、API 调用、Agent 消息和工具 loop 口径，并规定 TTFT、TPOT、token、缓存、GPU、质量判定及基座/LoRA A/B 的记录要求。
+- 2026-07-28：新增 `experiments/2026-07-28-ip_codex_train0629_10x10/`，归档通过本地 API 仿真环境重新生成的 100 条有效 Codex 轨迹、运行审计及 96% 准确率统计。
 - 2026-07-28：将实验运行压缩为 `results/runs/fullaccess/q<题号>_r<轮次>/attempt_<序号>/`，合并重复的 case/run 层级，同时保留额度重试所需的 attempt 记录。
 - 2026-07-28：将实验目录按“日期-实验名”合并命名为 `experiments/2026-07-27-ip_codex_train0629_14x10/`，移除 `results/runs/` 下的日期层，并同步适配生成、统计和 SFT 转换脚本。
 - 2026-07-28：将最新 140 条 Codex 运行规范化到 `data/2026-07-28/`；排除准确率未达 100% 的题 25、26、27、28，并按题号留出题 94，生成 90 条训练和 10 条验证样本。

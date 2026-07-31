@@ -1,0 +1,43 @@
+2026-07-29T12:51:08.345756Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T12:51:08.345834Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T12:51:08.346500Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T12:51:08.350116Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T12:51:08.358509Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-07-29T12:51:09.125582Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-29T12:51:09.125630Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-29T12:51:09.126511Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T12:51:09.129752Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.727.11326/.codex-plugin/plugin.json
+2026-07-29T12:51:17.162650Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $projects=Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects'; $projects | ConvertTo-Json -Depth 5
+2026-07-29T12:51:22.436104Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: rg -n "3080|GNS3|Invoke-RestMethod" -S .
+2026-07-29T12:51:28.382821Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: C:\Windows\System32\curl.exe -s http://127.0.0.1:3080/v3/projects
+2026-07-29T12:52:18.825700Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command '& { $r=Invoke-RestMethod -Uri "http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/FW_01/command?cmd=display%20vrrp%20brief"; if($r.output -like "Error:*"){Write-Output "NOT_FOUND"}else{Write-Output ("FOUND len="+$r.output.Length)} }'
+2026-07-29T12:52:29.404272Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 1.1 seconds
+Output:
+At line:1 char:146
++ ... ore_SW_01/command?cmd=display%20interface; if($r.output -like Error:* ...
++                                                                  ~
+You must provide a value expression following the '-like' operator.
+At line:1 char:147
++ ... 1/command?cmd=display%20interface; if($r.output -like Error:*){Write- ...
++                                                           ~~~~~~~
+Unexpected token 'Error:*' in expression or statement.
+At line:1 char:147
++ ... 1/command?cmd=display%20interface; if($r.output -like Error:*){Write- ...
++                                                           ~~~~~~~
+Missing closing ')' after expression in 'if' statement.
+At line:1 char:154
++ ... /command?cmd=display%20interface; if($r.output -like Error:*){Write-O ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:179
++ ... face; if($r.output -like Error:*){Write-Output NOT_FOUND}else{Write-O ...
++                                                              ~~~~
+Unexpected token 'else' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
+
+2026-07-29T12:53:19.722633Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$r=Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/PE1/command?cmd=display%20interface'; `$r.output -split [char]10 | Select-String -Pattern 'rate|utilization|discard|drop|error|CRC'"
+2026-07-29T12:53:44.883158Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the URI encoder .NET type is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$r=Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/PE2/command?cmd=display%20interface'; `$i=`$r.output.IndexOf('Ethernet1/0/0 current state'); if(`$i -ge 0){`$r.output.Substring(`$i,[Math]::Min(1700,`$r.output.Length-`$i))}else{'NOT FOUND'}"
+2026-07-29T12:57:41.435980Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'select-string'; only the local API is allowed. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "`$r=Invoke-RestMethod -Uri 'http://127.0.0.1:3080/v3/projects/CampusNetwork_05/nodes/SH_Core/command?cmd=display%20interface'; `$m=Select-String -InputObject `$r.output -Pattern 'Last 300 seconds input utility rate:.*' -AllMatches; `$m.Matches.Value"
