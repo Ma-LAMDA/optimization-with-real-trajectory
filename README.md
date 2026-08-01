@@ -51,7 +51,8 @@
 │   ├── 2026-07-28-ip_codex_train0629_10x10/
 │   ├── 2026-07-28-ip_codex_train0629_100x10/
 │   ├── 2026-07-31-qwen36-27b-base-eval/
-│   └── 2026-07-31-qwen36-27b-agent-ab/
+│   ├── 2026-07-31-qwen36-27b-agent-ab/
+│   └── 2026-08-02-qwen36-27b-heldout6-agent-ab/
 ├── saved_configs_service/
 └── scripts/
     ├── convert_codex_run_trajectories.py
@@ -514,6 +515,12 @@ checkpoint-760 +100 与历史 base 的完整 Agent A/B 已归档到
 [`experiments/2026-07-31-qwen36-27b-agent-ab/`](experiments/2026-07-31-qwen36-27b-agent-ab/)。
 该实验复用 base 的 20 次 TP2 结果，只实跑 LoRA 侧；所有运行固定单实例 TP2、双并发
 和 60 分钟上限。
+
+checkpoint-760 +100 在最新留出题 12、24、40、72、86、100 上的 30 次完整 Agent 结果已
+归档到 [`experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/`](experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/)：
+严格正确 12/30（40.00%），4 次超时、0 次非超时 runner failure，平均/中位/P95 封顶耗时
+24.21/13.74/60.00 分钟。Base 正在用相同六题、次数、工具链和单实例双并发拓扑优先补齐
+对照结果；完成后在同一实验目录补充 Base 与正式 A/B 结论。
 
 ## 提交维护规则
 
