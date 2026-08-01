@@ -321,6 +321,13 @@ Base 全量评测支持审计式组合为 `100 题 × 5 次 = 500 次`：主体 
 强制核验 100 个题号每题恰好 5 次、总计 500 次，并在报告中保留每条记录的来源，不能把
 组合报告描述成全部 500 次均为双并发运行。
 
+需要在长时间 Base 全量评测中优先验证 LoRA 时，使用
+`scripts/run_seetacloud_lora_heldout_then_resume_base.sh`：先冻结 Base 控制器并等待当前两个
+runner 自然结束，关闭 Base vLLM，再让推荐的 checkpoint-760 +100 在最新留出题
+12、24、40、72、86、100 上各执行 5 次完整 Agent。LoRA 报告完成且服务退出后，脚本使用
+原 `RUN_PREFIX` 恢复 Base；已终态样本会跳过，非终态样本才会继续。整个切换期间始终最多一个
+TP=2 vLLM 实例和两个 Agent runner，训练期 validation loss 仍只用于早停与 checkpoint 选择。
+
 若训练已经完成而后处理被中断，可用同一个 `RUN_ID` 并设置
 `REUSE_COMPLETED_TRAINING=1`，工作流会核对训练时与当前 manifest 哈希，并重新校验
 最低 loss 与 checkpoint 后继续评测；缺少训练时 manifest 哈希或划分不一致时拒绝

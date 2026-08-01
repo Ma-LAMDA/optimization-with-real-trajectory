@@ -21,7 +21,7 @@ REPORT_DIR="${REPORT_DIR:-${OUTPUT_ROOT}/${RUN_PREFIX}-report}"
 CASE_IDS="${CASE_IDS:-4,5,20,89}"
 REPEATS="${REPEATS:-5}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-3600}"
-BASELINE_SUMMARY="${BASELINE_SUMMARY:-${REPO_ROOT}/experiments/2026-07-31-qwen36-27b-base-eval/deployment-ab/summary.json}"
+BASELINE_SUMMARY="${BASELINE_SUMMARY-${REPO_ROOT}/experiments/2026-07-31-qwen36-27b-base-eval/deployment-ab/summary.json}"
 VLLM_LOG="${VLLM_LOG:-${OUTPUT_ROOT}/${RUN_PREFIX}-vllm.log}"
 VLLM_BIN="${VLLM_ENV}/bin/vllm"
 PYTHON_BIN="${PYTHON_BIN:-/root/miniconda3/bin/python}"
@@ -38,12 +38,16 @@ if [[ "${SYNC_REPO}" == "1" ]]; then
 fi
 GIT_COMMIT="$(git rev-parse HEAD)"
 
-for path in "${VLLM_BIN}" "${PYTHON_BIN}" "${MODEL_PATH}" "${CHECKPOINT}" "${BASELINE_SUMMARY}"; do
+for path in "${VLLM_BIN}" "${PYTHON_BIN}" "${MODEL_PATH}" "${CHECKPOINT}"; do
   if [[ ! -e "${path}" ]]; then
     echo "Required path is missing: ${path}" >&2
     exit 1
   fi
 done
+if [[ -n "${BASELINE_SUMMARY}" && ! -e "${BASELINE_SUMMARY}" ]]; then
+  echo "Required baseline summary is missing: ${BASELINE_SUMMARY}" >&2
+  exit 1
+fi
 ACTIVE_GPU_PROCESSES="$(
   nvidia-smi --query-compute-apps=pid,process_name,used_memory \
     --format=csv,noheader 2>/dev/null || true

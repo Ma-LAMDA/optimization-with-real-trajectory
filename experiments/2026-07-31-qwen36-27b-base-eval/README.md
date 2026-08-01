@@ -82,6 +82,11 @@ watchdog、当时使用的 8 个 worker、活动任务和专用 TP2 vLLM 服务�
 `scripts/run_seetacloud_base_full500_followup.sh` 与 `scripts/compose_base_full500_eval.py` 完成，
 组合器会拒绝错误题号、重复槽位、缺失槽位、非预期超时集合或错误拓扑。
 
+Base 全量运行允许在一对已启动样本自然结束后暂停，以便优先执行 LoRA 的最新 6 题 × 5 次
+完整 Agent 留出验证。切换由 `scripts/run_seetacloud_lora_heldout_then_resume_base.sh` 管理：
+先关闭 Base 服务，单独启动 checkpoint-760 +100 LoRA 服务，完成并汇总后关闭 LoRA，最后
+使用同一 Base 前缀恢复。暂停和恢复不得并存两个模型实例，也不得把正在运行的两个样本截断。
+
 ## 数据边界
 
 本目录只归档统计产物，不复制仓库外的完整轨迹、服务日志或离线配置。CSV 和 JSON
