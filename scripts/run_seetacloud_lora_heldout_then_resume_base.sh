@@ -30,6 +30,11 @@ count_base_completed() {
 wait_for_pid_exit() {
   local pid="$1"
   while kill -0 "${pid}" 2>/dev/null; do
+    local state
+    state="$(ps -o stat= -p "${pid}" 2>/dev/null | tr -d '[:space:]')"
+    if [[ "${state}" == Z* ]]; then
+      return
+    fi
     sleep "${POLL_SECONDS}"
   done
 }
