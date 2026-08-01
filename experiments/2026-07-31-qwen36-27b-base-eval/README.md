@@ -86,6 +86,9 @@ Base 全量运行允许在一对已启动样本自然结束后暂停，以便优
 完整 Agent 留出验证。切换由 `scripts/run_seetacloud_lora_heldout_then_resume_base.sh` 管理：
 先关闭 Base 服务，单独启动 checkpoint-760 +100 LoRA 服务，完成并汇总后关闭 LoRA，最后
 使用同一 Base 前缀恢复。暂停和恢复不得并存两个模型实例，也不得把正在运行的两个样本截断。
+恢复后首先补齐题 12、24、40、72、86、100 各 5 次；已有终态槽位复用，缺失槽位优先运行，
+并生成独立的 `priority-heldout6-report`，供 LoRA 最新留出 6×5 完整 Agent 做严格同口径对比。
+只有该 Base 对照报告完成后，才继续普通全量队列。
 
 ## 数据边界
 

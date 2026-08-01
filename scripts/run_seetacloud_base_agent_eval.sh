@@ -17,10 +17,14 @@ DEFAULT_CASE_IDS="$(seq -s, 1 88),91,92,93,94"
 CASE_IDS="${CASE_IDS:-${DEFAULT_CASE_IDS}}"
 REPEATS="${REPEATS:-5}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-3600}"
+PRIORITY_CASE_IDS="${PRIORITY_CASE_IDS:-}"
+PRIORITY_REPEATS="${PRIORITY_REPEATS:-5}"
 RUN_PREFIX="${RUN_PREFIX:-base-eval-tp2x1-concurrency2-$(date -u +%Y%m%dT%H%M%SZ)}"
 OUTPUT_ROOT="${OUTPUT_ROOT:-/root/autodl-tmp/qwen-codex-eval}"
 REPORT_DIR="${REPORT_DIR:-${OUTPUT_ROOT}/${RUN_PREFIX}-report}"
 CONTROL_DIR="${CONTROL_DIR:-${OUTPUT_ROOT}/${RUN_PREFIX}-control}"
+PRIORITY_REPORT_DIR="${PRIORITY_REPORT_DIR:-${OUTPUT_ROOT}/${RUN_PREFIX}-priority-heldout6-report}"
+PRIORITY_CONTROL_DIR="${PRIORITY_CONTROL_DIR:-${OUTPUT_ROOT}/${RUN_PREFIX}-priority-heldout6-control}"
 VLLM_LOG="${VLLM_LOG:-${OUTPUT_ROOT}/${RUN_PREFIX}-vllm.log}"
 VLLM_BIN="${VLLM_ENV}/bin/vllm"
 PYTHON_BIN="${PYTHON_BIN:-/root/miniconda3/bin/python}"
@@ -45,6 +49,10 @@ for path in "${VLLM_BIN}" "${PYTHON_BIN}" "${MODEL_PATH}"; do
 done
 if [[ ! "${REPEATS}" =~ ^[1-9][0-9]*$ ]]; then
   echo "REPEATS must be a positive integer." >&2
+  exit 1
+fi
+if [[ ! "${PRIORITY_REPEATS}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "PRIORITY_REPEATS must be a positive integer." >&2
   exit 1
 fi
 if [[ ! "${TIMEOUT_SECONDS}" =~ ^[1-9][0-9]*$ ]]; then
@@ -135,6 +143,24 @@ PY
   fi
   sleep 5
 done
+
+if [[ -n "${PRIORITY_CASE_IDS}" ]]; then
+  echo "[$(date -Iseconds)] Running priority base Agent cases=${PRIORITY_CASE_IDS} repeats=${PRIORITY_REPEATS}"
+  PYTHON_BIN="${PYTHON_BIN}" \
+  CODEX_BASE_URL="http://${VLLM_HOST}:${VLLM_PORT}/v1" \
+  MODEL_NAME="${MODEL_NAME}" \
+  CHECKPOINT="" \
+  GIT_COMMIT="${GIT_COMMIT}" \
+  CASE_IDS="${PRIORITY_CASE_IDS}" \
+  REPEATS="${PRIORITY_REPEATS}" \
+  TIMEOUT_SECONDS="${TIMEOUT_SECONDS}" \
+  RUN_PREFIX="${RUN_PREFIX}" \
+  OUTPUT_ROOT="${OUTPUT_ROOT}" \
+  REPORT_DIR="${PRIORITY_REPORT_DIR}" \
+  CONTROL_DIR="${PRIORITY_CONTROL_DIR}" \
+  BASELINE_SUMMARY="" \
+    bash "${SCRIPT_DIR}/run_agent_validation.sh"
+fi
 
 echo "[$(date -Iseconds)] Running base Agent eval with one instance and exactly two workers"
 PYTHON_BIN="${PYTHON_BIN}" \

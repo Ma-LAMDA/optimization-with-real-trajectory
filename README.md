@@ -327,6 +327,10 @@ runner 自然结束，关闭 Base vLLM，再让推荐的 checkpoint-760 +100 在
 12、24、40、72、86、100 上各执行 5 次完整 Agent。LoRA 报告完成且服务退出后，脚本使用
 原 `RUN_PREFIX` 恢复 Base；已终态样本会跳过，非终态样本才会继续。整个切换期间始终最多一个
 TP=2 vLLM 实例和两个 Agent runner，训练期 validation loss 仍只用于早停与 checkpoint 选择。
+Base 恢复后不会立刻回到普通题号顺序，而是先让同一组最新留出题
+12、24、40、72、86、100 各完成 5 次完整 Agent；已由当前前缀完成的槽位直接跳过。其结果
+单独写入 `<RUN_PREFIX>-priority-heldout6-report/`，从而与 LoRA 的 30 次结果形成同题、同次数、
+同工具链和同双并发拓扑的端到端 A/B；这 30 个 Base 槽位齐全后才继续其余全量任务。
 
 若训练已经完成而后处理被中断，可用同一个 `RUN_ID` 并设置
 `REUSE_COMPLETED_TRAINING=1`，工作流会核对训练时与当前 manifest 哈希，并重新校验

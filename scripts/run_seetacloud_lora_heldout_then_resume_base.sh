@@ -14,6 +14,8 @@ LORA_RUN_PREFIX="${LORA_RUN_PREFIX:?LORA_RUN_PREFIX is required}"
 LORA_CASE_IDS="${LORA_CASE_IDS:-12,24,40,72,86,100}"
 LORA_REPEATS="${LORA_REPEATS:-5}"
 LORA_CHECKPOINT="${LORA_CHECKPOINT:-${REPO_ROOT}/output/qwen36-27b-lora-0731-step760-plus200-v2/train/v0-20260731-203846/checkpoint-100}"
+BASE_PRIORITY_CASE_IDS="${BASE_PRIORITY_CASE_IDS:-12,24,40,72,86,100}"
+BASE_PRIORITY_REPEATS="${BASE_PRIORITY_REPEATS:-5}"
 POLL_SECONDS="${POLL_SECONDS:-10}"
 LOG="${LOG:-${OUTPUT_ROOT}/${LORA_RUN_PREFIX}-pause-lora-resume.log}"
 
@@ -108,6 +110,8 @@ if [[ ! -f "${BASE_REPORT_DIR}/validation_summary.json" ]]; then
   RUN_PREFIX="${BASE_RUN_PREFIX}" \
   OUTPUT_ROOT="${OUTPUT_ROOT}" \
   REPORT_DIR="${BASE_REPORT_DIR}" \
+  PRIORITY_CASE_IDS="${BASE_PRIORITY_CASE_IDS}" \
+  PRIORITY_REPEATS="${BASE_PRIORITY_REPEATS}" \
     bash "${SCRIPT_DIR}/run_seetacloud_base_agent_eval.sh"
 else
   echo "[$(date -Iseconds)] Base summary already exists; skipping Base resume"
