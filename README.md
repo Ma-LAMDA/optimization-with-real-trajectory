@@ -312,6 +312,15 @@ VALIDATION_REPEATS=5 \
 `validation_eval/validation_summary.json` 记录完整 Agent 的严格正确率、超时、
 runner 失败、false positive/negative、工具循环、token 和耗时统计，
 `workflow_summary.json` 汇总提交、数据、训练和评测溯源。`output/` 默认不提交。
+
+Base 全量评测支持审计式组合为 `100 题 × 5 次 = 500 次`：主体 92 题的 460 次采用
+单实例 TP=2、双 runner、总并发 2；历史留出的 8 题可在明确披露来源与并发差异的前提下
+复用 37 次非超时结果，并用同一单实例双并发拓扑各补跑题 89、90、99 一次，分别替换旧的
+`q89-r3`、`q90-r3`、`q99-r2` 超时槽位。`scripts/run_seetacloud_base_full500_followup.sh`
+负责等待主体评测结束、顺序执行三次补跑并调用 `scripts/compose_base_full500_eval.py`；组合器
+强制核验 100 个题号每题恰好 5 次、总计 500 次，并在报告中保留每条记录的来源，不能把
+组合报告描述成全部 500 次均为双并发运行。
+
 若训练已经完成而后处理被中断，可用同一个 `RUN_ID` 并设置
 `REUSE_COMPLETED_TRAINING=1`，工作流会核对训练时与当前 manifest 哈希，并重新校验
 最低 loss 与 checkpoint 后继续评测；缺少训练时 manifest 哈希或划分不一致时拒绝
