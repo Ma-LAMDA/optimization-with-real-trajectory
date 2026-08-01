@@ -37,15 +37,49 @@ def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_expected(path: Path) -> dict[int, list[str]]:
-    rows: dict[int, list[str]] = {}
+def expected_options(expected: Any) -> list[list[str]]:
+    if isinstance(expected, list) and all(isinstance(item, str) for item in expected):
+        return [expected]
+    if (
+        isinstance(expected, list)
+        and expected
+        and all(isinstance(option, list) for option in expected)
+        and all(all(isinstance(item, str) for item in option) for option in expected)
+    ):
+        return expected
+    raise TypeError("expected answer must be a JSON list of strings or alternatives")
+
+
+def prediction_matches(prediction: Any, expected: Any) -> bool:
+    return isinstance(prediction, list) and any(
+        prediction == option for option in expected_options(expected)
+    )
+
+
+def false_counts(prediction: Any, expected: Any) -> tuple[int, int]:
+    prediction_set = set(prediction) if isinstance(prediction, list) else set()
+    differences = []
+    for option in expected_options(expected):
+        option_set = set(option)
+        differences.append(
+            (
+                len(prediction_set - option_set),
+                len(option_set - prediction_set),
+            )
+        )
+    return min(differences, key=lambda counts: (sum(counts), counts))
+
+
+def load_expected(path: Path) -> dict[int, Any]:
+    rows: dict[int, Any] = {}
     with path.open(encoding="utf-8") as handle:
         for line_number, line in enumerate(handle, 1):
             row = json.loads(line)
             identifier = row.get("id")
             answer = json.loads(row.get("answer", "null"))
-            if not isinstance(identifier, int) or not isinstance(answer, list):
+            if not isinstance(identifier, int):
                 raise ValueError(f"{path}:{line_number}: invalid id or answer")
+            expected_options(answer)
             rows[identifier] = answer
     return rows
 
@@ -110,7 +144,7 @@ def parse_attempt(
     prefix: str,
     case_id: int,
     repeat: int,
-    expected: list[str],
+    expected: Any,
     timeout_seconds: int,
     model: str,
 ) -> dict[str, Any]:
@@ -156,9 +190,12 @@ def parse_attempt(
         "status",
         "timeout" if timeout else "failed_before_manifest",
     )
-    correct = runner_status == "succeeded" and not timeout and prediction == expected
-    prediction_set = set(prediction) if isinstance(prediction, list) else set()
-    expected_set = set(expected)
+    correct = (
+        runner_status == "succeeded"
+        and not timeout
+        and prediction_matches(prediction, expected)
+    )
+    false_positive_count, false_negative_count = false_counts(prediction, expected)
     events = event_metrics(slot)
     tokens = token_metrics(slot)
     return {
@@ -172,8 +209,8 @@ def parse_attempt(
         "completed_within_limit": not timeout,
         "correct": correct,
         "result": "timeout" if timeout else ("correct" if correct else "wrong"),
-        "false_positive_count": len(prediction_set - expected_set),
-        "false_negative_count": len(expected_set - prediction_set),
+        "false_positive_count": false_positive_count,
+        "false_negative_count": false_negative_count,
         "events": events.get("events", 0),
         "commands": events.get("commands", 0),
         "agent_messages": events.get("agent_messages", 0),
@@ -232,15 +269,14 @@ def baseline_rows(path: Path, case_ids: list[int]) -> list[dict[str, Any]]:
     for row in rows:
         prediction = row.get("prediction")
         expected = row.get("expected") or []
-        prediction_set = set(prediction) if isinstance(prediction, list) else set()
-        expected_set = set(expected)
+        false_positive_count, false_negative_count = false_counts(prediction, expected)
         normalized.append(
             {
                 **row,
                 "completed_within_limit": row.get("completed_within_60m", not row.get("timeout")),
                 "runner_failures": 0,
-                "false_positive_count": len(prediction_set - expected_set),
-                "false_negative_count": len(expected_set - prediction_set),
+                "false_positive_count": false_positive_count,
+                "false_negative_count": false_negative_count,
                 "agent_messages": 0,
                 "input_tokens": 0,
                 "output_tokens": 0,

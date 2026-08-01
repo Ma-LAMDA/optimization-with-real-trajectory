@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from summarize_agent_validation import aggregate
+from summarize_agent_validation import aggregate, false_counts
 
 
 PRIMARY_CASE_IDS = [*range(1, 89), 91, 92, 93, 94]
@@ -80,12 +80,6 @@ def parse_json_cell(value: str) -> Any:
     if not value or value.strip().lower() in {"null", "none"}:
         return None
     return json.loads(value)
-
-
-def false_counts(prediction: Any, expected: Any) -> tuple[int, int]:
-    prediction_set = set(prediction) if isinstance(prediction, list) else set()
-    expected_set = set(expected) if isinstance(expected, list) else set()
-    return len(prediction_set - expected_set), len(expected_set - prediction_set)
 
 
 def validate_primary(payload: dict[str, Any]) -> None:
