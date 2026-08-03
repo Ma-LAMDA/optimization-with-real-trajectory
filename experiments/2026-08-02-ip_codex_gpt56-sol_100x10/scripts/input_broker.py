@@ -202,7 +202,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", type=Path, required=True)
     parser.add_argument("--template", type=Path, required=True)
-    parser.add_argument("--base-url", required=True)
+    parser.add_argument("--config-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--localized-template", type=Path, required=True)
     args = parser.parse_args()
@@ -232,21 +232,29 @@ def main() -> int:
             raise ParseError("per-row metadata prompts differ; unsupported safe batching")
     prompt_source = "experiment inputs/IP user prompt by text.txt"
 
-    documented_url = "http://127.0.0.1:3080"
-    from urllib.parse import urlsplit
-
-    parsed_local = urlsplit(args.base_url)
-    if parsed_local.scheme != "http" or parsed_local.hostname != "127.0.0.1" or not parsed_local.port:
-        raise ParseError("local service base must be an explicit http://127.0.0.1:PORT URL")
-    if source_template.count(documented_url) != 1:
-        raise ParseError("prompt must contain the documented local service URL exactly once")
+    config_root = args.config_root.resolve()
+    if not config_root.is_dir():
+        raise ParseError(f"configuration root does not exist: {config_root}")
     if "saved_configs/" not in source_template:
         raise ParseError("prompt must name the configuration root as saved_configs/")
-    localized = source_template.replace(documented_url, args.base_url)
+    if source_template.count("{saved_configs_root}") < 1:
+        raise ParseError("prompt must contain the saved_configs_root placeholder")
+    forbidden_access_markers = ("http://", "https://", "/v3/")
+    folded_template = source_template.casefold()
+    present_forbidden = [
+        marker for marker in forbidden_access_markers if marker in folded_template
+    ]
+    if present_forbidden:
+        raise ParseError(
+            "prompt must use direct file reads, not API access: "
+            + ", ".join(present_forbidden)
+        )
+    localized = source_template
     replacement = {
-        "operation": "local service port adaptation only",
-        "from": documented_url,
-        "to": args.base_url,
+        "operation": "runtime absolute saved_configs path substitution",
+        "placeholder": "{saved_configs_root}",
+        "value": str(config_root),
+        "occurrences": source_template.count("{saved_configs_root}"),
     }
     for placeholder in ("{original_query}", "{output_format}"):
         if localized.count(placeholder) != 1:
@@ -279,7 +287,7 @@ def main() -> int:
             }
         )
     payload = {
-        "schema_version": "ip-distill-safe-input-index.v1",
+        "schema_version": "ip-distill-safe-input-index.v2",
         "source_sha256": sha256(args.dataset),
         "record_count": len(index_records),
         "duplicate_original_ids": sorted(duplicated_ids),
@@ -287,6 +295,8 @@ def main() -> int:
         "dataset_metadata_prompt_present": all(metadata_present),
         "dataset_metadata_prompt_used": False,
         "prompt_localization": replacement,
+        "configuration_access": "direct_read_only_files",
+        "configuration_root": str(config_root),
         "localized_template_sha256": hashlib.sha256(localized.encode("utf-8")).hexdigest(),
         "records": index_records,
     }

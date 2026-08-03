@@ -9,35 +9,41 @@
 
 2026-08-03，用户确认实际 user prompt 存在问题，因此此前的 82 个 attempt 和全部
 中间状态均已作废并删除。当前有效 accepted 和 attempt 都是 0，`results/` 不存在，
-控制器、Codex 子进程及本地配置服务均已停止。现在应先修改
-`inputs/IP user prompt by text.txt`，经用户确认后再从 q0001 attempt 1 开始全新采集；
-不得恢复旧结果。
+控制器和 Codex 子进程均已停止。实际运行 prompt 已于 2026-08-03 按“直接读取
+`saved_configs/` 本地文件、禁止 API”的要求重新优化，当前等待用户复核；确认后再从
+q0001 attempt 1 开始全新采集，不得恢复旧结果。
 
 完整任务、固定配置、prompt 复核清单和重新启动步骤见 [`HANDOFF.md`](HANDOFF.md)。
 
 ## 输入与数据边界
 
 - 原始提示词副本：`inputs/IP user prompt by text.original.txt`。
-- 实际运行提示词：`inputs/IP user prompt by text.txt`，当前等待用户修改。
+- 实际运行提示词：`inputs/IP user prompt by text.txt`，已重新优化，当前等待用户确认。
 - 题目源：仓库不可变原始文件 `data/simulation/train_0629.jsonl`。
 - 配置根目录：仓库根目录 `saved_configs/`。
-- 生成器只能通过只读本地服务查询 `saved_configs/` 的固定快照；它看不到源数据中的
-  标准答案。判题器在每次 Codex 进程退出后，以单独进程读取标准答案并执行严格故障
-  集合匹配。
+- 生成器只能直接列出、搜索和读取 `saved_configs/` 下的本地 `.txt` 固定快照；禁止
+  通过 HTTP、API、浏览器或其他网络服务读取配置，也禁止访问该根目录之外的文件。
+  它看不到源数据中的标准答案。判题器在每次 Codex 进程退出后，以单独进程读取标准
+  答案并执行严格故障集合匹配。
 
-实际运行提示词必须保留 `{original_query}` 和 `{output_format}` 两个唯一占位符，并明确
-项目锁定、按假设取证、交叉验证、证据不足处理与最终 JSON 格式。运行时只能适配本地
-服务监听端口，不得改变提示词其余内容。
+实际运行提示词保留 `{original_query}`、`{output_format}` 两个唯一占位符，并包含
+`{saved_configs_root}` 路径占位符。控制器只把后者替换为仓库 `saved_configs/` 的绝对路径，
+不改写其余内容。Prompt 明确了目录为 `saved_configs/<项目>/<节点>/<命令回显>.txt`：先从
+题目精确锁定项目，再列出真实节点和文件；命令文件名中非字母、数字、下划线、点或连字符
+的每个字符替换为下划线。文件名转换只作定位线索，结论仍需读取实际文件内容核验。
+
+运行时 hook 只允许 `Get-ChildItem`、`Get-Content`、`Select-String` 和 `Test-Path` 对上述
+配置根目录执行只读操作；API、网络、写入、删除、移动、命令串联及越界路径均被拒绝。
 
 ## 运行配置
 
 - 模型：`gpt-5.6-sol`。
 - 速度：Standard（正常），显式关闭 Fast/priority。
-- 最大并发：10；遇到速率限制时自动降并发和退避。
+- 初始/最大并发：10；遇到速率限制时自动降并发和退避。
 - attempt 超时：2,700 秒。
 - 会话：每个 attempt 使用全新 CLI 进程和 `--ephemeral`。
 
-Prompt 修改并确认后，从仓库根目录执行：
+Prompt 确认后，从仓库根目录执行：
 
 ```powershell
 python -B experiments/2026-08-02-ip_codex_gpt56-sol_100x10/scripts/run_experiment.py
@@ -76,4 +82,4 @@ results/
 
 最终审计会验证磁盘上的 attempt 目录全部且仅由 `accepted_index.json` 引用，同时复查
 100 题调度、模型标识、每条 accepted 轨迹的独立严格匹配、停止阈值、临时工作区隔离、
-只读查询策略、事件流完整性和敏感凭据模式。
+直接只读文件策略、事件流完整性和敏感凭据模式。

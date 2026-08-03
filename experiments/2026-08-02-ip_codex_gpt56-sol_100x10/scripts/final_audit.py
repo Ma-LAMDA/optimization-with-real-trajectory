@@ -14,6 +14,7 @@ REPO = EXPERIMENT.parents[1]
 REPORT = EXPERIMENT / 'results' / 'report'
 RUNS = EXPERIMENT / 'results' / 'runs'
 DATASET = REPO / 'data' / 'simulation' / 'train_0629.jsonl'
+CONFIG_ROOT = REPO / 'saved_configs'
 EXPECTED_SOURCE_SHA256 = '79f961a2ce788fa2219e8ee5343b7fa87ca8d79ed3f3dec6049dca0ff7514ad9'
 MODEL = 'gpt-5.6-sol'
 MAX_CONSECUTIVE_WRONG = 10
@@ -106,13 +107,39 @@ def main() -> int:
         'train_0629.jsonl',
         'data/simulation',
         '10.139.194.154:3080',
+        '/v3/projects',
     ]
     required_prompt_fragments = [
         'saved_configs/',
-        '只读本地 http 服务',
-        '/v3/projects',
+        '三层目录',
+        'get-childitem',
+        'get-content',
+        'select-string',
         '<result>...</result>',
     ]
+    allowed_file_commands = (
+        'get-childitem',
+        'get-content',
+        'select-string',
+        'test-path',
+    )
+    forbidden_hook_fragments = (
+        'http://',
+        'https://',
+        'invoke-restmethod',
+        'invoke-webrequest',
+        'curl',
+        'wget',
+        '/v3/',
+        'set-content',
+        'add-content',
+        'out-file',
+        'remove-item',
+        'move-item',
+        'copy-item',
+        'new-item',
+    )
+    normalized_config_root = str(CONFIG_ROOT.resolve()).replace('\\', '/').casefold()
 
     for attempt_dir in attempt_dirs:
         rel = relative(attempt_dir)
@@ -191,9 +218,11 @@ def main() -> int:
                     continue
                 if item.get('allowed'):
                     hook_allowed += 1
-                    command = str(item.get('command') or '').lower()
-                    if '127.0.0.1:3080' not in command or any(
-                        fragment.lower() in command for fragment in forbidden_prompt_fragments
+                    command = str(item.get('command') or '').replace('\\', '/').casefold()
+                    if (
+                        normalized_config_root not in command
+                        or not any(name in command for name in allowed_file_commands)
+                        or any(fragment in command for fragment in forbidden_hook_fragments)
                     ):
                         allowed_hook_violations.append(rel)
                 else:
@@ -319,14 +348,14 @@ def main() -> int:
         'all_model_thread_ids_unique': len(thread_ids) == len(set(thread_ids)),
         'attempt_workdirs_are_isolated': not unsafe_workdirs,
         'safe_source_records_exclude_answers': not unsafe_source_records,
-        'prompts_exclude_source_and_remote_paths': not unsafe_prompts,
-        'allowed_hook_calls_are_local_api_only': not allowed_hook_violations,
+        'prompts_require_direct_saved_configs_file_reads_and_exclude_source_paths': not unsafe_prompts,
+        'allowed_hook_calls_are_saved_configs_file_reads_only': not allowed_hook_violations,
         'hook_audit_invalid_lines_confined_to_recorded_infrastructure_failures': not unexpected_invalid_hook_audit,
         'no_sensitive_credential_patterns_found': not sensitive_hits,
         'runner_protected_tree_integrity_passed': bool(summary['integrity']['passed']),
     }
     audit = {
-        'schema_version': 'ip-distill-final-audit.v3',
+        'schema_version': 'ip-distill-final-audit.v4',
         'experiment_root': str(EXPERIMENT),
         'source_path': str(DATASET),
         'source_sha256': source_hash,

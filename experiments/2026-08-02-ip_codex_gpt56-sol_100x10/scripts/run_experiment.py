@@ -11,13 +11,10 @@ import os
 import random
 import re
 import shutil
-import socket
 import subprocess
 import sys
 import threading
 import time
-import urllib.error
-import urllib.request
 from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -33,7 +30,7 @@ RUNS_DIR = EXPERIMENT_ROOT / "results" / "runs"
 QUESTIONS_DIR = EXPERIMENT_ROOT / "results" / "questions"
 DATASET = REPOSITORY_ROOT / "data" / "simulation" / "train_0629.jsonl"
 SOURCE_TEMPLATE = EXPERIMENT_ROOT / "inputs" / "IP user prompt by text.txt"
-SERVICE_SCRIPT = REPOSITORY_ROOT / "saved_configs_service" / "serve_saved_configs.py"
+CONFIG_ROOT = REPOSITORY_ROOT / "saved_configs"
 SAFE_INDEX = REPORT_DIR / "input_index.json"
 LOCALIZED_TEMPLATE = REPORT_DIR / "localized_prompt_template.txt"
 MANIFEST_PATH = REPORT_DIR / "manifest.json"
@@ -54,7 +51,7 @@ SOURCE_SHA256 = "79f961a2ce788fa2219e8ee5343b7fa87ca8d79ed3f3dec6049dca0ff7514ad
 TARGET_CORRECT = 10
 MAX_CONSECUTIVE_WRONG = 10
 MAX_TOTAL_WRONG = 20
-INITIAL_CONCURRENCY = 4
+INITIAL_CONCURRENCY = 10
 MAX_CONCURRENCY = 10
 ATTEMPT_RETENTION = "accepted_only"
 ATTEMPT_TIMEOUT_SECONDS = 45 * 60
@@ -337,170 +334,33 @@ def locate_and_copy_codex() -> None:
     )
 
 
-def service_health(base_url: str) -> bool:
-    request = urllib.request.Request(
-        f"{base_url}/healthz",
-        headers={"User-Agent": "ip-distill-runner/1.0"},
-    )
-    try:
-        with urllib.request.urlopen(request, timeout=5) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-            server = response.headers.get("Server", "")
-    except (OSError, urllib.error.URLError, json.JSONDecodeError):
-        return False
-    return payload == {"status": "ok"} and "SavedConfigsService/" in server
-
-
-def port_is_free(port: int) -> bool:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as candidate:
-        candidate.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        try:
-            candidate.bind(("127.0.0.1", port))
-        except OSError:
-            return False
-    return True
-
-
-def free_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as candidate:
-        candidate.bind(("127.0.0.1", 0))
-        return int(candidate.getsockname()[1])
-
-
-class ServiceManager:
-    def __init__(self) -> None:
-        self.process: subprocess.Popen[bytes] | None = None
-        self.managed = False
-        self.base_url = ""
-        self.port = 0
-
-    def ensure(self, preferred_url: str | None = None) -> str:
-        if preferred_url:
-            self.base_url = preferred_url
-            self.port = int(preferred_url.rsplit(":", 1)[1])
-            if service_health(preferred_url):
-                self._record("reused_existing_or_prior")
-                return preferred_url
-            if not port_is_free(self.port):
-                raise RuntimeError(
-                    f"required service port {self.port} is occupied by a non-matching service"
-                )
-            return self._start(self.port)
-        default = "http://127.0.0.1:3080"
-        if service_health(default):
-            self.base_url = default
-            self.port = 3080
-            self._record("reused_existing")
-            return default
-        port = 3080 if port_is_free(3080) else free_port()
-        return self._start(port)
-
-    def _start(self, port: int) -> str:
-        self.port = port
-        self.base_url = f"http://127.0.0.1:{port}"
-        stdout_path = REPORT_DIR / "service.stdout.log"
-        stderr_path = REPORT_DIR / "service.stderr.log"
-        env = os.environ.copy()
-        env["PYTHONDONTWRITEBYTECODE"] = "1"
-        env["PYTHONPYCACHEPREFIX"] = str(RUNTIME_DIR / "pycache")
-        command = [
-            sys.executable,
-            "-B",
-            str(SERVICE_SCRIPT),
-            "--host",
-            "127.0.0.1",
-            "--port",
-            str(port),
-        ]
-        creationflags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-        with (
-            stdout_path.open("a", encoding="utf-8", newline="\n") as stdout_handle,
-            stderr_path.open("a", encoding="utf-8", newline="\n") as stderr_handle,
-        ):
-            self.process = subprocess.Popen(
-                command,
-                cwd=REPOSITORY_ROOT,
-                env=env,
-                stdout=stdout_handle,
-                stderr=stderr_handle,
-                creationflags=creationflags,
-            )
-        self.managed = True
-        deadline = time.monotonic() + 30
-        while time.monotonic() < deadline:
-            if self.process.poll() is not None:
-                raise RuntimeError(
-                    f"saved_configs_service exited with code {self.process.returncode}"
-                )
-            if service_health(self.base_url):
-                self._record("started_by_experiment")
-                return self.base_url
-            time.sleep(0.5)
-        raise RuntimeError("saved_configs_service did not become healthy within 30 seconds")
-
-    def restart_if_owned(self) -> bool:
-        if service_health(self.base_url):
-            return True
-        if not self.managed:
-            return False
-        if self.process is not None and self.process.poll() is None:
-            self.process.terminate()
-            with contextlib.suppress(subprocess.TimeoutExpired):
-                self.process.wait(timeout=10)
-            if self.process.poll() is None:
-                self.process.kill()
-                self.process.wait(timeout=10)
-        if not port_is_free(self.port):
-            return False
-        self._start(self.port)
-        return True
-
-    def _record(self, action: str) -> None:
-        existing: dict[str, Any] = {}
-        path = REPORT_DIR / "service.json"
-        if path.exists():
-            with contextlib.suppress(Exception):
-                existing = load_json(path)
-        history = list(existing.get("history", []))
-        history.append(
-            {
-                "at": utc_now(),
-                "action": action,
-                "address": self.base_url,
-                "pid": self.process.pid if self.process else existing.get("pid"),
-            }
-        )
-        atomic_json(
-            path,
-            {
-                "schema_version": "ip-distill-service.v1",
-                "address": self.base_url,
-                "pid": self.process.pid if self.process else existing.get("pid"),
-                "managed_by_current_runner": self.managed,
-                "healthy": service_health(self.base_url),
-                "updated_at": utc_now(),
-                "stdout": "service.stdout.log",
-                "stderr": "service.stderr.log",
-                "history": history,
-            },
-        )
-
-    def stop(self) -> None:
-        if not self.managed or self.process is None:
-            return
-        if self.process.poll() is None:
-            self.process.terminate()
-            try:
-                self.process.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                self.process.kill()
-                self.process.wait(timeout=10)
-        self._record("stopped_by_experiment")
-
-
-def run_input_broker(base_url: str) -> dict[str, Any]:
+def run_input_broker() -> dict[str, Any]:
     if SAFE_INDEX.exists() and LOCALIZED_TEMPLATE.exists():
-        return load_json(SAFE_INDEX)
+        index = load_json(SAFE_INDEX)
+        template = SOURCE_TEMPLATE.read_text(encoding="utf-8-sig")
+        expected_template_hash = hashlib.sha256(template.encode("utf-8")).hexdigest()
+        expected = {
+            "schema_version": "ip-distill-safe-input-index.v2",
+            "source_sha256": sha256(DATASET),
+            "configuration_root": str(CONFIG_ROOT.resolve()),
+            "configuration_access": "direct_read_only_files",
+            "localized_template_sha256": expected_template_hash,
+        }
+        mismatches = {
+            key: {"existing": index.get(key), "required": value}
+            for key, value in expected.items()
+            if index.get(key) != value
+        }
+        if LOCALIZED_TEMPLATE.read_text(encoding="utf-8") != template:
+            mismatches["localized_template"] = {
+                "existing": "differs from current prompt source",
+                "required": "exact current prompt source",
+            }
+        if mismatches:
+            raise RuntimeError(
+                "existing safe input artifacts conflict with the current prompt or configuration root"
+            )
+        return index
     command = [
         sys.executable,
         "-B",
@@ -509,8 +369,8 @@ def run_input_broker(base_url: str) -> dict[str, Any]:
         str(DATASET),
         "--template",
         str(SOURCE_TEMPLATE),
-        "--base-url",
-        base_url,
+        "--config-root",
+        str(CONFIG_ROOT),
         "--output",
         str(SAFE_INDEX),
         "--localized-template",
@@ -563,7 +423,7 @@ def wrong_threshold_status(consecutive_wrong: int, total_wrong: int) -> str:
     return "pending"
 
 
-def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def initialize_or_validate(safe_index: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     source_hash = sha256(DATASET)
     if source_hash != SOURCE_SHA256:
         raise RuntimeError(f"source hash changed before generation: {source_hash}")
@@ -579,7 +439,8 @@ def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[d
             "model": MODEL,
             "target_correct_per_sample": TARGET_CORRECT,
             "record_count": 100,
-            "service_base_url": base_url,
+            "configuration_root": str(CONFIG_ROOT.resolve()),
+            "configuration_access": "direct_read_only_files",
             "max_consecutive_wrong": MAX_CONSECUTIVE_WRONG,
             "max_total_wrong": MAX_TOTAL_WRONG,
             "attempt_retention": ATTEMPT_RETENTION,
@@ -607,7 +468,7 @@ def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[d
         return manifest, state
 
     manifest = {
-        "schema_version": "ip-codex-distillation-manifest.v2",
+        "schema_version": "ip-codex-distillation-manifest.v3",
         "status": "running",
         "started_at": utc_now(),
         "experiment_root": str(EXPERIMENT_ROOT.resolve()),
@@ -620,7 +481,8 @@ def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[d
         "model_confirmation": cli["model_confirmation"],
         "codex_cli_version": cli["cli_version"],
         "codex_cli_sha256": cli["cli_sha256"],
-        "service_base_url": base_url,
+        "configuration_root": str(CONFIG_ROOT.resolve()),
+        "configuration_access": "direct_read_only_files",
         "initial_concurrency": INITIAL_CONCURRENCY,
         "maximum_concurrency": MAX_CONCURRENCY,
         "target_correct_per_sample": TARGET_CORRECT,
@@ -630,7 +492,12 @@ def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[d
         "ephemeral_sessions": True,
         "fresh_process_per_attempt": True,
         "attempt_retention": ATTEMPT_RETENTION,
-        "generator_input_fields": ["question", "output_format", "optimized copied user prompt", "local API URL"],
+        "generator_input_fields": [
+            "question",
+            "output_format",
+            "optimized copied user prompt",
+            "read-only saved_configs directory",
+        ],
         "prompt_source": safe_index["prompt_source"],
         "prompt_localization": safe_index["prompt_localization"],
         "comparator": "established_fault_set_exact_with_alternatives_v2",
@@ -941,6 +808,10 @@ def instantiate_prompt(template: str, record: dict[str, Any]) -> str:
         if prompt.count(placeholder) != 1:
             raise RuntimeError(f"localized template has invalid {placeholder}")
         prompt = prompt.replace(placeholder, value)
+    config_placeholder = "{saved_configs_root}"
+    if prompt.count(config_placeholder) < 1:
+        raise RuntimeError("localized template is missing saved_configs_root")
+    prompt = prompt.replace(config_placeholder, str(CONFIG_ROOT.resolve()))
     return prompt
 
 
@@ -981,7 +852,6 @@ def create_attempt(
     sample: dict[str, Any],
     record: dict[str, Any],
     template: str,
-    base_url: str,
 ) -> dict[str, Any]:
     success_slot = int(sample["accepted_count"]) + 1
     attempt_number = int(sample["next_attempt_number"])
@@ -1027,12 +897,12 @@ def create_attempt(
     ):
         (attempt_dir / name).touch()
     hook_command = subprocess.list2cmdline(
-        [sys.executable, "-B", str(SCRIPTS_DIR / "api_only_hook.py")]
+        [sys.executable, "-B", str(SCRIPTS_DIR / "file_read_only_hook.py")]
     )
     atomic_json(
         hooks_dir / "hooks.json",
         {
-            "description": "Allow only read-only saved_configs_service API queries.",
+            "description": "Allow only direct read-only file access under saved_configs/.",
             "hooks": {
                 "PreToolUse": [
                     {
@@ -1042,7 +912,7 @@ def create_attempt(
                                 "type": "command",
                                 "command": hook_command,
                                 "commandWindows": hook_command,
-                                "statusMessage": "Enforcing local API-only evidence access",
+                                "statusMessage": "Enforcing direct read-only saved_configs access",
                                 "timeout": 10,
                             }
                         ],
@@ -1054,7 +924,7 @@ def create_attempt(
     runtime_hook_config_sha256 = sha256(hooks_dir / "hooks.json")
     command = codex_command(workspace, attempt_dir / "final_answer.txt")
     metadata = {
-        "schema_version": "ip-distill-attempt.v1",
+        "schema_version": "ip-distill-attempt.v2",
         "row_index": sample["row_index"],
         "original_id": sample["original_id"],
         "sample_id": sample["sample_id"],
@@ -1068,14 +938,15 @@ def create_attempt(
         "started_at": utc_now(),
         "model": MODEL,
         "cli_version": load_json(REPORT_DIR / "cli_preflight.json")["cli_version"],
-        "service_base_url": base_url,
+        "configuration_root": str(CONFIG_ROOT.resolve()),
+        "configuration_access": "direct_read_only_files",
         "working_directory": str(workspace.resolve()),
         "ephemeral_session": True,
         "command": command,
         "prompt_sha256": sha256(prompt_path),
         "source_record_sha256": sha256(source_record_path),
         "contains_ground_answer": False,
-        "api_only_hook_sha256": sha256(SCRIPTS_DIR / "api_only_hook.py"),
+        "file_read_only_hook_sha256": sha256(SCRIPTS_DIR / "file_read_only_hook.py"),
         "runtime_hook_config_sha256": runtime_hook_config_sha256,
         "files": {
             "prompt": Path(os.path.relpath(prompt_path, attempt_dir)).as_posix(),
@@ -1114,7 +985,7 @@ def create_attempt(
         "workspace": workspace,
         "prompt": prompt,
         "command": command,
-        "base_url": base_url,
+        "configuration_root": CONFIG_ROOT.resolve(),
     }
 
 
@@ -1238,13 +1109,13 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
     timed_out = False
     exit_code: int | None = None
     launch_error: str | None = None
-    if not service_health(task["base_url"]):
+    if not Path(task["configuration_root"]).is_dir():
         metadata.update(
             {
                 "status": "infrastructure_failure",
-                "generation_status": "not_started_service_unavailable",
+                "generation_status": "not_started_configuration_root_unavailable",
                 "judge_status": "not_run",
-                "error_class": "service_unavailable",
+                "error_class": "configuration_root_unavailable",
                 "ended_at": utc_now(),
                 "duration_seconds": 0.0,
                 "exit_code": None,
@@ -1253,10 +1124,15 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
         atomic_json(metadata_path, metadata)
         atomic_text(attempt_dir / "exit_code.txt", "not_started\n")
         atomic_json(attempt_dir / "timing.json", {"started_at": metadata["started_at"], "ended_at": metadata["ended_at"], "duration_seconds": 0.0})
-        return {**task, "outcome": "infrastructure_failure", "error_class": "service_unavailable", "model_launched": False}
+        return {
+            **task,
+            "outcome": "infrastructure_failure",
+            "error_class": "configuration_root_unavailable",
+            "model_launched": False,
+        }
 
     env = os.environ.copy()
-    env["IP_DISTILL_ALLOWED_BASE"] = task["base_url"]
+    env["IP_DISTILL_ALLOWED_ROOT"] = str(task["configuration_root"])
     env["IP_DISTILL_HOOK_AUDIT"] = str((attempt_dir / "hook_audit_parts").resolve())
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     env["PYTHONPYCACHEPREFIX"] = str((attempt_dir / "workspace" / ".pycache").resolve())
@@ -1351,7 +1227,7 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
         error_class = "hook_audit_invalid"
         outcome = "infrastructure_failure"
     elif audit["allowed"] == 0:
-        error_class = "no_service_api_query"
+        error_class = "no_configuration_file_read"
         outcome = "infrastructure_failure"
 
     judgment: dict[str, Any] | None = None
@@ -1592,8 +1468,8 @@ def apply_outcome(state: dict[str, Any], task: dict[str, Any]) -> str | None:
         elif error_class == "timeout":
             state["timeout_count"] += 1
             schedule_pause(state, 60, "attempt_timeout")
-        elif error_class == "service_unavailable":
-            schedule_pause(state, 60, "service_unavailable")
+        elif error_class == "configuration_root_unavailable":
+            schedule_pause(state, 60, "configuration_root_unavailable")
         elif error_class in {"cli_launch_failure", "missing_thread_id", "hook_audit_invalid"}:
             probes = state.setdefault("blocker_probe_counts", {})
             probes[error_class] = int(probes.get(error_class, 0)) + 1
@@ -1601,7 +1477,7 @@ def apply_outcome(state: dict[str, Any], task: dict[str, Any]) -> str | None:
                 blocker = f"{error_class}_after_3_checks"
             else:
                 schedule_pause(state, 60 * probes[error_class], error_class)
-        elif error_class in {"rejected_policy_violation", "no_service_api_query"}:
+        elif error_class in {"rejected_policy_violation", "no_configuration_file_read"}:
             schedule_pause(state, 5, error_class)
         else:
             schedule_pause(state, 60, error_class)
@@ -1804,7 +1680,7 @@ def write_final_report(manifest: dict[str, Any], state: dict[str, Any]) -> None:
     statistics = collect_attempt_statistics(state)
     status_counts = Counter(sample["status"] for sample in state["samples"])
     summary = {
-        "schema_version": "ip-distill-final-summary.v2",
+        "schema_version": "ip-distill-final-summary.v3",
         "generated_at": utc_now(),
         "experiment_status": state["status"],
         "experiment_root": str(EXPERIMENT_ROOT.resolve()),
@@ -1813,7 +1689,8 @@ def write_final_report(manifest: dict[str, Any], state: dict[str, Any]) -> None:
         "input_record_count": 100,
         "codex_cli_version": manifest["codex_cli_version"],
         "model": MODEL,
-        "service_base_url": manifest["service_base_url"],
+        "configuration_root": manifest["configuration_root"],
+        "configuration_access": manifest["configuration_access"],
         "initial_concurrency": INITIAL_CONCURRENCY,
         "concurrency_history": state["concurrency_history"],
         "planned_samples": 100,
@@ -1839,7 +1716,8 @@ def write_final_report(manifest: dict[str, Any], state: dict[str, Any]) -> None:
         "- 输入非空记录数：100",
         f"- Codex CLI：`{manifest['codex_cli_version']}`",
         f"- 模型准确标识：`{MODEL}`（{DISPLAY_MODEL}）",
-        f"- saved_configs_service：`{manifest['service_base_url']}`",
+        f"- 配置读取方式：`{manifest['configuration_access']}`",
+        f"- 配置根目录：`{manifest['configuration_root']}`",
         f"- 初始并发度：{INITIAL_CONCURRENCY}",
         f"- 计划/进入调度：100 / {len(state['samples'])}",
         f"- 完成 10 条正确轨迹：{status_counts.get('completed_with_10_correct', 0)} 题",
@@ -1913,7 +1791,7 @@ def write_final_report(manifest: dict[str, Any], state: dict[str, Any]) -> None:
     atomic_text(FINAL_REPORT_PATH, "\n".join(lines))
 
 
-def run_scheduler(manifest: dict[str, Any], state: dict[str, Any], safe_index: dict[str, Any], service: ServiceManager) -> None:
+def run_scheduler(manifest: dict[str, Any], state: dict[str, Any], safe_index: dict[str, Any]) -> None:
     records = {record["sample_key"]: record for record in safe_index["records"]}
     template = LOCALIZED_TEMPLATE.read_text(encoding="utf-8")
     active: dict[concurrent.futures.Future[dict[str, Any]], dict[str, Any]] = {}
@@ -1971,7 +1849,6 @@ def run_scheduler(manifest: dict[str, Any], state: dict[str, Any], safe_index: d
                         sample,
                         records[sample["sample_key"]],
                         template,
-                        service.base_url,
                     )
                     future = executor.submit(execute_attempt, task)
                     active[future] = task
@@ -2023,9 +1900,6 @@ def run_scheduler(manifest: dict[str, Any], state: dict[str, Any], safe_index: d
                 outcome_blocker = apply_outcome(state, result)
                 if result.get("error_class") == "rate_limited_429":
                     last_rate_event = time.monotonic()
-                if result.get("error_class") == "service_unavailable":
-                    with contextlib.suppress(Exception):
-                        service.restart_if_owned()
                 if outcome_blocker:
                     blocker = outcome_blocker
 
@@ -2049,18 +1923,15 @@ def main() -> int:
     for path in (SCRIPTS_DIR, RUNTIME_DIR, REPORT_DIR, RUNS_DIR):
         path.mkdir(parents=True, exist_ok=True)
     acquire_runner_lock()
-    service = ServiceManager()
     manifest: dict[str, Any] | None = None
     state: dict[str, Any] | None = None
     try:
         create_baseline()
         locate_and_copy_codex()
-        preferred_url = None
-        if MANIFEST_PATH.exists():
-            preferred_url = str(load_json(MANIFEST_PATH).get("service_base_url") or "") or None
-        base_url = service.ensure(preferred_url)
-        safe_index = run_input_broker(base_url)
-        manifest, state = initialize_or_validate(base_url, safe_index)
+        if not CONFIG_ROOT.is_dir():
+            raise RuntimeError(f"configuration root does not exist: {CONFIG_ROOT}")
+        safe_index = run_input_broker()
+        manifest, state = initialize_or_validate(safe_index)
         if ensure_retention_state(state):
             atomic_json(STATE_PATH, state)
             write_accepted_index(state)
@@ -2085,7 +1956,7 @@ def main() -> int:
             manifest["status"] = "running"
             atomic_json(STATE_PATH, state)
             atomic_json(MANIFEST_PATH, manifest)
-            run_scheduler(manifest, state, safe_index, service)
+            run_scheduler(manifest, state, safe_index)
         write_final_report(manifest, state)
         final_status = "completed" if state.get("status") == "completed" else "stopped"
         finish_runner_lock(final_status)
@@ -2122,9 +1993,5 @@ def main() -> int:
         finish_runner_lock("stopped")
         log(f"hard blocker: {reason}")
         return 2
-    finally:
-        service.stop()
-
-
 if __name__ == "__main__":
     raise SystemExit(main())

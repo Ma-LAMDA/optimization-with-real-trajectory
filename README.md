@@ -502,16 +502,19 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 `experiments/2026-08-02-ip_codex_gpt56-sol_100x10/` 是基于
 `IP user prompt by text.txt` 的新一轮本地 Codex CLI + `gpt-5.6-sol` 全量蒸馏。
 该目录同时保留原提示词副本和优化提示词；优化版将配置根目录明确为
-`saved_configs/`，并通过只读本地服务隔离标准答案。实验覆盖全部 100 题，每题只收录
+`saved_configs/`，说明 `<项目>/<节点>/<命令回显>.txt` 的三级目录与文件名转换规则，
+并要求生成器直接列目录、搜索和读取本地文件；HTTP/API 读取被禁止，标准答案仍由安全
+输入边界隔离。实验覆盖全部 100 题，每题只收录
 独立严格判题正确的 10 条轨迹；连续错误达到 10 次或累计错误达到 20 次时停止该题，
 基础设施失败不计入这两个阈值。运行状态、accepted 唯一映射和恢复方法见该实验的
 [`README.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/README.md)。2026-08-03 账号切换
 检查点曾归档 accepted 18 / 1,000；随后确认实际 user prompt 存在问题，旧 `results/`
-已整体作废并删除，当前有效 accepted 和 attempt 均为 0。实验等待用户修改并确认 prompt，
-之后从 q0001 attempt 1 全新启动，不恢复旧断点。新运行强制采用 accepted-only 保留策略：
+已整体作废并删除，当前有效 accepted 和 attempt 均为 0。实际 prompt 已在 2026-08-03
+完成本地文件读取版优化，当前等待用户确认；之后从 q0001 attempt 1 全新启动，不恢复
+旧断点。新运行强制采用 accepted-only 保留策略：
 **失败或中断结果一律不保留**；错误、格式错误、基础设施失败、超时和中断只保留必要的
 状态计数，不归档、不提交、不长期保留其事件流、回答、日志或 attempt 目录。重置状态、
-固定的 Standard 速度/最大并发 10 配置及启动清单见
+固定的 Standard 速度/初始及最大并发 10 配置及启动清单见
 [`HANDOFF.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/HANDOFF.md)。
 
 三个 Codex 轨迹实验已采用统一的紧凑归档：`prompt.txt` 和
@@ -545,6 +548,9 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-03：重写 0802 GPT-5.6-Sol 100×10 实验 prompt，将配置访问从本地 API
+  改为直接只读 `saved_configs/` 文件，补充项目、节点、命令回显文件的目录解析规则，
+  并同步切换输入边界、运行 hook、最终审计和交接文档；尚未启动新一轮采集。
 - 2026-08-01：增加 27B base 全量 Agent eval 的单实例 TP2、双并发重跑入口；重新
   覆盖历史相同的 92 题×5 次范围，明确与旧 8-worker 轨迹隔离，并保留断点恢复能力。
 - 2026-08-01：完成 checkpoint-760 +100 与历史 base-eval 的同条件完整 Agent A/B；

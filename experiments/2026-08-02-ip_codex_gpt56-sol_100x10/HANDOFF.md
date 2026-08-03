@@ -4,10 +4,10 @@
 
 2026-08-03，用户确认当前实际 user prompt 存在问题，因此此前采集结果全部作废。
 实验目录下的 `results/` 已整体删除，不再保留任何 accepted、错误、基础设施失败或中断
-attempt，也不应从历史提交恢复这些旧结果。控制器、Codex 子进程和本地
-`saved_configs_service` 均已停止，旧 attempt 监听已停用。
+attempt，也不应从历史提交恢复这些旧结果。控制器和 Codex 子进程均已停止，旧 attempt
+监听已停用；新方案不再启动或依赖 `saved_configs_service`。
 
-当前实验处于“等待修改 prompt”状态：
+实际运行 prompt 已于 2026-08-03 重新优化，当前处于“等待用户确认 prompt”状态：
 
 | 指标 | 当前值 |
 |---|---:|
@@ -26,10 +26,11 @@ attempt，也不应从历史提交恢复这些旧结果。控制器、Codex 子�
 - 生成器：本地 Codex CLI，模型固定为 `gpt-5.6-sol`。
 - 每题目标：10 条经独立严格判题正确的轨迹，总目标 1,000 条。
 - 某题连续错误达到 10 次，或累计错误达到 20 次时停止该题并继续其他题。
-- 基础设施、认证、额度、网络、模型不可用、服务不可用和超时不计入题目错误阈值。
-- 配置根目录必须是仓库根目录 `saved_configs/`；生成器只能经只读本地 HTTP 服务查询。
+- 基础设施、认证、额度、网络、模型不可用、配置根目录不可用和超时不计入题目错误阈值。
+- 配置根目录必须是仓库根目录 `saved_configs/`；生成器只能直接读取其中的本地文件，
+  禁止使用 HTTP 或 API 获取配置。
 - 运行速度固定为 Standard（正常），显式关闭 Fast/priority。
-- 最大并发为 10；发生 429 时允许控制器自动降并发和退避。
+- 初始/最大并发均为 10；发生 429 时允许控制器自动降并发和退避。
 - 每次 attempt 使用新的 CLI 进程和 `--ephemeral` 会话。
 
 ## Prompt 修改位置
@@ -37,13 +38,17 @@ attempt，也不应从历史提交恢复这些旧结果。控制器、Codex 子�
 - 原始副本：[`inputs/IP user prompt by text.original.txt`](inputs/IP%20user%20prompt%20by%20text.original.txt)
 - 实际运行 prompt：[`inputs/IP user prompt by text.txt`](inputs/IP%20user%20prompt%20by%20text.txt)
 
-重新采集前必须先修改并复核实际运行 prompt。至少确认：
+重新采集前必须复核实际运行 prompt。至少确认：
 
 1. `{original_query}` 和 `{output_format}` 各出现且只出现一次。
-2. 配置目录明确写为 `saved_configs/`。
-3. 生成器不能看到标准答案，也不能直接读取源数据或配置文件。
-4. 本地只读 API、最终 `<result>...</result>` 和 JSON 字符串数组格式说明正确。
-5. 不要先运行控制器；prompt 经用户确认后再从零启动。
+2. 配置目录明确写为 `saved_configs/`，并包含由控制器替换为绝对路径的
+   `{saved_configs_root}` 占位符。
+3. 目录解析明确为 `<项目>/<节点>/<命令回显>.txt`；先按题目锁定项目、再列真实节点与
+   文件，文件名转换规则仅用于定位，结论必须回读文件内容核验。
+4. 生成器不能看到标准答案、不能读取源数据或 `saved_configs/` 之外的文件；配置证据
+   必须使用本地文件命令直接读取，不得使用 API。
+5. 最终 `<result>...</result>` 和 JSON 字符串数组格式说明正确。
+6. 不要先运行控制器；prompt 经用户确认后再从零启动。
 
 ## 强制产物保留策略：只保留 accepted
 
@@ -81,6 +86,6 @@ attempt 1 开始采集。不要恢复或复制旧 `results/`。
 - 不得长期保留或提交任何非 accepted（包括失败和中断）attempt 的结果或目录。
 - 不得直接修改 accepted 或错误计数；只能由控制器和独立判题器更新。
 - 不得把基础设施失败计入 `consecutive_wrong` 或 `total_wrong`。
-- 不得让生成器读取标准答案或绕过只读本地 API。
+- 不得让生成器读取标准答案，绕过配置根目录限制，或用 API 代替直接文件读取。
 - 不得重新开启 Fast/priority。
 - 提交或推送新的运行结果时，同步更新本实验 README 和仓库根 README。

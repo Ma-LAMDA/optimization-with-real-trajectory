@@ -1,41 +1,66 @@
-根据题目和组网配置快照定位故障根因。
+根据题目描述和本地组网配置快照定位故障根因。
 
 ## 题目
 
 {original_query}
 
-## 配置数据与查询边界
+## 配置目录
 
-配置根目录为仓库根目录下的 `saved_configs/`。其中保存的是预先采集的只读快照，
-不是实时设备；没有收录的命令不能视为设备执行失败或配置不存在。
+配置根目录为 `{saved_configs_root}`，即仓库根目录下的 `saved_configs/`。
 
-本实验必须通过只读本地 HTTP 服务查询 `saved_configs/`，不得直接读取或搜索文件系统，
-不得访问其他目录，也不得编造项目、节点、配置或命令回显。
+必须直接列目录、搜索并读取该目录中的本地 `.txt` 文件。禁止使用 HTTP、API、
+`Invoke-RestMethod`、curl、浏览器或任何网络服务读取配置；禁止读取配置根目录以外的
+文件。这里保存的是预先采集的只读快照，不是实时设备；未收录某条命令只表示快照中
+缺少该证据，不能据此认定设备执行失败或配置不存在。
 
-- 基础 URL：`http://127.0.0.1:3080`
-- 健康检查：`GET /healthz`
-- 项目列表：`GET /v3/projects`
-- 节点列表：`GET /v3/projects/{project_id}/nodes`
-- 命令发现：`GET /v3/projects/{project_id}/nodes/{node_id}/commands?keyword={keyword}&limit=200&offset=0`
-- 命令回显：`GET /v3/projects/{project_id}/nodes/{node_id}/command?cmd={command_key}`
-- 项目内搜索：`GET /v3/projects/{project_id}/search?q={query}&node_id={node_id}&file_keyword={keyword}&limit=20`
+## 目录结构与解析规则
 
-所有路径参数和查询参数都要 URL 编码。使用 PowerShell 的 `Invoke-RestMethod` 发起 GET
-请求。命令发现接口返回的 `command_key` 是精确标识；先发现再查询，不要自行猜测标识。
-搜索只用于定位线索，关键结论应再读取对应命令的完整回显。
+目录固定为三级结构：
+
+```text
+saved_configs/
+└── <项目目录>/
+    └── <节点目录>/
+        └── <命令回显文件>.txt
+```
+
+1. `<项目目录>` 表示一套独立组网，目录名对应题目中的组网名，例如
+   `CampusNetwork_02`。先从题目提取组网名并精确匹配项目目录；一旦锁定项目，禁止混用
+   其他项目的数据。
+2. `<节点目录>` 表示该项目中的设备或主机，目录名对应题目、已知路径或配置中出现的
+   节点名，例如 `SH_Core`、`PE1`。先列出项目下的真实节点目录，再选择相关节点，不要
+   猜测目录名。
+3. `<命令回显文件>.txt` 保存一次命令的快照。文件名通常由原命令转换而来：数字、英文
+   字母、下划线、点和连字符保持不变，其他每个字符分别替换为下划线，最后添加 `.txt`。
+   例如 `show ip route` 对应 `show_ip_route.txt`，`display current-configuration | include
+   Vlanif10` 对应 `display_current-configuration___include_Vlanif10.txt`，
+   `cat /etc/resolv.conf` 对应 `cat__etc_resolv.conf.txt`。
+4. 文件名转换只是定位线索。必须先列出节点目录中的实际文件，再读取匹配文件；不要仅凭
+   命令名称臆造文件名。需要搜索关键字时，只在已锁定项目内按节点、文件名或文件内容
+   缩小范围，关键结论必须回到相关 `.txt` 文件的完整内容核验。
+
+可使用只读文件命令，例如：
+
+```powershell
+Get-ChildItem -LiteralPath '{saved_configs_root}' -Directory
+Get-ChildItem -LiteralPath '{saved_configs_root}\<项目目录>' -Directory
+Get-ChildItem -LiteralPath '{saved_configs_root}\<项目目录>\<节点目录>' -File
+Get-Content -LiteralPath '{saved_configs_root}\<项目目录>\<节点目录>\<文件名>.txt' -Raw
+Select-String -Path '{saved_configs_root}\<项目目录>\<节点目录>\*.txt' -Pattern '<关键字>'
+```
+
+不得修改、创建、删除或移动任何配置文件。
 
 ## 调查要求
 
-1. 先检查服务并锁定唯一项目。题目给出项目名时精确匹配；否则用题目中的节点名核对
-   候选项目。锁定后不得混用其他项目的数据。
-2. 根据故障现象提出少量可证伪假设，优先查询最能区分这些假设的证据，不要机械读取
-   所有快照。
-3. 沿实际转发路径核对相关节点。按需检查接口与邻接、VLAN/STP/MAC/聚合、IP/ARP/
+1. 根据故障现象提出少量可证伪假设，优先读取最能区分这些假设的证据，不要无目的地
+   遍历或全文读取整个配置根目录。
+2. 沿实际转发路径核对相关节点。按需检查接口与邻接、VLAN/STP/MAC/聚合、IP/ARP/
    路由/VRF、动态路由、安全策略和主机侧状态。
-4. 关键结论至少用配置意图和运行状态交叉验证；条件允许时再核对链路另一端或上下游。
-   明确区分“证据显示异常”“证据显示正常”和“快照未收录相关命令”。
-5. 只输出由快照证据支持的最小故障根因集合。若证据不足以唯一判断，说明缺失证据，
-   不要把猜测写成确定结论。
+3. 关键结论至少用配置意图和运行状态交叉验证；条件允许时再核对链路另一端或上下游。
+   明确区分“证据显示异常”“证据显示正常”和“快照未收录相关证据”。
+4. 只输出由快照证据支持的最小故障根因集合。若证据不足以唯一判断，不要把猜测写成
+   确定结论。
 
 ## 答案格式
 
