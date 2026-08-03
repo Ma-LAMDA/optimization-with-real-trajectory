@@ -8,6 +8,11 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+from prune_failed_trajectory_payloads import (
+    MANIFEST as PRUNING_MANIFEST,
+    validate_applied_manifest,
+)
+
 
 EXPERIMENT = Path(__file__).resolve().parents[1]
 REPO = EXPERIMENT.parents[1]
@@ -81,6 +86,16 @@ def main() -> int:
     source_lines = [line for line in DATASET.read_text(encoding='utf-8-sig').splitlines() if line.strip()]
     records = {index: json.loads(line) for index, line in enumerate(source_lines, start=1)}
     attempt_dirs = sorted(RUNS.glob('q*_r*/attempt_*'))
+    pruning_manifest: dict[str, Any] | None = None
+    pruning_validation: dict[str, Any] = {
+        'passed': True,
+        'errors': [],
+        'entries': {},
+    }
+    if PRUNING_MANIFEST.exists():
+        pruning_manifest = load(PRUNING_MANIFEST)
+        pruning_validation = validate_applied_manifest(pruning_manifest)
+    pruned_by_path: dict[str, dict[str, Any]] = pruning_validation['entries']
 
     missing_events: list[str] = []
     invalid_events: list[dict[str, Any]] = []
@@ -95,8 +110,14 @@ def main() -> int:
     thread_ids: list[str] = []
     model_process_started = 0
     raw_event_lines = 0
+    live_raw_event_lines = 0
+    pruned_raw_event_lines = 0
     hook_allowed = 0
     hook_denied = 0
+    live_hook_allowed = 0
+    live_hook_denied = 0
+    pruned_hook_allowed = 0
+    pruned_hook_denied = 0
     invalid_hook_audit: list[dict[str, Any]] = []
     forbidden_source_keys = {'answer', 'ground_truth', 'reference_answer', 'expected_result'}
     forbidden_prompt_fragments = [
@@ -109,6 +130,7 @@ def main() -> int:
 
     for attempt_dir in attempt_dirs:
         rel = relative(attempt_dir)
+        pruned_entry = pruned_by_path.get(rel)
         question_key = attempt_dir.parent.name.split('_r', 1)[0]
         metadata: dict[str, Any] = {}
         events = attempt_dir / 'events.jsonl'
@@ -118,12 +140,39 @@ def main() -> int:
         safe_record_path = question_dir / 'source_record.json'
         prompt_path = question_dir / 'prompt.txt'
         hook_path = attempt_dir / 'hook_audit.jsonl'
-        if not events.exists():
+        if pruned_entry is not None:
+            event_record = next(
+                (
+                    item
+                    for item in pruned_entry.get('pruned_artifacts', [])
+                    if item.get('path') == 'events.jsonl'
+                ),
+                None,
+            )
+            if event_record is None:
+                missing_events.append(rel)
+            else:
+                event_summary = event_record.get('content_summary', {})
+                archived_line_count = int(event_summary.get('line_count', 0))
+                raw_event_lines += archived_line_count
+                pruned_raw_event_lines += archived_line_count
+                invalid_events.extend(
+                    {
+                        'attempt_path': rel,
+                        'line': int(line_number),
+                        'recorded_before_pruning': True,
+                    }
+                    for line_number in event_summary.get(
+                        'invalid_line_numbers', []
+                    )
+                )
+        elif not events.exists():
             missing_events.append(rel)
         else:
             with events.open('r', encoding='utf-8', errors='strict') as handle:
                 for line_number, line in enumerate(handle, start=1):
                     raw_event_lines += 1
+                    live_raw_event_lines += 1
                     try:
                         json.loads(line)
                     except (json.JSONDecodeError, UnicodeDecodeError):
@@ -160,7 +209,40 @@ def main() -> int:
             prompt = prompt_path.read_text(encoding='utf-8', errors='replace').lower()
             if any(fragment.lower() in prompt for fragment in forbidden_prompt_fragments):
                 unsafe_prompts.append(rel)
-        if hook_path.exists():
+        if pruned_entry is not None:
+            hook_record = next(
+                (
+                    item
+                    for item in pruned_entry.get('pruned_artifacts', [])
+                    if item.get('path') == 'hook_audit.jsonl'
+                ),
+                None,
+            )
+            if hook_record is not None:
+                hook_summary = hook_record.get('content_summary', {})
+                archived_allowed = int(hook_summary.get('allowed_count', 0))
+                archived_denied = int(hook_summary.get('denied_count', 0))
+                hook_allowed += archived_allowed
+                hook_denied += archived_denied
+                pruned_hook_allowed += archived_allowed
+                pruned_hook_denied += archived_denied
+                invalid_hook_audit.extend(
+                    {
+                        'attempt_path': rel,
+                        'line': int(line_number),
+                        'recorded_before_pruning': True,
+                        'expected_infrastructure_failure': (
+                            metadata.get('status') == 'infrastructure_failure'
+                            and metadata.get('error_class') == 'hook_audit_invalid'
+                        ),
+                    }
+                    for line_number in hook_summary.get(
+                        'invalid_line_numbers', []
+                    )
+                )
+                if hook_summary.get('allowed_violation_line_numbers'):
+                    allowed_hook_violations.append(rel)
+        elif hook_path.exists():
             for line_number, line in enumerate(
                 hook_path.read_text(encoding='utf-8', errors='strict').splitlines(),
                 start=1,
@@ -179,6 +261,7 @@ def main() -> int:
                     continue
                 if item.get('allowed'):
                     hook_allowed += 1
+                    live_hook_allowed += 1
                     command = str(item.get('command') or '').lower()
                     if '127.0.0.1:3080' not in command or any(
                         fragment.lower() in command for fragment in forbidden_prompt_fragments
@@ -186,6 +269,7 @@ def main() -> int:
                         allowed_hook_violations.append(rel)
                 else:
                     hook_denied += 1
+                    live_hook_denied += 1
 
     accepted_paths: list[str] = []
     accepted_events: list[str] = []
@@ -273,7 +357,8 @@ def main() -> int:
         'accepted_artifacts_and_judgments_valid': not accepted_errors,
         'accepted_independent_answer_recheck_passed': not independent_recheck_failures,
         'accepted_index_sequential_and_state_consistent': not index_errors,
-        'all_attempt_directories_have_events': not missing_events,
+        'all_required_attempts_have_events_or_pruning_records': not missing_events,
+        'failed_attempt_payload_pruning_manifest_valid': pruning_validation['passed'],
         'all_nonempty_event_lines_are_json': not invalid_events,
         'events_are_single_raw_stdout_streams': not unexpected_stdout_files,
         'all_attempts_have_metadata': not missing_metadata,
@@ -289,7 +374,7 @@ def main() -> int:
         'runner_protected_tree_integrity_passed': bool(summary['integrity']['passed']),
     }
     audit = {
-        'schema_version': 'ip-distill-final-audit.v2',
+        'schema_version': 'ip-distill-final-audit.v3',
         'experiment_root': str(EXPERIMENT),
         'source_path': str(DATASET),
         'source_sha256': source_hash,
@@ -298,16 +383,32 @@ def main() -> int:
         'status_counts': dict(sorted(status_counts.items())),
         'accepted_total': len(accepted_paths),
         'attempt_directory_count': len(attempt_dirs),
+        'failed_attempt_pruning_manifest': (
+            relative(PRUNING_MANIFEST) if pruning_manifest is not None else None
+        ),
+        'pruned_failed_attempt_count': len(pruned_by_path),
+        'pruned_payload_bytes': (
+            int(pruning_manifest['summary']['pruned_bytes'])
+            if pruning_manifest is not None
+            else 0
+        ),
         'model_process_started_count': model_process_started,
         'raw_event_line_count': raw_event_lines,
+        'live_raw_event_line_count': live_raw_event_lines,
+        'pruned_raw_event_line_count': pruned_raw_event_lines,
         'thread_id_count': len(thread_ids),
         'unique_thread_id_count': len(set(thread_ids)),
         'accepted_comparator_counts': dict(sorted(accepted_comparators.items())),
         'hook_allowed_count': hook_allowed,
         'hook_denied_count': hook_denied,
+        'live_hook_allowed_count': live_hook_allowed,
+        'live_hook_denied_count': live_hook_denied,
+        'pruned_hook_allowed_count': pruned_hook_allowed,
+        'pruned_hook_denied_count': pruned_hook_denied,
         'checks': checks,
         'failures': {
             'missing_events': missing_events,
+            'pruning_manifest_errors': pruning_validation['errors'],
             'invalid_events': invalid_events,
             'unexpected_stdout_files': unexpected_stdout_files,
             'missing_metadata': missing_metadata,

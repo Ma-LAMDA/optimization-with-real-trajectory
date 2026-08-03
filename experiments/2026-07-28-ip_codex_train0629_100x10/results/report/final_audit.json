@@ -1,5 +1,5 @@
 {
-  "schema_version": "ip-distill-final-audit.v2",
+  "schema_version": "ip-distill-final-audit.v3",
   "experiment_root": "D:\\myWork\\github\\optimization-with-real-trajectory\\2026-07-31-sft\\experiments\\2026-07-28-ip_codex_train0629_100x10",
   "source_path": "D:\\myWork\\github\\optimization-with-real-trajectory\\2026-07-31-sft\\data\\simulation\\train_0629.jsonl",
   "source_sha256": "79f961a2ce788fa2219e8ee5343b7fa87ca8d79ed3f3dec6049dca0ff7514ad9",
@@ -11,8 +11,13 @@
   },
   "accepted_total": 819,
   "attempt_directory_count": 1313,
+  "failed_attempt_pruning_manifest": "results/report/failed_trajectory_pruning.json",
+  "pruned_failed_attempt_count": 494,
+  "pruned_payload_bytes": 436649603,
   "model_process_started_count": 1302,
   "raw_event_line_count": 320605,
+  "live_raw_event_line_count": 188674,
+  "pruned_raw_event_line_count": 131931,
   "thread_id_count": 1301,
   "unique_thread_id_count": 1301,
   "accepted_comparator_counts": {
@@ -21,6 +26,10 @@
   },
   "hook_allowed_count": 158693,
   "hook_denied_count": 11557,
+  "live_hook_allowed_count": 92916,
+  "live_hook_denied_count": 6844,
+  "pruned_hook_allowed_count": 65777,
+  "pruned_hook_denied_count": 4713,
   "checks": {
     "source_record_count_100": true,
     "source_hash_unchanged": true,
@@ -32,7 +41,8 @@
     "accepted_artifacts_and_judgments_valid": true,
     "accepted_independent_answer_recheck_passed": true,
     "accepted_index_sequential_and_state_consistent": true,
-    "all_attempt_directories_have_events": true,
+    "all_required_attempts_have_events_or_pruning_records": true,
+    "failed_attempt_payload_pruning_manifest_valid": true,
     "all_nonempty_event_lines_are_json": true,
     "events_are_single_raw_stdout_streams": true,
     "all_attempts_have_metadata": true,
@@ -49,6 +59,7 @@
   },
   "failures": {
     "missing_events": [],
+    "pruning_manifest_errors": [],
     "invalid_events": [],
     "unexpected_stdout_files": [],
     "missing_metadata": [],
@@ -63,16 +74,19 @@
       {
         "attempt_path": "results/runs/q0001_r01/attempt_002",
         "line": 103,
+        "recorded_before_pruning": true,
         "expected_infrastructure_failure": true
       },
       {
         "attempt_path": "results/runs/q0003_r01/attempt_003",
         "line": 191,
+        "recorded_before_pruning": true,
         "expected_infrastructure_failure": true
       },
       {
         "attempt_path": "results/runs/q0004_r01/attempt_002",
         "line": 115,
+        "recorded_before_pruning": true,
         "expected_infrastructure_failure": true
       }
     ],

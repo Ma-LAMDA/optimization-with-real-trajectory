@@ -35,6 +35,27 @@ config/hooks.json        历史运行共享的唯一 hooks 配置副本
 py -3 -B experiments/2026-07-28-ip_codex_train0629_100x10/scripts/run_experiment.py
 ```
 
+## 失败轨迹紧凑归档
+
+历史实验的 819 条 `accepted` 轨迹继续完整保留。494 条未成功 attempt（473 条
+`rejected`、10 条 `infrastructure_failure`、11 条 `interrupted`）仅保留
+`metadata.json`、`timing.json`、`judgment.json`、`final_answer.txt`、退出码及恢复记录等
+紧凑证据；其 `events.jsonl`、hook 明细和诊断日志已经裁剪。裁剪前每个文件或目录的
+大小、SHA-256、事件行数及 hook 计数保存在
+`results/report/failed_trajectory_pruning.json`，因此逐题 attempt 数、成功数、状态和平均
+耗时仍可由保留的 metadata 复核。原始失败轨迹正文不再位于当前 Git 树中。
+
+裁剪操作可先预览，再显式执行；当前归档只需运行检查：
+
+```powershell
+py -3 -B experiments/2026-07-28-ip_codex_train0629_100x10/scripts/prune_failed_trajectory_payloads.py
+py -3 -B experiments/2026-07-28-ip_codex_train0629_100x10/scripts/prune_failed_trajectory_payloads.py --apply
+py -3 -B experiments/2026-07-28-ip_codex_train0629_100x10/scripts/prune_failed_trajectory_payloads.py --check
+```
+
+`final_audit.py` 会同时验证完整 accepted 轨迹和失败轨迹裁剪清单；裁剪清单缺项、保留
+文件哈希变化或应删除载荷重新出现都会使审计失败。
+
 本目录属于数据采集实验，worker 数、并发调度和退避策略以本实验脚本及 manifest
 为准，不受 Qwen3.6-27B eval 单实例双并发策略约束。
 
