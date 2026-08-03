@@ -9,9 +9,9 @@
 
 2026-08-03，用户确认实际 user prompt 存在问题，因此此前的 82 个 attempt 和全部
 中间状态均已作废并删除。当前有效 accepted 和 attempt 都是 0，`results/` 不存在，
-控制器和 Codex 子进程均已停止。实际运行 prompt 已于 2026-08-03 按“直接读取
-`saved_configs/` 本地文件、禁止 API”的要求重新优化，当前等待用户复核；确认后再从
-q0001 attempt 1 开始全新采集，不得恢复旧结果。
+控制器和 Codex 子进程均已停止。实际运行 prompt 已于 2026-08-03 改为直接读取
+`saved_configs/` 本地文件，并简化了读取方式和快照属性的限制性说明；当前等待用户复核。
+确认后再从 q0001 attempt 1 开始全新采集，不得恢复旧结果。
 
 完整任务、固定配置、prompt 复核清单和重新启动步骤见 [`HANDOFF.md`](HANDOFF.md)。
 
