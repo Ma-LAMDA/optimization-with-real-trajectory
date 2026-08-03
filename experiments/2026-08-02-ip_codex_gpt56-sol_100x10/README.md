@@ -45,12 +45,15 @@ python -B experiments/2026-08-02-ip_codex_gpt56-sol_100x10/scripts/run_experimen
 
 控制器会重新创建 `results/`，从零初始化 manifest、state、题目输入副本和 accepted 索引。
 
-## Accepted-only 保留策略
+## 强制保留策略：只保留 accepted
 
-后续采集只长期保留 accepted 正确轨迹的完整 attempt 目录。错误答案、格式错误和基础设施
-失败会先写入 `state.json` 的计数，再删除其 attempt 目录；运行中断留下的目录会在下次
-启动完成中断记账后删除。删除不会回退或复用 attempt 编号，连续错误和累计错误阈值仍按
-状态计数执行。
+> **失败或中断的结果一律不保留。只有 accepted 正确结果可以长期保存完整轨迹。**
+
+这里的“不保留”包括：不归档、不提交，也不长期保留错误答案、格式错误、基础设施失败、
+超时或中断 attempt 的事件流、回答、日志、判题文件、审计文件和目录。非 accepted attempt
+只允许在执行及记账期间短暂存在；控制器必须先把错误/基础设施计数和停止阈值写入
+`state.json`，随后删除整个 attempt 目录。运行中断留下的目录在下次启动完成中断记账后
+删除。删除不会回退或复用 attempt 编号，连续错误和累计错误阈值仍按状态计数执行。
 
 最终 `results/` 的主要结构为：
 

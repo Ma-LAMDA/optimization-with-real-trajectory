@@ -508,8 +508,9 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 [`README.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/README.md)。2026-08-03 账号切换
 检查点曾归档 accepted 18 / 1,000；随后确认实际 user prompt 存在问题，旧 `results/`
 已整体作废并删除，当前有效 accepted 和 attempt 均为 0。实验等待用户修改并确认 prompt，
-之后从 q0001 attempt 1 全新启动，不恢复旧断点。新运行采用 accepted-only 保留策略：
-错误、格式错误、基础设施失败和中断只保留状态计数，不长期保留 attempt 目录。重置状态、
+之后从 q0001 attempt 1 全新启动，不恢复旧断点。新运行强制采用 accepted-only 保留策略：
+**失败或中断结果一律不保留**；错误、格式错误、基础设施失败、超时和中断只保留必要的
+状态计数，不归档、不提交、不长期保留其事件流、回答、日志或 attempt 目录。重置状态、
 固定的 Standard 速度/最大并发 10 配置及启动清单见
 [`HANDOFF.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/HANDOFF.md)。
 
