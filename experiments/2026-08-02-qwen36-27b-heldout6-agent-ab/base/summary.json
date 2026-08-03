@@ -1,0 +1,1089 @@
+{
+  "schema_version": "qwen36-codex-agent-validation.v1",
+  "status": "completed",
+  "evaluation_method": "full_codex_agent_with_tools",
+  "model": "Qwen3.6-27B-base",
+  "checkpoint": "",
+  "git_commit": "7a921dd56e2a6d07b19955c6634bd7301cc70855",
+  "dataset": "/root/autodl-tmp/optimization-with-real-trajectory/experiments/2026-07-27-ip_codex_train0629_14x10/inputs/train_0629.jsonl",
+  "case_ids": [
+    12,
+    24,
+    40,
+    72,
+    86,
+    100
+  ],
+  "repeats_per_case": 5,
+  "timeout_seconds": 3600,
+  "topology": {
+    "instance_count": 1,
+    "tensor_parallel_size": 2,
+    "worker_count": 2,
+    "request_concurrency": 2
+  },
+  "scoring": "exact JSON list equality; timeout and runner failure are incorrect",
+  "overall": {
+    "attempts": 30,
+    "completed_within_limit": 27,
+    "timeouts": 3,
+    "runner_failures": 0,
+    "strict_correct": 7,
+    "accuracy_percent": 23.333333333333332,
+    "false_positives": 28,
+    "false_negatives": 43,
+    "runtime_minutes": {
+      "mean": 32.3683,
+      "median": 26.808,
+      "p95": 60.0,
+      "population_stddev": 15.053260039273884,
+      "coefficient_of_variation": 0.46506180550952275
+    },
+    "events": 3954,
+    "commands": 1666,
+    "agent_messages": 527,
+    "input_tokens": 72582709,
+    "output_tokens": 1104461
+  },
+  "counts": {
+    "attempts": 30,
+    "strict_correct": 7,
+    "timeouts": 3,
+    "runner_failures": 0
+  },
+  "per_case": {
+    "12": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 0,
+      "accuracy_percent": 0.0,
+      "false_positives": 7,
+      "false_negatives": 5,
+      "runtime_minutes": {
+        "mean": 30.911,
+        "median": 27.617,
+        "p95": 42.355,
+        "population_stddev": 6.23890208289888,
+        "coefficient_of_variation": 0.2018343658535434
+      },
+      "events": 712,
+      "commands": 298,
+      "agent_messages": 101,
+      "input_tokens": 16174040,
+      "output_tokens": 220992,
+      "runs": [
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong"
+      ]
+    },
+    "24": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 1,
+      "accuracy_percent": 20.0,
+      "false_positives": 6,
+      "false_negatives": 4,
+      "runtime_minutes": {
+        "mean": 29.7586,
+        "median": 23.335,
+        "p95": 52.363,
+        "population_stddev": 14.077312138330953,
+        "coefficient_of_variation": 0.4730502153438318
+      },
+      "events": 530,
+      "commands": 220,
+      "agent_messages": 75,
+      "input_tokens": 7433538,
+      "output_tokens": 244288,
+      "runs": [
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong",
+        "correct"
+      ]
+    },
+    "40": {
+      "attempts": 5,
+      "completed_within_limit": 4,
+      "timeouts": 1,
+      "runner_failures": 0,
+      "strict_correct": 0,
+      "accuracy_percent": 0.0,
+      "false_positives": 4,
+      "false_negatives": 15,
+      "runtime_minutes": {
+        "mean": 48.255,
+        "median": 46.335,
+        "p95": 60.0,
+        "population_stddev": 7.642773763497124,
+        "coefficient_of_variation": 0.15838304348766188
+      },
+      "events": 851,
+      "commands": 374,
+      "agent_messages": 81,
+      "input_tokens": 20202127,
+      "output_tokens": 202804,
+      "runs": [
+        "wrong",
+        "timeout",
+        "wrong",
+        "wrong",
+        "wrong"
+      ]
+    },
+    "72": {
+      "attempts": 5,
+      "completed_within_limit": 3,
+      "timeouts": 2,
+      "runner_failures": 0,
+      "strict_correct": 0,
+      "accuracy_percent": 0.0,
+      "false_positives": 4,
+      "false_negatives": 15,
+      "runtime_minutes": {
+        "mean": 47.199799999999996,
+        "median": 56.583,
+        "p95": 60.0,
+        "population_stddev": 14.342052536509549,
+        "coefficient_of_variation": 0.3038583328003413
+      },
+      "events": 892,
+      "commands": 388,
+      "agent_messages": 103,
+      "input_tokens": 12710386,
+      "output_tokens": 159089,
+      "runs": [
+        "wrong",
+        "timeout",
+        "timeout",
+        "wrong",
+        "wrong"
+      ]
+    },
+    "86": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 3,
+      "accuracy_percent": 60.0,
+      "false_positives": 4,
+      "false_negatives": 2,
+      "runtime_minutes": {
+        "mean": 17.8716,
+        "median": 19.004,
+        "p95": 21.482,
+        "population_stddev": 2.7423003920066815,
+        "coefficient_of_variation": 0.15344459320971157
+      },
+      "events": 450,
+      "commands": 176,
+      "agent_messages": 83,
+      "input_tokens": 7028431,
+      "output_tokens": 127921,
+      "runs": [
+        "correct",
+        "wrong",
+        "correct",
+        "wrong",
+        "correct"
+      ]
+    },
+    "100": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 3,
+      "accuracy_percent": 60.0,
+      "false_positives": 3,
+      "false_negatives": 2,
+      "runtime_minutes": {
+        "mean": 20.2138,
+        "median": 20.802,
+        "p95": 24.706,
+        "population_stddev": 3.4207411126830394,
+        "coefficient_of_variation": 0.16922800822621376
+      },
+      "events": 519,
+      "commands": 210,
+      "agent_messages": 84,
+      "input_tokens": 9034187,
+      "output_tokens": 149367,
+      "runs": [
+        "wrong",
+        "correct",
+        "correct",
+        "correct",
+        "wrong"
+      ]
+    }
+  },
+  "runs": [
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 12,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 2541.298,
+      "capped_minutes": 42.355,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 183,
+      "commands": 81,
+      "agent_messages": 18,
+      "input_tokens": 5265397,
+      "cached_input_tokens": 0,
+      "output_tokens": 48861,
+      "prediction": [
+        "PE1;L3VPN配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q12-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 24,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1400.097,
+      "capped_minutes": 23.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 109,
+      "commands": 40,
+      "agent_messages": 26,
+      "input_tokens": 1087537,
+      "cached_input_tokens": 0,
+      "output_tokens": 30982,
+      "prediction": [
+        "PE1;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q24-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 40,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 2780.103,
+      "capped_minutes": 46.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 188,
+      "commands": 85,
+      "agent_messages": 15,
+      "input_tokens": 5780012,
+      "cached_input_tokens": 0,
+      "output_tokens": 52212,
+      "prediction": [
+        "PE1;BGP配置错误"
+      ],
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q40-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 72,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1744.281,
+      "capped_minutes": 29.071,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 3,
+      "events": 133,
+      "commands": 64,
+      "agent_messages": 2,
+      "input_tokens": 4069490,
+      "cached_input_tokens": 0,
+      "output_tokens": 48473,
+      "prediction": [
+        "PE1;L3VPN配置错误",
+        "BJHQ_CSR1000V_GW_01;BGP配置错误"
+      ],
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q72-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 86,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1140.22,
+      "capped_minutes": 19.004,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 123,
+      "commands": 49,
+      "agent_messages": 22,
+      "input_tokens": 1885282,
+      "cached_input_tokens": 0,
+      "output_tokens": 25635,
+      "prediction": [
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q86-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 100,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1113.384,
+      "capped_minutes": 18.556,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 101,
+      "commands": 37,
+      "agent_messages": 24,
+      "input_tokens": 1578898,
+      "cached_input_tokens": 0,
+      "output_tokens": 25000,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q100-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 12,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1559.968,
+      "capped_minutes": 25.999,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 129,
+      "commands": 50,
+      "agent_messages": 26,
+      "input_tokens": 3198788,
+      "cached_input_tokens": 0,
+      "output_tokens": 37425,
+      "prediction": [
+        "PE2;SRV6-Policy隧道规划错误",
+        "PE3;SRV6-Policy隧道规划错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q12-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 24,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 814.333,
+      "capped_minutes": 13.572,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 94,
+      "commands": 45,
+      "agent_messages": 1,
+      "input_tokens": 1092951,
+      "cached_input_tokens": 0,
+      "output_tokens": 18214,
+      "prediction": [
+        "PE1;ISIS配置错误",
+        "PE2;ISIS配置错误"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q24-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 40,
+      "repeat": 2,
+      "runner_status": "failed",
+      "duration_seconds": 3603.299,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_limit": false,
+      "correct": false,
+      "result": "timeout",
+      "false_positive_count": 0,
+      "false_negative_count": 3,
+      "events": 133,
+      "commands": 58,
+      "agent_messages": 7,
+      "input_tokens": 0,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "prediction": null,
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q40-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 72,
+      "repeat": 2,
+      "runner_status": "failed",
+      "duration_seconds": 3603.277,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_limit": false,
+      "correct": false,
+      "result": "timeout",
+      "false_positive_count": 0,
+      "false_negative_count": 3,
+      "events": 251,
+      "commands": 109,
+      "agent_messages": 31,
+      "input_tokens": 0,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "prediction": null,
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q72-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 86,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1160.088,
+      "capped_minutes": 19.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 96,
+      "commands": 39,
+      "agent_messages": 15,
+      "input_tokens": 1605803,
+      "cached_input_tokens": 0,
+      "output_tokens": 29363,
+      "prediction": [
+        "Core_SW_01;STP 端口下实例根路径开销规划不合理",
+        "Core_SW_02;STP 端口下实例根路径开销规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q86-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 100,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1482.36,
+      "capped_minutes": 24.706,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 84,
+      "commands": 37,
+      "agent_messages": 7,
+      "input_tokens": 1956097,
+      "cached_input_tokens": 0,
+      "output_tokens": 38563,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q100-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 12,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1962.915,
+      "capped_minutes": 32.715,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 156,
+      "commands": 65,
+      "agent_messages": 23,
+      "input_tokens": 3752565,
+      "cached_input_tokens": 0,
+      "output_tokens": 50810,
+      "prediction": [
+        "PE1;L3VPN配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q12-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 24,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1221.867,
+      "capped_minutes": 20.364,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 108,
+      "commands": 46,
+      "agent_messages": 13,
+      "input_tokens": 928404,
+      "cached_input_tokens": 0,
+      "output_tokens": 27824,
+      "prediction": [
+        "FW_01;安全策略规则未放通对应的用户"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q24-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 40,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 3231.454,
+      "capped_minutes": 53.858,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 226,
+      "commands": 99,
+      "agent_messages": 25,
+      "input_tokens": 6020693,
+      "cached_input_tokens": 0,
+      "output_tokens": 54926,
+      "prediction": [
+        "BJHQ_CSR1000V_GW_01;BGP配置错误"
+      ],
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q40-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 72,
+      "repeat": 3,
+      "runner_status": "failed",
+      "duration_seconds": 3603.305,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_limit": false,
+      "correct": false,
+      "result": "timeout",
+      "false_positive_count": 0,
+      "false_negative_count": 3,
+      "events": 195,
+      "commands": 87,
+      "agent_messages": 19,
+      "input_tokens": 0,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "prediction": null,
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q72-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 86,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 944.332,
+      "capped_minutes": 15.739,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 52,
+      "commands": 22,
+      "agent_messages": 5,
+      "input_tokens": 736867,
+      "cached_input_tokens": 0,
+      "output_tokens": 26455,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q86-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 100,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1248.108,
+      "capped_minutes": 20.802,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 85,
+      "commands": 35,
+      "agent_messages": 12,
+      "input_tokens": 1578542,
+      "cached_input_tokens": 0,
+      "output_tokens": 36377,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q100-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 12,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1552.13,
+      "capped_minutes": 25.869,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 123,
+      "commands": 56,
+      "agent_messages": 8,
+      "input_tokens": 1609224,
+      "cached_input_tokens": 0,
+      "output_tokens": 40563,
+      "prediction": [
+        "BJHQ_CSR1000V_GW_01;BGP配置错误",
+        "PE1;L3VPN配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q12-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 24,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 2349.523,
+      "capped_minutes": 39.159,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 116,
+      "commands": 45,
+      "agent_messages": 23,
+      "input_tokens": 1896796,
+      "cached_input_tokens": 0,
+      "output_tokens": 72248,
+      "prediction": [
+        "PE2;BGP配置错误",
+        "PE3;BGP配置错误"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q24-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 40,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 2425.997,
+      "capped_minutes": 40.433,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 108,
+      "commands": 43,
+      "agent_messages": 19,
+      "input_tokens": 2505990,
+      "cached_input_tokens": 0,
+      "output_tokens": 48188,
+      "prediction": [
+        "BJHQ_CSR1000V_GW_01;BGP配置错误"
+      ],
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q40-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 72,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 3394.963,
+      "capped_minutes": 56.583,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 206,
+      "commands": 87,
+      "agent_messages": 29,
+      "input_tokens": 6344125,
+      "cached_input_tokens": 0,
+      "output_tokens": 78422,
+      "prediction": [
+        "BJHQ_CSR1000V_GW_01;NAT外网接口属性配置错误或者配置缺失"
+      ],
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q72-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 86,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1288.908,
+      "capped_minutes": 21.482,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 84,
+      "commands": 31,
+      "agent_messages": 19,
+      "input_tokens": 1294724,
+      "cached_input_tokens": 0,
+      "output_tokens": 29405,
+      "prediction": [
+        "Core_SW_01;STP 端口下实例根路径开销规划不合理",
+        "Core_SW_02;STP 端口下实例根路径开销规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q86-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 100,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1340.091,
+      "capped_minutes": 22.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 150,
+      "commands": 61,
+      "agent_messages": 25,
+      "input_tokens": 2521239,
+      "cached_input_tokens": 0,
+      "output_tokens": 30484,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q100-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 12,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 1656.997,
+      "capped_minutes": 27.617,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 121,
+      "commands": 46,
+      "agent_messages": 26,
+      "input_tokens": 2348066,
+      "cached_input_tokens": 0,
+      "output_tokens": 43333,
+      "prediction": [
+        "BJHQ_CSR1000V_GW_01;BGP配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q12-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 24,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 3141.776,
+      "capped_minutes": 52.363,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 103,
+      "commands": 44,
+      "agent_messages": 12,
+      "input_tokens": 2427850,
+      "cached_input_tokens": 0,
+      "output_tokens": 95020,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q24-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 40,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 2438.938,
+      "capped_minutes": 40.649,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 196,
+      "commands": 89,
+      "agent_messages": 15,
+      "input_tokens": 5895432,
+      "cached_input_tokens": 0,
+      "output_tokens": 47478,
+      "prediction": [
+        "BJHQ_CSR1000V_GW_01;NAT内网接口属性配置错误或者缺失"
+      ],
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q40-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 72,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 1820.701,
+      "capped_minutes": 30.345,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 107,
+      "commands": 41,
+      "agent_messages": 22,
+      "input_tokens": 2296771,
+      "cached_input_tokens": 0,
+      "output_tokens": 32194,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q72-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 86,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 827.86,
+      "capped_minutes": 13.798,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 95,
+      "commands": 35,
+      "agent_messages": 22,
+      "input_tokens": 1505755,
+      "cached_input_tokens": 0,
+      "output_tokens": 17063,
+      "prediction": [
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q86-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-base",
+      "case_id": 100,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 880.171,
+      "capped_minutes": 14.67,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 99,
+      "commands": 40,
+      "agent_messages": 16,
+      "input_tokens": 1399411,
+      "cached_input_tokens": 0,
+      "output_tokens": 18943,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理",
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/base-eval-tp2x1-concurrency2-20260731T174703Z-q100-r05"
+    }
+  ]
+}
