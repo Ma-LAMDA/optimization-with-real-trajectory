@@ -56,6 +56,7 @@ MAX_CONSECUTIVE_WRONG = 10
 MAX_TOTAL_WRONG = 20
 INITIAL_CONCURRENCY = 4
 MAX_CONCURRENCY = 10
+ATTEMPT_RETENTION = "accepted_only"
 ATTEMPT_TIMEOUT_SECONDS = 45 * 60
 RATE_BACKOFF_SECONDS = (60, 120, 300, 600, 1200, 1800)
 QUOTA_MAX_WAIT_SECONDS = 48 * 60 * 60
@@ -569,6 +570,10 @@ def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[d
     cli = load_json(REPORT_DIR / "cli_preflight.json")
     if MANIFEST_PATH.exists():
         manifest = load_json(MANIFEST_PATH)
+        if "attempt_retention" not in manifest:
+            manifest["attempt_retention"] = ATTEMPT_RETENTION
+            manifest["updated_at"] = utc_now()
+            atomic_json(MANIFEST_PATH, manifest)
         expected = {
             "source_sha256": SOURCE_SHA256,
             "model": MODEL,
@@ -577,6 +582,7 @@ def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[d
             "service_base_url": base_url,
             "max_consecutive_wrong": MAX_CONSECUTIVE_WRONG,
             "max_total_wrong": MAX_TOTAL_WRONG,
+            "attempt_retention": ATTEMPT_RETENTION,
         }
         mismatches = {
             key: {"existing": manifest.get(key), "required": value}
@@ -623,6 +629,7 @@ def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[d
         "attempt_timeout_seconds": ATTEMPT_TIMEOUT_SECONDS,
         "ephemeral_sessions": True,
         "fresh_process_per_attempt": True,
+        "attempt_retention": ATTEMPT_RETENTION,
         "generator_input_fields": ["question", "output_format", "optimized copied user prompt", "local API URL"],
         "prompt_source": safe_index["prompt_source"],
         "prompt_localization": safe_index["prompt_localization"],
@@ -647,6 +654,14 @@ def initialize_or_validate(base_url: str, safe_index: dict[str, Any]) -> tuple[d
         "rate_limit_count": 0,
         "timeout_count": 0,
         "blocker_probe_counts": {},
+        "attempt_retention": ATTEMPT_RETENTION,
+        "outcome_counts": {
+            "accepted": 0,
+            "incorrect": 0,
+            "format_error": 0,
+            "infrastructure_failure": 0,
+            "interrupted": 0,
+        },
         "samples": [initial_sample(record) for record in safe_index["records"]],
     }
     atomic_json(MANIFEST_PATH, manifest)
@@ -679,6 +694,144 @@ def write_accepted_index(state: dict[str, Any]) -> None:
             "samples": samples,
         },
     )
+
+
+def ensure_retention_state(state: dict[str, Any]) -> bool:
+    """Add accepted-only retention accounting to an older checkpoint."""
+    changed = False
+    if state.get("attempt_retention") != ATTEMPT_RETENTION:
+        state["attempt_retention"] = ATTEMPT_RETENTION
+        changed = True
+    if not isinstance(state.get("outcome_counts"), dict):
+        counts: Counter[str] = Counter()
+        for metadata_path in RUNS_DIR.glob("*/attempt_*/metadata.json"):
+            metadata = load_json(metadata_path)
+            status = metadata.get("status")
+            error_class = metadata.get("error_class")
+            if status == "accepted":
+                counts["accepted"] += 1
+            elif error_class == "format_error":
+                counts["format_error"] += 1
+            elif status == "rejected":
+                counts["incorrect"] += 1
+            elif status == "interrupted":
+                counts["interrupted"] += 1
+            elif status == "infrastructure_failure":
+                counts["infrastructure_failure"] += 1
+
+        accepted_total = sum(int(sample["accepted_count"]) for sample in state["samples"])
+        wrong_total = sum(int(sample["total_wrong"]) for sample in state["samples"])
+        infrastructure_total = sum(
+            int(sample["infrastructure_failures"]) for sample in state["samples"]
+        )
+        counts["accepted"] = max(counts["accepted"], accepted_total)
+        classified_wrong = counts["incorrect"] + counts["format_error"]
+        if classified_wrong < wrong_total:
+            counts["incorrect"] += wrong_total - classified_wrong
+        classified_infrastructure = (
+            counts["infrastructure_failure"] + counts["interrupted"]
+        )
+        if classified_infrastructure < infrastructure_total:
+            counts["infrastructure_failure"] += (
+                infrastructure_total - classified_infrastructure
+            )
+        state["outcome_counts"] = {
+            key: int(counts[key])
+            for key in (
+                "accepted",
+                "incorrect",
+                "format_error",
+                "infrastructure_failure",
+                "interrupted",
+            )
+        }
+        changed = True
+    if changed:
+        state["updated_at"] = utc_now()
+    return changed
+
+
+def record_outcome(state: dict[str, Any], outcome: str) -> None:
+    counts = state["outcome_counts"]
+    if outcome == "correct":
+        counts["accepted"] += 1
+    elif outcome in {"incorrect", "format_error"}:
+        counts[outcome] += 1
+    else:
+        counts["infrastructure_failure"] += 1
+
+
+def discard_attempt_directory(attempt_dir: Path) -> bool:
+    """Delete one terminal non-accepted attempt without touching its slot peers."""
+    resolved_runs = RUNS_DIR.resolve()
+    resolved_attempt = attempt_dir.resolve()
+    try:
+        resolved_attempt.relative_to(resolved_runs)
+    except ValueError as exc:
+        raise RuntimeError(f"refusing to delete attempt outside runs directory: {attempt_dir}") from exc
+    if not attempt_dir.name.startswith("attempt_"):
+        raise RuntimeError(f"refusing to delete non-attempt directory: {attempt_dir}")
+    if not attempt_dir.exists():
+        return False
+    shutil.rmtree(attempt_dir)
+    with contextlib.suppress(OSError):
+        attempt_dir.parent.rmdir()
+    return True
+
+
+def normalize_retained_run_summaries() -> int:
+    """Keep run.json only for successful slots and remove rejected summaries."""
+    removed = 0
+    for run_path in sorted(RUNS_DIR.glob("*/run.json")):
+        run = load_json(run_path)
+        attempts = [
+            item for item in run.get("attempts", []) if item.get("status") == "accepted"
+        ]
+        if not attempts:
+            run_path.unlink()
+            removed += 1
+            with contextlib.suppress(OSError):
+                run_path.parent.rmdir()
+            continue
+        if attempts != run.get("attempts", []):
+            run["attempts"] = attempts
+            run["status"] = "succeeded"
+            run["successful_attempt"] = attempts[-1]["attempt_index"]
+            run["updated_at"] = utc_now()
+            atomic_json(run_path, run)
+    return removed
+
+
+def purge_unaccepted_attempts(state: dict[str, Any]) -> dict[str, Any]:
+    """Remove terminal attempt artifacts that are not referenced by the accepted index."""
+    accepted_paths = {
+        str(item["attempt_path"])
+        for sample in state["samples"]
+        for item in sample["accepted_attempts"]
+    }
+    removed: list[str] = []
+    unresolved: list[str] = []
+    for attempt_dir in sorted(RUNS_DIR.glob("*/attempt_*")):
+        attempt_path = relative(attempt_dir)
+        if attempt_path in accepted_paths:
+            continue
+        metadata_path = attempt_dir / "metadata.json"
+        status = None
+        if metadata_path.exists():
+            with contextlib.suppress(Exception):
+                status = load_json(metadata_path).get("status")
+        if status not in {"rejected", "infrastructure_failure", "interrupted"}:
+            unresolved.append(attempt_path)
+            continue
+        if discard_attempt_directory(attempt_dir):
+            removed.append(attempt_path)
+    removed_run_summaries = normalize_retained_run_summaries()
+    return {
+        "removed_attempts": removed,
+        "removed_attempt_count": len(removed),
+        "removed_pending_run_summaries": removed_run_summaries,
+        "unresolved_attempts": unresolved,
+    }
 
 
 def recover_interrupted(state: dict[str, Any]) -> None:
@@ -722,6 +875,7 @@ def recover_interrupted(state: dict[str, Any]) -> None:
             shutil.rmtree(workspace)
         sample["current_attempt"] = None
         sample["infrastructure_failures"] += 1
+        state["outcome_counts"]["interrupted"] += 1
         sample["status"] = "pending"
         sample["last_error_class"] = "interrupted"
         sample["updated_at"] = utc_now()
@@ -729,6 +883,12 @@ def recover_interrupted(state: dict[str, Any]) -> None:
     if changed:
         state["updated_at"] = utc_now()
         atomic_json(STATE_PATH, state)
+        write_accepted_index(state)
+        cleanup = purge_unaccepted_attempts(state)
+        log(
+            "discarded recovered interrupted attempts: "
+            f"{cleanup['removed_attempt_count']}"
+        )
 
 
 def resume_infrastructure_checkpoint(manifest: dict[str, Any], state: dict[str, Any]) -> None:
@@ -1303,12 +1463,16 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
 
 
 def update_slot_run(task: dict[str, Any], sample: dict[str, Any], accepted: bool) -> None:
+    if not accepted:
+        return
     slot_dir = task["attempt_dir"].parent
     existing: dict[str, Any] = {}
     run_path = slot_dir / "run.json"
     if run_path.exists():
         existing = load_json(run_path)
-    attempts = list(existing.get("attempts", []))
+    attempts = [
+        item for item in existing.get("attempts", []) if item.get("status") == "accepted"
+    ]
     metadata = load_json(task["attempt_dir"] / "metadata.json")
     attempts.append(
         {
@@ -1364,6 +1528,7 @@ def apply_outcome(state: dict[str, Any], task: dict[str, Any]) -> str | None:
     if task["model_launched"]:
         sample["total_model_attempts"] += 1
     outcome = task["outcome"]
+    record_outcome(state, outcome)
     blocker: str | None = None
     if outcome == "correct":
         sample["accepted_count"] += 1
@@ -1444,6 +1609,14 @@ def apply_outcome(state: dict[str, Any], task: dict[str, Any]) -> str | None:
     state["updated_at"] = utc_now()
     atomic_json(STATE_PATH, state)
     write_accepted_index(state)
+    if outcome != "correct":
+        try:
+            discard_attempt_directory(task["attempt_dir"])
+        except OSError as exc:
+            log(
+                f"deferred cleanup for {relative(task['attempt_dir'])}: "
+                f"{type(exc).__name__}: {exc}"
+            )
     return blocker
 
 
@@ -1521,6 +1694,7 @@ def validate_integrity(state: dict[str, Any]) -> dict[str, Any]:
     wrong_model_attempts: list[str] = []
     missing_events: list[str] = []
     attempt_dirs = sorted(RUNS_DIR.glob("q*_r*/attempt_*")) + sorted(RUNS_DIR.glob("row*_r*/attempt_*"))
+    retained_attempt_paths = [relative(path) for path in attempt_dirs if path.is_dir()]
     for attempt_dir in attempt_dirs:
         if not attempt_dir.is_dir():
             continue
@@ -1559,6 +1733,10 @@ def validate_integrity(state: dict[str, Any]) -> dict[str, Any]:
     invalid_final_states = [
         sample["sample_key"] for sample in state["samples"] if sample["status"] not in terminal_allowed
     ]
+    unindexed_attempt_directories = sorted(set(retained_attempt_paths) - set(accepted_paths))
+    missing_accepted_directories = sorted(set(accepted_paths) - set(retained_attempt_paths))
+    outcome_count_total = sum(int(value) for value in state["outcome_counts"].values())
+    state_attempt_total = sum(int(sample["total_attempts"]) for sample in state["samples"])
     return {
         "validated_at": utc_now(),
         "source_record_count": load_json(SAFE_INDEX)["record_count"],
@@ -1570,6 +1748,11 @@ def validate_integrity(state: dict[str, Any]) -> dict[str, Any]:
         "git_status_outside_target_current": outside_status,
         "outside_target_git_status_unchanged": outside_status == baseline["git_status_outside_target"],
         "attempt_directory_count": len([path for path in attempt_dirs if path.is_dir()]),
+        "attempt_retention": state.get("attempt_retention"),
+        "unindexed_attempt_directories": unindexed_attempt_directories,
+        "missing_accepted_directories": missing_accepted_directories,
+        "outcome_count_total": outcome_count_total,
+        "state_attempt_total": state_attempt_total,
         "missing_events": missing_events,
         "wrong_model_attempts": wrong_model_attempts,
         "accepted_attempt_count": len(accepted_paths),
@@ -1586,41 +1769,39 @@ def validate_integrity(state: dict[str, Any]) -> dict[str, Any]:
             and not wrong_model_attempts
             and len(accepted_paths) == len(set(accepted_paths))
             and len(accepted_thread_ids) == len(set(accepted_thread_ids))
+            and not unindexed_attempt_directories
+            and not missing_accepted_directories
+            and outcome_count_total == state_attempt_total
+            and state.get("attempt_retention") == ATTEMPT_RETENTION
             and not accepted_errors
             and not invalid_final_states
         ),
     }
 
 
-def collect_attempt_statistics() -> dict[str, int]:
-    counts: Counter[str] = Counter()
-    for metadata_path in RUNS_DIR.glob("*_r*/attempt_*/metadata.json"):
-        metadata = load_json(metadata_path)
-        counts["total_attempts"] += 1
-        if metadata.get("model_process_started"):
-            counts["total_model_calls"] += 1
-        status = metadata.get("status")
-        error = metadata.get("error_class")
-        if status == "accepted":
-            counts["accepted"] += 1
-        elif error == "incorrect_result":
-            counts["incorrect"] += 1
-        elif error == "format_error":
-            counts["format_error"] += 1
-        elif status in {"infrastructure_failure", "interrupted"}:
-            counts["infrastructure_failure"] += 1
-        if error == "timeout":
-            counts["timeout"] += 1
-        if error == "rate_limited_429":
-            counts["rate_limited_429"] += 1
-        if error == "quota_exhausted":
-            counts["quota_exhausted"] += 1
-    return dict(counts)
+def collect_attempt_statistics(state: dict[str, Any]) -> dict[str, int]:
+    outcomes = state["outcome_counts"]
+    interrupted = int(outcomes["interrupted"])
+    infrastructure = int(outcomes["infrastructure_failure"])
+    return {
+        "total_attempts": sum(int(sample["total_attempts"]) for sample in state["samples"]),
+        "total_model_calls": sum(
+            int(sample["total_model_attempts"]) for sample in state["samples"]
+        ),
+        "accepted": int(outcomes["accepted"]),
+        "incorrect": int(outcomes["incorrect"]),
+        "format_error": int(outcomes["format_error"]),
+        "infrastructure_failure": infrastructure + interrupted,
+        "interrupted": interrupted,
+        "retained_attempt_directories": sum(
+            int(sample["accepted_count"]) for sample in state["samples"]
+        ),
+    }
 
 
 def write_final_report(manifest: dict[str, Any], state: dict[str, Any]) -> None:
     integrity = validate_integrity(state)
-    statistics = collect_attempt_statistics()
+    statistics = collect_attempt_statistics(state)
     status_counts = Counter(sample["status"] for sample in state["samples"])
     summary = {
         "schema_version": "ip-distill-final-summary.v2",
@@ -1880,7 +2061,21 @@ def main() -> int:
         base_url = service.ensure(preferred_url)
         safe_index = run_input_broker(base_url)
         manifest, state = initialize_or_validate(base_url, safe_index)
+        if ensure_retention_state(state):
+            atomic_json(STATE_PATH, state)
+            write_accepted_index(state)
         recover_interrupted(state)
+        cleanup = purge_unaccepted_attempts(state)
+        if cleanup["unresolved_attempts"]:
+            raise RuntimeError(
+                "unresolved non-accepted attempt directories: "
+                + ", ".join(cleanup["unresolved_attempts"])
+            )
+        if cleanup["removed_attempt_count"]:
+            log(
+                "discarded terminal non-accepted attempts on startup: "
+                f"{cleanup['removed_attempt_count']}"
+            )
         if state.get("status") == "completed":
             log("experiment already completed; running final integrity verification")
         else:

@@ -506,8 +506,11 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 独立严格判题正确的 10 条轨迹；连续错误达到 10 次或累计错误达到 20 次时停止该题，
 基础设施失败不计入这两个阈值。运行状态、accepted 唯一映射和恢复方法见该实验的
 [`README.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/README.md)。2026-08-03 账号切换
-检查点已停止全部生成进程并归档：accepted 18 / 1,000、答案错误 40、基础设施失败 24，
-尚无完成或跳过题目；逐题断点与换号恢复步骤见
+检查点曾归档 accepted 18 / 1,000；随后确认实际 user prompt 存在问题，旧 `results/`
+已整体作废并删除，当前有效 accepted 和 attempt 均为 0。实验等待用户修改并确认 prompt，
+之后从 q0001 attempt 1 全新启动，不恢复旧断点。新运行采用 accepted-only 保留策略：
+错误、格式错误、基础设施失败和中断只保留状态计数，不长期保留 attempt 目录。重置状态、
+固定的 Standard 速度/最大并发 10 配置及启动清单见
 [`HANDOFF.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/HANDOFF.md)。
 
 三个 Codex 轨迹实验已采用统一的紧凑归档：`prompt.txt` 和

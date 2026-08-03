@@ -5,53 +5,59 @@
 10 次，或累计错误达到 20 次时停止该题并继续其他题。基础设施、额度、认证、模型
 可用性和超时问题不计入题目错误次数。
 
-## 当前交接断点（2026-08-03 16:26，北京时间）
+## 当前状态：结果已重置
 
-实验已为切换 Codex CLI 账号主动停止并完成断点整理：控制器和活跃 attempt 均为 0，
-当前 accepted 为 18 / 1,000，已分配 82 个 attempt，其中 40 个答案错误、24 个基础设施
-失败；尚无题目达到 10 条或触发跳过阈值。恢复配置为 Standard（正常）速度、最大并发 10。
+2026-08-03，用户确认实际 user prompt 存在问题，因此此前的 82 个 attempt 和全部
+中间状态均已作废并删除。当前有效 accepted 和 attempt 都是 0，`results/` 不存在，
+控制器、Codex 子进程及本地配置服务均已停止。现在应先修改
+`inputs/IP user prompt by text.txt`，经用户确认后再从 q0001 attempt 1 开始全新采集；
+不得恢复旧结果。
 
-完整任务说明、逐题进度、账号切换和恢复步骤见 [`HANDOFF.md`](HANDOFF.md)。恢复时以
-`results/report/state.json` 和 `results/report/accepted_index.json` 为权威断点。
+完整任务、固定配置、prompt 复核清单和重新启动步骤见 [`HANDOFF.md`](HANDOFF.md)。
 
 ## 输入与数据边界
 
 - 原始提示词副本：`inputs/IP user prompt by text.original.txt`。
-- 优化提示词：`inputs/IP user prompt by text.txt`。
+- 实际运行提示词：`inputs/IP user prompt by text.txt`，当前等待用户修改。
 - 题目源：仓库不可变原始文件 `data/simulation/train_0629.jsonl`。
 - 配置根目录：仓库根目录 `saved_configs/`。
 - 生成器只能通过只读本地服务查询 `saved_configs/` 的固定快照；它看不到源数据中的
   标准答案。判题器在每次 Codex 进程退出后，以单独进程读取标准答案并执行严格故障
   集合匹配。
 
-优化提示词保留题目和输出格式两个占位符，删除重复说明，并明确项目锁定、按假设取证、
-交叉验证、证据不足处理与最终 JSON 格式。运行时只把本地服务的监听端口适配到当前端口，
-不改变其余提示词。
+实际运行提示词必须保留 `{original_query}` 和 `{output_format}` 两个唯一占位符，并明确
+项目锁定、按假设取证、交叉验证、证据不足处理与最终 JSON 格式。运行时只能适配本地
+服务监听端口，不得改变提示词其余内容。
 
-## 运行
+## 运行配置
 
-在仓库根目录执行：
+- 模型：`gpt-5.6-sol`。
+- 速度：Standard（正常），显式关闭 Fast/priority。
+- 最大并发：10；遇到速率限制时自动降并发和退避。
+- attempt 超时：2,700 秒。
+- 会话：每个 attempt 使用全新 CLI 进程和 `--ephemeral`。
+
+Prompt 修改并确认后，从仓库根目录执行：
 
 ```powershell
-python experiments/2026-08-02-ip_codex_gpt56-sol_100x10/scripts/run_experiment.py
+python -B experiments/2026-08-02-ip_codex_gpt56-sol_100x10/scripts/run_experiment.py
 ```
 
-脚本支持原地恢复。重复执行同一命令时，已收录的正确轨迹不会重复，未终态题目从单调
-递增的 attempt 编号继续。基础设施停机断点在重新执行并通过 CLI、登录和本地服务预检后
-自动恢复；网络/DNS 故障单独归类、退避重试且不计入题目错误次数。最多并发 10 个 Codex
-进程；每个生成进程显式关闭 Fast mode，按 Standard（正常）速度运行；遇到速率限制会
-自动降低并发和退避。
+控制器会重新创建 `results/`，从零初始化 manifest、state、题目输入副本和 accepted 索引。
 
-## 产物
+## Accepted-only 保留策略
 
-`results/` 已在 2026-08-03 的账号切换点作为中间检查点提交，以支持换号或新任务接手后
-原地恢复；后续完成时还需重写最终报告并执行独立审计。逐命令 hook 临时碎片已经合并到
-每个 attempt 的 `hook_audit.jsonl`，不重复提交；临时锁文件和本地 runtime 也不提交。
+后续采集只长期保留 accepted 正确轨迹的完整 attempt 目录。错误答案、格式错误和基础设施
+失败会先写入 `state.json` 的计数，再删除其 attempt 目录；运行中断留下的目录会在下次
+启动完成中断记账后删除。删除不会回退或复用 attempt 编号，连续错误和累计错误阈值仍按
+状态计数执行。
+
+最终 `results/` 的主要结构为：
 
 ```text
 results/
 ├── questions/qXXXX/{prompt.txt,source_record.json}
-├── runs/qXXXX_rYY/attempt_ZZZ/
+├── runs/qXXXX_rYY/attempt_ZZZ/   # 仅 accepted
 │   ├── events.jsonl
 │   ├── final_answer.txt
 │   ├── judgment.json
@@ -65,16 +71,6 @@ results/
     └── final_audit.json
 ```
 
-只有 `accepted_index.json` 中列出的 attempt 属于正确轨迹。错误、格式错误、中断和基础
-设施失败 attempt 仍完整保留，以便复核停止条件和运行过程。
-
-## 独立审计
-
-实验到达终态后，生成器会运行独立审计。也可手工复核：
-
-```powershell
-python experiments/2026-08-02-ip_codex_gpt56-sol_100x10/scripts/final_audit.py
-```
-
-审计会复查 100 题调度、模型标识、每条 accepted 轨迹的独立严格匹配、停止阈值、
-临时工作区隔离、只读查询策略、事件流完整性和敏感凭据模式。
+最终审计会验证磁盘上的 attempt 目录全部且仅由 `accepted_index.json` 引用，同时复查
+100 题调度、模型标识、每条 accepted 轨迹的独立严格匹配、停止阈值、临时工作区隔离、
+只读查询策略、事件流完整性和敏感凭据模式。

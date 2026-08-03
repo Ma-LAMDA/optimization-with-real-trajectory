@@ -88,6 +88,7 @@ def main() -> int:
     invalid_events: list[dict[str, Any]] = []
     unexpected_stdout_files: list[str] = []
     missing_metadata: list[str] = []
+    nonaccepted_attempt_directories: list[str] = []
     wrong_models: list[str] = []
     non_ephemeral_calls: list[str] = []
     unsafe_workdirs: list[str] = []
@@ -141,6 +142,8 @@ def main() -> int:
             missing_metadata.append(rel)
         else:
             metadata = load(metadata_path)
+            if metadata.get('status') != 'accepted':
+                nonaccepted_attempt_directories.append(rel)
             if metadata.get('model_process_started'):
                 model_process_started += 1
                 if metadata.get('model') != MODEL:
@@ -262,6 +265,16 @@ def main() -> int:
         }:
             final_state_errors.append(f"row_{sample['row_index']}_status")
 
+    retained_attempt_paths = [relative(path) for path in attempt_dirs]
+    unindexed_attempt_directories = sorted(set(retained_attempt_paths) - set(accepted_paths))
+    missing_accepted_directories = sorted(set(accepted_paths) - set(retained_attempt_paths))
+    outcome_count_total = sum(int(value) for value in state['outcome_counts'].values())
+    state_attempt_total = sum(int(sample['total_attempts']) for sample in state['samples'])
+    if state.get('attempt_retention') != 'accepted_only':
+        final_state_errors.append('attempt_retention_policy')
+    if outcome_count_total != state_attempt_total:
+        final_state_errors.append('outcome_count_total')
+
     sensitive_patterns = {
         'openai_style_key': re.compile(rb'sk-[A-Za-z0-9_-]{20,}'),
         'bearer_token': re.compile(rb'Bearer\s+[A-Za-z0-9._-]{20,}', re.IGNORECASE),
@@ -293,6 +306,10 @@ def main() -> int:
         'accepted_artifacts_and_judgments_valid': not accepted_errors,
         'accepted_independent_answer_recheck_passed': not independent_recheck_failures,
         'accepted_index_sequential_and_state_consistent': not index_errors,
+        'attempt_directories_match_accepted_index': (
+            not unindexed_attempt_directories and not missing_accepted_directories
+        ),
+        'only_accepted_attempt_directories_are_retained': not nonaccepted_attempt_directories,
         'all_attempt_directories_have_events': not missing_events,
         'all_nonempty_event_lines_are_json': not invalid_events,
         'events_are_single_raw_stdout_streams': not unexpected_stdout_files,
@@ -331,6 +348,9 @@ def main() -> int:
             'invalid_events': invalid_events,
             'unexpected_stdout_files': unexpected_stdout_files,
             'missing_metadata': missing_metadata,
+            'nonaccepted_attempt_directories': nonaccepted_attempt_directories,
+            'unindexed_attempt_directories': unindexed_attempt_directories,
+            'missing_accepted_directories': missing_accepted_directories,
             'wrong_models': wrong_models,
             'non_ephemeral_calls': non_ephemeral_calls,
             'duplicate_thread_ids': [item for item, count in Counter(thread_ids).items() if count > 1],
