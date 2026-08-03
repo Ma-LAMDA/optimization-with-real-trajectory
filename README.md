@@ -50,6 +50,7 @@
 │   │   └── results/
 │   ├── 2026-07-28-ip_codex_train0629_10x10/
 │   ├── 2026-07-28-ip_codex_train0629_100x10/
+│   ├── 2026-08-02-ip_codex_gpt56-sol_100x10/
 │   ├── 2026-07-31-qwen36-27b-base-eval/
 │   ├── 2026-07-31-qwen36-27b-agent-ab/
 │   └── 2026-08-02-qwen36-27b-heldout6-agent-ab/
@@ -497,6 +498,14 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 和运行审计均原样归档。该实验属于数据采集，历史运行及后续恢复均使用独立采集策略，
 不受 Qwen3.6-27B eval 的单实例双并发约束。819 条 accepted 轨迹已经转换为
 `data/2026-07-31/` 下的严格正确 SFT 数据。
+
+`experiments/2026-08-02-ip_codex_gpt56-sol_100x10/` 是基于
+`IP user prompt by text.txt` 的新一轮本地 Codex CLI + `gpt-5.6-sol` 全量蒸馏。
+该目录同时保留原提示词副本和优化提示词；优化版将配置根目录明确为
+`saved_configs/`，并通过只读本地服务隔离标准答案。实验覆盖全部 100 题，每题只收录
+独立严格判题正确的 10 条轨迹；连续错误达到 10 次或累计错误达到 20 次时停止该题，
+基础设施失败不计入这两个阈值。运行状态、accepted 唯一映射和恢复方法见该实验的
+[`README.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/README.md)。
 
 三个 Codex 轨迹实验已采用统一的紧凑归档：`prompt.txt` 和
 `source_record.json` 按“实验 + 题号”各保留一份；100×10 实验只保留
