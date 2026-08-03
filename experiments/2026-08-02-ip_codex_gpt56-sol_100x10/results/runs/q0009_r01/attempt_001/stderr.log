@@ -1,0 +1,14 @@
+2026-08-03T07:47:51.502074Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:47:51.502169Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:47:51.522254Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T07:47:58.644988Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:47:58.645038Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:48:02.078770Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $health = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'; $projects = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/v3/projects'; [pscustomobject]@{Health=$health; Projects=$projects} | ConvertTo-Json -Depth 8
+2026-08-03T07:48:08.344660Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 8
+2026-08-03T07:48:15.281405Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 8"
+2026-08-03T07:48:20.197346Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 8"
+2026-08-03T07:51:30.762331Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14041 milliseconds
+

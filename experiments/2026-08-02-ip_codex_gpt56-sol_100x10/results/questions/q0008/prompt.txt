@@ -1,0 +1,73 @@
+根据题目和组网配置快照定位故障根因。
+
+## 题目
+
+在CampusNetwork_03组网中，从SH_FAC_PC01 ping北京区域核心交换机（10.1.10.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。
+## 已定位的信息
+
+L2转发路径：
+SH_FAC_PC01(Ethernet0) -> SH_Core(GE1/0/2) -> SH_Core(GE1/0/4) -> SH_AR(Ethernet1/0/0) -> SH_AR(Ethernet1/0/1) -> PE2(Ethernet1/0/0) -> PE2(Ethernet1/0/1) -> PE1(Ethernet1/0/1) -> PE1(Ethernet2/0/1) -> BJHQ_CSR1000V_GW_01(GigabitEthernet5) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> FW_01(GigabitEthernet1/0/3) -> FW_01(GigabitEthernet1/0/1) -> Core_SW_01(GE1/0/8),
+SH_FAC_PC01(Ethernet0) -> SH_Core(GE1/0/2) -> SH_Core(GE1/0/4) -> SH_AR(Ethernet1/0/0) -> SH_AR(Ethernet1/0/1) -> PE2(Ethernet1/0/0) -> PE2(Ethernet1/0/1) -> PE1(Ethernet1/0/1) -> PE1(Ethernet2/0/1) -> BJHQ_CSR1000V_GW_01(GigabitEthernet5) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> FW_01(GigabitEthernet1/0/3) -> FW_01(GigabitEthernet1/0/2) -> Core_SW_02(GE1/0/8)
+
+## 配置数据与查询边界
+
+配置根目录为仓库根目录下的 `saved_configs/`。其中保存的是预先采集的只读快照，
+不是实时设备；没有收录的命令不能视为设备执行失败或配置不存在。
+
+本实验必须通过只读本地 HTTP 服务查询 `saved_configs/`，不得直接读取或搜索文件系统，
+不得访问其他目录，也不得编造项目、节点、配置或命令回显。
+
+- 基础 URL：`http://127.0.0.1:3080`
+- 健康检查：`GET /healthz`
+- 项目列表：`GET /v3/projects`
+- 节点列表：`GET /v3/projects/{project_id}/nodes`
+- 命令发现：`GET /v3/projects/{project_id}/nodes/{node_id}/commands?keyword={keyword}&limit=200&offset=0`
+- 命令回显：`GET /v3/projects/{project_id}/nodes/{node_id}/command?cmd={command_key}`
+- 项目内搜索：`GET /v3/projects/{project_id}/search?q={query}&node_id={node_id}&file_keyword={keyword}&limit=20`
+
+所有路径参数和查询参数都要 URL 编码。使用 PowerShell 的 `Invoke-RestMethod` 发起 GET
+请求。命令发现接口返回的 `command_key` 是精确标识；先发现再查询，不要自行猜测标识。
+搜索只用于定位线索，关键结论应再读取对应命令的完整回显。
+
+## 调查要求
+
+1. 先检查服务并锁定唯一项目。题目给出项目名时精确匹配；否则用题目中的节点名核对
+   候选项目。锁定后不得混用其他项目的数据。
+2. 根据故障现象提出少量可证伪假设，优先查询最能区分这些假设的证据，不要机械读取
+   所有快照。
+3. 沿实际转发路径核对相关节点。按需检查接口与邻接、VLAN/STP/MAC/聚合、IP/ARP/
+   路由/VRF、动态路由、安全策略和主机侧状态。
+4. 关键结论至少用配置意图和运行状态交叉验证；条件允许时再核对链路另一端或上下游。
+   明确区分“证据显示异常”“证据显示正常”和“快照未收录相关命令”。
+5. 只输出由快照证据支持的最小故障根因集合。若证据不足以唯一判断，说明缺失证据，
+   不要把猜测写成确定结论。
+
+## 答案格式
+
+本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。
+故障输出格式为：
+```
+<result>
+[
+"故障节点;故障原因"
+]
+</result>
+```
+故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。
+请务必给出最具体的故障原因。
+故障示例：
+```
+<result>
+[
+"Test-Zone1-Spine-01;黑洞路由",
+"Core-Zone-Core-Switch-02;缺失静态路由",
+"Core-Zone-Core-Switch-02;ARP配置错误",
+"Test-Zone1-Border-Leaf-01;接口shutdown",
+"Test-Zone1-Server-Leaf-01;流量挤占端口带宽",
+"Test-Zone1-Server-Leaf-01;接口IP错误"
+]
+</result>
+```
+
+最终答案必须包含且只包含一个 `<result>...</result>` 结果块。块内必须是合法 JSON
+字符串数组；不要使用 Markdown 代码围栏，不要在结果数组中加入证据、解释或修复建议。

@@ -505,7 +505,10 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 `saved_configs/`，并通过只读本地服务隔离标准答案。实验覆盖全部 100 题，每题只收录
 独立严格判题正确的 10 条轨迹；连续错误达到 10 次或累计错误达到 20 次时停止该题，
 基础设施失败不计入这两个阈值。运行状态、accepted 唯一映射和恢复方法见该实验的
-[`README.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/README.md)。
+[`README.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/README.md)。2026-08-03 账号切换
+检查点已停止全部生成进程并归档：accepted 18 / 1,000、答案错误 40、基础设施失败 24，
+尚无完成或跳过题目；逐题断点与换号恢复步骤见
+[`HANDOFF.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/HANDOFF.md)。
 
 三个 Codex 轨迹实验已采用统一的紧凑归档：`prompt.txt` 和
 `source_record.json` 按“实验 + 题号”各保留一份；100×10 实验只保留

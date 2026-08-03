@@ -1,0 +1,39 @@
+2026-08-02T02:29:23.607467Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:29:23.607542Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:29:23.618769Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-02T02:29:24.159464Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:29:24.159521Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:29:31.709611Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $health = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'; $projects = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/v3/projects'; [pscustomobject]@{health=$health; projects=$projects} | ConvertTo-Json -Depth 10
+2026-08-02T02:29:37.424076Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10"
+2026-08-02T02:29:40.994580Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/healthz'
+2026-08-02T02:29:45.908258Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'"
+2026-08-02T02:29:57.025740Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+=http://127.0.0.1:3080/v3/projects/+[uri]::EscapeDataString : The term '=http://127.0.0.1:3080/v3/projects/+[uri]::Esca
+peDataString' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling
+ of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ ='http://127.0.0.1:3080/v3/projects/'+[uri]::EscapeDataString('Campus ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=http://127.0.0...scapeDataString:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+Invoke-RestMethod : Missing an argument for parameter 'Uri'. Specify a parameter of type 'System.Uri' and try again.
+At line:1 char:123
++ ... mpusNetwork_02')+'/nodes'; Invoke-RestMethod -Method Get -Uri  | Conv ...
++                                                              ~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Invoke-RestMethod], ParameterBindingException
+    + FullyQualifiedErrorId : MissingArgument,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+ 
+
+2026-08-02T02:34:52.451720Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14025 milliseconds
+
+2026-08-02T02:34:52.452748Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14027 milliseconds
+

@@ -9,3 +9,11 @@
 
 # Transient lock files are runtime state, not trajectory data.
 /results/runs/**/*.lock
+/results/runs/**/hook_audit_parts/
+/results/report/runner.lock
+
+# Final-only reports can be stale at an interrupted checkpoint.  The runner
+# regenerates them after the experiment reaches a terminal state.
+/results/report/FINAL_REPORT.md
+/results/report/summary.json
+/results/report/final_audit.json

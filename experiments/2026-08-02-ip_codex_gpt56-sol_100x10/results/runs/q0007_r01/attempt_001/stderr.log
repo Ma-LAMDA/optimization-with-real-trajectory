@@ -1,0 +1,18 @@
+2026-08-03T07:47:51.466944Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:47:51.467059Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:47:51.485910Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T07:47:54.724524Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:47:54.724573Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:48:04.309141Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $health = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'; $projects = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/v3/projects'; [pscustomobject]@{Health=$health; Projects=$projects} | ConvertTo-Json -Depth 10
+2026-08-03T07:48:13.219537Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10
+2026-08-03T07:48:20.588947Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10"
+2026-08-03T07:53:51.434116Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14041 milliseconds
+
+2026-08-03T07:54:27.403348Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 24 seconds
+Output:
+command timed out after 24032 milliseconds
+

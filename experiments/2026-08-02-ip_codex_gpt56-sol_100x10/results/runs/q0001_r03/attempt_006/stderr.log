@@ -1,0 +1,13 @@
+2026-08-03T07:06:58.025369Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:06:58.025449Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:06:58.042530Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T07:06:58.742545Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:06:58.742600Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:07:09.187790Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $baseUrl='http://127.0.0.1:3080'; $health=Invoke-RestMethod -Method Get -Uri "$baseUrl/healthz"; $projects=Invoke-RestMethod -Method Get -Uri "$baseUrl/v3/projects"; [pscustomobject]@{health=$health; projects=$projects} | ConvertTo-Json -Depth 10
+2026-08-03T07:07:15.099273Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10
+2026-08-03T07:07:18.468480Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10"
+2026-08-03T07:12:00.042309Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.6 seconds
+Output:
+command timed out after 13628 milliseconds
+

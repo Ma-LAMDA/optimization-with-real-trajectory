@@ -1,0 +1,54 @@
+2026-08-02T02:37:12.521281Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:37:12.521374Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:37:12.541306Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-02T02:37:13.129627Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:37:13.129704Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:37:20.973401Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $health = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'; $projects = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/v3/projects'; [pscustomobject]@{health=$health;projects=$projects} | ConvertTo-Json -Depth 10
+2026-08-02T02:37:26.724309Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/healthz' -Method Get | ConvertTo-Json -Depth 10
+2026-08-02T02:37:31.149303Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10"
+2026-08-02T02:37:35.199779Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10"
+2026-08-02T02:37:45.269150Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+=http://127.0.0.1:3080/v3/projects/+[uri]::EscapeDataString : The term '=http://127.0.0.1:3080/v3/projects/+[uri]::Esca
+peDataString' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling
+ of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ ='http://127.0.0.1:3080/v3/projects/'+[uri]::EscapeDataString('Campus ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=http://127.0.0...scapeDataString:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+Invoke-RestMethod : Missing an argument for parameter 'Uri'. Specify a parameter of type 'System.Uri' and try again.
+At line:1 char:123
++ ... mpusNetwork_02')+'/nodes'; Invoke-RestMethod -Method Get -Uri  | Conv ...
++                                                              ~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Invoke-RestMethod], ParameterBindingException
+    + FullyQualifiedErrorId : MissingArgument,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+ 
+
+2026-08-02T02:38:02.834658Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)
+2026-08-02T02:38:02.845587Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 186ms)... turn_id=019fc055-227b-71e1-b052-7af82e4368be retries=1 max_retries=5 sampling_error=stream disconnected before completion: failed to send websocket request: Connection closed normally
+2026-08-02T02:38:03.044473Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: 不知道这样的主机。 (os error 11001), url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-02T02:38:03.044623Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (2/5 in 366ms)... turn_id=019fc055-227b-71e1-b052-7af82e4368be retries=2 max_retries=5 sampling_error=stream disconnected before completion: 不知道这样的主机。 (os error 11001)
+2026-08-02T02:38:03.424453Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: 不知道这样的主机。 (os error 11001), url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-02T02:38:03.424537Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 736ms)... turn_id=019fc055-227b-71e1-b052-7af82e4368be retries=3 max_retries=5 sampling_error=stream disconnected before completion: 不知道这样的主机。 (os error 11001)
+2026-08-02T02:38:04.184922Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: 不知道这样的主机。 (os error 11001), url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-02T02:38:04.185004Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.73s)... turn_id=019fc055-227b-71e1-b052-7af82e4368be retries=4 max_retries=5 sampling_error=stream disconnected before completion: 不知道这样的主机。 (os error 11001)
+2026-08-02T02:38:05.928128Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: 不知道这样的主机。 (os error 11001), url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-02T02:38:05.928214Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 2.987s)... turn_id=019fc055-227b-71e1-b052-7af82e4368be retries=5 max_retries=5 sampling_error=stream disconnected before completion: 不知道这样的主机。 (os error 11001)
+2026-08-02T02:39:16.989491Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14036 milliseconds
+
+2026-08-02T02:39:16.990434Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14025 milliseconds
+
+2026-08-02T02:39:16.991616Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14026 milliseconds
+

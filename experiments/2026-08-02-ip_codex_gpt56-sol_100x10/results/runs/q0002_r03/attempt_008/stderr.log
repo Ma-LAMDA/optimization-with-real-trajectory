@@ -1,0 +1,19 @@
+2026-08-03T07:13:30.739907Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:13:30.739983Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:13:30.753651Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T07:13:31.647367Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:13:31.647443Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T07:13:41.983818Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $health = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'; $projects = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/v3/projects'; [pscustomobject]@{health=$health; projects=$projects} | ConvertTo-Json -Depth 10
+2026-08-03T07:13:48.210755Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'
+2026-08-03T07:13:52.009201Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'"
+2026-08-03T07:13:56.854693Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'"
+2026-08-03T07:16:19.367394Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.6 seconds
+Output:
+command timed out after 13597 milliseconds
+
+2026-08-03T07:16:19.370549Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 13.6 seconds
+Output:
+command timed out after 13592 milliseconds
+

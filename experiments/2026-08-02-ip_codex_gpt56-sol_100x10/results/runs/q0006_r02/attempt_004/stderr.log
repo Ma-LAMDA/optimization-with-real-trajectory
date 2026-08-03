@@ -1,0 +1,57 @@
+2026-08-03T08:19:53.022499Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T08:19:53.022560Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T08:19:53.035731Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T08:19:53.881487Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T08:19:53.881543Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T08:20:03.647984Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $baseUrl='http://127.0.0.1:3080'; $health=Invoke-RestMethod -Method Get -Uri "$baseUrl/healthz"; $projects=Invoke-RestMethod -Method Get -Uri "$baseUrl/v3/projects"; [pscustomobject]@{health=$health;projects=$projects} | ConvertTo-Json -Depth 10
+2026-08-03T08:20:08.955819Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10
+2026-08-03T08:20:13.989239Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10"
+2026-08-03T08:24:20.668295Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 11.1 seconds
+Output:
+command timed out after 11127 milliseconds
+{
+    "project_id":  "CampusNetwork_02",
+    "node_id":  "SH_AR",
+    "keyword":  "Ethernet1/0/0",
+    "total":  6,
+    "offset":  0,
+    "limit":  200,
+    "commands":  [
+                     {
+                         "command":  "display current-configuration | include Ethernet1/0/0",
+                         "command_key":  "display_current-configuration___include_Ethernet1_0_0"
+                     },
+                     {
+                         "command":  "display interface brief | include Ethernet1/0/0",
+                         "command_key":  "display_interface_brief___include_Ethernet1_0_0"
+                     },
+                     {
+                         "command":  "display interface Ethernet1/0/0",
+                         "command_key":  "display_interface_Ethernet1_0_0"
+                     },
+                     {
+                         "command":  "display ip interface brief Ethernet1/0/0",
+                         "command_key":  "display_ip_interface_brief_Ethernet1_0_0"
+                     },
+                     {
+                         "command":  "display ip interface Ethernet1/0/0",
+                         "command_key":  "display_ip_interface_Ethernet1_0_0"
+                     },
+                     {
+                         "command":  "display lldp neighbor interface Ethernet1/0/0",
+                         "command_key":  "display_lldp_neighbor_interface_Ethernet1_0_0"
+                     }
+                 ]
+}
+
+2026-08-03T08:25:40.921429Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14033 milliseconds
+
+2026-08-03T08:25:40.922856Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14028 milliseconds
+

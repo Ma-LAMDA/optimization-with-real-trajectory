@@ -1,0 +1,45 @@
+2026-08-03T08:05:30.988574Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T08:05:30.988654Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T08:05:31.003629Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T08:05:32.099343Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T08:05:32.099418Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T08:05:50.674568Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $baseUri='http://127.0.0.1:3080'; $health=Invoke-RestMethod -Method Get -Uri "$baseUri/healthz"; $projects=Invoke-RestMethod -Method Get -Uri "$baseUri/v3/projects"; [pscustomobject]@{health=$health;projects=$projects}|ConvertTo-Json -Depth 10
+2026-08-03T08:05:56.483034Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'
+2026-08-03T08:06:01.109677Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz' | ConvertTo-Json -Depth 10"
+2026-08-03T08:06:13.586722Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+At line:1 char:121
++ ... thod Get -Uri ('http://127.0.0.1:3080/v3/projects/'++'/nodes') | Conv ...
++                                                          ~~~~~~~~
+Unexpected token ''/nodes'' in expression or statement.
+At line:1 char:121
++ ... thod -Method Get -Uri ('http://127.0.0.1:3080/v3/projects/'++'/nodes' ...
++                                                                  ~
+Missing closing ')' in expression.
+At line:1 char:129
++ ... hod Get -Uri ('http://127.0.0.1:3080/v3/projects/'++'/nodes') | Conve ...
++                                                                 ~
+Unexpected token ')' in expression or statement.
+At line:1 char:131
++ ... d Get -Uri ('http://127.0.0.1:3080/v3/projects/'++'/nodes') | Convert ...
++                                                                 ~
+An empty pipe element is not allowed.
+At line:1 char:83
++ ... Method -Method Get -Uri ('http://127.0.0.1:3080/v3/projects/'++'/node ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The '++' operator works only on variables or on properties.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+ 
+
+2026-08-03T08:10:06.720424Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14024 milliseconds
+
+2026-08-03T08:10:06.721526Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 14 seconds
+Output:
+command timed out after 14032 milliseconds
+

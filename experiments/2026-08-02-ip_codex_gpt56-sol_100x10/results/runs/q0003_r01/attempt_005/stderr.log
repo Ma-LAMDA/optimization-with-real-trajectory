@@ -1,0 +1,54 @@
+2026-08-02T02:35:58.013276Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:35:58.013345Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:35:58.024205Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-02T02:36:01.080134Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:36:01.080188Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-02T02:36:06.329988Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: $health = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'; $projects = Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/v3/projects'; [pscustomobject]@{health=$health; projects=$projects} | ConvertTo-Json -Depth 10
+2026-08-02T02:36:11.403564Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only the fixed PowerShell HTTP client path is allowed. Command: Invoke-RestMethod -Uri 'http://127.0.0.1:3080/healthz'
+2026-08-02T02:36:15.159752Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker '& '; only the local API is allowed. Command: & 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'"
+2026-08-02T02:36:19.183498Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only saved_configs_service /v3 read APIs are allowed: /healthz. Command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command "Invoke-RestMethod -Method Get -Uri 'http://127.0.0.1:3080/healthz'"
+2026-08-02T02:38:02.498557Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 219ms)... turn_id=019fc053-ff2b-7a23-996e-e3728bb13bda retries=1 max_retries=5 sampling_error=stream disconnected before completion: IO error: 远程主机强迫关闭了一个现有的连接。 (os error 10054)
+2026-08-02T02:38:02.499069Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)
+2026-08-02T02:38:02.517923Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)
+2026-08-02T02:38:02.527715Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)
+2026-08-02T02:38:02.529293Z  WARN codex_analytics::client: failed to send events request: error sending request for url (https://chatgpt.com/backend-api/codex/analytics-events/events)
+2026-08-02T02:38:02.735760Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: 不知道这样的主机。 (os error 11001), url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-02T02:38:02.735839Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (2/5 in 409ms)... turn_id=019fc053-ff2b-7a23-996e-e3728bb13bda retries=2 max_retries=5 sampling_error=stream disconnected before completion: 不知道这样的主机。 (os error 11001)
+2026-08-02T02:38:03.149660Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: 不知道这样的主机。 (os error 11001), url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-02T02:38:03.149756Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 812ms)... turn_id=019fc053-ff2b-7a23-996e-e3728bb13bda retries=3 max_retries=5 sampling_error=stream disconnected before completion: 不知道这样的主机。 (os error 11001)
+2026-08-02T02:38:03.977102Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: 不知道这样的主机。 (os error 11001), url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-02T02:38:03.977187Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.565s)... turn_id=019fc053-ff2b-7a23-996e-e3728bb13bda retries=4 max_retries=5 sampling_error=stream disconnected before completion: 不知道这样的主机。 (os error 11001)
+2026-08-02T02:38:05.561856Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: 不知道这样的主机。 (os error 11001), url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-02T02:38:05.561970Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 3.513s)... turn_id=019fc053-ff2b-7a23-996e-e3728bb13bda retries=5 max_retries=5 sampling_error=stream disconnected before completion: 不知道这样的主机。 (os error 11001)
+2026-08-02T02:41:23.900312Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10.3 seconds
+Output:
+command timed out after 10288 milliseconds
+{
+    "project_id":  "CampusNetwork_02",
+    "query":  "ospf cost 65500",
+    "node_id":  null,
+    "file_keyword":  "",
+    "limit":  20,
+    "truncated":  false,
+    "matches":  [
+
+                ]
+}
+
+2026-08-02T02:41:23.901597Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 10.3 seconds
+Output:
+command timed out after 10284 milliseconds
+{
+    "project_id":  "CampusNetwork_02",
+    "query":  "isis cost",
+    "node_id":  null,
+    "file_keyword":  "",
+    "limit":  20,
+    "truncated":  false,
+    "matches":  [
+
+                ]
+}
+
