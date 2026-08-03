@@ -35,8 +35,8 @@ python experiments/2026-08-02-ip_codex_gpt56-sol_100x10/scripts/run_experiment.p
 
 ## 产物
 
-`results/` 是本地运行数据，不纳入 `2026-07-31-sft` 的 Git 提交；实验脚本、提示词和
-产物结构说明正常版本化。需要保留或迁移轨迹时，应单独归档本地 `results/`。
+`results/` 在实验运行期间暂不提交；实验完成、独立审计通过并完成归档整理后，将轨迹、
+判题记录和最终报告一并提交到 `2026-07-31-sft`。临时锁文件和本地 runtime 不提交。
 
 ```text
 results/
