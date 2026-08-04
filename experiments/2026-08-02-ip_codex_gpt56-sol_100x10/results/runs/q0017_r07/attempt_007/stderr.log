@@ -1,0 +1,890 @@
+2026-08-03T16:17:15.405823Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T16:17:15.405891Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T16:17:15.406639Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T16:17:15.409536Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T16:17:15.418639Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T16:17:16.141904Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T16:17:16.141938Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T16:17:16.142726Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T16:17:16.146798Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T16:17:27.029836Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: $root='D:\IP组网\optimization-with-real-trajectory\saved_configs'; Get-ChildItem -LiteralPath $root -Directory | Where-Object { $_.Name -eq 'CampusNetwork_04' } | Select-Object FullName; Get-ChildItem -LiteralPath (Join-Path $root 'CampusNetwork_04') -Directory | Select-Object Name,FullName
+2026-08-03T16:17:35.533964Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg --files 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04'
+2026-08-03T16:18:07.652408Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\Outside_FTP_Cl
+ient01\ip_addr_show.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...p_addr_show.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\Outside_FTP_Cl
+ient01\ip_route_show_table_all.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...w_table_all.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\Outside_FTP_Cl
+ient01\ip_neigh_show.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz..._neigh_show.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\Outside_FTP_Cl
+ient01\ip_link_show.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...p_link_show.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-03T16:18:27.774459Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Select-String -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\*\display_mac-address.txt' -Pattern '8a9f|8a:9f|8a9f-4d57-5837|8a9f4d575837'
+2026-08-03T16:19:04.344859Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+!Software Version V800R023C10SPC100B313
+!Last configuration was updated at 2026-06-11 07:25:44+00:00 by root
+#
+sysname HQ_MKT_AP01
+#
+undo ftp server source all-interface
+undo ftp ipv6 server source all-interface
+#
+device board 17 board-type CE-MPUB
+device board 1 board-type CE-LPUE
+device board 2 board-type CE-LPUE
+#
+ntp server source-interface all disable
+ntp ipv6 server source-interface all disable
+#
+vlan batch 100 110 120
+#
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+dhcp server request-packet all-interface disable
+#
+aaa
+ #
+ authentication-scheme default
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default
+ #
+ domain default
+ #
+ domain default_admin
+#
+warranty
+#
+interface Vlanif100
+ ip address 10.1.100.11 255.255.255.0
+#
+interface MEth0/0/0
+ undo shutdown
+#
+interface GE1/0/0
+ description Uplink_to_AGG-SW-01_1/0/4
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 100 110 120
+#
+interface GE1/0/1
+ description to_EMPLOYEE_WIFI_CLIENT01_eth0
+ undo shutdown
+ port default vlan 110
+#
+interface GE1/0/2
+ description to_GUEST_WIFI_CLIENT01_eth0
+ undo shutdown
+ port default vlan 120
+#
+interface GE1/0/3
+ shutdown
+#
+interface GE1/0/4
+ shutdown
+#
+interface GE1/0/5
+ shutdown
+#
+interface GE1/0/6
+ shutdown
+#
+interface GE1/0/7
+ shutdown
+#
+interface GE1/0/8
+ shutdown
+#
+interface GE1/0/9
+ shutdown
+#
+interface GE1/1/0
+ shutdown
+#
+interface GE1/1/1
+ shutdown
+#
+interface GE1/1/2
+ shutdown
+#
+interface GE1/1/3
+ shutdown
+#
+interface GE1/1/4
+ shutdown
+#
+interface GE1/1/5
+ shutdown
+#
+interface GE1/1/6
+ shutdown
+#
+interface GE1/1/7
+ shutdown
+#
+interface GE1/1/8
+ shutdown
+#
+interface GE1/1/9
+ shutdown
+#
+interface GE2/0/0
+ shutdown
+#
+interface GE2/0/1
+ shutdown
+#
+interface GE2/0/2
+ shutdown
+#
+interface GE2/0/3
+ shutdown
+#
+interface GE2/0/4
+ shutdown
+#
+interface GE2/0/5
+ shutdown
+#
+interface GE2/0/6
+ shutdown
+#
+interface GE2/0/7
+ shutdown
+#
+interface GE2/0/8
+ shutdown
+#
+interface GE2/0/9
+ shutdown
+#
+interface GE2/1/0
+ shutdown
+#
+interface GE2/1/1
+ shutdown
+#
+interface GE2/1/2
+ shutdown
+#
+interface GE2/1/3
+ shutdown
+#
+interface GE2/1/4
+ shutdown
+#
+interface GE2/1/5
+ shutdown
+#
+interface GE2/1/6
+ shutdown
+#
+interface GE2/1/7
+ shutdown
+#
+interface GE2/1/8
+ shutdown
+#
+interface GE2/1/9
+ shutdown
+#
+interface NULL0
+#
+ip route-static 0.0.0.0 0.0.0.0 10.1.100.254
+#
+snmp-agent local-engineid 800007DB03381800111200
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+ssh server authentication-type keyboard-interactive enable
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+user-interface maximum-vty 5
+#
+user-interface con 0
+#
+vm-manager
+#
+return
+ Protocol Status       :Disabled 
+ Protocol Standard     :IEEE 802.1s
+ Version               :3
+ CIST Bridge Priority  :32768
+ MAC address           :380b-0011-1200
+ Max age(s)            :20
+ Forward delay(s)      :15
+ Hello time(s)         :2
+ Max hops              :20
+ Share region-configuration :Enabled
+PHY: Physical
+*down: administratively down
+^down: standby
+(l): loopback
+(s): spoofing
+(b): BFD down
+(e): ETHOAM down
+(d): Dampening Suppressed
+(p): port alarm down
+(dl): DLDP down
+(c): CFM down
+(sd): STP instance discarding
+(ed): error down
+InUti/OutUti: input utility rate/output utility rate
+Interface                  PHY      Protocol  InUti OutUti   inErrors  outErrors
+GE1/0/0                    up       up        0.62%     0%          0          0
+GE1/0/1                    up       up           0%  0.30%          0          0
+GE1/0/2                    up       up           0%  0.32%          0          0
+GE1/0/3                    *down    down         0%     0%          0          0
+GE1/0/4                    *down    down         0%     0%          0          0
+GE1/0/5                    *down    down         0%     0%          0          0
+GE1/0/6                    *down    down         0%     0%          0          0
+GE1/0/7                    *down    down         0%     0%          0          0
+GE1/0/8                    *down    down         0%     0%          0          0
+GE1/0/9                    *down    down         0%     0%          0          0
+GE1/1/0                    *down    down         0%     0%          0          0
+GE1/1/1                    *down    down         0%     0%          0          0
+GE1/1/2                    *down    down         0%     0%          0          0
+GE1/1/3                    *down    down         0%     0%          0          0
+GE1/1/4                    *down    down         0%     0%          0          0
+GE1/1/5                    *down    down         0%     0%          0          0
+GE1/1/6                    *down    down         0%     0%          0          0
+GE1/1/7                    *down    down         0%     0%          0          0
+GE1/1/8                    *down    down         0%     0%          0          0
+GE1/1/9                    *down    down         0%     0%          0          0
+GE2/0/0                    *down    down         0%     0%          0          0
+GE2/0/1                    *down    down         0%     0%          0          0
+GE2/0/2                    *down    down         0%     0%          0          0
+GE2/0/3                    *down    down         0%     0%          0          0
+GE2/0/4                    *down    down         0%     0%          0          0
+GE2/0/5                    *down    down         0%     0%          0          0
+GE2/0/6                    *down    down         0%     0%          0          0
+GE2/0/7                    *down    down         0%     0%          0          0
+GE2/0/8                    *down    down         0%     0%          0          0
+GE2/0/9                    *down    down         0%     0%          0          0
+GE2/1/0                    *down    down         0%     0%          0          0
+GE2/1/1                    *down    down         0%     0%          0          0
+GE2/1/2                    *down    down         0%     0%          0          0
+GE2/1/3                    *down    down         0%     0%          0          0
+GE2/1/4                    *down    down         0%     0%          0          0
+GE2/1/5                    *down    down         0%     0%          0          0
+GE2/1/6                    *down    down         0%     0%          0          0
+GE2/1/7                    *down    down         0%     0%          0          0
+GE2/1/8                    *down    down         0%     0%          0          0
+GE2/1/9                    *down    down         0%     0%          0          0
+MEth0/0/0                  up       down         0%     0%          0          0
+NULL0                      up       up(s)        0%     0%          0          0
+Vlanif100                  up       up           --     --          0          0
+Flags: * - Backup  
+BD   : bridge-domain   Age : dynamic MAC learned time in seconds
+-------------------------------------------------------------------------------
+MAC Address    VLAN/VSI/BD   Learned-From        Type                Age
+-------------------------------------------------------------------------------
+0000-5e00-0105 110/-/-       GE1/0/0             dynamic                  -
+0000-5e00-0106 120/-/-       GE1/0/0             dynamic                  -
+3807-0011-1200 110/-/-       GE1/0/0             dynamic                  -
+3808-0011-1200 110/-/-       GE1/0/0             dynamic                  -
+3807-0011-1200 120/-/-       GE1/0/0             dynamic                  -
+3808-0011-1200 120/-/-       GE1/0/0             dynamic                  -
+8a9f-4d57-5837 120/-/-       GE1/0/2             dynamic                  -
+4a3a-1884-c01a 110/-/-       GE1/0/0             dynamic                  -
+0000-5e00-0105 110/-/-       GE1/0/0             dynamic                  -
+0000-5e00-0106 120/-/-       GE1/0/0             dynamic                  -
+3807-0011-1200 110/-/-       GE1/0/0             dynamic                  -
+3808-0011-1200 110/-/-       GE1/0/0             dynamic                  -
+3807-0011-1200 120/-/-       GE1/0/0             dynamic                  -
+3808-0011-1200 120/-/-       GE1/0/0             dynamic                  -
+8a9f-4d57-5837 120/-/-       GE1/0/2             dynamic                  -
+4a3a-1884-c01a 110/-/-       GE1/0/0             dynamic                  -
+-------------------------------------------------------------------------------
+Total items: 16
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\HQ_MKT_AP01\di
+splay_lldp_neighbor-information.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...information.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-03T16:20:01.505979Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+2026-06-15 11:00:04.130 
+!Software Version V500R005C00SPC100
+#
+sysname FW_01
+#
+ l2tp domain suffix-separator @
+#
+info-center source default channel 0 trap state off
+#
+ ipsec sha2 compatible enable 
+#
+undo telnet server enable
+undo telnet ipv6 server enable
+#
+clock timezone UTC add 00:00:00
+#
+ hrp enable
+ hrp interface Eth-Trunk1 remote 1.1.1.2
+ hrp track interface Eth-Trunk2
+ hrp track interface Eth-Trunk3
+ hrp track interface Eth-Trunk4
+ hrp track interface Eth-Trunk5
+#
+ update schedule location-sdb weekly Sun 00:08
+#
+ firewall defend action discard
+#
+ log type traffic enable
+ log type syslog enable
+ log type policy enable
+#
+ undo dataflow enable
+#
+ sa force-detection enable
+#
+ lldp enable
+#
+ banner enable
+#
+password-policy
+ level high
+user-manage single-sign-on radius
+#
+ web-manager security version tlsv1.1 tlsv1.2
+ web-manager enable
+ web-manager security enable
+#
+firewall dataplane to manageplane application-apperceive default-action drop
+#
+ update schedule ips-sdb daily 00:22
+ update schedule av-sdb daily 00:22
+ update schedule sa-sdb daily 00:22
+ update schedule cnc daily 00:22
+ update schedule file-reputation daily 00:22
+#
+ip vpn-instance default
+ ipv4-family
+#
+ time-range worktime
+  period-range 08:00:00 to 18:00:00 working-day   
+#
+ike proposal default
+ encryption-algorithm aes-256 aes-192 aes-128 
+ dh group14 
+ authentication-algorithm sha2-512 sha2-384 sha2-256 
+ authentication-method pre-share
+ integrity-algorithm hmac-sha2-256 
+ prf hmac-sha2-256 
+#
+aaa
+ authentication-scheme default
+ authentication-scheme admin_local
+ authentication-scheme admin_radius_local
+ authentication-scheme admin_hwtacacs_local
+ authentication-scheme admin_ad_local
+ authentication-scheme admin_ldap_local
+ authentication-scheme admin_radius
+ authentication-scheme admin_hwtacacs
+ authentication-scheme admin_ad
+ authentication-scheme admin_ldap
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+  service-type internetaccess ssl-vpn l2tp ike
+  internet-access mode auto-online
+  reference user current-domain
+ manager-user password valid-days 0
+ manager-user audit-admin 
+  password cipher @%@%~azhA]irw/F1PxB"-AzX$/*kSD+QK*N{[2TefrAREF6>/*n$@%@%
+  service-type web terminal 
+  level 15 
+
+ manager-user api-admin 
+  password cipher @%@%{Q"0.F*m"J<io9"@!yz3dK]XpNZV-9$DP@^ujm>J2\=UK][d@%@%
+  service-type api 
+  level 15 
+
+ manager-user admin 
+  password cipher @%@%XrQ8#yo!)YQIMR>g;4OS2-dbTYk2$n]hc81Bt0ZCCT<U-de2@%@%
+  service-type web terminal 
+  level 15 
+
+ role system-admin
+ role device-admin
+ role device-admin(monitor)
+ role audit-admin
+ bind manager-user audit-admin role audit-admin
+ bind manager-user admin role system-admin
+#
+interface Eth-Trunk1
+ ip address 1.1.1.1 255.255.255.252
+ mode lacp-static
+ service-manage ping permit
+#
+interface Eth-Trunk2
+ description to_Core_SW_01_Eth-Trunk2
+ ip address 10.1.200.1 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+ service-manage ssh permit
+ service-manage snmp permit
+ service-manage telnet permit
+ service-manage netconf permit
+#
+interface Eth-Trunk3
+ description to_Core_SW_02_Eth-Trunk3
+ ip address 10.1.200.9 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+ service-manage ssh permit
+ service-manage snmp permit
+ service-manage telnet permit
+ service-manage netconf permit
+#
+interface Eth-Trunk4
+ ip address 10.1.200.25 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+#
+interface Eth-Trunk5
+ ip address 10.1.200.17 255.255.255.252
+ ospf network-type p2p
+ mode lacp-static
+#
+l2tp-group default-lns
+#
+interface GigabitEthernet0/0/0
+ undo shutdown
+ ip address 20.0.0.2 255.255.255.0
+ service-manage http permit
+ service-manage https permit
+ service-manage ping permit
+#
+interface GigabitEthernet1/0/0
+ undo shutdown
+#
+interface GigabitEthernet1/0/1
+ description to_Core_SW_01_GE1/0/8
+ undo shutdown
+ eth-trunk 2
+#
+interface GigabitEthernet1/0/2
+ description to_Core_SW_02_GE1/0/8
+ undo shutdown
+ eth-trunk 3
+#
+interface GigabitEthernet1/0/3
+ description to_BJHQ_CSR1000V_GW_01_Gi2
+ undo shutdown
+ eth-trunk 5
+#
+interface GigabitEthernet1/0/4
+ description to_SW-DMZ-ACC-01_GE1/0/1
+ undo shutdown
+ eth-trunk 4
+#
+interface GigabitEthernet1/0/5
+ description to_FW_02_GigabitEthernet1/0/5
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet1/0/6
+ description to_FW_02_GigabitEthernet1/0/6
+ undo shutdown
+ eth-trunk 1
+#
+interface GigabitEthernet1/0/7
+ undo shutdown
+#
+interface GigabitEthernet1/0/8
+ undo shutdown
+#
+interface GigabitEthernet1/0/9
+ undo shutdown
+#
+interface Virtual-if0
+#
+interface NULL0
+#
+interface LoopBack0
+ ip address 10.1.254.3 255.255.255.255
+#
+firewall zone local
+ set priority 100
+#
+firewall zone trust
+ set priority 85
+ add interface GigabitEthernet0/0/0
+ add interface Eth-Trunk2
+ add interface Eth-Trunk3
+#
+firewall zone untrust
+ set priority 5
+ add interface Eth-Trunk5
+#
+firewall zone dmz
+ set priority 50
+ add interface Eth-Trunk4
+#
+firewall zone name Heartbeat id 4
+ set priority 1
+ add interface Eth-Trunk1
+#
+api
+#
+ospf 1 router-id 10.1.254.3
+ area 0.0.0.0
+  network 10.1.200.1 0.0.0.0
+  network 10.1.200.9 0.0.0.0
+  network 10.1.200.17 0.0.0.0
+ area 0.0.0.3
+  network 10.1.200.25 0.0.0.0
+#
+undo ssh server compatible-ssh1x enable
+ssh authentication-type default password
+#
+user-interface password complexity-check disable
+#
+firewall detect ftp
+#
+user-interface con 0
+ authentication-mode password
+ set authentication password cipher $1c$uMM_BG!%M:$Q+N<0jBRb0!o)C)'@Hj6ASlG%9-a7&9Q"cK!~ig&$
+ idle-timeout 0 0
+ screen-length 0
+user-interface vty 0 4
+ authentication-mode aaa
+ protocol inbound ssh
+user-interface vty 16 20
+#
+pki realm default
+#
+sa
+#
+location
+#
+ multi-linkif
+ mode proportion-of-weight
+#
+right-manager server-group
+#
+security-policy
+ rule name to_Heartbeat
+  source-zone local
+  destination-zone Heartbeat
+  action permit
+ rule name to_DHCP
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.120.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.1.50.1 mask 255.255.255.255
+  action permit
+ rule name to_dmz-server
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.1.60.0 mask 255.255.255.0
+  action permit
+ rule name to_DNS-server
+  source-zone trust
+  destination-zone dmz
+  source-address 10.1.120.0 mask 255.255.255.0
+  destination-address 10.1.60.1 mask 255.255.255.255
+  action permit
+ rule name to_60.2
+  source-zone untrust
+  destination-zone dmz
+  source-address 100.100.100.0 mask 255.255.255.0
+  source-address 200.200.200.0 mask 255.255.255.0
+  destination-address 10.1.60.2 mask 255.255.255.255
+  action permit
+ rule name BJ_TO_SH_SZ
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.20.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  destination-address 10.2.10.0 mask 255.255.255.0
+  destination-address 10.2.20.0 mask 255.255.255.0
+  destination-address 10.2.30.0 mask 255.255.255.0
+  destination-address 10.3.10.0 mask 255.255.255.0
+  destination-address 10.3.20.0 mask 255.255.255.0
+  destination-address 10.3.30.0 mask 255.255.255.0
+  action permit
+ rule name deny_Guest_TO_SH_SZ
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.120.0 mask 255.255.255.0
+  destination-address 10.2.10.0 mask 255.255.255.0
+  destination-address 10.2.20.0 mask 255.255.255.0
+  destination-address 10.2.30.0 mask 255.255.255.0
+  destination-address 10.3.10.0 mask 255.255.255.0
+  destination-address 10.3.20.0 mask 255.255.255.0
+  destination-address 10.3.30.0 mask 255.255.255.0
+  action deny
+ rule name to_internet
+  source-zone trust
+  destination-zone untrust
+  source-address 10.1.10.0 mask 255.255.255.0
+  source-address 10.1.110.0 mask 255.255.255.0
+  source-address 10.1.120.0 mask 255.255.255.0
+  source-address 10.1.30.0 mask 255.255.255.0
+  source-address 10.1.40.0 mask 255.255.255.0
+  action permit
+ rule name SH_SZ_TO_BJ
+  source-zone untrust
+  destination-zone trust
+  source-address 10.2.10.0 mask 255.255.255.0
+  source-address 10.2.20.0 mask 255.255.255.0
+  source-address 10.2.30.0 mask 255.255.255.0
+  source-address 10.3.10.0 mask 255.255.255.0
+  source-address 10.3.20.0 mask 255.255.255.0
+  source-address 10.3.30.0 mask 255.255.255.0
+  destination-address 10.1.10.0 mask 255.255.255.0
+  destination-address 10.1.20.0 mask 255.255.255.0
+  destination-address 10.1.30.0 mask 255.255.255.0
+  destination-address 10.1.40.0 mask 255.255.255.0
+  action permit
+ rule name local
+  source-zone local
+  action permit
+#
+auth-policy
+#
+traffic-policy
+#
+policy-based-route
+#
+nat-policy
+#
+proxy-policy
+#
+pcp-policy
+#
+dns-transparent-policy
+#
+rightm-policy
+#
+return
+2026-06-15 11:00:06.470 
+PHY: Physical
+*down: administratively down
+(l): loopback
+(s): spoofing
+(b): BFD down
+(d): Dampening Suppressed
+InUti/OutUti: input utility/output utility
+Interface                   PHY   Protocol  InUti OutUti   inErrors  outErrors
+Eth-Trunk1                  up    up        0.01%  0.01%          0          0
+  GigabitEthernet1/0/5(10G) up    up           0%     0%          0          0
+  GigabitEthernet1/0/6(10G) up    up           0%     0%          0          0
+Eth-Trunk2                  up    up        0.01%  0.01%          0          0
+  GigabitEthernet1/0/1(10G) up    up           0%     0%          0          0
+Eth-Trunk3                  up    up        0.01%  0.01%          0          0
+  GigabitEthernet1/0/2(10G) up    up           0%     0%          0          0
+Eth-Trunk4                  up    up        0.01%  0.01%          0          0
+  GigabitEthernet1/0/4(10G) up    up           0%     0%          0          0
+Eth-Trunk5                  up    up        0.01%  0.01%          0          0
+  GigabitEthernet1/0/3(10G) up    up           0%     0%          0          0
+GigabitEthernet0/0/0(10G)   down  down         0%     0%          0          0
+GigabitEthernet1/0/0        down  down         0%     0%          0          0
+GigabitEthernet1/0/7        down  down         0%     0%          0          0
+GigabitEthernet1/0/8        down  down         0%     0%          0          0
+GigabitEthernet1/0/9        down  down         0%     0%          0          0
+LoopBack0                   up    up(s)        0%     0%          0          0
+NULL0                       up    up(s)        0%     0%          0          0
+Virtual-if0                 up    up(s)        --     --          0          0
+2026-06-15 11:00:06.590 
+PHY: Physical
+*down: administratively down
+(l): loopback
+(s): spoofing
+(b): BFD down
+(d): Dampening Suppressed
+Interface                     PHY     Protocol Description            
+Eth-Trunk1                    up      up       Huawei, USG6000V2 Series, Eth-Tru
+                                               nk1 Interface
+Eth-Trunk2                    up      up       to_Core_SW_01_Eth-Trunk2
+Eth-Trunk3                    up      up       to_Core_SW_02_Eth-Trunk3
+Eth-Trunk4                    up      up       Huawei, USG6000V2 Series, Eth-Tru
+                                               nk4 Interface
+Eth-Trunk5                    up      up       Huawei, USG6000V2 Series, Eth-Tru
+                                               nk5 Interface
+GE0/0/0(10G)                  down    down     Huawei, USG6000V2 Series, Gigabit
+                                               Ethernet0/0/0 Interface
+GE1/0/0                       down    down     Huawei, USG6000V2 Series, Gigabit
+                                               Ethernet1/0/0 Interface
+GE1/0/1(10G)                  up      up       to_Core_SW_01_GE1/0/8
+GE1/0/2(10G)                  up      up       to_Core_SW_02_GE1/0/8
+GE1/0/3(10G)                  up      up       to_BJHQ_CSR1000V_GW_01_Gi2
+GE1/0/4(10G)                  up      up       to_SW-DMZ-ACC-01_GE1/0/1
+GE1/0/5(10G)                  up      up       to_FW_02_GigabitEthernet1/0/5
+GE1/0/6(10G)                  up      up       to_FW_02_GigabitEthernet1/0/6
+GE1/0/7                       down    down     Huawei, USG6000V2 Series, Gigabit
+                                               Ethernet1/0/7 Interface
+GE1/0/8                       down    down     Huawei, USG6000V2 Series, Gigabit
+                                               Ethernet1/0/8 Interface
+GE1/0/9                       down    down     Huawei, USG6000V2 Series, Gigabit
+                                               Ethernet1/0/9 Interface
+Loop0                         up      up(s)    Huawei, USG6000V2 Series, LoopBac
+                                               k0 Interface
+NULL0                         up      up(s)    Huawei, USG6000V2 Series, NULL0 I
+                                               nterface
+Virtual-if0                   up      up(s)    Huawei, USG6000V2 Series, Virtual
+                                               -if0 Interface
+2026-06-15 11:00:06.330 
+Interface GigabitEthernet1/0/9 has 0 Neighbors: 	
+
+Interface GigabitEthernet1/0/8 has 0 Neighbors: 	
+
+Interface GigabitEthernet1/0/7 has 0 Neighbors: 	
+
+Interface GigabitEthernet1/0/6 has 1 Neighbors: 	
+Neighbor 1:
+    ChassisIdSubtype: MacAddress 
+    ChasssisId: 0c19-210c-0000
+    PortIdSubtype: InterfaceName 
+    PortId: GigabitEthernet1/0/6
+    SysCapSupported: 
+    SysCapEnabled: Router
+
+Interface GigabitEthernet1/0/5 has 1 Neighbors: 	
+Neighbor 1:
+    ChassisIdSubtype: MacAddress 
+    ChasssisId: 0c19-210c-0000
+    PortIdSubtype: InterfaceName 
+    PortId: GigabitEthernet1/0/5
+    SysCapSupported: 
+    SysCapEnabled: Router
+
+Interface GigabitEthernet1/0/4 has 1 Neighbors: 	
+Neighbor 1:
+    ChassisIdSubtype: MacAddress 
+    ChasssisId: 3809-0011-1200
+    PortIdSubtype: InterfaceName 
+    PortId: GE1/0/1
+    SysCapSupported: 
+    SysCapEnabled: Bridge/Switch
+    SysCapEnabled: Router
+
+Interface GigabitEthernet1/0/3 has 1 Neighbors: 	
+Neighbor 1:
+    ChassisIdSubtype: MacAddress 
+    ChasssisId: 001e-146e-3300
+    PortIdSubtype: InterfaceName 
+    PortId: Gi2
+    SysCapSupported: 
+    SysCapDisabled: Bridge/Switch
+    SysCapEnabled: Router
+
+Interface GigabitEthernet1/0/2 has 1 Neighbors: 	
+Neighbor 1:
+    ChassisIdSubtype: MacAddress 
+    ChasssisId: 3808-0011-1200
+    PortIdSubtype: InterfaceName 
+    PortId: GE1/0/8
+    SysCapSupported: 
+    SysCapEnabled: Bridge/Switch
+    SysCapEnabled: Router
+
+Interface GigabitEthernet1/0/1 has 1 Neighbors: 	
+Neighbor 1:
+    ChassisIdSubtype: MacAddress 
+    ChasssisId: 3807-0011-1200
+    PortIdSubtype: InterfaceName 
+    PortId: GE1/0/8
+    SysCapSupported: 
+    SysCapEnabled: Bridge/Switch
+    SysCapEnabled: Router
+
+Interface GigabitEthernet1/0/0 has 0 Neighbors: 	
+
+Interface GigabitEthernet0/0/0 has 0 Neighbors: 	
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\FW_01\display_
+hrp_state.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...y_hrp_state.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
