@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+from convert_100x10_accepted_to_sft import reference_options
 from validate_100x10_sft import (
     ROOT,
     answer_label_fault_type,
@@ -92,6 +93,7 @@ def main() -> None:
     source_state = load_json(resolve_repo_path(manifest["source_state"]))
     source_manifest = load_json(resolve_repo_path(manifest["source_manifest"]))
     accepted_index = load_json(resolve_repo_path(manifest["source_accepted_index"]))
+    source_rows = load_jsonl(resolve_repo_path(manifest["source_dataset"]))
     if source_state.get("status") != "completed":
         raise ValueError("source state is not completed")
     if (
@@ -146,11 +148,17 @@ def main() -> None:
     per_type = split.get("validation_case_count_per_fault_type")
     required = split.get("required_selected_trajectories_per_validation_case")
     if (
-        split.get("strategy") != "leave_n_full_cases_out_per_fault_type"
+        split.get("strategy")
+        != "leave_n_full_cases_out_per_fault_type_by_success_rate"
         or split.get("group_key") != "case_id"
         or split.get("stratification_key") != "fault_type"
+        or split.get("success_rate_formula")
+        != "accepted/(accepted+incorrect+format_error)"
+        or split.get("required_success_rate") != 1.0
         or split.get("selection_rule")
-        != "selected_count_equals_required_then_max_case_id"
+        != "success_rate_equals_1_then_max_case_id"
+        or split.get("fallback_selection_rule")
+        != "max_success_rate_then_max_case_id"
         or not isinstance(per_type, int)
         or per_type < 1
         or not isinstance(required, int)
@@ -158,19 +166,64 @@ def main() -> None:
     ):
         raise ValueError("manifest split strategy is malformed")
 
+    relaxed_fault_types = split.get("relaxed_fault_types")
+    if relaxed_fault_types != ["全局STP未使能"]:
+        raise ValueError("unexpected relaxed fault-type policy")
+
+    source_cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
+    for source_row in source_rows:
+        case_id = int(source_row["id"])
+        source_fault_types = {
+            answer_label_fault_type(answer_label)
+            for option in reference_options(str(source_row.get("answer", "")))
+            for answer_label in option
+        }
+        if len(source_fault_types) != 1:
+            raise ValueError(
+                f"source case {case_id} must belong to exactly one fault type"
+            )
+        source_cases_by_fault_type[next(iter(source_fault_types))].append(case_id)
+
+    state_by_case = {
+        int(item["original_id"]): item
+        for item in source_state.get("samples", [])
+        if isinstance(item, dict)
+    }
+    if set(state_by_case) != {
+        int(source_row["id"]) for source_row in source_rows
+    }:
+        raise ValueError("source state does not cover every source case")
+    success_rate_by_case: dict[int, float] = {}
+    for case_id, state_item in state_by_case.items():
+        accepted = int(state_item.get("accepted_count", 0))
+        wrong = int(state_item.get("total_wrong", 0))
+        valid_attempts = accepted + wrong
+        success_rate_by_case[case_id] = (
+            accepted / valid_attempts if valid_attempts else 0.0
+        )
+
     full_cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
+    perfect_cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
     for case_id, fault_type in case_fault_types.items():
         if selected_counts_by_case[case_id] == required:
             full_cases_by_fault_type[fault_type].append(case_id)
-    expected_validation_cases_by_fault_type = {
-        fault_type: sorted(case_ids, reverse=True)[:per_type]
-        for fault_type, case_ids in sorted(full_cases_by_fault_type.items())
-    }
-    if any(
-        len(case_ids) != per_type
-        for case_ids in expected_validation_cases_by_fault_type.values()
-    ):
-        raise ValueError("a fault type has too few full validation candidates")
+            if success_rate_by_case[case_id] == 1.0:
+                perfect_cases_by_fault_type[fault_type].append(case_id)
+    expected_validation_cases_by_fault_type: dict[str, list[int]] = {}
+    for fault_type in sorted(source_cases_by_fault_type):
+        if fault_type in relaxed_fault_types:
+            ranked = sorted(
+                full_cases_by_fault_type[fault_type],
+                key=lambda case_id: (success_rate_by_case[case_id], case_id),
+                reverse=True,
+            )
+        else:
+            ranked = sorted(perfect_cases_by_fault_type[fault_type], reverse=True)
+        if len(ranked) < per_type:
+            raise ValueError(
+                f"fault type has too few eligible validation cases: {fault_type}"
+            )
+        expected_validation_cases_by_fault_type[fault_type] = ranked[:per_type]
     actual_validation_cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
     for case_id in sorted(validation_cases, reverse=True):
         actual_validation_cases_by_fault_type[case_fault_types[case_id]].append(case_id)
@@ -190,6 +243,26 @@ def main() -> None:
         or split.get("validation_case_ids") != expected_validation_ids
         or split.get("validation_cases_by_fault_type")
         != expected_validation_cases_by_fault_type
+        or split.get("source_query_counts_by_fault_type")
+        != {
+            fault_type: len(case_ids)
+            for fault_type, case_ids in sorted(source_cases_by_fault_type.items())
+        }
+        or split.get("full_query_counts_by_fault_type")
+        != {
+            fault_type: len(full_cases_by_fault_type[fault_type])
+            for fault_type in sorted(source_cases_by_fault_type)
+        }
+        or split.get("perfect_success_query_counts_by_fault_type")
+        != {
+            fault_type: len(perfect_cases_by_fault_type[fault_type])
+            for fault_type in sorted(source_cases_by_fault_type)
+        }
+        or split.get("perfect_success_case_ids_by_fault_type")
+        != {
+            fault_type: sorted(perfect_cases_by_fault_type[fault_type])
+            for fault_type in sorted(source_cases_by_fault_type)
+        }
         or split.get("case_groups_disjoint") is not True
         or len(validation_cases) != per_type * len(expected_validation_cases_by_fault_type)
     ):
@@ -248,6 +321,11 @@ def main() -> None:
         if isinstance(sample, dict)
     )
     outcome_counts = source_state.get("outcome_counts")
+    recorded_outcome_counts = {
+        status: int(outcome_counts.get(status, 0))
+        for status in ("accepted", "format_error", "incorrect")
+    } if isinstance(outcome_counts, dict) else {}
+    recorded_attempt_count = sum(recorded_outcome_counts.values())
     if (
         not isinstance(outcome_counts, dict)
         or int(outcome_counts.get("accepted", -1)) != accepted_total
@@ -256,8 +334,20 @@ def main() -> None:
         or manifest.get("selected_trajectory_count") != len(source_ids)
         or manifest.get("excluded_candidate_count")
         != len(trajectories) - len(selected)
-        or manifest.get("source_attempt_count")
-        != sum(int(value) for value in outcome_counts.values())
+        or manifest.get("source_attempt_count") != recorded_attempt_count
+        or manifest.get("source_attempt_count_scope")
+        != "model_valid_outcomes_only"
+        or manifest.get("filtered_nonaccepted_attempt_count")
+        != recorded_attempt_count - accepted_total
+        or manifest.get("selection", {}).get("source_attempt_status_counts")
+        != recorded_outcome_counts
+        or curation.get("source_attempt_status_counts")
+        != recorded_outcome_counts
+        or counts.get("source_attempt_count_scope")
+        != "model_valid_outcomes_only"
+        or counts.get("source_attempts") != recorded_attempt_count
+        or counts.get("filtered_nonaccepted_attempts")
+        != recorded_attempt_count - accepted_total
     ):
         raise ValueError("source, manifest, and curation totals disagree")
 
@@ -284,9 +374,22 @@ def main() -> None:
     report = report_path.read_text(encoding="utf-8")
     if "## 验证集划分" not in report:
         raise ValueError("filter report is missing validation split section")
+    if "## 每个 label 的 100% 成功率候选题" not in report:
+        raise ValueError("filter report is missing perfect-success candidates")
+    for fault_type in sorted(source_cases_by_fault_type):
+        perfect_case_ids = sorted(perfect_cases_by_fault_type[fault_type])
+        expected_candidate_row = (
+            f"| `{fault_type}` | {len(source_cases_by_fault_type[fault_type])} | "
+            f"{len(full_cases_by_fault_type[fault_type])} | "
+            f"{len(perfect_case_ids)} | "
+            f"{', '.join(str(case_id) for case_id in perfect_case_ids) or '—'} |"
+        )
+        if expected_candidate_row not in report:
+            raise ValueError(f"filter report candidate row mismatch: {fault_type}")
     for fault_type, case_ids in expected_validation_cases_by_fault_type.items():
         expected_row = (
             f"| `{fault_type}` | {', '.join(str(case_id) for case_id in case_ids)} | "
+            f"{', '.join(f'{success_rate_by_case[case_id]:.2%}' for case_id in case_ids)} | "
             f"{required * len(case_ids)} |"
         )
         if expected_row not in report:
@@ -301,7 +404,7 @@ def main() -> None:
     )
     print(
         f"- fault types: {len(expected_validation_cases_by_fault_type)}, "
-        f"{per_type} full queries each"
+        f"{per_type} full queries each; relaxed: {relaxed_fault_types}"
     )
     print("- train/validation case overlap: 0")
 

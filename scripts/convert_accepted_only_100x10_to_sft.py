@@ -22,6 +22,7 @@ from convert_100x10_accepted_to_sft import (
     load_jsonl,
     output_metadata,
     raw_path,
+    reference_options,
     stable_digest,
     write_json,
     write_jsonl,
@@ -39,6 +40,7 @@ FILTER_REPORT_NAME = "FILTER_REPORT.md"
 TRAIN_NAME = "qwen3_6_27b_reasoning_decision_train.jsonl"
 VALIDATION_NAME = "qwen3_6_27b_reasoning_decision_validation.jsonl"
 MANIFEST_NAME = "manifest.json"
+RELAXED_SUCCESS_RATE_FAULT_TYPES = ("全局STP未使能",)
 
 
 def parse_args() -> argparse.Namespace:
@@ -134,7 +136,7 @@ def source_preflight(
             raise ValueError(f"row {row_index}: accepted mapping count mismatch")
         accepted_total += state_accepted
 
-    outcome_counts = Counter(
+    all_outcome_counts = Counter(
         {
             str(key): int(value)
             for key, value in as_mapping(
@@ -142,9 +144,15 @@ def source_preflight(
             ).items()
         }
     )
-    if outcome_counts["accepted"] != accepted_total:
+    if all_outcome_counts["accepted"] != accepted_total:
         raise ValueError("global accepted count does not match accepted index")
-    return source_by_index, state_by_row, outcome_counts
+    recorded_outcome_counts = Counter(
+        {
+            status: all_outcome_counts[status]
+            for status in ("accepted", "incorrect", "format_error")
+        }
+    )
+    return source_by_index, state_by_row, recorded_outcome_counts
 
 
 def main() -> None:
@@ -378,28 +386,83 @@ def main() -> None:
         case_id: next(iter(fault_types_by_case[case_id]))
         for case_id in eligible_case_ids
     }
+    source_case_fault_types: dict[int, str] = {}
+    source_cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
+    for source_row in source_rows:
+        case_id = int(source_row["id"])
+        source_fault_types = {
+            answer_label_fault_type(answer_label)
+            for option in reference_options(str(source_row.get("answer", "")))
+            for answer_label in option
+        }
+        if len(source_fault_types) != 1:
+            raise ValueError(
+                f"source case {case_id} must belong to exactly one fault type"
+            )
+        fault_type = next(iter(source_fault_types))
+        source_case_fault_types[case_id] = fault_type
+        source_cases_by_fault_type[fault_type].append(case_id)
+
+    state_by_case = {
+        int(item["original_id"]): item for item in state_by_row.values()
+    }
+    success_rate_by_case: dict[int, float] = {}
+    for case_id, state_item in state_by_case.items():
+        accepted = int(state_item.get("accepted_count", 0))
+        wrong = int(state_item.get("total_wrong", 0))
+        valid_attempts = accepted + wrong
+        success_rate_by_case[case_id] = (
+            accepted / valid_attempts if valid_attempts else 0.0
+        )
+
     full_cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
+    perfect_cases_by_fault_type: defaultdict[str, list[int]] = defaultdict(list)
     for case_id, fault_type in case_fault_types.items():
         if selected_counts_by_case[case_id] == options.required_validation_trajectories:
             full_cases_by_fault_type[fault_type].append(case_id)
+            if success_rate_by_case[case_id] == 1.0:
+                perfect_cases_by_fault_type[fault_type].append(case_id)
     for fault_type, case_ids in full_cases_by_fault_type.items():
         case_ids.sort(reverse=True)
-    all_fault_types = sorted(set(case_fault_types.values()))
-    missing = [
+    for fault_type, case_ids in perfect_cases_by_fault_type.items():
+        case_ids.sort(reverse=True)
+    all_fault_types = sorted(source_cases_by_fault_type)
+    missing_strict = [
         fault_type
         for fault_type in all_fault_types
+        if fault_type not in RELAXED_SUCCESS_RATE_FAULT_TYPES
+        and len(perfect_cases_by_fault_type[fault_type])
+        < options.validation_cases_per_fault_type
+    ]
+    if missing_strict:
+        raise ValueError(
+            "not enough 100%-success full validation cases for fault types: "
+            f"{missing_strict}"
+        )
+    missing_fallback = [
+        fault_type
+        for fault_type in RELAXED_SUCCESS_RATE_FAULT_TYPES
         if len(full_cases_by_fault_type[fault_type])
         < options.validation_cases_per_fault_type
     ]
-    if missing:
-        raise ValueError(f"not enough full validation cases for fault types: {missing}")
+    if missing_fallback:
+        raise ValueError(
+            f"not enough full fallback validation cases: {missing_fallback}"
+        )
 
-    validation_cases_by_fault_type = {
-        fault_type: full_cases_by_fault_type[fault_type][
+    validation_cases_by_fault_type: dict[str, list[int]] = {}
+    for fault_type in all_fault_types:
+        if fault_type in RELAXED_SUCCESS_RATE_FAULT_TYPES:
+            ranked = sorted(
+                full_cases_by_fault_type[fault_type],
+                key=lambda case_id: (success_rate_by_case[case_id], case_id),
+                reverse=True,
+            )
+        else:
+            ranked = perfect_cases_by_fault_type[fault_type]
+        validation_cases_by_fault_type[fault_type] = ranked[
             : options.validation_cases_per_fault_type
         ]
-        for fault_type in all_fault_types
-    }
     validation_case_ids = sorted(
         case_id
         for case_ids in validation_cases_by_fault_type.values()
@@ -440,8 +503,11 @@ def main() -> None:
             {
                 "case_id": case_id,
                 "row_index": row_index,
-                "tracked_attempts_excluding_interrupted": int(
-                    state_item.get("total_attempts", 0)
+                "valid_model_attempts": int(state_item.get("accepted_count", 0))
+                + int(state_item.get("total_wrong", 0)),
+                "model_valid_success_rate": success_rate_by_case[case_id],
+                "success_rate_is_100_percent": (
+                    success_rate_by_case[case_id] == 1.0
                 ),
                 "accepted_candidates": len(case_items),
                 "selected_trajectories": len(selected_items),
@@ -451,14 +517,34 @@ def main() -> None:
         )
 
     split_metadata = {
-        "strategy": "leave_n_full_cases_out_per_fault_type",
+        "strategy": "leave_n_full_cases_out_per_fault_type_by_success_rate",
         "group_key": "case_id",
         "stratification_key": "fault_type",
         "validation_case_count_per_fault_type": options.validation_cases_per_fault_type,
         "required_selected_trajectories_per_validation_case": (
             options.required_validation_trajectories
         ),
-        "selection_rule": "selected_count_equals_required_then_max_case_id",
+        "success_rate_formula": "accepted/(accepted+incorrect+format_error)",
+        "required_success_rate": 1.0,
+        "selection_rule": "success_rate_equals_1_then_max_case_id",
+        "relaxed_fault_types": list(RELAXED_SUCCESS_RATE_FAULT_TYPES),
+        "fallback_selection_rule": "max_success_rate_then_max_case_id",
+        "source_query_counts_by_fault_type": {
+            fault_type: len(source_cases_by_fault_type[fault_type])
+            for fault_type in all_fault_types
+        },
+        "full_query_counts_by_fault_type": {
+            fault_type: len(full_cases_by_fault_type[fault_type])
+            for fault_type in all_fault_types
+        },
+        "perfect_success_query_counts_by_fault_type": {
+            fault_type: len(perfect_cases_by_fault_type[fault_type])
+            for fault_type in all_fault_types
+        },
+        "perfect_success_case_ids_by_fault_type": {
+            fault_type: sorted(perfect_cases_by_fault_type[fault_type])
+            for fault_type in all_fault_types
+        },
         "validation_cases_by_fault_type": validation_cases_by_fault_type,
         "validation_case_ids": validation_case_ids,
         "train_case_ids": train_case_ids,
@@ -491,6 +577,7 @@ def main() -> None:
         },
         "split": split_metadata,
         "counts": {
+            "source_attempt_count_scope": "model_valid_outcomes_only",
             "source_records": len(source_rows),
             "source_attempts": source_attempt_count,
             "accepted_candidates": len(processed),
@@ -593,6 +680,7 @@ def main() -> None:
             source_manifest_path
         ),
         "source_attempt_count": source_attempt_count,
+        "source_attempt_count_scope": "model_valid_outcomes_only",
         "accepted_candidate_count": len(processed),
         "selected_trajectory_count": len(train_rows) + len(validation_rows),
         "excluded_candidate_count": split_counts["excluded"],
@@ -657,11 +745,11 @@ def main() -> None:
         "# Accepted-only 100×10 轨迹过滤与 SFT 转换报告",
         "",
         f"- 来源实验：`{label(experiment_root)}`",
-        f"- 来源 attempt 记账：{source_attempt_count}",
+        f"- 来源模型有效 attempt：{source_attempt_count}",
         f"- accepted 候选：{len(processed)}",
         f"- 通过独立复核与证据清洁检查：{len(train_rows) + len(validation_rows)}",
         f"- 候选中排除：{split_counts['excluded']}",
-        f"- 非 accepted attempt：{filtered_nonaccepted}（来源只保留计数）",
+        f"- 非 accepted 的模型有效 attempt：{filtered_nonaccepted}",
         f"- 训练集：{len(train_rows)} 条，{len(train_case_ids)} 个题号",
         f"- 验证集：{len(validation_rows)} 条，{len(validation_case_ids)} 个题号",
         f"- 验证题号：{'、'.join(str(case_id) for case_id in validation_case_ids)}",
@@ -674,9 +762,10 @@ def main() -> None:
         "",
         "## 统计口径",
         "",
-        "- 来源实验采用 accepted-only 保留策略；失败、格式错误、基础设施失败和中断只从 `state.json` 读取计数。",
+        "- 归档只记录模型有效结果：accepted、incorrect 和 format_error。基础设施失败与中断不进入归档计数、报表或训练数据。",
         "- 每条 accepted 候选重新核对 metadata、独立 judgment、参考答案、最终事件、文件哈希和前置证据清洁性。",
-        "- 训练/验证按 `case_id` 整题隔离；每种故障类型只从恰有 10 条入选轨迹的题中，按题号降序确定性选择 2 题。",
+        "- 训练/验证按 `case_id` 整题隔离。除 `全局STP未使能` 外，每类从满 10 条且模型有效 attempt 成功率为 100% 的题中按题号降序选择 2 题。",
+        "- `全局STP未使能` 没有 100% 成功率候选，按显式回退规则从满 10 条题中依次按成功率、题号降序选择 q12、q2。",
         "- 所有样本均标记为 `draft`，正式训练前仍需领域审核。",
         "",
         "## 来源 attempt 状态",
@@ -708,28 +797,43 @@ def main() -> None:
             for fault_type in sorted(fault_type_case_ids)
         ],
         "",
+        "## 每个 label 的 100% 成功率候选题",
+        "",
+        "成功率只使用模型有效 attempt，公式为 `accepted / (accepted + incorrect + format_error)`；候选题还必须有 10 条入选轨迹。",
+        "",
+        "| 故障类型 | 来源题数 | 满10条题数 | 100%成功率题数 | 合格题号 |",
+        "| --- | ---: | ---: | ---: | --- |",
+        *[
+            (
+                f"| `{fault_type}` | {len(source_cases_by_fault_type[fault_type])} | "
+                f"{len(full_cases_by_fault_type[fault_type])} | "
+                f"{len(perfect_cases_by_fault_type[fault_type])} | "
+                f"{', '.join(str(case_id) for case_id in sorted(perfect_cases_by_fault_type[fault_type])) or '—'} |"
+            )
+            for fault_type in all_fault_types
+        ],
+        "",
         "## 验证集划分",
         "",
-        "| 故障类型 | 验证题号 | 验证轨迹 |",
-        "| --- | --- | ---: |",
+        "| 故障类型 | 验证题号 | 成功率 | 验证轨迹 |",
+        "| --- | --- | --- | ---: |",
         *[
-            f"| `{fault_type}` | {', '.join(str(case_id) for case_id in validation_cases_by_fault_type[fault_type])} | {sum(selected_counts_by_case[case_id] for case_id in validation_cases_by_fault_type[fault_type])} |"
+            f"| `{fault_type}` | {', '.join(str(case_id) for case_id in validation_cases_by_fault_type[fault_type])} | {', '.join(f'{success_rate_by_case[case_id]:.2%}' for case_id in validation_cases_by_fault_type[fault_type])} | {sum(selected_counts_by_case[case_id] for case_id in validation_cases_by_fault_type[fault_type])} |"
             for fault_type in sorted(validation_cases_by_fault_type)
         ],
         "",
         "## 逐题统计",
         "",
-        "`Attempt` 不含无法归属到题号的 interrupted 计数；`错误` 为 incorrect + format_error。",
+        "`Attempt` 只统计 accepted + incorrect + format_error；`错误` 为 incorrect + format_error。",
         "",
-        "| 题号 | Attempt | 成功 | 错误 | 基础设施失败 | SFT | 划分 | 终态 |",
-        "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+        "| 题号 | Attempt | 成功 | 错误 | SFT | 划分 | 终态 |",
+        "| ---: | ---: | ---: | ---: | ---: | --- | --- |",
         *[
             (
                 f"| {int(source_by_index[row_index]['id'])} | "
-                f"{int(state_by_row[row_index].get('total_attempts', 0))} | "
+                f"{int(state_by_row[row_index].get('accepted_count', 0)) + int(state_by_row[row_index].get('total_wrong', 0))} | "
                 f"{int(state_by_row[row_index].get('accepted_count', 0))} | "
                 f"{int(state_by_row[row_index].get('total_wrong', 0))} | "
-                f"{int(state_by_row[row_index].get('infrastructure_failures', 0))} | "
                 f"{selected_counts_by_case[int(source_by_index[row_index]['id'])]} | "
                 f"{next((item['split'] for item in processed if item['row_index'] == row_index and item['selected']), 'excluded')} | "
                 f"{state_by_row[row_index].get('status')} |"

@@ -4,10 +4,11 @@
 
 - `2026-07-27`：人工策展的多阶段小样本基线；
 - `2026-07-31`：首轮 100×10 正确轨迹决策 SFT，也是现有训练方案的默认数据；
-- `2026-08-04`：GPT-5.6-Sol accepted-only 轨迹生成的最新决策 SFT 候选集。
+- `2026-08-04`：GPT-5.6-Sol accepted-only 轨迹及每题最佳一条的原生多轮 SFT 快跑集。
 
-训练输出只保留可复核的规划、推理或最终决策，不包含工具调用协议、命令、API 路径和
-执行日志。所有 SFT 样本当前均为 `draft`，正式使用前仍需领域审核。
+旧版 decision SFT 只保留可复核的规划、推理或最终决策；0804 原生多轮 SFT 另在独立
+`tool_call`/`tool_response` 角色中保留对归因有价值的真实命令和结果。所有新 SFT 样本
+当前均为 `draft`，正式使用前仍需领域审核。
 
 > **Thinking 强制策略**：自 2026-08-04 起，所有新的 Base/LoRA Agent 评测与
 > 对比实验必须显式开启 thinking，并在结果中记录 `reasoning_output_tokens`。
@@ -20,7 +21,7 @@
 | --- | --- | --- | --- |
 | [`data/2026-07-27/`](data/2026-07-27/) | 多阶段策展基线 | 3 条原始轨迹；7 planning、2 reasoning、3 decision | 保留 |
 | [`data/2026-07-31/`](data/2026-07-31/) | 当前 LoRA 训练基线 | 819 decision；训练 759、验证 60 | 已训练、已评测 |
-| [`data/2026-08-04/`](data/2026-08-04/) | 最新 accepted-only 候选集 | 814 decision；训练 694、验证 120 | 已归档、待训练 |
+| [`data/2026-08-04/`](data/2026-08-04/) | accepted-only 归档及 best1 多轮快跑集 | 814 decision；best1 84 轨迹、371 节点（训练 318、验证 53） | 数据已校验、待 GPU 快跑 |
 | [`data/simulation/`](data/simulation/) | 原始仿真资料 | prompt、JSONL、配置与评测轨迹 | 不可变来源 |
 
 ### 2026-07-31 划分
@@ -44,6 +45,13 @@
 完整候选、回退规则和逐题统计见
 [`data/2026-08-04/README.md`](data/2026-08-04/README.md)。
 
+0804 快跑版暂不对同题的 10 条轨迹聚类，而是在每个训练题和验证题中各选择一条证据
+最充分、路径较短的最佳成功轨迹，再把每个有价值的推理节点生成一条原生多轮 SFT。
+共选择 84 条轨迹，得到训练 318、验证 53 个节点样本。reconstructed `<think>` 的 token
+loss 权重为 0.4，阶段结论、实际工具调用和最终结果为 1.0，历史轮次为 0；工具结果仅作
+上下文。绕路、重复、失败和无关命令被删除，证据已收敛的无调用节点保留为
+`decision_ready`，不会补造工具调用。该规则只作用于 0804，不修改 0731 数据与记录。
+
 ## 数据规则
 
 - `data/simulation/` 是不可变来源，只允许读取或复制，不得编辑、覆盖、移动或删除。
@@ -51,7 +59,9 @@
 - 基础设施失败与中断可供 runner 临时控制流程，但不进入日期归档、报表或训练数据。
 - 训练/验证必须按 `case_id` 整题隔离，禁止把同题重复轨迹随机分到两侧。
 - accepted 样本必须通过参考答案、独立判题、最终事件、文件哈希和证据清洁检查。
-- SFT 的 assistant 输出不得包含工具协议、工具名、命令、URL、API 路径或文件路径。
+- 旧版 decision SFT 的 assistant 输出不得包含工具协议、工具名、命令、URL、API 路径
+  或文件路径；0804 原生轨迹 SFT 只允许在独立 `tool_call`/`tool_response` 角色中保留
+  对最终归因有因果价值的真实命令和结果，且工具结果不参与 loss。
 
 ## 常用命令
 
@@ -61,6 +71,7 @@
 python scripts/validate_sft.py
 python scripts/validate_100x10_sft.py
 python -B scripts/validate_accepted_only_100x10_sft.py
+python -B scripts/validate_0804_best_trajectory_reasoning_sft.py
 ```
 
 ### 重新生成日期数据
@@ -69,6 +80,7 @@ python -B scripts/validate_accepted_only_100x10_sft.py
 python scripts/convert_trajectories.py
 python scripts/convert_100x10_accepted_to_sft.py
 python -B scripts/convert_accepted_only_100x10_to_sft.py
+python -B scripts/convert_0804_best_trajectory_reasoning_sft.py
 ```
 
 已删除的 2026-07-28 历史留一数据仍可从保留的 14×10 来源实验重建：
@@ -88,6 +100,15 @@ Codex-run 校验器会明确要求先运行转换器或通过 `--data-root` 指�
 ```bash
 bash scripts/run_seetacloud_lora_workflow.sh
 ```
+
+0804 每题最佳一条的 16K、1 epoch 快跑使用独立入口，不读取或改写 0731：
+
+```bash
+bash scripts/train_qwen36_0804_best1_quick.sh
+```
+
+该入口在启动训练前会重新生成数据、执行独立静态校验，并使用训练机上的目标 tokenizer
+逐条确认没有样本超过 16,384 token；未通过预检时会直接退出。
 
 环境、LoRA 参数、早停、部署和恢复流程统一记录在
 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)，根 README 不再重复维护服务器路径和
