@@ -5,13 +5,15 @@
 10 次，或累计错误达到 20 次时停止该题并继续其他题。基础设施、额度、认证、模型
 可用性和超时问题不计入题目错误次数。
 
-## 当前状态：结果已重置
+## 当前状态：实验已完成
 
-2026-08-03，用户确认实际 user prompt 存在问题，因此此前的 82 个 attempt 和全部
-中间状态均已作废并删除。当前有效 accepted 和 attempt 都是 0，`results/` 不存在，
-控制器和 Codex 子进程均已停止。实际运行 prompt 已于 2026-08-03 改为直接读取
-`saved_configs/` 本地文件，并简化了读取方式和快照属性的限制性说明；当前等待用户复核。
-确认后再从 q0001 attempt 1 开始全新采集，不得恢复旧结果。
+2026-08-03，用户确认旧 user prompt 存在问题，因此此前的 82 个 attempt 和全部中间状态
+均已作废并删除；实际运行 prompt 随后改为直接读取 `saved_configs/` 本地文件，并从 q0001
+attempt 1 全新采集，不恢复旧结果。实验已于 2026-08-04 完成，100 道题全部到达终态，
+共保留 814 条 accepted 轨迹：79 题收齐 10 条正确轨迹，19 题因连续 10 次错误停止，
+2 题因累计 20 次错误停止。最终完整性审计通过；逐题统计见
+[`results/report/FINAL_STATISTICS.md`](results/report/FINAL_STATISTICS.md)，accepted 轨迹清单见
+[`results/report/ACCEPTED_TRAJECTORIES.md`](results/report/ACCEPTED_TRAJECTORIES.md)。
 
 旧 smoke 输入产物、Python 字节码、空目录和约 337 MiB 的本地 Codex CLI 副本已清理。
 这些均为 Git 忽略的可重建运行缓存；控制器会在正式启动时从当前安装的 Codex CLI 重新
