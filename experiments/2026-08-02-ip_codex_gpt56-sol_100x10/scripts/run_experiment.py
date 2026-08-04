@@ -832,10 +832,12 @@ def codex_command(workspace: Path, final_answer: Path) -> list[str]:
         str(workspace.resolve()),
         "-c",
         trust,
+        '-c',
+        'service_tier=\'default\'',
+        '-c',
+        'notify=[]',
         "-c",
         'web_search="disabled"',
-        "-c",
-        "mcp_servers.openaiDeveloperDocs.enabled=false",
         "--json",
         "--sandbox",
         "danger-full-access",
@@ -1182,9 +1184,21 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
             try:
                 # Match the two old runners exactly: every raw Codex JSONL stdout
                 # line is written once, in arrival order, and immediately flushed.
+                turn_completed = False
                 for line in process.stdout:
                     events_handle.write(line)
                     events_handle.flush()
+                    try:
+                        turn_completed = json.loads(line).get('type') == 'turn.completed'
+                    except (json.JSONDecodeError, AttributeError):
+                        turn_completed = False
+                    if turn_completed:
+                        # On Windows, a tool subprocess can keep the inherited
+                        # stdout pipe open after Codex has emitted its terminal
+                        # event. Stop waiting for EOF once the turn is complete.
+                        break
+                if turn_completed:
+                    process.stdout.close()
                 exit_code = process.wait()
             finally:
                 timeout_timer.cancel()

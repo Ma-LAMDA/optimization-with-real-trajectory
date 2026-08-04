@@ -178,6 +178,10 @@ def append_audit(record: dict[str, object]) -> None:
 
 
 def main() -> int:
+    if hasattr(sys.stdin, "reconfigure"):
+        sys.stdin.reconfigure(encoding="utf-8")
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     raw_root = os.environ.get("IP_DISTILL_ALLOWED_ROOT", "")
     if not raw_root:
         response_deny("runner did not configure an allowed saved_configs root")

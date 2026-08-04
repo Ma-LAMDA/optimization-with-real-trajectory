@@ -1,0 +1,19 @@
+{
+  "description": "Allow only direct read-only file access under saved_configs/.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "D:\\Python\\python.exe -B D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-08-02-ip_codex_gpt56-sol_100x10\\scripts\\file_read_only_hook.py",
+            "commandWindows": "D:\\Python\\python.exe -B D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-08-02-ip_codex_gpt56-sol_100x10\\scripts\\file_read_only_hook.py",
+            "statusMessage": "Enforcing direct read-only saved_configs access",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

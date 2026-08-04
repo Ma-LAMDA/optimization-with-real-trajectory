@@ -1,0 +1,71 @@
+{
+  "schema_version": "ip-codex-distillation-manifest.v3",
+  "status": "completed",
+  "started_at": "2026-08-03T12:45:34.719+00:00",
+  "experiment_root": "D:\\IP组网\\optimization-with-real-trajectory\\experiments\\2026-08-02-ip_codex_gpt56-sol_100x10",
+  "source_path": "D:\\IP组网\\optimization-with-real-trajectory\\data\\simulation\\train_0629.jsonl",
+  "source_sha256": "79f961a2ce788fa2219e8ee5343b7fa87ca8d79ed3f3dec6049dca0ff7514ad9",
+  "record_count": 100,
+  "row_range": [
+    1,
+    100
+  ],
+  "model": "gpt-5.6-sol",
+  "model_display_name": "GPT-5.6-Sol",
+  "model_confirmation": {
+    "slug": "gpt-5.6-sol",
+    "display_name": "GPT-5.6-Sol",
+    "cache_client_version": "0.146.0",
+    "cache_fetched_at": "2026-08-03T12:45:21.570803Z"
+  },
+  "codex_cli_version": "codex-cli 0.145.0",
+  "codex_cli_sha256": "83751f15cb6a0a7b97df67752c001e3fe1c20e18ffbfec3ff63567296205eb6c",
+  "configuration_root": "D:\\IP组网\\optimization-with-real-trajectory\\saved_configs",
+  "configuration_access": "direct_read_only_files",
+  "initial_concurrency": 10,
+  "maximum_concurrency": 10,
+  "target_correct_per_sample": 10,
+  "max_consecutive_wrong": 10,
+  "max_total_wrong": 20,
+  "attempt_timeout_seconds": 2700,
+  "ephemeral_sessions": true,
+  "fresh_process_per_attempt": true,
+  "attempt_retention": "accepted_only",
+  "generator_input_fields": [
+    "question",
+    "output_format",
+    "optimized copied user prompt",
+    "read-only saved_configs directory"
+  ],
+  "prompt_source": "experiment inputs/IP user prompt by text.txt",
+  "prompt_localization": {
+    "operation": "runtime absolute saved_configs path substitution",
+    "placeholder": "{saved_configs_root}",
+    "value": "D:\\IP组网\\optimization-with-real-trajectory\\saved_configs",
+    "occurrences": 6
+  },
+  "comparator": "established_fault_set_exact_with_alternatives_v2",
+  "comparison_rule": "prediction must be a JSON string array exactly equal to the flat reference or to any explicitly listed nested reference alternative; order ignored; missing, extra, or different items fail",
+  "generator_judge_separation": "separate judge_attempt.py process starts only after Codex exits",
+  "runs_layout": "results/runs/qXXXX_rYY/attempt_ZZZ",
+  "updated_at": "2026-08-04T01:04:20.038+00:00",
+  "resume_history": [
+    {
+      "resumed_at": "2026-08-03T12:55:39.780+00:00",
+      "prior_blocker": "cli_launch_failure_after_3_checks"
+    },
+    {
+      "resumed_at": "2026-08-03T13:07:23.100+00:00",
+      "prior_blocker": "cli_launch_failure_after_3_checks"
+    },
+    {
+      "resumed_at": "2026-08-03T17:36:46.102+00:00",
+      "prior_blocker": "PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\\\IP组网\\\\optimization-with-real-trajectory\\\\experiments\\\\2026-08-02-ip_codex_gpt56-sol_100x10\\\\results\\\\runs\\\\q0021_r06\\\\attempt_015\\\\workspace'"
+    },
+    {
+      "resumed_at": "2026-08-04T01:04:20.038+00:00",
+      "prior_blocker": "PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\\\IP组网\\\\optimization-with-real-trajectory\\\\experiments\\\\2026-08-02-ip_codex_gpt56-sol_100x10\\\\results\\\\runs\\\\q0029_r04\\\\attempt_004\\\\workspace'"
+    }
+  ],
+  "ended_at": "2026-08-04T10:15:54.992+00:00"
+}

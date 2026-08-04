@@ -109,13 +109,13 @@ def main() -> int:
         '10.139.194.154:3080',
         '/v3/projects',
     ]
-    required_prompt_fragments = [
-        'saved_configs/',
-        '三层目录',
-        'get-childitem',
-        'get-content',
-        'select-string',
-        '<result>...</result>',
+    required_prompt_fragment_groups = [
+        ('saved_configs/',),
+        ('三级结构', '三层目录'),
+        ('get-childitem',),
+        ('get-content',),
+        ('select-string',),
+        ('<result>...</result>',),
     ]
     allowed_file_commands = (
         'get-childitem',
@@ -196,7 +196,10 @@ def main() -> int:
             prompt = prompt_path.read_text(encoding='utf-8', errors='replace').lower()
             if (
                 any(fragment.lower() in prompt for fragment in forbidden_prompt_fragments)
-                or any(fragment.lower() not in prompt for fragment in required_prompt_fragments)
+                or any(
+                    not any(fragment.lower() in prompt for fragment in alternatives)
+                    for alternatives in required_prompt_fragment_groups
+                )
             ):
                 unsafe_prompts.append(rel)
         if hook_path.exists():

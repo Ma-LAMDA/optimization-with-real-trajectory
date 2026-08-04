@@ -1,0 +1,38 @@
+2026-08-04T08:14:55.234173Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T08:14:55.234247Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T08:14:55.234999Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T08:14:55.238206Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T08:14:55.249451Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-04T08:15:00.553386Z  WARN codex_core_plugins::manager: failed to refresh remote installed plugins cache error=remote plugin catalog request to https://chatgpt.com/backend-api/ps/plugins/installed?scope=USER failed with status 500 Internal Server Error:  materialized_remote_plugin_count=0
+2026-08-04T08:15:05.872927Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07' -Directory | Select-Object -ExpandProperty Name
+2026-08-04T08:15:47.130999Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.6 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\SH_AR\display_
+ip_routing-table_10.1.40.254.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...10.1.40.254.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T08:16:04.242206Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\SH_Core\displa
+y_ip_routing-table_10.1.40.254.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...10.1.40.254.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T08:16:27.087550Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: rg -n "([8-9][0-9]|100)%" "D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07" -g "display_interface_brief.txt" -g "display_interface_*.txt"
+2026-08-04T08:16:32.821188Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg -n -e "8[0-9]%" -e "9[0-9]%" -e "100%" "D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07" -g "display_interface_brief.txt" -g "display_interface_*.txt"
+2026-08-04T08:18:38.354429Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\PE2\display_logbuffer.txt' -Pattern 'MPLS','TTL','loop','LSP'
+2026-08-04T08:18:38.354427Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\PE3\display_logbuffer.txt' -Pattern 'MPLS','TTL','loop','LSP'
+2026-08-04T08:18:38.354431Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\PE1\display_logbuffer.txt' -Pattern 'MPLS','TTL','loop','LSP'
