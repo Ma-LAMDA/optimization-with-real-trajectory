@@ -256,6 +256,17 @@ token 预留余量。长输出会增加延迟和 KV cache 占用。
 耗时约 257.6 秒。该结果仅作为当前硬件与软件环境的速度基线，不代表 8,000
 token 输出会线性耗时。
 
+### Thinking 强制策略
+
+所有 Base/LoRA Agent 评测、checkpoint sweep 和 A/B 对比实验均必须显式开启
+thinking。统一入口 `scripts/run_agent_validation.sh` 强制使用非 `none` 的
+`REASONING_EFFORT`（默认 `high`），并将实际配置、`reasoning_output_tokens` 和
+有可观测 reasoning 输出的运行数写入报告。完整口径见
+[`THINKING_POLICY.md`](THINKING_POLICY.md)。
+
+已经开始的实验不得中途切换 thinking 配置；这会破坏同一实验内的可比性。历史
+thinking-off 结果只作审计，不能与 thinking-on 结果混合为同一能力结论。
+
 ### Qwen3.6-27B 评测运行拓扑
 
 自 2026-07-31 起，凡调用本地 Qwen3.6-27B 基座或 LoRA adapter 服务进行的

@@ -28,6 +28,18 @@
 `json.loads(source_record.answer)` 做整体精确相等比较。超时和 runner 失败均计错；
 不能把“60 分钟内完成”当作“回答正确”。
 
+## Thinking 口径
+
+自 2026-08-04 起，所有新的 Base/LoRA Agent 评测和 A/B 对比实验必须显式开启
+thinking（默认 `REASONING_EFFORT=high`），并在报告中记录
+`reasoning_output_tokens`。这项规则由
+[`docs/THINKING_POLICY.md`](../../docs/THINKING_POLICY.md) 与
+`scripts/run_agent_validation.sh` 强制执行。
+
+本目录中已经启动的 `base-eval-tp2x1-concurrency2-20260731T174703Z` 保持原始口径，
+不在中途切换；其已完成运行没有观察到可见 thinking 输出，因此它不能与后续
+thinking-on 实验混合成同一能力结论。
+
 ## 部署 A/B
 
 两组均使用题 4、5、20、89，每题 5 次，共 20 次；单次上限 60 分钟，总并发均为 2。
