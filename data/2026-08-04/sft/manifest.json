@@ -1,0 +1,179 @@
+{
+  "schema_version": "qwen36-reasoning-decision-sft.v6",
+  "source_experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+  "source_dataset": "data/simulation/train_0629.jsonl",
+  "source_dataset_sha256_lf_normalized": "b08f7e24262fe52db28f9cc768298ffeb2c1b619abd9f1e687b67dfed4797ccf",
+  "source_accepted_index": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/report/accepted_index.json",
+  "source_accepted_index_sha256_lf_normalized": "ae5d5262862e5b04fac99618e7b8124c4494df1d05cbb2211d39c18aff1a258e",
+  "source_state": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/report/state.json",
+  "source_state_sha256_lf_normalized": "6adb0532ab81e7cda052b926d1fa8f3f539bb764a35320553570ad58233c46e1",
+  "source_manifest": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/report/manifest.json",
+  "source_manifest_sha256_lf_normalized": "270506c8e0bf72438c96f85abbdc7f37fed4da1dc2eafadcadcf64136b83c361",
+  "source_attempt_count": 1343,
+  "accepted_candidate_count": 814,
+  "selected_trajectory_count": 814,
+  "excluded_candidate_count": 0,
+  "filtered_nonaccepted_attempt_count": 529,
+  "curation_file": "data/2026-08-04/curation/accepted_trajectory_selection.json",
+  "curation_sha256_lf_normalized": "dd16e1c307461c08f6a519547b73f6bda6be81d16ba7614cc71b05ed68e1f3d8",
+  "target_type_counts": {
+    "train": {
+      "decision": 694
+    },
+    "validation": {
+      "decision": 120
+    }
+  },
+  "split": {
+    "strategy": "leave_n_full_cases_out_per_fault_type",
+    "group_key": "case_id",
+    "stratification_key": "fault_type",
+    "validation_case_count_per_fault_type": 2,
+    "required_selected_trajectories_per_validation_case": 10,
+    "selection_rule": "selected_count_equals_required_then_max_case_id",
+    "validation_cases_by_fault_type": {
+      "STP BPDU被过滤": [
+        24,
+        20
+      ],
+      "VRRP Master角色规划不合理": [
+        86,
+        85
+      ],
+      "VRRP工作在非抢占模式": [
+        100,
+        99
+      ],
+      "全局STP未使能": [
+        12,
+        11
+      ],
+      "存在IP路由环路": [
+        40,
+        39
+      ],
+      "存在MPLS标签环路": [
+        72,
+        71
+      ]
+    },
+    "validation_case_ids": [
+      11,
+      12,
+      20,
+      24,
+      39,
+      40,
+      71,
+      72,
+      85,
+      86,
+      99,
+      100
+    ],
+    "train_case_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      21,
+      22,
+      23,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98
+    ],
+    "case_groups_disjoint": true,
+    "train": 694,
+    "validation": 120
+  },
+  "selection": {
+    "included": 814,
+    "excluded_candidates": 0,
+    "filtered_nonaccepted_attempts": 529,
+    "candidate_exclusion_reason_counts": {},
+    "source_attempt_status_counts": {
+      "accepted": 814,
+      "format_error": 0,
+      "incorrect": 440,
+      "infrastructure_failure": 55,
+      "interrupted": 34
+    }
+  },
+  "outputs": [
+    {
+      "path": "data/2026-08-04/sft/qwen3_6_27b_reasoning_decision_train.jsonl",
+      "samples": 694,
+      "normalized_bytes": 3946837,
+      "sha256_lf_normalized": "040f25a22d68b8c593c5ff75674e784924f9104ff9cbc82a11d7fcbfd3e99510"
+    },
+    {
+      "path": "data/2026-08-04/sft/qwen3_6_27b_reasoning_decision_validation.jsonl",
+      "samples": 120,
+      "normalized_bytes": 691995,
+      "sha256_lf_normalized": "2c28d45f9d19df21c8a9ef139fa1ac4d895c6405f0fb463f4368603b5a30bba9"
+    }
+  ]
+}

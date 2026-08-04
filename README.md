@@ -2,9 +2,10 @@
 
 本项目按日期保存网络故障分析轨迹及其 SFT 数据。`2026-07-27` 数据由
 `q0014`、`q0017`、`q0018` 三段轨迹人工策展为多阶段样本；`2026-07-28`
-数据由 14×10 Codex 完整运行转换而来；`2026-07-31` 数据从 100×10 实验的
-819 条独立判题严格正确轨迹转换，并按题号执行留一验证划分。训练输出均不包含
-工具调用协议。训练目标是让模型学会：
+数据由 14×10 Codex 完整运行转换而来；`2026-07-31` 数据从首轮 100×10 实验的
+819 条独立判题严格正确轨迹转换，并按故障类型各留 1 题；`2026-08-04` 数据从
+0802 GPT-5.6-Sol 100×10 实验的 814 条严格正确轨迹转换，并按故障类型各留
+2 个满 10 条的 query。训练输出均不包含工具调用协议。训练目标是让模型学会：
 
 - 根据当前信息判断还缺少哪些事实；
 - 说明下一步需要核验什么以及为什么核验；
@@ -41,6 +42,10 @@
 │   │   ├── raw/
 │   │   ├── curation/
 │   │   └── sft/
+│   ├── 2026-08-04/
+│   │   ├── raw/
+│   │   ├── curation/
+│   │   └── sft/
 │   └── simulation/
 │       └── prompts, evaluation trajectories, configs and JSONL data
 ├── experiments/
@@ -52,12 +57,12 @@
 │   ├── 2026-07-28-ip_codex_train0629_100x10/
 │   ├── 2026-08-02-ip_codex_gpt56-sol_100x10/
 │   ├── 2026-07-31-qwen36-27b-base-eval/
-│   ├── 2026-07-31-qwen36-27b-agent-ab/
 │   └── 2026-08-02-qwen36-27b-heldout6-agent-ab/
 ├── saved_configs_service/
 └── scripts/
     ├── convert_codex_run_trajectories.py
     ├── convert_100x10_accepted_to_sft.py
+    ├── convert_accepted_only_100x10_to_sft.py
     ├── convert_trajectories.py
     ├── evaluate_sft_validation.py
     ├── finalize_lora_workflow.py
@@ -70,6 +75,7 @@
     ├── train_qwen36_lora_early_stop.sh
     ├── train_qwen36_lora_smoke.sh
     ├── validate_100x10_sft.py
+    ├── validate_accepted_only_100x10_sft.py
     ├── validate_codex_run_sft.py
     └── validate_sft.py
 ```
@@ -217,6 +223,25 @@ attempt，过滤 473 个 rejected、11 个 interrupted 和 10 个 infrastructure
 实验终态；其中 11 条 interrupted attempt 缺失耗时，不以 0 计入平均值。完整统计见
 [`data/2026-07-31/curation/FILTER_REPORT.md`](data/2026-07-31/curation/FILTER_REPORT.md)。
 
+## 2026-08-04 accepted-only 100×10 严格正确轨迹 SFT 数据
+
+`data/2026-08-04/` 来自
+`experiments/2026-08-02-ip_codex_gpt56-sol_100x10/`。来源共记账 1,343 个 attempt；
+accepted-only 实验完整保留 814 条 accepted 轨迹，失败、中断和基础设施问题只保留
+440/34/55 的状态计数。转换时再次核对每条轨迹的 metadata、独立判题、参考答案精确
+集合匹配、最终事件、文件哈希和前置证据清洁性，814 条全部通过。
+
+| 集合 | query | 样本数 |
+| --- | --- | ---: |
+| 训练集 | 6 类故障中除验证题外的 72 个 query | 694 |
+| 验证集 | 11、12、20、24、39、40、71、72、85、86、99、100 | 120 |
+| 过滤 | 非 accepted attempt | 529 |
+
+训练和验证按 `case_id` 整题隔离，query 交集为 0。每种合并后的故障类型只从恰有
+10 条入选轨迹的 query 中按题号降序确定性选择 2 个，形成 6 类 × 2 题 × 10 条的
+验证集；其余通过复核的轨迹进入训练集。完整逐 label、故障类型、划分和逐题统计见
+[`data/2026-08-04/curation/FILTER_REPORT.md`](data/2026-08-04/curation/FILTER_REPORT.md)。
+
 ## 重新生成与校验
 
 脚本只依赖 Python 标准库：
@@ -230,6 +255,9 @@ python scripts/validate_codex_run_sft.py
 
 python scripts/convert_100x10_accepted_to_sft.py
 python scripts/validate_100x10_sft.py
+
+python -B scripts/convert_accepted_only_100x10_to_sft.py
+python -B scripts/validate_accepted_only_100x10_sft.py
 ```
 
 也可以指定其他目录：
@@ -252,7 +280,8 @@ python scripts/validate_sft.py --sft-dir D:\path\to\sft
 - API 文档已从原始问题中移除；
 - 证据来源、样本数量、类型统计和文件哈希一致；
 - 0727 数据全部进入训练集，验证集为 0；
-- 0728 按题号留一；0731 按故障类型各留一题；两者训练与验证题号交集均为 0；
+- 0728 按题号留一；0731 按故障类型各留一题；0804 按故障类型各留 2 个满
+  10 条 query；各批次训练与验证题号交集均为 0；
 - 0731 数据只接收独立判题完全正确、最终事件一致且证据清洁的 accepted 轨迹；
 - 0731 六种故障类型均恰有一个验证题，且验证题符合确定性选择规则；
 - 0731 过滤报告的 100 行逐题统计和总计均与原始 attempt metadata、实验 state
@@ -360,12 +389,6 @@ RUN_PREFIX=agent-ab-checkpoint-name \
 LoRA 侧 20 次并生成对比，避免重复消耗 base 推理时间。这里的四题已进入当前训练集，
 因此该 A/B 只衡量与历史 Agent 基线的端到端变化；正式泛化验收仍以工作流从 manifest
 读取的题 12、24、40、72、86、100 为准。
-
-推荐的 checkpoint-760 +100 已按上述完整 Agent 口径实跑：LoRA 为 15/20
-（75.00%），复用的 base 为 3/20（15.00%），提升 60.00 个百分点；两侧均无超时，
-LoRA 平均封顶耗时由 26.66 分钟降至 13.95 分钟。分题结果、逐次预测和遥测归档在
-[`experiments/2026-07-31-qwen36-27b-agent-ab/`](experiments/2026-07-31-qwen36-27b-agent-ab/)。
-该结论只适用于已进入训练集的历史四题兼容 A/B，留出集结论仍须使用上述六题工作流。
 
 要从零重跑历史 base-eval 的其余 92 题（题 1–88、91–94，每题 5 次），使用：
 
@@ -518,6 +541,8 @@ attempt 1 全新启动，不恢复旧断点。实验已于 2026-08-04 完成，1
 状态计数，不归档、不提交、不长期保留其事件流、回答、日志或 attempt 目录。重置状态、
 固定的 Standard 速度/初始及最大并发 10 配置及启动清单见
 [`HANDOFF.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/HANDOFF.md)。
+814 条 accepted 轨迹已进一步归档为 `data/2026-08-04/` 的 694 条训练和 120 条验证
+SFT 数据；验证集按 6 类故障各保留 2 个满 10 条 query，且与训练 query 完全隔离。
 
 三个 Codex 轨迹实验已采用统一的紧凑归档：`prompt.txt` 和
 `source_record.json` 按“实验 + 题号”各保留一份；100×10 实验只保留
@@ -532,10 +557,11 @@ attempt 1 全新启动，不恢复旧断点。实验已于 2026-08-04 完成，1
 归档到 [`experiments/2026-07-31-qwen36-27b-base-eval/`](experiments/2026-07-31-qwen36-27b-base-eval/)。
 目录将部署对比与全量结果分开保存，并提供总体、逐题和逐次明细。
 
-checkpoint-760 +100 与历史 base 的完整 Agent A/B 已归档到
-[`experiments/2026-07-31-qwen36-27b-agent-ab/`](experiments/2026-07-31-qwen36-27b-agent-ab/)。
-该实验复用 base 的 20 次 TP2 结果，只实跑 LoRA 侧；所有运行固定单实例 TP2、双并发
-和 60 分钟上限。
+归档清理结论（2026-08-04）：旧的四题 checkpoint-760 +100 Agent A/B 因题目均已进入
+SFT 训练集，不能支持泛化结论，且已被 2026-08-02 的六道留出题 A/B 替代，因此对应的
+`2026-07-31-qwen36-27b-agent-ab` 目录已删除。`2026-07-31-qwen36-27b-base-eval` 继续
+保留；它仍保存部署拓扑 A/B、381 次中止全量评测记录，并被训练计划和 checkpoint
+评测脚本作为历史基线引用，后续留出集实验不能完整替代它。
 
 checkpoint-760 +100 与 Base 在最新留出题 12、24、40、72、86、100 上的同条件完整 Agent
 A/B 已归档到 [`experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/`](experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/)：
@@ -550,6 +576,9 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-04：将 0802 GPT-5.6-Sol 100×10 实验的 814 条 accepted 轨迹归档到
+  `data/2026-08-04/`；全部轨迹通过二次答案、事件和哈希复核，按 6 类故障各选择
+  2 个满 10 条 query，生成 694 条训练和 120 条验证数据，并增加可复现转换与独立校验脚本。
 - 2026-08-03：清理 0802 实验中未被引用的 smoke 输入、Python 字节码、空目录和
   约 337 MiB 的可重建 Codex CLI 副本，并合并 `.gitignore` 中已被 `/runtime/` 覆盖的
   重复规则；正式运行会自动重建所需 runtime 和输入索引。
