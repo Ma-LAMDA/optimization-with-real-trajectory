@@ -110,6 +110,15 @@ bash scripts/train_qwen36_0804_best1_quick.sh
 该入口在启动训练前会重新生成数据、执行独立静态校验，并使用训练机上的目标 tokenizer
 逐条确认没有样本超过 16,384 token；未通过预检时会直接退出。
 
+SeaTACLOUD 上的端到端入口会在 GPU 空闲检查通过后完成同一训练，读取全部 validation
+history 选择 `eval_loss` 最低且 checkpoint 仍存在的步，然后以单个 TP=2 vLLM 实例部署
+该 LoRA。最终使用 Codex CLI 完整 Agent 工具循环，在 12 道整题隔离验证题上各运行 5 次，
+固定 `REASONING_EFFORT=high` 并记录 `reasoning_output_tokens`：
+
+```bash
+bash scripts/run_seetacloud_0804_best1_workflow.sh
+```
+
 环境、LoRA 参数、早停、部署和恢复流程统一记录在
 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)，根 README 不再重复维护服务器路径和
 逐步操作说明。
