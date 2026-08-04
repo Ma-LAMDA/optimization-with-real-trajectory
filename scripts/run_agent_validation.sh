@@ -191,19 +191,39 @@ run_one() {
 
 log "Agent validation start prefix=${RUN_PREFIX} cases=${CASE_IDS} repeats=${REPEATS} topology=tp2x1/concurrency2"
 for repeat in $(seq 1 "${REPEATS}"); do
+  # Keep two runner slots occupied continuously.  The previous implementation
+  # waited for both members of a pair, which left one of the two permitted
+  # runners idle whenever its peer took longer.  Refill only after a runner
+  # exits, so this remains capped at the required two Agent runners.
   active=()
-  for case_id in "${CASES[@]}"; do
-    run_one "${case_id}" "${repeat}" &
-    active+=("$!")
-    if (( ${#active[@]} == 2 )); then
+  next_case_index=0
+  while (( next_case_index < ${#CASES[@]} || ${#active[@]} > 0 )); do
+    while (( next_case_index < ${#CASES[@]} && ${#active[@]} < 2 )); do
+      case_id="${CASES[${next_case_index}]}"
+      run_one "${case_id}" "${repeat}" &
+      active+=("$!")
+      next_case_index=$((next_case_index + 1))
+    done
+
+    # Wait only until at least one slot is free, then return to the refill
+    # loop.  Polling child PIDs avoids relying on Bash-version-specific
+    # `wait -n -p` behaviour while preserving the hard concurrency cap.
+    completed=0
+    while (( completed == 0 && ${#active[@]} > 0 )); do
+      remaining=()
       for pid in "${active[@]}"; do
-        wait "${pid}" || true
+        if kill -0 "${pid}" 2>/dev/null; then
+          remaining+=("${pid}")
+        else
+          wait "${pid}" || true
+          completed=1
+        fi
       done
-      active=()
-    fi
-  done
-  for pid in "${active[@]}"; do
-    wait "${pid}" || true
+      active=("${remaining[@]}")
+      if (( completed == 0 )); then
+        sleep 1
+      fi
+    done
   done
 done
 

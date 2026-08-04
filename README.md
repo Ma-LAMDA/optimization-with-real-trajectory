@@ -439,8 +439,9 @@ checkpoint-600。该 checkpoint 在题 100 的 10 条验证样本上达到格式
 
 凡调用本地 Qwen3.6-27B 基座或 LoRA adapter 服务进行的 eval，固定使用单实例
 双并发：只启动 1 个 vLLM 实例，当前双卡部署采用 `tp2x1`；固定 2 个 eval
-runner worker，总请求并发为 2。所有评测样本排队进入这两个槽位，重试也必须复用
-已有槽位。禁止在 27B eval 中启动 8 个 worker、8 路请求或自动扩容。该约束不适用于
+runner worker，总请求并发为 2。所有评测样本采用连续补位调度：任一 runner 结束后立即从
+队列启动下一个样本，重试也必须复用已有槽位。禁止在 27B eval 中启动 8 个 worker、8 路
+请求或自动扩容。该约束不适用于
 Codex 轨迹生成及其他数据采集任务；数据采集策略由各实验独立配置。完整约束见
 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
 
