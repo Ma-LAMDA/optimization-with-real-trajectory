@@ -15,6 +15,32 @@ attempt 1 全新采集，不恢复旧结果。实验已于 2026-08-04 完成，1
 [`results/report/FINAL_STATISTICS.md`](results/report/FINAL_STATISTICS.md)，accepted 轨迹清单见
 [`results/report/ACCEPTED_TRAJECTORIES.md`](results/report/ACCEPTED_TRAJECTORIES.md)。
 
+## 部分成功题补跑
+
+最终实验中题 3、7、21、22、23 分别已有 6、5、9、1、3 条 accepted 轨迹，但未达到
+每题 10 条；其余未达到 10 条且成功数为 0 的题不再尝试。补跑入口为：
+
+```powershell
+python -B experiments/2026-08-02-ip_codex_gpt56-sol_100x10/scripts/run_partial_success_supplement.py
+```
+
+补跑固定并发 4，并按题 3、7、21、22、23 的顺序优先调度；既有 accepted 轨迹和
+success slot 不会重跑，新轨迹继续写入原有 `qXXXX_rYY/attempt_ZZZ` 布局。每题在 accepted
+总数达到 10，或本轮新增 `incorrect + format_error` 累计达到 50 时停止；基础设施失败不计入
+这 50 次。runner 通过 Codex App Server 的 `account/rateLimits/read` 每分钟检查当前 `codex`
+额度窗口，剩余比例低于 30% 时停止创建新 attempt，并等待已启动的 attempt 安全收尾。
+
+本轮机器可读状态、滚动报告和小时快照分别写入
+`results/report/partial_success_supplement.json`、
+`results/report/PARTIAL_SUCCESS_SUPPLEMENT.md` 和
+`results/report/partial_success_supplement_hourly.jsonl`。
+
+补跑于 2026-08-05 完成，题 3、7、21、22、23 分别新增 4、5、1、9、7 条 accepted
+轨迹，并分别经历 7、12、9、9、25 次本轮失败，基础设施失败均为 0；五题最终均达到
+10 条 accepted。实验总 accepted 数由 814 增至 840，达到 10 条 accepted 的题目由
+79 道增至 84 道，其余 16 道零成功题未重试。结束时 Codex 剩余额度为 38%，最终审计
+通过，原始 `data/simulation/` 哈希保持不变。
+
 旧 smoke 输入产物、Python 字节码、空目录和约 337 MiB 的本地 Codex CLI 副本已清理。
 这些均为 Git 忽略的可重建运行缓存；控制器会在正式启动时从当前安装的 Codex CLI 重新
 创建所需的 `runtime/` 内容和输入索引。
