@@ -21,6 +21,10 @@ RUNNER="${RUNNER:-${REPO_ROOT}/experiments/2026-07-27-ip_codex_train0629_14x10/s
 DATASET="${DATASET:-${REPO_ROOT}/experiments/2026-07-27-ip_codex_train0629_14x10/inputs/train_0629.jsonl}"
 TEMPLATE="${TEMPLATE:-${REPO_ROOT}/experiments/2026-07-27-ip_codex_train0629_14x10/inputs/IP user prompt with saved configs skills.txt}"
 BASELINE_SUMMARY="${BASELINE_SUMMARY:-}"
+CODEX_MODEL_CATALOG_TEMPLATE="${CODEX_MODEL_CATALOG_TEMPLATE:-${REPO_ROOT}/config/codex_qwen_model_catalog.json}"
+CODEX_MODEL_METADATA_SOURCE="${CODEX_MODEL_METADATA_SOURCE:-Qwen3.6-27B-trained}"
+MODEL_METADATA_SMOKE_ONLY="${MODEL_METADATA_SMOKE_ONLY:-0}"
+MODEL_METADATA_SMOKE_TIMEOUT_SECONDS="${MODEL_METADATA_SMOKE_TIMEOUT_SECONDS:-300}"
 # Agent capability evaluations and A/B experiments must request visible
 # reasoning.  `none` is intentionally rejected below: it causes vLLM's Qwen
 # chat template to close the <think> block before generation.
@@ -34,11 +38,26 @@ if [[ ! "${TIMEOUT_SECONDS}" =~ ^[1-9][0-9]*$ ]]; then
   echo "TIMEOUT_SECONDS must be a positive integer." >&2
   exit 1
 fi
+if [[ ! "${MODEL_METADATA_SMOKE_ONLY}" =~ ^[01]$ ]]; then
+  echo "MODEL_METADATA_SMOKE_ONLY must be 0 or 1." >&2
+  exit 1
+fi
+if [[ ! "${MODEL_METADATA_SMOKE_TIMEOUT_SECONDS}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "MODEL_METADATA_SMOKE_TIMEOUT_SECONDS must be a positive integer." >&2
+  exit 1
+fi
 if [[ ! "${REASONING_EFFORT}" =~ ^(minimal|low|medium|high|xhigh|max)$ ]]; then
   echo "REASONING_EFFORT must request thinking (minimal, low, medium, high, xhigh, or max); 'none' is not permitted." >&2
   exit 1
 fi
-for path in "${PYTHON_BIN}" "${CODEX_BIN}" "${RUNNER}" "${DATASET}" "${TEMPLATE}"; do
+for path in \
+  "${PYTHON_BIN}" \
+  "${CODEX_BIN}" \
+  "${RUNNER}" \
+  "${DATASET}" \
+  "${TEMPLATE}" \
+  "${CODEX_MODEL_CATALOG_TEMPLATE}" \
+  "${SCRIPT_DIR}/prepare_codex_model_catalog.py"; do
   if [[ ! -e "${path}" ]]; then
     echo "Required path is missing: ${path}" >&2
     exit 1
@@ -60,11 +79,51 @@ done
 mkdir -p "${OUTPUT_ROOT}" "${REPORT_DIR}" "${CONTROL_DIR}/logs"
 LOG="${CONTROL_DIR}/controller.log"
 CODEX_WRAPPER="${CONTROL_DIR}/codex-agent-validation"
+CODEX_MODEL_CATALOG="${CONTROL_DIR}/model_catalog.json"
+"${PYTHON_BIN}" "${SCRIPT_DIR}/prepare_codex_model_catalog.py" \
+  --template "${CODEX_MODEL_CATALOG_TEMPLATE}" \
+  --output "${CODEX_MODEL_CATALOG}" \
+  --model "${MODEL_NAME}" \
+  --metadata-source "${CODEX_MODEL_METADATA_SOURCE}"
 printf '%s\n' \
   '#!/usr/bin/env bash' \
-  "exec \"${CODEX_BIN}\" -c 'model_providers.qwen_local.base_url=\"${CODEX_BASE_URL}\"' -c 'model_reasoning_effort=\"${REASONING_EFFORT}\"' \"\$@\"" \
+  "exec \"${CODEX_BIN}\" -c 'model_providers.qwen_local.base_url=\"${CODEX_BASE_URL}\"' -c 'model_reasoning_effort=\"${REASONING_EFFORT}\"' -c 'model_catalog_json=\"${CODEX_MODEL_CATALOG}\"' \"\$@\"" \
   >"${CODEX_WRAPPER}"
 chmod 700 "${CODEX_WRAPPER}"
+
+if [[ "${MODEL_METADATA_SMOKE_ONLY}" == "1" ]]; then
+  SMOKE_EVENTS="${CONTROL_DIR}/metadata_smoke_events.jsonl"
+  SMOKE_STDERR="${CONTROL_DIR}/metadata_smoke_stderr.log"
+  set +e
+  printf '%s\n' 'Reply with exactly OK. Do not use tools.' | \
+    timeout "${MODEL_METADATA_SMOKE_TIMEOUT_SECONDS}" \
+      "${CODEX_WRAPPER}" exec \
+        --json \
+        --sandbox read-only \
+        --skip-git-repo-check \
+        --model "${MODEL_NAME}" \
+        - \
+      >"${SMOKE_EVENTS}" 2>"${SMOKE_STDERR}"
+  smoke_rc=$?
+  set -e
+  if grep -Fq 'Defaulting to fallback metadata' "${SMOKE_EVENTS}" "${SMOKE_STDERR}"; then
+    echo "Codex model metadata smoke failed: fallback metadata was used." >&2
+    exit 1
+  fi
+  if (( smoke_rc != 0 )); then
+    echo "Codex model metadata smoke failed with exit code ${smoke_rc}." >&2
+    tail -50 "${SMOKE_EVENTS}" >&2 || true
+    cat "${SMOKE_STDERR}" >&2 || true
+    exit "${smoke_rc}"
+  fi
+  if ! grep -Fq '"type":"turn.completed"' "${SMOKE_EVENTS}"; then
+    echo "Codex model metadata smoke failed: no completed turn was recorded." >&2
+    tail -50 "${SMOKE_EVENTS}" >&2 || true
+    exit 1
+  fi
+  echo "Codex model metadata smoke passed: model=${MODEL_NAME} catalog=${CODEX_MODEL_CATALOG}"
+  exit 0
+fi
 
 log() {
   printf '%s %s\n' "$(date --iso-8601=seconds)" "$*" | tee -a "${LOG}"

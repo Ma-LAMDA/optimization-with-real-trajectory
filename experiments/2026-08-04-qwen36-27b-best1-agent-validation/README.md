@@ -4,6 +4,22 @@
 指令提前停止后的有效 Agent 验证结果。训练完整结束；Agent 验证原计划 12 题各 5 次，
 在 39 个 attempt 完成后停止，剩余 21 个未启动 attempt 不计失败。
 
+> 2026-08-05事后复核：39/39个attempt的事件流开头均出现
+> `Model metadata ... not found. Defaulting to fallback metadata`。原因是served model
+> `Qwen3.6-27B-0804-best1`未登记到Codex model catalog，而0731模型已登记。以下结果
+> 仍按原样保留，但只能表示错误Agent metadata条件下的历史运行，不能用于0804/0731
+> 能力结论；修正控制器并通过无warning冒烟后需重新验证。
+
+## Metadata修正冒烟
+
+2026-08-05使用原`checkpoint-159`启动单个TP=2 vLLM实例，并通过修正后的验证控制器
+执行一个不调用工具的最小Codex turn。运行内catalog成功加入
+`Qwen3.6-27B-0804-best1`，SHA-256为
+`32d0b87d93b49db9d446cb5767466b2beb65de1023b0224d7bfe0aab98316c48`；事件顺序为
+`thread.started`、`turn.started`、返回`OK`、`turn.completed`，未出现fallback metadata
+warning，Responses API返回HTTP 200。该冒烟只验证启动与metadata，不计入准确率，也没有
+继续执行正式验证题。
+
 ## 训练结果
 
 - 基座：Qwen3.6-27B；LoRA 可训练参数 58,363,904。
@@ -12,6 +28,70 @@
 - eval loss：step 40=`0.3065788`、80=`0.1956932`、120=`0.1823089`、
   159=`0.1806803`。
 - 最低 eval loss 位于 `checkpoint-159`，该 checkpoint 用于 Agent 验证。
+
+## 下一轮5 epoch实验方案（已确认，未执行）
+
+本节记录2026-08-05确认的下一轮方案，不追溯改写上面的1 epoch历史快跑结果。
+
+### 训练参数
+
+- 训练5个epoch；单卡`per_device_train_batch_size=1`，
+  `gradient_accumulation_steps=8`，因此有效batch为8。
+- 使用固定`seed=42`和`data_seed=42`，每个epoch重新shuffle；micro batch保持1以控制
+  Qwen3.6-27B、16K上下文的显存占用。
+- 不使用单个epoch内的step级cosine衰减和10% warmup。每个epoch内部学习率固定，
+  epoch之间按下表阶梯衰减：
+
+| Epoch | 固定learning rate |
+| ---: | ---: |
+| 1 | `2.0e-5` |
+| 2 | `1.5e-5` |
+| 3 | `1.0e-5` |
+| 4 | `6.0e-6` |
+| 5 | `3.0e-6` |
+
+- 每个epoch结束计算SFT eval loss并保存一个checkpoint，保留全部5个epoch checkpoint；
+  不再让Trainer仅凭最低eval loss自动加载最终模型。
+
+### checkpoint Agent选择
+
+固定从12题验证集中选择每个label一题：
+
+| Label | 选择题 | 与0731重合 |
+| --- | ---: | :---: |
+| 全局STP未使能 | q12 | 是 |
+| STP BPDU被过滤 | q20 | 否 |
+| 存在IP路由环路 | q38 | 否 |
+| 存在MPLS标签环路 | q71 | 否 |
+| VRRP Master角色规划不合理 | q86 | 是 |
+| VRRP工作在非抢占模式 | q100 | 是 |
+
+这是当前0804验证划分在不引入训练题和不破坏既有筛选规则的前提下，与0731能够达到的
+最大重合（3/6）。每个checkpoint在上述6题上各运行2次，共12个Agent attempt；5个
+checkpoint合计60个挑选attempt。选择顺序固定为：
+
+1. 严格准确率更高；
+2. 模型硬超时更少；
+3. 平均运行时间更短；
+4. SFT eval loss更低；
+5. 仍相同时选择更早的epoch。
+
+所有运行显式使用`reasoning_effort=high`。正式题目开始前必须通过无fallback warning
+的model metadata冒烟；模型硬超时计错，基础设施失败和人为中断不进入样本或分母。
+
+### 最终12题验证与复用
+
+入选checkpoint最终在q2、q12、q19、q20、q29、q38、q65、q71、q85、q86、q99、
+q100上各有5次结果，共60个attempt。为减少重复计算：
+
+- q12、q20、q38、q71、q86、q100复用该入选checkpoint在挑选阶段的2次，并各补跑
+  3次，共补18次；
+- q2、q19、q29、q65、q85、q99各运行5次，共30次；
+- 因此选定checkpoint后新增48次，连同复用的12次组成最终60次；其他未入选
+  checkpoint的挑选运行不进入最终结果。
+
+最终报告必须标记12个`used_for_checkpoint_selection=true`的attempt，并同时报告全部
+12题、参与选择的6题和未参与选择的6题三种汇总，以显式呈现checkpoint选择偏差。
 
 ## Agent 验证结果
 

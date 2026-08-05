@@ -472,3 +472,27 @@ Codex CLI 使用完整调查 prompt 和离线配置工具，与直接 validation
 
 任何训练脚本、数据或使用方式的变更在推送 GitHub 时，都必须在同一提交
 中同步更新 `README.md`。
+
+## 11. 0804 best1下一轮5 epoch实验（已确认，未执行）
+
+0804首轮best1快跑只训练1 epoch、159个optimizer step，且在单个epoch内完成
+`2e-5`到0的warmup加cosine调度。下一轮不沿用该配置，固定采用以下协议：
+
+- 5 epochs；单卡micro batch为1、梯度累积为8，有效batch为8；
+- `seed=42`、`data_seed=42`，每个epoch重新shuffle；
+- epoch内部learning rate固定，五轮依次为`2e-5`、`1.5e-5`、`1e-5`、
+  `6e-6`、`3e-6`，不再做epoch内部warmup或cosine衰减；
+- 每个epoch结束计算SFT eval loss并保存checkpoint，五个checkpoint全部保留，
+  禁止Trainer仅按最低eval loss自动决定最终部署模型。
+
+checkpoint选择固定运行q12、q20、q38、q71、q86、q100，每个label一题、每题2次；
+其中q12、q86、q100与0731留出题重合。在不使用0804训练题的前提下，这是当前划分可达到
+的最大重合。五个checkpoint共执行60个挑选attempt，按严格准确率降序、模型硬超时升序、
+平均耗时升序、SFT eval loss升序、epoch升序确定唯一checkpoint。
+
+入选checkpoint在完整12题（q2、q12、q19、q20、q29、q38、q65、q71、q85、q86、
+q99、q100）上最终各保留5次，共60个attempt。入选模型在checkpoint选择阶段产生的
+6题×2次直接计入最终结果，这6题各补跑3次；其余6题各跑5次。其他checkpoint的挑选
+attempt不计入最终结果。最终报告必须标记被复用的12次，并分别汇总全部12题、选择用6题
+和未参与选择6题。所有Agent运行强制thinking=high，启动正式验证前必须通过model
+metadata无fallback warning冒烟；模型硬超时计错，基础设施失败和人为中断不记录。

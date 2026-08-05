@@ -15,6 +15,15 @@
 > 完整规则见 [`docs/THINKING_POLICY.md`](docs/THINKING_POLICY.md)；未观察到可见
 > thinking 输出的历史运行不得与 thinking-on 运行混合为同一能力结论。
 
+> **Codex 模型 metadata 前置校验**：Agent 验证会从
+> [`config/codex_qwen_model_catalog.json`](config/codex_qwen_model_catalog.json) 为当前
+> vLLM/LoRA 模型名生成隔离的运行内 catalog，并显式传给 Codex CLI。未知模型名不得
+> 使用 fallback metadata；启动事件中出现 `Defaulting to fallback metadata` 时，该次
+> 能力评测无效，必须修正后重跑。
+> 可在vLLM就绪后设置 `MODEL_METADATA_SMOKE_ONLY=1` 调用
+> `scripts/run_agent_validation.sh`；控制器只执行一个不调用工具的最小Codex turn，确认
+> catalog被加载且事件流无fallback warning，不会启动正式题目验证。
+
 ## 当前数据
 
 | 目录 | 用途 | 规模与划分 | 状态 |
@@ -156,8 +165,18 @@ LoRA 严格准确率提高 16.67 个百分点且典型耗时下降，但超时�
 `checkpoint-159`。Codex CLI Agent 验证显式使用 `reasoning_effort=high`，原计划 12 题
 各 5 次；按用户指令，在当时在途的 q12、q19 第 4 次完成后停止，最终执行 39/60，
 严格正确 8/39（20.51%），模型硬超时 6 次，基础设施失败 0，剩余 21 次未启动且不计
-失败。完整逐题结果和可复现合并脚本见
+失败。2026-08-05复核发现39/39个Codex事件流均因served model名称未登记而使用fallback
+metadata；这些数值只保留为原运行记录，不能再作为0804与0731的有效能力对比，修正后需
+重新验证。完整逐题结果和可复现合并脚本见
 [`experiments/2026-08-04-qwen36-27b-best1-agent-validation/`](experiments/2026-08-04-qwen36-27b-best1-agent-validation/)。
+
+下一轮0804 best1实验已固定为5 epochs：单卡micro batch为1、梯度累积为8（有效batch
+为8），每个epoch内部使用固定学习率，五轮依次为`2e-5`、`1.5e-5`、`1e-5`、
+`6e-6`、`3e-6`。每轮结束保存checkpoint；固定使用q12、q20、q38、q71、q86、
+q100（每个label一题，其中q12、q86、q100与0731重合）各运行2次完整Agent来选择
+checkpoint。入选checkpoint随后在全部12题上达到每题5次：上述6题复用挑选阶段的2次
+并各补3次，其余6题各运行5次，最终仍汇总60次。完整选择与计数规则见实验目录README
+及[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md#11-0804-best1下一轮5-epoch实验已确认未执行)。
 
 ## 评测约定
 
@@ -327,6 +346,9 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-05：修正0804 Agent验证的Codex模型metadata缺失问题；验证控制器现在为
+  当前served model生成运行内catalog，避免未知LoRA名称回退到10,000-byte工具输出截断、
+  非并行工具调用和通用基础指令。
 - 2026-08-05：完成 0802 GPT-5.6-Sol 100×10 实验中题 3、7、21、22、23 的定向补跑，
   五题全部补满 10 条 accepted；新增 26 条轨迹后全实验 accepted 总数为 840，84 道题
   达到 10 条，最终完整性与输入隔离审计通过。
