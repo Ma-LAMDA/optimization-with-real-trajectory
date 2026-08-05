@@ -120,6 +120,11 @@ def event_metrics(slot: Path) -> dict[str, int]:
                     metrics["commands"] += 1
                 elif item.get("type") == "agent_message":
                     metrics["agent_messages"] += 1
+                elif item.get("type") == "reasoning":
+                    text = item.get("text")
+                    if isinstance(text, str) and text.strip():
+                        metrics["reasoning_items"] += 1
+                        metrics["reasoning_characters"] += len(text)
     return dict(metrics)
 
 
@@ -215,6 +220,8 @@ def parse_attempt(
         "events": events.get("events", 0),
         "commands": events.get("commands", 0),
         "agent_messages": events.get("agent_messages", 0),
+        "reasoning_items": events.get("reasoning_items", 0),
+        "reasoning_characters": events.get("reasoning_characters", 0),
         "input_tokens": tokens.get("input_tokens", 0),
         "cached_input_tokens": tokens.get("cached_input_tokens", 0),
         "output_tokens": tokens.get("output_tokens", 0),
@@ -255,7 +262,13 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "events": sum(row["events"] for row in rows),
         "commands": sum(row["commands"] for row in rows),
         "agent_messages": sum(row["agent_messages"] for row in rows),
+        "reasoning_items": sum(row["reasoning_items"] for row in rows),
+        "reasoning_characters": sum(row["reasoning_characters"] for row in rows),
+        "attempts_with_captured_reasoning": sum(
+            row["reasoning_items"] > 0 for row in rows
+        ),
         "input_tokens": sum(row["input_tokens"] for row in rows),
+        "cached_input_tokens": sum(row["cached_input_tokens"] for row in rows),
         "output_tokens": sum(row["output_tokens"] for row in rows),
         "reasoning_output_tokens": sum(row["reasoning_output_tokens"] for row in rows),
         "attempts_with_reasoning_output": sum(
@@ -284,7 +297,10 @@ def baseline_rows(path: Path, case_ids: list[int]) -> list[dict[str, Any]]:
                 "false_positive_count": false_positive_count,
                 "false_negative_count": false_negative_count,
                 "agent_messages": 0,
+                "reasoning_items": 0,
+                "reasoning_characters": 0,
                 "input_tokens": 0,
+                "cached_input_tokens": 0,
                 "output_tokens": 0,
                 "reasoning_output_tokens": 0,
             }
@@ -313,8 +329,9 @@ def report_markdown(summary: dict[str, Any]) -> str:
         "- 方法：原始 Codex CLI Agent runner，允许读取离线 `saved_configs` 并执行完整工具循环。",
         "- 部署：单个 vLLM TP=2 实例，2 个 Agent worker，总并发 2。",
         f"- Thinking：已显式请求，reasoning effort=`{summary['thinking']['reasoning_effort']}`；"
-        f"可观测 reasoning 输出为 {overall['attempts_with_reasoning_output']}/{overall['attempts']} 次、"
-        f"{overall['reasoning_output_tokens']} tokens。",
+        f"原始 reasoning 已回填 {overall['attempts_with_captured_reasoning']}/{overall['attempts']} 次、"
+        f"共 {overall['reasoning_items']} 个节点 / {overall['reasoning_characters']} 字符；"
+        f"provider token 字段另报 {overall['reasoning_output_tokens']} tokens。",
         f"- 单次硬上限：{summary['timeout_seconds']} 秒；超时和 runner 失败均按错误计。",
         "- 严格判分：最终 `<result>` 中的 JSON 列表必须与独立 label 完全一致。",
         "",
@@ -400,7 +417,10 @@ def main() -> None:
         "thinking": {
             "requested": True,
             "reasoning_effort": args.reasoning_effort,
-            "verification": "reasoning_output_tokens is collected per terminal attempt",
+            "verification": (
+                "raw reasoning items are restored from the matching Codex session rollout "
+                "into events.jsonl and counted per attempt"
+            ),
         },
         "topology": {
             "instance_count": 1,

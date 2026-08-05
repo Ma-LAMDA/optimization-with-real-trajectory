@@ -57,7 +57,8 @@ for path in \
   "${DATASET}" \
   "${TEMPLATE}" \
   "${CODEX_MODEL_CATALOG_TEMPLATE}" \
-  "${SCRIPT_DIR}/prepare_codex_model_catalog.py"; do
+  "${SCRIPT_DIR}/prepare_codex_model_catalog.py" \
+  "${SCRIPT_DIR}/enrich_codex_events_with_reasoning.py"; do
   if [[ ! -e "${path}" ]]; then
     echo "Required path is missing: ${path}" >&2
     exit 1
@@ -87,7 +88,7 @@ CODEX_MODEL_CATALOG="${CONTROL_DIR}/model_catalog.json"
   --metadata-source "${CODEX_MODEL_METADATA_SOURCE}"
 printf '%s\n' \
   '#!/usr/bin/env bash' \
-  "exec \"${CODEX_BIN}\" -c 'model_providers.qwen_local.base_url=\"${CODEX_BASE_URL}\"' -c 'model_reasoning_effort=\"${REASONING_EFFORT}\"' -c 'model_catalog_json=\"${CODEX_MODEL_CATALOG}\"' \"\$@\"" \
+  "exec \"${CODEX_BIN}\" -c 'model_providers.qwen_local.base_url=\"${CODEX_BASE_URL}\"' -c 'model_reasoning_effort=\"${REASONING_EFFORT}\"' -c 'hide_agent_reasoning=false' -c 'show_raw_agent_reasoning=true' -c 'model_catalog_json=\"${CODEX_MODEL_CATALOG}\"' \"\$@\"" \
   >"${CODEX_WRAPPER}"
 chmod 700 "${CODEX_WRAPPER}"
 
@@ -95,7 +96,8 @@ if [[ "${MODEL_METADATA_SMOKE_ONLY}" == "1" ]]; then
   SMOKE_EVENTS="${CONTROL_DIR}/metadata_smoke_events.jsonl"
   SMOKE_STDERR="${CONTROL_DIR}/metadata_smoke_stderr.log"
   set +e
-  printf '%s\n' 'Reply with exactly OK. Do not use tools.' | \
+  printf '%s\n' \
+    'Reason carefully without tools: which integer is larger, 17*19 or 18*18? Reply with exactly the larger integer.' | \
     timeout "${MODEL_METADATA_SMOKE_TIMEOUT_SECONDS}" \
       "${CODEX_WRAPPER}" exec \
         --json \
@@ -116,8 +118,36 @@ if [[ "${MODEL_METADATA_SMOKE_ONLY}" == "1" ]]; then
     cat "${SMOKE_STDERR}" >&2 || true
     exit "${smoke_rc}"
   fi
+  if ! "${PYTHON_BIN}" "${SCRIPT_DIR}/enrich_codex_events_with_reasoning.py" \
+    --events "${SMOKE_EVENTS}" \
+    --require-reasoning; then
+    echo "Codex model metadata smoke failed: raw reasoning enrichment failed." >&2
+    exit 1
+  fi
   if ! grep -Fq '"type":"turn.completed"' "${SMOKE_EVENTS}"; then
     echo "Codex model metadata smoke failed: no completed turn was recorded." >&2
+    tail -50 "${SMOKE_EVENTS}" >&2 || true
+    exit 1
+  fi
+  if ! "${PYTHON_BIN}" - "${SMOKE_EVENTS}" <<'PY'
+import json
+import sys
+
+events_path = sys.argv[1]
+with open(events_path, encoding="utf-8") as handle:
+    events = [json.loads(line) for line in handle if line.strip()]
+has_reasoning = any(
+    event.get("type") == "item.completed"
+    and isinstance(event.get("item"), dict)
+    and event["item"].get("type") == "reasoning"
+    and isinstance(event["item"].get("text"), str)
+    and event["item"]["text"].strip()
+    for event in events
+)
+raise SystemExit(0 if has_reasoning else 1)
+PY
+  then
+    echo "Codex model metadata smoke failed: no non-empty raw reasoning item was recorded." >&2
     tail -50 "${SMOKE_EVENTS}" >&2 || true
     exit 1
   fi
@@ -251,12 +281,25 @@ run_one() {
   else
     rc=$?
   fi
+  local enrichment_rc=0
+  local events_path
+  while IFS= read -r -d '' events_path; do
+    if ! "${PYTHON_BIN}" "${SCRIPT_DIR}/enrich_codex_events_with_reasoning.py" \
+      --events "${events_path}" \
+      --require-reasoning; then
+      enrichment_rc=1
+      log "reasoning enrichment failed case=${case_id} repeat=${repeat} events=${events_path}"
+    fi
+  done < <(find "${run_root}" -type f -name events.jsonl -print0 2>/dev/null)
+  if (( rc == 0 && enrichment_rc != 0 )); then
+    rc=70
+  fi
   mkdir -p "${run_root}"
   printf '%s\n' "${rc}" >"${run_root}/.runner_exit_code"
   log "end case=${case_id} repeat=${repeat} rc=${rc} timeout=${timed_out} wall_seconds=$(($(date +%s)-started))"
 }
 
-log "Agent validation start prefix=${RUN_PREFIX} cases=${CASE_IDS} repeats=${REPEATS} topology=tp2x1/concurrency2 thinking=enabled reasoning_effort=${REASONING_EFFORT}"
+log "Agent validation start prefix=${RUN_PREFIX} cases=${CASE_IDS} repeats=${REPEATS} topology=tp2x1/concurrency2 thinking=enabled raw_reasoning=captured reasoning_effort=${REASONING_EFFORT}"
 for repeat in $(seq 1 "${REPEATS}"); do
   # Keep two runner slots occupied continuously.  The previous implementation
   # waited for both members of a pair, which left one of the two permitted

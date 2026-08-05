@@ -70,7 +70,8 @@ cleanup_vllm() {
 trap cleanup_vllm EXIT INT TERM
 
 echo "[$(date -Iseconds)] Starting one TP=2 vLLM instance for ${CHECKPOINT}"
-VLLM_USE_FLASHINFER_SAMPLER=0 CUDA_VISIBLE_DEVICES=0,1 \
+env -u VLLM_LOG \
+  OMP_NUM_THREADS=1 VLLM_USE_FLASHINFER_SAMPLER=0 CUDA_VISIBLE_DEVICES=0,1 \
   "${VLLM_BIN}" serve "${MODEL_PATH}" \
   --served-model-name "${BASE_MODEL_NAME}" \
   --dtype bfloat16 \
@@ -79,6 +80,8 @@ VLLM_USE_FLASHINFER_SAMPLER=0 CUDA_VISIBLE_DEVICES=0,1 \
   --tensor-parallel-size 2 \
   --max-model-len "${VLLM_MAX_MODEL_LEN}" \
   --gpu-memory-utilization "${VLLM_GPU_MEMORY_UTILIZATION}" \
+  --enable-prefix-caching \
+  --mamba-cache-mode align \
   --reasoning-parser qwen3 \
   --enable-auto-tool-choice \
   --tool-call-parser qwen3_coder \
