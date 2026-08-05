@@ -21,6 +21,10 @@ RUNNER="${RUNNER:-${REPO_ROOT}/experiments/2026-07-27-ip_codex_train0629_14x10/s
 DATASET="${DATASET:-${REPO_ROOT}/experiments/2026-07-27-ip_codex_train0629_14x10/inputs/train_0629.jsonl}"
 TEMPLATE="${TEMPLATE:-${REPO_ROOT}/experiments/2026-07-27-ip_codex_train0629_14x10/inputs/IP user prompt with saved configs skills.txt}"
 BASELINE_SUMMARY="${BASELINE_SUMMARY:-}"
+# Agent capability evaluations and A/B experiments must request visible
+# reasoning.  `none` is intentionally rejected below: it causes vLLM's Qwen
+# chat template to close the <think> block before generation.
+REASONING_EFFORT="${REASONING_EFFORT:-high}"
 
 if [[ ! "${REPEATS}" =~ ^[1-9][0-9]*$ ]]; then
   echo "REPEATS must be a positive integer." >&2
@@ -28,6 +32,10 @@ if [[ ! "${REPEATS}" =~ ^[1-9][0-9]*$ ]]; then
 fi
 if [[ ! "${TIMEOUT_SECONDS}" =~ ^[1-9][0-9]*$ ]]; then
   echo "TIMEOUT_SECONDS must be a positive integer." >&2
+  exit 1
+fi
+if [[ ! "${REASONING_EFFORT}" =~ ^(minimal|low|medium|high|xhigh|max)$ ]]; then
+  echo "REASONING_EFFORT must request thinking (minimal, low, medium, high, xhigh, or max); 'none' is not permitted." >&2
   exit 1
 fi
 for path in "${PYTHON_BIN}" "${CODEX_BIN}" "${RUNNER}" "${DATASET}" "${TEMPLATE}"; do
@@ -54,7 +62,7 @@ LOG="${CONTROL_DIR}/controller.log"
 CODEX_WRAPPER="${CONTROL_DIR}/codex-agent-validation"
 printf '%s\n' \
   '#!/usr/bin/env bash' \
-  "exec \"${CODEX_BIN}\" -c 'model_providers.qwen_local.base_url=\"${CODEX_BASE_URL}\"' \"\$@\"" \
+  "exec \"${CODEX_BIN}\" -c 'model_providers.qwen_local.base_url=\"${CODEX_BASE_URL}\"' -c 'model_reasoning_effort=\"${REASONING_EFFORT}\"' \"\$@\"" \
   >"${CODEX_WRAPPER}"
 chmod 700 "${CODEX_WRAPPER}"
 
@@ -189,7 +197,7 @@ run_one() {
   log "end case=${case_id} repeat=${repeat} rc=${rc} timeout=${timed_out} wall_seconds=$(($(date +%s)-started))"
 }
 
-log "Agent validation start prefix=${RUN_PREFIX} cases=${CASE_IDS} repeats=${REPEATS} topology=tp2x1/concurrency2"
+log "Agent validation start prefix=${RUN_PREFIX} cases=${CASE_IDS} repeats=${REPEATS} topology=tp2x1/concurrency2 thinking=enabled reasoning_effort=${REASONING_EFFORT}"
 for repeat in $(seq 1 "${REPEATS}"); do
   # Keep two runner slots occupied continuously.  The previous implementation
   # waited for both members of a pair, which left one of the two permitted
@@ -238,6 +246,7 @@ summary_args=(
   --checkpoint "${CHECKPOINT}"
   --git-commit "${GIT_COMMIT}"
   --timeout-seconds "${TIMEOUT_SECONDS}"
+  --reasoning-effort "${REASONING_EFFORT}"
 )
 if [[ -n "${BASELINE_SUMMARY}" ]]; then
   summary_args+=(--baseline-summary "${BASELINE_SUMMARY}")

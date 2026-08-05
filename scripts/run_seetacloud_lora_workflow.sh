@@ -285,6 +285,7 @@ fi
 
 echo "[$(date -Iseconds)] Running full Codex Agent validation: cases=${AGENT_VALIDATION_CASE_IDS}, repeats=${VALIDATION_REPEATS}, concurrency=2"
 PYTHON_BIN="${TRAIN_PYTHON}" \
+REASONING_EFFORT="${REASONING_EFFORT:-high}" \
 CODEX_BASE_URL="http://${VLLM_HOST}:${VLLM_PORT}/v1" \
 MODEL_NAME="${SERVED_MODEL_NAME}" \
 CHECKPOINT="${BEST_CHECKPOINT}" \

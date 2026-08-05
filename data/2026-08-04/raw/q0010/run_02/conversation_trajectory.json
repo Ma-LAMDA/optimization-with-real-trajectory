@@ -1,0 +1,67 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0010_success_02",
+  "case_id": 10,
+  "row_index": 10,
+  "success_slot": 2,
+  "attempt_index": 8,
+  "source_record": {
+    "row_index": 10,
+    "original_id": 10,
+    "sample_id": 10,
+    "sample_key": "q0010",
+    "question": "在CampusNetwork_03组网中，从SH_SAL_PC01 ping北京区域核心交换机（10.1.20.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。\n## 已定位的信息\n\nL2转发路径：\nSH_SAL_PC01(Ethernet0) -> SH_Core(GE1/0/1) -> SH_Core(GE1/0/4) -> SH_AR(Ethernet1/0/0) -> SH_AR(Ethernet1/0/1) -> PE2(Ethernet1/0/0) -> PE2(Ethernet1/0/1) -> PE1(Ethernet1/0/1) -> PE1(Ethernet2/0/1) -> BJHQ_CSR1000V_GW_01(GigabitEthernet5) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> FW_01(GigabitEthernet1/0/3) -> FW_01(GigabitEthernet1/0/1) -> Core_SW_01(GE1/0/8),\nSH_SAL_PC01(Ethernet0) -> SH_Core(GE1/0/1) -> SH_Core(GE1/0/4) -> SH_AR(Ethernet1/0/0) -> SH_AR(Ethernet1/0/1) -> PE2(Ethernet1/0/0) -> PE2(Ethernet1/0/1) -> PE1(Ethernet1/0/1) -> PE1(Ethernet2/0/1) -> BJHQ_CSR1000V_GW_01(GigabitEthernet5) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> FW_01(GigabitEthernet1/0/3) -> FW_01(GigabitEthernet1/0/2) -> Core_SW_02(GE1/0/8)",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先核对CampusNetwork_03中PE2、PE3及沿途设备的路由与隧道选路配置，重点区分“底层IGP度量错误导致绕行长时延链路”和“SRv6 Policy规划错误”两类假设，再用运行路由/邻接状态交叉验证。"
+    },
+    {
+      "event_line": 28,
+      "item_id": "item_14",
+      "text": "当前配置显示三台PE构成三角形，PE2到PE1有直连链路，且PE2-PE3长距离链路未配置显式ISIS开销。下一步需确认实际ISIS/LDP下一跳以及双向流量统计，判断该缺失是否真的让业务经过高时延链路，避免仅凭配置异常下结论。"
+    },
+    {
+      "event_line": 143,
+      "item_id": "item_72",
+      "text": "对照同拓扑的多套本地基线后，PE2、PE3配置完全一致，唯一稳定差异是PE1新增了一条指向PE3的主机静态路由。由于该下一跳会把匹配流量引向经PE3/PE2的长时延方向，我会再核对全路径节点是否存在其他独立配置偏差，以确定最小根因集合只有这一项。"
+    },
+    {
+      "event_line": 393,
+      "item_id": "item_201",
+      "text": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_02;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_02;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0010_r02/attempt_008/judgment.json",
+    "judgment_sha256_lf_normalized": "e04a15b9dd66c795d41aace9ebbeef70d236e904e7d0e0d7bb7952262b18b7bf"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0010_r02/attempt_008",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0010_r02/attempt_008/events.jsonl",
+    "events_sha256_lf_normalized": "cf0d9568db10942baf10c963c53f447cc3b9dba01cc6bd79cc783418abb9ef1b",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0010_r02/attempt_008/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "2509e1c35e9533c628144e7fbcbc0545091d0675435e864cac25b6386663bed7",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0010/source_record.json",
+    "source_record_sha256_lf_normalized": "70b4bd04f3e55c8203b1ab5068eb39c89dfb9acdb9ccab8f7b190b740e34c8d1",
+    "thread_id": "019fc7d2-da11-7e81-b590-0b7c5ff95e34",
+    "duration_seconds": 440.898
+  }
+}

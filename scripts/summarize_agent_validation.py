@@ -29,6 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--checkpoint", default="")
     parser.add_argument("--git-commit", default="")
     parser.add_argument("--timeout-seconds", type=int, default=3600)
+    parser.add_argument("--reasoning-effort", required=True)
     parser.add_argument("--baseline-summary", type=Path)
     return parser.parse_args()
 
@@ -217,6 +218,7 @@ def parse_attempt(
         "input_tokens": tokens.get("input_tokens", 0),
         "cached_input_tokens": tokens.get("cached_input_tokens", 0),
         "output_tokens": tokens.get("output_tokens", 0),
+        "reasoning_output_tokens": tokens.get("reasoning_output_tokens", 0),
         "prediction": prediction,
         "expected": expected,
         "artifact_dir": str(root),
@@ -255,6 +257,10 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "agent_messages": sum(row["agent_messages"] for row in rows),
         "input_tokens": sum(row["input_tokens"] for row in rows),
         "output_tokens": sum(row["output_tokens"] for row in rows),
+        "reasoning_output_tokens": sum(row["reasoning_output_tokens"] for row in rows),
+        "attempts_with_reasoning_output": sum(
+            row["reasoning_output_tokens"] > 0 for row in rows
+        ),
     }
 
 
@@ -280,6 +286,7 @@ def baseline_rows(path: Path, case_ids: list[int]) -> list[dict[str, Any]]:
                 "agent_messages": 0,
                 "input_tokens": 0,
                 "output_tokens": 0,
+                "reasoning_output_tokens": 0,
             }
         )
     return normalized
@@ -305,6 +312,9 @@ def report_markdown(summary: dict[str, Any]) -> str:
         f"- 模型：`{summary['model']}`",
         "- 方法：原始 Codex CLI Agent runner，允许读取离线 `saved_configs` 并执行完整工具循环。",
         "- 部署：单个 vLLM TP=2 实例，2 个 Agent worker，总并发 2。",
+        f"- Thinking：已显式请求，reasoning effort=`{summary['thinking']['reasoning_effort']}`；"
+        f"可观测 reasoning 输出为 {overall['attempts_with_reasoning_output']}/{overall['attempts']} 次、"
+        f"{overall['reasoning_output_tokens']} tokens。",
         f"- 单次硬上限：{summary['timeout_seconds']} 秒；超时和 runner 失败均按错误计。",
         "- 严格判分：最终 `<result>` 中的 JSON 列表必须与独立 label 完全一致。",
         "",
@@ -387,6 +397,11 @@ def main() -> None:
         "case_ids": args.case_ids,
         "repeats_per_case": args.repeats,
         "timeout_seconds": args.timeout_seconds,
+        "thinking": {
+            "requested": True,
+            "reasoning_effort": args.reasoning_effort,
+            "verification": "reasoning_output_tokens is collected per terminal attempt",
+        },
         "topology": {
             "instance_count": 1,
             "tensor_parallel_size": 2,

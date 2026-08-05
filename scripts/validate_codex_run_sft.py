@@ -12,10 +12,8 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT / "data" / "2026-07-28"
-RAW_DIR = DATA_ROOT / "raw"
-CURATION_FILE = DATA_ROOT / "curation" / "trajectory_selection.json"
-SFT_DIR = DATA_ROOT / "sft"
+DEFAULT_DATA_ROOT = ROOT / "data" / "2026-07-28"
+CURATION_FILE_NAME = "trajectory_selection.json"
 TRAIN_FILE = "qwen3_6_27b_reasoning_decision_train.jsonl"
 VALIDATION_FILE = "qwen3_6_27b_reasoning_decision_validation.jsonl"
 MANIFEST_FILE = "manifest.json"
@@ -50,8 +48,25 @@ FORBIDDEN_OUTPUT_OPERATIONS = (
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-root", type=Path, default=DATA_ROOT)
-    return parser.parse_args()
+    parser.add_argument(
+        "--data-root",
+        type=Path,
+        help=(
+            "Date-scoped Codex dataset directory. The historical "
+            "data/2026-07-28 directory is used when it exists."
+        ),
+    )
+    options = parser.parse_args()
+    if options.data_root is None:
+        if DEFAULT_DATA_ROOT.is_dir():
+            options.data_root = DEFAULT_DATA_ROOT
+        else:
+            parser.error(
+                "the historical default data/2026-07-28 is not present; "
+                "recreate it with convert_codex_run_trajectories.py or pass "
+                "--data-root PATH"
+            )
+    return options
 
 
 def digest(path: Path) -> str:
@@ -249,7 +264,7 @@ def main() -> None:
     options = parse_args()
     data_root = options.data_root.resolve()
     raw_dir = data_root / "raw"
-    curation_path = data_root / "curation" / CURATION_FILE.name
+    curation_path = data_root / "curation" / CURATION_FILE_NAME
     sft_dir = data_root / "sft"
     train_path = sft_dir / TRAIN_FILE
     validation_path = sft_dir / VALIDATION_FILE

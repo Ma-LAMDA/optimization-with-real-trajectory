@@ -55,12 +55,26 @@ def args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def digest(path: Path) -> str:
-    value = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            value.update(chunk)
-    return value.hexdigest()
+def newline_variants(path: Path) -> tuple[bytes, ...]:
+    """Return equivalent raw, LF, and CRLF representations of a text file."""
+    raw = path.read_bytes()
+    lf = raw.replace(b"\r\n", b"\n")
+    crlf = lf.replace(b"\n", b"\r\n")
+    return tuple(dict.fromkeys((raw, lf, crlf)))
+
+
+def metadata_matches(path: Path, size: object, sha256: object) -> bool:
+    return any(
+        len(content) == size and hashlib.sha256(content).hexdigest() == sha256
+        for content in newline_variants(path)
+    )
+
+
+def digest_matches(path: Path, sha256: object) -> bool:
+    return any(
+        hashlib.sha256(content).hexdigest() == sha256
+        for content in newline_variants(path)
+    )
 
 
 def load(path: Path) -> list[dict[str, Any]]:
@@ -206,14 +220,15 @@ def check_manifest(
     declared = outputs[0]
     if (
         declared.get("samples") != len(rows)
-        or declared.get("bytes") != output.stat().st_size
-        or declared.get("sha256") != digest(output)
+        or not metadata_matches(
+            output, declared.get("bytes"), declared.get("sha256")
+        )
     ):
         raise ValueError("Manifest output metadata mismatch")
     annotation_path = ROOT / manifest.get("annotation_file", "")
     if not annotation_path.is_file():
         raise ValueError(f"Manifest annotation file does not exist: {annotation_path}")
-    if manifest.get("annotation_sha256") != digest(annotation_path):
+    if not digest_matches(annotation_path, manifest.get("annotation_sha256")):
         raise ValueError("Manifest annotation hash mismatch")
 
 

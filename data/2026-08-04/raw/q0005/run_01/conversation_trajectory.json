@@ -1,0 +1,77 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0005_success_01",
+  "case_id": 5,
+  "row_index": 5,
+  "success_slot": 1,
+  "attempt_index": 7,
+  "source_record": {
+    "row_index": 5,
+    "original_id": 5,
+    "sample_id": 5,
+    "sample_key": "q0005",
+    "question": "在CampusNetwork_02组网中，从SH_STO_PC01 ping北京区域核心交换机（10.1.30.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先锁定CampusNetwork_02的实际节点与可用回显，再围绕“路径是否异常绕经高时延PE2-PE3链路”提出并筛选路由、隧道规划和链路拥塞等少量假设。随后沿SH_STO_PC01到10.1.30.254的实际转发路径交叉核验配置与运行状态。"
+    },
+    {
+      "event_line": 10,
+      "item_id": "item_5",
+      "text": "初步假设收敛为三类：上海主机/网关本地异常、IP路由绕行、SRv6 Policy选错PE2-PE3高时延段。先读取主机路由与时延回显，以及SH_Core、SH_AR、PE1、PE2、PE3的路由/隧道相关文件清单，这些证据能最快区分三者。"
+    },
+    {
+      "event_line": 53,
+      "item_id": "item_27",
+      "text": "主机侧地址、默认路由和网关邻居均正常；SH_AR也把北京10.1.30.0/24稳定交给直连PE2，因此本地接入故障与普通静态路由错误暂不成立。下一步核验PE2的VPN路由递归结果及其SRv6候选路径，并与PE1/PE3的SID规划对照，以确认是否被显式导向长时延链路。"
+    },
+    {
+      "event_line": 96,
+      "item_id": "item_49",
+      "text": "控制面显示去程PE2直接递归到PE1，ISIS邻接也正常；仅凭题干的高时延链路还不能认定ISIS故障。需要继续检查MPLS数据面的入/出标签映射和实际探测回显，因为若控制面直达而数据面绕经PE3，最小根因更可能是MPLS标签环路，而不是普通路由绕行。"
+    },
+    {
+      "event_line": 251,
+      "item_id": "item_127",
+      "text": "实际转发表、MPLS标签表和LLDP均确认上海到北京走PE2-PE1直连，未经过PE2-PE3，相关端口也无拥塞或错误，因此不能把长距离链路本身列为根因。现在核对北京双核心的二层冗余运行状态与负载；已发现Core_SW_01虽配置为多个MST实例根桥，却在运行态显示STP全局Disabled，需要验证它是否是唯一能解释时延的配置异常。"
+    },
+    {
+      "event_line": 390,
+      "item_id": "item_212",
+      "text": "<result>\n[\n\"Core_SW_01;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_01;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_01;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_01;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0005_r01/attempt_007/judgment.json",
+    "judgment_sha256_lf_normalized": "12ef0cb4da16442c300f0ae44b1bb528af0e9d3ffdeffa3b78005f1f14dc13ab"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0005_r01/attempt_007",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0005_r01/attempt_007/events.jsonl",
+    "events_sha256_lf_normalized": "04a9f9365fa5973702a7832c2ee7add56437867202d7c152b4abb720b783eb6e",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0005_r01/attempt_007/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "bfde251d11a776ff63ec6caee8768d198b2cb43258e1b53a639536b4b7adc6f6",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0005/source_record.json",
+    "source_record_sha256_lf_normalized": "9d0808e7ae4612897457f01be7b911210119545349d84491c86b2f1e6fa68fa5",
+    "thread_id": "019fc7d4-f1ed-71e1-ac53-3079e1e3ea3d",
+    "duration_seconds": 421.395
+  }
+}
