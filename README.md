@@ -21,7 +21,7 @@
 | --- | --- | --- | --- |
 | [`data/2026-07-27/`](data/2026-07-27/) | 多阶段策展基线 | 3 条原始轨迹；7 planning、2 reasoning、3 decision | 保留 |
 | [`data/2026-07-31/`](data/2026-07-31/) | 当前 LoRA 训练基线 | 819 decision；训练 759、验证 60 | 已训练、已评测 |
-| [`data/2026-08-04/`](data/2026-08-04/) | accepted-only 归档及 best1 多轮快跑集 | 814 decision；best1 84 轨迹、371 节点（训练 318、验证 53） | 数据已校验、待 GPU 快跑 |
+| [`data/2026-08-04/`](data/2026-08-04/) | accepted-only 归档及 best1 多轮快跑集 | 814 decision；best1 84 轨迹、371 节点（训练 318、验证 53） | 数据已校验、GPU 快跑已归档 |
 | [`data/simulation/`](data/simulation/) | 原始仿真资料 | prompt、JSONL、配置与评测轨迹 | 不可变来源 |
 
 ### 2026-07-31 划分
@@ -149,11 +149,22 @@ LoRA 严格准确率提高 16.67 个百分点且典型耗时下降，但超时�
 和原始汇总见
 [`experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/`](experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/)。
 
+### 0804 best1 快跑
+
+0804 best1 原生多轮数据完成 1 epoch、159 step LoRA SFT；eval loss 从 step 40 的
+`0.3065788` 持续下降到 step 159 的 `0.1806803`，因此选择最终
+`checkpoint-159`。Codex CLI Agent 验证显式使用 `reasoning_effort=high`，原计划 12 题
+各 5 次；按用户指令，在当时在途的 q12、q19 第 4 次完成后停止，最终执行 39/60，
+严格正确 8/39（20.51%），模型硬超时 6 次，基础设施失败 0，剩余 21 次未启动且不计
+失败。完整逐题结果和可复现合并脚本见
+[`experiments/2026-08-04-qwen36-27b-best1-agent-validation/`](experiments/2026-08-04-qwen36-27b-best1-agent-validation/)。
+
 ## 评测约定
 
 - 最终答案必须能解析为题目要求的 `<result>...</result>` JSON 列表。
 - 严格正确要求预测与一个完整可接受答案精确匹配；漏报、多报和错报均计错。
-- 超时和 runner failure 均计为错误，不能把“请求完成”当作“回答正确”。
+- 模型未能在硬上限内完成时按错误计；基础设施失败和人为中断不进入评测报表，未启动
+  槽位也不计失败。不能把“请求完成”当作“回答正确”。
 - Qwen3.6-27B Base/LoRA Agent eval 固定单个 vLLM TP=2 实例、两个 runner、总并发 2。
 - 默认单次上限 3,600 秒，最大生成长度 8,000 个新 token。
 - validation loss 用于选点，不单独作为能力提升结论；正式对比必须使用相同题目、prompt、
@@ -180,7 +191,8 @@ LoRA 严格准确率提高 16.67 个百分点且典型耗时下降，但超时�
 │   ├── 2026-07-28-ip_codex_train0629_100x10/
 │   ├── 2026-07-31-qwen36-27b-base-eval/
 │   ├── 2026-08-02-ip_codex_gpt56-sol_100x10/
-│   └── 2026-08-02-qwen36-27b-heldout6-agent-ab/
+│   ├── 2026-08-02-qwen36-27b-heldout6-agent-ab/
+│   └── 2026-08-04-qwen36-27b-best1-agent-validation/
 └── scripts/
     ├── 数据转换与校验
     ├── LoRA 训练
