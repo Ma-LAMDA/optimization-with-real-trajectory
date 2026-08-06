@@ -473,7 +473,7 @@ Codex CLI 使用完整调查 prompt 和离线配置工具，与直接 validation
 任何训练脚本、数据或使用方式的变更在推送 GitHub 时，都必须在同一提交
 中同步更新 `README.md`。
 
-## 11. 0804 best1下一轮5 epoch实验（已确认，未执行）
+## 11. 0804 best1后续5 epoch实验（已执行）
 
 0804首轮best1快跑只训练1 epoch、159个optimizer step，且在单个epoch内完成
 `2e-5`到0的warmup加cosine调度。下一轮不沿用该配置，固定采用以下协议：
@@ -496,3 +496,20 @@ q99、q100）上最终各保留5次，共60个attempt。入选模型在checkpoin
 attempt不计入最终结果。最终报告必须标记被复用的12次，并分别汇总全部12题、选择用6题
 和未参与选择6题。所有Agent运行强制thinking=high，启动正式验证前必须通过model
 metadata无fallback warning冒烟；模型硬超时计错，基础设施失败和人为中断不记录。
+
+### 11.1 实际结果
+
+实验于2026-08-05至2026-08-06执行完毕，共200个optimizer step。五轮eval loss依次为
+`0.23613213`、`0.16515934`、`0.15305212`、`0.14917336`、`0.14932011`；逐step
+LR审计确认每个epoch内部实际optimizer LR固定。最低eval loss是epoch 4，但固定六题
+Agent选择结果由epoch 3以6/12（50%）胜出，因此最终使用checkpoint-120。
+
+最终12题各5次共60次，严格正确23/60（38.33%），模型硬超时0，基础设施失败0；
+q19有两次模型正常完成turn但没有可解析最终答案，保留并按错误计分。60/60均捕获非空
+thinking，共2,443个reasoning item；cached input占全部input token约96.62%。完整结果、
+五个checkpoint表、warning和控制脚本归档在
+[`experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/`](../experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/)。
+
+本轮没有把最低eval loss直接当作最终checkpoint，验证了Agent准确率参与选点的必要性。
+P2“0805 SFT实验”因远端没有已提交的数据目录、README或启动入口而未启动，避免把0804
+数据或产物错误复用为0805实验。

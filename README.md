@@ -170,13 +170,20 @@ metadata；这些数值只保留为原运行记录，不能再作为0804与0731�
 重新验证。完整逐题结果和可复现合并脚本见
 [`experiments/2026-08-04-qwen36-27b-best1-agent-validation/`](experiments/2026-08-04-qwen36-27b-best1-agent-validation/)。
 
-下一轮0804 best1实验已固定为5 epochs：单卡micro batch为1、梯度累积为8（有效batch
+上述0804 best1后续实验已完成5 epochs：单卡micro batch为1、梯度累积为8（有效batch
 为8），每个epoch内部使用固定学习率，五轮依次为`2e-5`、`1.5e-5`、`1e-5`、
 `6e-6`、`3e-6`。每轮结束保存checkpoint；固定使用q12、q20、q38、q71、q86、
 q100（每个label一题，其中q12、q86、q100与0731重合）各运行2次完整Agent来选择
 checkpoint。入选checkpoint随后在全部12题上达到每题5次：上述6题复用挑选阶段的2次
 并各补3次，其余6题各运行5次，最终仍汇总60次。完整选择与计数规则见实验目录README
-及[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md#11-0804-best1下一轮5-epoch实验已确认未执行)。
+及[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md#11-0804-best1后续5-epoch实验已执行)。
+
+五个checkpoint中，最低eval loss位于epoch 4 / checkpoint-160（`0.14917336`），但
+固定六题Agent准确率最高的是epoch 3 / checkpoint-120（6/12，50%），因此部署epoch 3。
+最终12题各5次严格正确23/60（38.33%），模型硬超时0、进入分母的基础设施失败0，
+60/60均捕获非空thinking；聚合cached input占比约96.62%。完整逐题结果、重试口径、
+warning和复现控制脚本见
+[`experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/`](experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/)。
 
 ## 评测约定
 
@@ -211,7 +218,8 @@ checkpoint。入选checkpoint随后在全部12题上达到每题5次：上述6�
 │   ├── 2026-07-31-qwen36-27b-base-eval/
 │   ├── 2026-08-02-ip_codex_gpt56-sol_100x10/
 │   ├── 2026-08-02-qwen36-27b-heldout6-agent-ab/
-│   └── 2026-08-04-qwen36-27b-best1-agent-validation/
+│   ├── 2026-08-04-qwen36-27b-best1-agent-validation/
+│   └── 2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/
 └── scripts/
     ├── 数据转换与校验
     ├── LoRA 训练
@@ -346,6 +354,9 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-06：完成0804 best1五epoch训练、五个checkpoint各12次Agent选择和入选
+  checkpoint的12题×5次最终验证；归档23/60结果、thinking与prefix-cache指标、LR审计、
+  基础设施重试口径和可复现控制脚本。
 - 2026-08-05：修正0804 Agent验证的Codex模型metadata缺失问题；验证控制器现在为
   当前served model生成运行内catalog，避免未知LoRA名称回退到10,000-byte工具输出截断、
   非并行工具调用和通用基础指令。

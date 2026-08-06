@@ -29,9 +29,12 @@ warning，Responses API返回HTTP 200。该冒烟只验证启动与metadata，�
   159=`0.1806803`。
 - 最低 eval loss 位于 `checkpoint-159`，该 checkpoint 用于 Agent 验证。
 
-## 下一轮5 epoch实验方案（已确认，未执行）
+## 后续5 epoch实验方案（已执行）
 
-本节记录2026-08-05确认的下一轮方案，不追溯改写上面的1 epoch历史快跑结果。
+本节记录2026-08-05确认、随后于2026-08-06完成的方案，不追溯改写上面的1 epoch历史
+快跑结果。五轮训练、五个checkpoint选择和12题×5次最终验证的独立归档见
+[`experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/`](../2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/)；
+最终选择epoch 3 / checkpoint-120，严格正确23/60（38.33%）。
 
 ### 训练参数
 

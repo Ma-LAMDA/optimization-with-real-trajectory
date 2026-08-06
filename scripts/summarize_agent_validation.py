@@ -196,6 +196,25 @@ def parse_attempt(
         "status",
         "timeout" if timeout else "failed_before_manifest",
     )
+    metadata: dict[str, Any] = {}
+    if attempt_index is not None:
+        metadata_path = slot / f"attempt_{attempt_index:03d}" / "metadata.json"
+        if metadata_path.is_file():
+            metadata = load_json(metadata_path)
+    event_type_counts = metadata.get("event_type_counts") or {}
+    model_completed_without_valid_answer = (
+        runner_status == "failed"
+        and metadata.get("exit_code") == 0
+        and int(event_type_counts.get("turn.completed") or 0) > 0
+        and not metadata.get("error_events")
+        and not metadata.get("invalid_jsonl_events")
+        and not metadata.get("launch_error")
+    )
+    infrastructure_failure = (
+        runner_status != "succeeded"
+        and not timeout
+        and not model_completed_without_valid_answer
+    )
     correct = (
         runner_status == "succeeded"
         and not timeout
@@ -209,6 +228,8 @@ def parse_attempt(
         "case_id": case_id,
         "repeat": repeat,
         "runner_status": runner_status,
+        "model_completed_without_valid_answer": model_completed_without_valid_answer,
+        "infrastructure_failure": infrastructure_failure,
         "duration_seconds": round(duration, 3),
         "capped_minutes": round(min(duration, timeout_seconds) / 60, 3),
         "timeout": timeout,
@@ -246,7 +267,7 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "completed_within_limit": sum(row["completed_within_limit"] for row in rows),
         "timeouts": sum(row["timeout"] for row in rows),
         "runner_failures": sum(
-            row["runner_status"] != "succeeded" and not row["timeout"] for row in rows
+            row["infrastructure_failure"] for row in rows
         ),
         "strict_correct": sum(row["correct"] for row in rows),
         "accuracy_percent": 100 * sum(row["correct"] for row in rows) / len(rows),
@@ -311,7 +332,7 @@ def baseline_rows(path: Path, case_ids: list[int]) -> list[dict[str, Any]]:
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     fields = list(rows[0])
     with path.open("w", newline="", encoding="utf-8-sig") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             item = row.copy()
@@ -405,7 +426,10 @@ def main() -> None:
     overall = aggregate(rows)
     summary: dict[str, Any] = {
         "schema_version": "qwen36-codex-agent-validation.v1",
-        "status": "completed",
+        # A runner failure is an infrastructure-level incomplete slot, not an
+        # incorrect Agent answer.  Keep the row for audit, but force the
+        # orchestration layer to retry before accepting this summary.
+        "status": "completed" if overall["runner_failures"] == 0 else "incomplete",
         "evaluation_method": "full_codex_agent_with_tools",
         "model": args.model,
         "checkpoint": args.checkpoint,
