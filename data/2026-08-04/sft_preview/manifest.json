@@ -1,0 +1,91 @@
+{
+  "schema_version": "qwen36-reasoning-trajectory-step-preview.v3",
+  "status": "preview_requires_user_review",
+  "scope": "q0001 success_01 only",
+  "source_raw": "data/2026-08-04/raw/q0001/run_01/conversation_trajectory.json",
+  "source_events": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0001_r01/attempt_010/events.jsonl",
+  "source_events_sha256_lf_normalized": "455c27ff50f5df521449e458113e7a9fe6fd9c8ea4e8efdb3a7bd5149e258b9b",
+  "trajectory_count": 1,
+  "sft_sample_count": 5,
+  "training_profile": {
+    "scope": "data/2026-08-04 only",
+    "max_length": 16384,
+    "truncation_strategy": "delete",
+    "loss_scale": "default",
+    "is_binary_loss_scale": false,
+    "add_non_thinking_prefix": false,
+    "preserve_thinking": true,
+    "tokenizer_preflight_required": true
+  },
+  "split_rule": "one_sft_sample_per_valuable_reasoning_checkpoint",
+  "message_format": "native ms-swift multi-turn agent messages",
+  "temporal_rule": "each sample ends at its current target response/tool calls and contains no future results",
+  "history_policy": {
+    "stage_analysis": "all prior optimized assistant turns are native prefix messages",
+    "evidence_ledger": "persistent normalized facts remain in metadata for audit; the model input inherits prior assistant turns and selected tool responses directly",
+    "current_evidence": "selected prior tool calls and exact output excerpts as native tool responses",
+    "older_tool_responses": "compacted to persistent facts/key values after their first reasoning checkpoint; exact excerpts remain in source provenance",
+    "one_time_discovery_evidence": "not carried forward"
+  },
+  "action_policy": {
+    "nonfinal_output": "reasoning, optimized stage conclusion, then actual tool calls",
+    "command_source": "source events after pruning nonoptimal detours",
+    "result_visibility": "not in current output; supplied as next-step input evidence",
+    "chain_invariant": "step N output action IDs equal step N+1 evidence command IDs"
+  },
+  "loss_policy": {
+    "framework": "ms-swift==4.4.2",
+    "cli": "--loss_scale default",
+    "required_cli": "--is_binary_loss_scale false",
+    "message_override": "assistant/tool_call loss_scale fields override the basic default strategy",
+    "current_thinking": 0.4,
+    "current_conclusion_or_result": 1.0,
+    "current_tool_calls": 1.0,
+    "historical_assistant_and_tool_calls": 0.0,
+    "masked": "system, user, all historical assistant/tool_call messages, all tool responses, padding",
+    "reason": "soften wording-level supervision for reconstructed reasoning while keeping diagnostic conclusions, exact actions, and final answers strict",
+    "future_sequence_objective": "semantic/path/evidence consistency is reserved for a later DPO/GRPO reward stage; it does not replace token cross-entropy in this SFT preview"
+  },
+  "sequence_alignment_policy": {
+    "stage": "after weighted SFT",
+    "method": "DPO or GRPO; not part of this preview loss",
+    "hard_gates": [
+      "final root-cause set is exactly correct",
+      "tool-call syntax and arguments are executable",
+      "no future evidence is used"
+    ],
+    "reward_dimensions": [
+      "semantic similarity to an accepted attribution path",
+      "evidence-to-claim consistency",
+      "earlier entry into the correct causal path",
+      "utility of selected commands",
+      "penalty for avoidable detours and redundant evidence"
+    ],
+    "status": "specified_not_executed"
+  },
+  "thinking_policy": {
+    "original_visible_agent_message_policy": "retain useful messages; replace nonoptimal detours with evidence-grounded optimized targets",
+    "optimized_source_message_indices": [
+      3
+    ],
+    "reconstructed_thinking_added": true,
+    "reconstructed_thinking_claimed_as_original": false
+  },
+  "command_policy": {
+    "selection": "manual causal review",
+    "command_text": "exact",
+    "output": "exact relevant excerpts with full-output hashes",
+    "irrelevant_or_duplicate_commands": "omitted"
+  },
+  "samples_by_target_type": {
+    "decision": 1,
+    "planning": 1,
+    "reasoning": 3
+  },
+  "output": {
+    "path": "data/2026-08-04/sft_preview/q0001_success_01_reasoning_steps.jsonl",
+    "samples": 5,
+    "bytes": 134454,
+    "sha256": "ed97566bb3af09c355d4823f160c4224fb1b66b316343dc7cfb4b74663dea48e"
+  }
+}

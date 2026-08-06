@@ -1,0 +1,464 @@
+{
+  "schema_version": "qwen36-0805-causal-path-reasoning-sft.v8",
+  "status": "auto_clustered_draft_requires_domain_review",
+  "scope": "data/2026-08-05 only",
+  "reproducibility": {
+    "document": "data/2026-08-05/REPRODUCIBILITY.md",
+    "document_sha256_lf_normalized": "1b4d0c864886509d3228df9fece75e46e5cb647b50f1e2146e9c6955107bd7bd",
+    "change_policy": "every source, curation, split, conversion, loss, sampling, prompt, tool protocol, tokenizer, training-entry, validator, or generated-data change must update documentation, regenerate all artifacts, and pass independent validation",
+    "tracked_files": {
+      "repository_rules": {
+        "path": "AGENTS.md",
+        "sha256_lf_normalized": "5acabca9391c2268187eebf11b2221374a9c7d660ff17d9162b5dc9c3d35991a"
+      },
+      "root_readme": {
+        "path": "README.md",
+        "sha256_lf_normalized": "1fe64f44c7a1db5a4ce3636593db097f262a428e2c4e6d77ae6a0410aa33b725"
+      },
+      "date_readme": {
+        "path": "data/2026-08-05/README.md",
+        "sha256_lf_normalized": "d0f77d5af6bcedfdf5727cc6f034e09b720a063717df0d9d0a896da38971c803"
+      },
+      "reproducibility_document": {
+        "path": "data/2026-08-05/REPRODUCIBILITY.md",
+        "sha256_lf_normalized": "1b4d0c864886509d3228df9fece75e46e5cb647b50f1e2146e9c6955107bd7bd"
+      },
+      "archive_converter": {
+        "path": "scripts/convert_accepted_only_100x10_to_sft.py",
+        "sha256_lf_normalized": "f3b413ea63f222a519aaa4aeaa5b0218a7faf172f535daf85af264962ad7a132"
+      },
+      "base_reasoning_converter": {
+        "path": "scripts/convert_0804_best_trajectory_reasoning_sft.py",
+        "sha256_lf_normalized": "5129806263884533a07d16a48c6345e9f527dfab90b49a66d9dd47a51366911f"
+      },
+      "causal_path_converter": {
+        "path": "scripts/convert_0805_causal_path_reasoning_sft.py",
+        "sha256_lf_normalized": "6da7b8d4b0ceaad961d3b9b666f67a425015022d6308da86a418135b8e0ec7c3"
+      },
+      "causal_path_validator": {
+        "path": "scripts/validate_0805_causal_path_reasoning_sft.py",
+        "sha256_lf_normalized": "d5938616421eafefb4059acb4ed8129609aa8790bc7de229dca22230c8067c8c"
+      },
+      "tokenizer_preflight": {
+        "path": "scripts/check_0804_best1_token_lengths.py",
+        "sha256_lf_normalized": "a531cb8dbb6a58b86bb3becf8ed65fa48ff7aa68078f858ae8b630b04aadb52d"
+      },
+      "training_entry": {
+        "path": "scripts/train_qwen36_0805_causal_path_quick.sh",
+        "sha256_lf_normalized": "d504a0d5514589cc3c3d9005e9a0b847463200273516387d9c3848f568e26320"
+      }
+    }
+  },
+  "source_curation": "data/2026-08-05/curation/accepted_trajectory_selection.json",
+  "source_curation_sha256_lf_normalized": "fc64bf0ca77e028eebc66415f9e84b46d9863cea8e7c4f698fc5264039c5c7ef",
+  "cluster_selection": "data/2026-08-05/curation/causal_path_clusters_per_case.json",
+  "cluster_selection_sha256_lf_normalized": "3947bf626d9f2bd6b294b8ad708f2187cedf26aed160d1f6f9726992de755e89",
+  "system_prompt": {
+    "role": "system",
+    "source": "config/codex_qwen_model_catalog.json",
+    "source_sha256_lf_normalized": "de0ebe3b59453783657b846d2957002c81b14ad287c0d3fe9dafd830dcba3d31",
+    "model_slug": "Qwen3.6-27B-trained",
+    "field": "base_instructions",
+    "content_sha256": "f54052796d1557c843d758a5d8ea5a948205c10f7a4a6368b4d40e72ce4cb80b",
+    "content": "You are Codex, a coding and diagnostic agent powered by the locally deployed Qwen3.6-27B model with a trajectory-reasoning LoRA adapter. Follow the user's instructions, inspect the available local evidence with tools when needed, and do not invent evidence."
+  },
+  "split": {
+    "source": "frozen data/2026-08-04 case split",
+    "group_key": "case_id",
+    "train_case_count": 72,
+    "validation_case_count": 12,
+    "train_validation_case_intersection": [],
+    "validation_case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ]
+  },
+  "counts": {
+    "cases": 84,
+    "source_trajectories": 840,
+    "raw_visible_checkpoints": 3505,
+    "causal_prefix_checkpoints": 3496,
+    "path_clusters": 433,
+    "retained_path_clusters": 277,
+    "selected_sft_nodes": 1675,
+    "evidence_summary_nodes": 277,
+    "hypothesis_elimination_nodes": 120,
+    "decision_ready_nodes": 277,
+    "decision_nodes": 277,
+    "synthetic_path_endpoint_nodes": 554,
+    "train_sft_rows": 1430,
+    "train_core_rows": 719,
+    "train_endpoint_pool_rows": 711,
+    "train_endpoint_schedule_rows_per_epoch": 432,
+    "train_endpoint_groups_per_epoch": 144,
+    "effective_train_row_exposures_per_epoch": 1151,
+    "validation_sft_rows": 245,
+    "target_types": {
+      "train": {
+        "decision": 237,
+        "decision_ready": 237,
+        "evidence_summary": 237,
+        "hypothesis_elimination": 103,
+        "planning": 167,
+        "reasoning": 449
+      },
+      "validation": {
+        "decision": 40,
+        "decision_ready": 40,
+        "evidence_summary": 40,
+        "hypothesis_elimination": 17,
+        "planning": 29,
+        "reasoning": 79
+      }
+    }
+  },
+  "conversion": {
+    "ten_successful_trajectories_per_case": true,
+    "trajectory_path_clustering": true,
+    "cross_trajectory_node_deduplication": true,
+    "one_sample_per_retained_valuable_checkpoint": true,
+    "one_source_grounded_hypothesis_elimination_per_eligible_retained_path": true,
+    "one_evidence_summary_per_retained_path": true,
+    "one_stop_judgment_per_retained_path": true,
+    "one_final_decision_per_retained_path": true,
+    "endpoint_group_exposures_per_query_per_epoch": 2,
+    "endpoint_schedule_epochs": 5,
+    "endpoint_sampling_policy": "retain every path-specific evidence_summary, decision_ready, and decision in the semantic pool; for each epoch choose exactly two paths per query by deterministic round-robin and expose all three endpoint nodes from each chosen path",
+    "hypothesis_elimination_policy": "use exact visible-source rejection statements only when one or two already-returned successful source actions provide concrete evidence; retain source statement, action IDs, observations, and hashes in metadata",
+    "max_actions_per_investigative_stage": 2,
+    "original_message_policy": "prune visible source reasoning to evidence-aligned sentences; fixed bridge templates remain context-only; never claim hidden chain-of-thought",
+    "path_endpoint_text_policy": "name path-specific device/config evidence, quote a compact observed result, state checked exclusions, and explain why further tools cannot change the minimum root-cause set; synthetic summary/stop thinking and conclusions use reduced loss 0.20",
+    "command_selection": "causally rank exact successful source commands, cap every investigative stage at two discriminative actions, then strictly translate the admitted read-only subset to Codex CLI exec_command calls",
+    "supervised_command_normalization": "exec_command + cmd + Linux read-only utilities + repository-relative saved_configs paths; unsupported source commands fail generation instead of receiving tool loss",
+    "source_command_audit": "retain exact archived command, canonical inner PowerShell, translation kind, and pre/post hashes in metadata",
+    "command_results": "relevant source excerpts with source hashes; PowerShell discovery/search presentation is normalized to Linux find/grep paths and all responses use the Codex CLI function-call-output shape; context-only transport token counts are heuristic",
+    "future_results_in_current_target": false,
+    "infrastructure_failures_and_interruptions": "not present and never recorded"
+  },
+  "loss_policy": {
+    "thinking_by_source": {
+      "pruned_original_visible_agent_message": 0.6,
+      "evidence_grounded_bridge": 0.2,
+      "fixed_bridge_template": 0.0,
+      "minimal_final_bridge": 0.0
+    },
+    "conclusion_by_source": {
+      "original_visible_conclusion": 1.0,
+      "evidence_aligned_reconstruction": 0.4,
+      "source_grounded_hypothesis_elimination": 0.6,
+      "path_evidence_synthesis": 0.2,
+      "verified_path_stop_judgment": 0.2,
+      "verified_final_answer": 1.0
+    },
+    "current_tool_calls": 0.1,
+    "historical_assistant_and_tool_calls": 0.0,
+    "tool_responses": "context_only",
+    "required_cli": "--loss_scale default --is_binary_loss_scale false"
+  },
+  "heuristic_training_signal_by_epoch": {
+    "epoch_01": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "decision": 144,
+        "decision_ready": 144,
+        "evidence_summary": 144,
+        "hypothesis_elimination": 103,
+        "planning": 167,
+        "reasoning": 449
+      },
+      "raw_target_token_estimate": 192730,
+      "weighted_token_estimate": 65681.2,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 46.173639,
+        "thinking": 48.095041,
+        "tool_call": 5.73132
+      },
+      "weighted_target_type_percent": {
+        "decision": 6.266633,
+        "decision_ready": 11.292729,
+        "evidence_summary": 12.496118,
+        "hypothesis_elimination": 11.692844,
+        "planning": 16.3476,
+        "reasoning": 41.904076
+      },
+      "auto_summary_stop_weighted_percent": 23.788847
+    },
+    "epoch_02": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "decision": 144,
+        "decision_ready": 144,
+        "evidence_summary": 144,
+        "hypothesis_elimination": 103,
+        "planning": 167,
+        "reasoning": 449
+      },
+      "raw_target_token_estimate": 192538,
+      "weighted_token_estimate": 65642.8,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 46.203392,
+        "thinking": 48.061935,
+        "tool_call": 5.734673
+      },
+      "weighted_target_type_percent": {
+        "decision": 6.270299,
+        "decision_ready": 11.302077,
+        "evidence_summary": 12.442187,
+        "hypothesis_elimination": 11.699684,
+        "planning": 16.357163,
+        "reasoning": 41.928589
+      },
+      "auto_summary_stop_weighted_percent": 23.744264
+    },
+    "epoch_03": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "decision": 144,
+        "decision_ready": 144,
+        "evidence_summary": 144,
+        "hypothesis_elimination": 103,
+        "planning": 167,
+        "reasoning": 449
+      },
+      "raw_target_token_estimate": 192697,
+      "weighted_token_estimate": 65674.6,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 46.169448,
+        "thinking": 48.098656,
+        "tool_call": 5.731896
+      },
+      "weighted_target_type_percent": {
+        "decision": 6.267263,
+        "decision_ready": 11.285033,
+        "evidence_summary": 12.496155,
+        "hypothesis_elimination": 11.694019,
+        "planning": 16.349243,
+        "reasoning": 41.908287
+      },
+      "auto_summary_stop_weighted_percent": 23.781188
+    },
+    "epoch_04": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "decision": 144,
+        "decision_ready": 144,
+        "evidence_summary": 144,
+        "hypothesis_elimination": 103,
+        "planning": 167,
+        "reasoning": 449
+      },
+      "raw_target_token_estimate": 192105,
+      "weighted_token_estimate": 65556.2,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 46.20097,
+        "thinking": 48.056782,
+        "tool_call": 5.742249
+      },
+      "weighted_target_type_percent": {
+        "decision": 6.278582,
+        "decision_ready": 11.25355,
+        "evidence_summary": 12.38998,
+        "hypothesis_elimination": 11.715139,
+        "planning": 16.378771,
+        "reasoning": 41.983977
+      },
+      "auto_summary_stop_weighted_percent": 23.64353
+    },
+    "epoch_05": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "decision": 144,
+        "decision_ready": 144,
+        "evidence_summary": 144,
+        "hypothesis_elimination": 103,
+        "planning": 167,
+        "reasoning": 449
+      },
+      "raw_target_token_estimate": 193163,
+      "weighted_token_estimate": 65767.8,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 46.176092,
+        "thinking": 48.100134,
+        "tool_call": 5.723774
+      },
+      "weighted_target_type_percent": {
+        "decision": 6.258382,
+        "decision_ready": 11.341112,
+        "evidence_summary": 12.548086,
+        "hypothesis_elimination": 11.677447,
+        "planning": 16.326074,
+        "reasoning": 41.848899
+      },
+      "auto_summary_stop_weighted_percent": 23.889198
+    }
+  },
+  "training_profile": {
+    "model": "Qwen3.6-27B",
+    "tuner_type": "lora",
+    "lora_rank": 8,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "max_length": 16384,
+    "truncation_strategy": "delete",
+    "preserve_thinking": true,
+    "add_non_thinking_prefix": false,
+    "tokenizer_preflight_required": true,
+    "semantic_train_pool": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train.jsonl",
+    "train_dataset_components_by_epoch": {
+      "epoch_01": [
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_core.jsonl",
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_01.jsonl"
+      ],
+      "epoch_02": [
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_core.jsonl",
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_02.jsonl"
+      ],
+      "epoch_03": [
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_core.jsonl",
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_03.jsonl"
+      ],
+      "epoch_04": [
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_core.jsonl",
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_04.jsonl"
+      ],
+      "epoch_05": [
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_core.jsonl",
+        "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_05.jsonl"
+      ]
+    },
+    "quick_smoke_entry": "one epoch at a time; select TRAIN_EPOCH_INDEX=1..5 so each run uses the matching balanced path-endpoint-group schedule"
+  },
+  "comparison_experiment_plan": {
+    "reference": "experiments/2026-08-04-qwen36-27b-best1-agent-validation/README.md#下一轮5-epoch实验方案已确认未执行",
+    "epochs": 5,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "effective_batch_size": 8,
+    "seed": 42,
+    "data_seed": 42,
+    "shuffle_each_epoch": true,
+    "fixed_learning_rate_by_epoch": [
+      2e-05,
+      1.5e-05,
+      1e-05,
+      6e-06,
+      3e-06
+    ],
+    "epoch_specific_endpoint_schedule_required": true,
+    "sequential_one_epoch_resume_required": true,
+    "endpoint_group_exposures_per_query_per_epoch": 2,
+    "endpoint_path_rotation_coverage": "all retained train paths appear across the five schedules; summary, stop, and decision always share one selected path and within-query path exposure differs by at most one",
+    "checkpoint_policy": "evaluate and save at every epoch; retain all five; do not auto-select solely by eval loss",
+    "checkpoint_agent_selection": {
+      "case_ids": [
+        12,
+        20,
+        38,
+        71,
+        86,
+        100
+      ],
+      "repeats_per_case_per_checkpoint": 2,
+      "reasoning_effort": "high",
+      "ranking": [
+        "strict_accuracy_desc",
+        "model_hard_timeout_asc",
+        "average_duration_asc",
+        "sft_eval_loss_asc",
+        "epoch_asc"
+      ]
+    },
+    "final_agent_validation": {
+      "case_ids": [
+        2,
+        12,
+        19,
+        20,
+        29,
+        38,
+        65,
+        71,
+        85,
+        86,
+        99,
+        100
+      ],
+      "repeats_per_case": 5,
+      "total_attempts": 60,
+      "reuse_selected_checkpoint_selection_attempts": 12,
+      "new_attempts_after_checkpoint_selection": 48
+    },
+    "infrastructure_failures_and_interruptions": "excluded from samples and denominators"
+  },
+  "outputs": {
+    "train": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train.jsonl",
+      "rows": 1430,
+      "bytes": 22213862,
+      "sha256_lf_normalized": "f30834daed453a6bd1b2b9ffffc26db3d387bf65d607f1b640cace044fc1a651"
+    },
+    "train_core": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_core.jsonl",
+      "rows": 719,
+      "bytes": 10620244,
+      "sha256_lf_normalized": "b7bfa0c544b2484dff9b14942274a9b502b4f17142ce16de8a6f671ecf825554"
+    },
+    "train_endpoint_pool": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_pool.jsonl",
+      "rows": 711,
+      "bytes": 11593618,
+      "sha256_lf_normalized": "5362a87e65083204b6690a47c0aa03cd08a31f007af51204054754dace25f7be"
+    },
+    "train_endpoint_epoch_01": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_01.jsonl",
+      "rows": 432,
+      "bytes": 7060232,
+      "sha256_lf_normalized": "cb8aa371415964fd89d2c174b8490d328f0a9f6ca7d8944efac53a295192acf9"
+    },
+    "train_endpoint_epoch_02": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_02.jsonl",
+      "rows": 432,
+      "bytes": 7055277,
+      "sha256_lf_normalized": "e6f2eb98a9e6a903ae784b0fada69f7d742e87c0b6ecc9f02ae2b409e91bd3d7"
+    },
+    "train_endpoint_epoch_03": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_03.jsonl",
+      "rows": 432,
+      "bytes": 7083049,
+      "sha256_lf_normalized": "2b77d8d0f64374638d0827059d51be9cd1781b380dce0d9a13a942d66c181add"
+    },
+    "train_endpoint_epoch_04": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_04.jsonl",
+      "rows": 432,
+      "bytes": 7050062,
+      "sha256_lf_normalized": "ae188a9ab856377647ee8e64a66765c425471ee28c5752ebe7c7eac6527d4e85"
+    },
+    "train_endpoint_epoch_05": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_05.jsonl",
+      "rows": 432,
+      "bytes": 7065447,
+      "sha256_lf_normalized": "b357863765f9ad95fb1e5fcce73e9ed6e8be31bed3984c743baabc82be0709d4"
+    },
+    "validation": {
+      "path": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_validation.jsonl",
+      "rows": 245,
+      "bytes": 3727882,
+      "sha256_lf_normalized": "d7fe066d56f545116d799e55207e14381ca426228088d7a2b9b9a4db1d66f76a"
+    }
+  }
+}

@@ -56,6 +56,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--required-validation-trajectories", type=int, default=10
     )
+    parser.add_argument(
+        "--archive-only",
+        action="store_true",
+        help=(
+            "write raw/curation archive inputs but remove the legacy one-decision-per-trajectory "
+            "SFT outputs after the archive is built"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -854,6 +862,10 @@ def main() -> None:
     ]
     write_text(filter_report_path, "\n".join(report_lines))
 
+    if options.archive_only:
+        for legacy_output in (train_path, validation_path, manifest_path):
+            legacy_output.unlink(missing_ok=True)
+
     print(f"Source attempts: {source_attempt_count}")
     print(f"Accepted candidates: {len(processed)}")
     print(f"Selected fully correct trajectories: {len(train_rows) + len(validation_rows)}")
@@ -863,6 +875,8 @@ def main() -> None:
         f"Validation: {len(validation_rows)} across "
         f"{len(validation_case_ids)} cases ({validation_case_ids})"
     )
+    if options.archive_only:
+        print("Archive-only mode: legacy decision SFT outputs were not retained")
 
 
 if __name__ == "__main__":

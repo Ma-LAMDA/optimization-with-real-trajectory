@@ -1,0 +1,67 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0087_success_03",
+  "case_id": 87,
+  "row_index": 87,
+  "success_slot": 3,
+  "attempt_index": 3,
+  "source_record": {
+    "row_index": 87,
+    "original_id": 87,
+    "sample_id": 87,
+    "sample_key": "q0087",
+    "question": "在CampusNetwork_09组网中，从 HQ_FIN_Client01 ping节点 SZ_Server_Cluster1（10.3.10.1）出现高延迟。已知，两个核心交换机Core_SW_01 和 Core_SW_02之间因链路距离较长，传输时延较大。基于当前配置框架，在STP规划合理的情况下，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先围绕“跨核心长时延链路被非预期选中”建立两个可证伪方向：二层STP根路径开销规划不合理，或三层网关/VRRP Master规划不合理；先核对项目节点和能直接揭示STP、VRRP及路由转发状态的文件。"
+    },
+    {
+      "event_line": 54,
+      "item_id": "item_27",
+      "text": "源主机已确认位于VLAN 20，地址为10.1.20.100/24，默认网关是VRRP虚拟地址10.1.20.254。下一步将同时核验VLAN 20的二层根桥/转发端口与VRRP Master归属，并用LLDP/MAC信息确认该流量实际从哪台汇聚交换机进入核心。"
+    },
+    {
+      "event_line": 93,
+      "item_id": "item_47",
+      "text": "关键链路已闭环：AGG_SW_02在MST实例1中以Core_SW_01方向为Root Port，源主机与VRRP虚拟MAC均由该方向转发；但Core_SW_01因配置`preempt disable`保持Backup，虚拟网关实际由较低优先级的Core_SW_02担任Master，且Core_SW_01把虚拟MAC学习在两核心间的Eth-Trunk1上。再核对到10.3.10.0的路由可排除目的网段缺路由或错误静态路由。"
+    },
+    {
+      "event_line": 106,
+      "item_id": "item_54",
+      "text": "<result>\n[\n\"Core_SW_01;VRRP工作在非抢占模式\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_01;VRRP工作在非抢占模式\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_01;VRRP工作在非抢占模式"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_01;VRRP工作在非抢占模式"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0087_r03/attempt_003/judgment.json",
+    "judgment_sha256_lf_normalized": "91853818abab8b88fdfa91f79b1f7404ab7f492fb2cb9728f4a1da54ac47e99f"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0087_r03/attempt_003",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0087_r03/attempt_003/events.jsonl",
+    "events_sha256_lf_normalized": "450473990440b7a2f19046f3d05966419e14c4d5649c1ca0167e4df488104977",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0087_r03/attempt_003/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "6174030b87deac3f474a23efd3e8ea421ed8d672cc470135c9456ced3023836d",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0087/source_record.json",
+    "source_record_sha256_lf_normalized": "42522883133dd8ecc1431c0160460ac74a420b22829a13d02b751eb79ba0dd5a",
+    "thread_id": "019fcc1b-fdd6-7622-bb17-815ff25a06f3",
+    "duration_seconds": 111.802
+  }
+}

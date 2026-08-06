@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", required=True)
     parser.add_argument("--max-length", type=int, default=16384)
     parser.add_argument("--train", type=Path, default=DEFAULT_TRAIN)
+    parser.add_argument("--extra-train", type=Path, action="append", default=[])
     parser.add_argument("--validation", type=Path, default=DEFAULT_VALIDATION)
     return parser.parse_args()
 
@@ -48,7 +49,13 @@ def main() -> None:
 
     overlong: list[tuple[str, str, int]] = []
     all_lengths: list[int] = []
-    for split, path in (("train", args.train), ("validation", args.validation)):
+    datasets = [("train", args.train)]
+    datasets.extend(
+        (f"train-extra-{index}", path)
+        for index, path in enumerate(args.extra_train, 1)
+    )
+    datasets.append(("validation", args.validation))
+    for split, path in datasets:
         lengths: list[int] = []
         for row in load_rows(path):
             encoded = template.encode(row)
