@@ -57,6 +57,120 @@ def digest_output(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def validate_formal_training_contract(manifest: dict[str, Any]) -> None:
+    config = load_json(converter.FORMAL_TRAINING_CONFIG_PATH)
+    expected_critical = {
+        "schema_version": "qwen36-0805-formal-training.v1",
+        "epochs": 5,
+        "per_device_train_batch_size": 1,
+        "per_device_eval_batch_size": 1,
+        "gradient_accumulation_steps": 8,
+        "effective_batch_size": 8,
+        "max_length": 16384,
+        "fixed_learning_rate_by_epoch": [2e-5, 1.5e-5, 1e-5, 6e-6, 3e-6],
+        "lr_scheduler_type": "constant",
+        "warmup_ratio": 0.0,
+        "eval_strategy": "epoch",
+        "save_strategy": "epoch",
+        "save_total_limit": 5,
+        "load_best_model_at_end": False,
+        "resume_only_model": False,
+        "epoch_specific_endpoint_schedule_required": True,
+        "sequential_full_state_resume_required": True,
+        "learning_rate_runtime_audit_required": True,
+    }
+    for key, expected in expected_critical.items():
+        if config.get(key) != expected:
+            raise ValueError(
+                f"formal training config {key}={config.get(key)!r}, expected {expected!r}"
+            )
+    if not converter.FORMAL_TRAINING_REFERENCE.is_file():
+        raise ValueError("formal 0804 reference training entry is missing")
+
+    profile = manifest["training_profile"]
+    expected_profile_paths = {
+        "formal_training_config": converter.FORMAL_TRAINING_CONFIG_PATH,
+        "formal_training_entry": converter.FORMAL_TRAINING_ENTRY,
+        "fixed_stage_lr_plugin": converter.FIXED_STAGE_LR_PLUGIN,
+        "quick_smoke_entry": converter.QUICK_SMOKE_ENTRY,
+    }
+    for key, path in expected_profile_paths.items():
+        if profile.get(key) != path.relative_to(ROOT).as_posix():
+            raise ValueError(f"manifest training profile has stale {key}")
+    if "independent one-epoch" not in profile.get("quick_smoke_scope", ""):
+        raise ValueError("quick entry is not explicitly isolated from formal training")
+
+    plan = manifest["comparison_experiment_plan"]
+    for key, expected in config.items():
+        if plan.get(key) != expected:
+            raise ValueError(f"manifest formal plan differs from config at {key}")
+    expected_plan_paths = {
+        "config_path": converter.FORMAL_TRAINING_CONFIG_PATH,
+        "entry_path": converter.FORMAL_TRAINING_ENTRY,
+        "lr_audit_plugin_path": converter.FIXED_STAGE_LR_PLUGIN,
+    }
+    for key, path in expected_plan_paths.items():
+        if plan.get(key) != path.relative_to(ROOT).as_posix():
+            raise ValueError(f"manifest formal plan has stale {key}")
+    expected_plan_hashes = {
+        "config_sha256_lf_normalized": converter.FORMAL_TRAINING_CONFIG_PATH,
+        "entry_sha256_lf_normalized": converter.FORMAL_TRAINING_ENTRY,
+        "lr_audit_plugin_sha256_lf_normalized": converter.FIXED_STAGE_LR_PLUGIN,
+    }
+    for key, path in expected_plan_hashes.items():
+        if plan.get(key) != base.digest_file(path):
+            raise ValueError(f"manifest formal plan has stale {key}")
+
+    entry = converter.FORMAL_TRAINING_ENTRY.read_text(encoding="utf-8")
+    required_entry_snippets = (
+        "for ((stage = start_stage; stage <= 5; stage++))",
+        '--resume_from_checkpoint "${existing_checkpoint}"',
+        '--resume_only_model "${CFG[resume_only_model]}"',
+        '--num_train_epochs "${stage}"',
+        '--gradient_accumulation_steps "${CFG[gradient_accumulation_steps]}"',
+        '--learning_rate "${target_lr}"',
+        '--lr_scheduler_type "${CFG[lr_scheduler_type]}"',
+        '--warmup_ratio "${CFG[warmup_ratio]}"',
+        '--max-length "${FORMAL_MAX_LENGTH}"',
+        '--eval_strategy "${CFG[eval_strategy]}"',
+        '--save_strategy "${CFG[save_strategy]}"',
+        "--callbacks qwen36_0805_fixed_stage_lr",
+        'endpoint_epoch_${stage_tag}.jsonl',
+        'model_files_sha256.txt',
+        'sha256sum --check',
+        'find "${MODEL_PATH}" -type f -print0',
+        'capture_training_environment',
+        'current_environment="$(capture_training_environment)"',
+    )
+    missing_entry = [item for item in required_entry_snippets if item not in entry]
+    if missing_entry:
+        raise ValueError(f"formal training entry lacks required controls: {missing_entry}")
+    forbidden_entry_snippets = (
+        "--lr_scheduler_type cosine",
+        "--gradient_accumulation_steps 2",
+        "--warmup_ratio 0.1",
+        "--early_stop_interval",
+    )
+    leaked_entry = [item for item in forbidden_entry_snippets if item in entry]
+    if leaked_entry:
+        raise ValueError(f"quick-only settings leaked into formal training: {leaked_entry}")
+
+    plugin = converter.FIXED_STAGE_LR_PLUGIN.read_text(encoding="utf-8")
+    required_plugin_snippets = (
+        'QWEN36_0805_TRAIN_STAGE',
+        'QWEN36_0805_TARGET_LR',
+        'QWEN36_0805_LR_AUDIT_PATH',
+        'def _assert_target',
+        'def on_train_begin',
+        'def on_epoch_begin',
+        'def on_step_begin',
+        'callbacks_map["qwen36_0805_fixed_stage_lr"]',
+    )
+    missing_plugin = [item for item in required_plugin_snippets if item not in plugin]
+    if missing_plugin:
+        raise ValueError(f"formal LR plugin lacks required enforcement: {missing_plugin}")
+
+
 def independent_training_signal_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
     row_counts: Counter[str] = Counter()
     raw_tokens_by_target: Counter[str] = Counter()
@@ -243,8 +357,8 @@ def main() -> None:
     frozen = load_json(FROZEN_0804_CURATION)
     selection = load_json(SELECTION)
     manifest = load_json(MANIFEST)
-    if manifest["schema_version"] != "qwen36-0805-causal-path-reasoning-sft.v8":
-        raise ValueError("manifest schema version is not the balanced endpoint-group revision")
+    if manifest["schema_version"] != "qwen36-0805-causal-path-reasoning-sft.v9":
+        raise ValueError("manifest schema version is not the formal-training-contract revision")
     if selection["schema_version"] != "0805-causal-path-cluster-selection.v4":
         raise ValueError("selection schema version is not the elimination/endpoint-group revision")
     expected_reproducibility = {
@@ -263,6 +377,7 @@ def main() -> None:
     }
     if manifest.get("reproducibility") != expected_reproducibility:
         raise ValueError("manifest reproducibility document or tracked-file hashes are stale")
+    validate_formal_training_contract(manifest)
     if manifest["conversion"]["max_actions_per_investigative_stage"] != converter.MAX_ACTIONS_PER_STAGE:
         raise ValueError("manifest action cap differs from converter policy")
     expected_system_prompt = {

@@ -124,12 +124,23 @@ dropout 0.05、16,384 token；micro batch 1、梯度累积 8，有效 batch 8；
 `1e-5`、`6e-6`、`3e-6`。每轮结束评估并保留 checkpoint，不单凭最低 eval loss
 自动决定最终模型。
 
+机器可读权威配置为`config/qwen36_0805_formal_training.json`，正式入口为
+`scripts/train_qwen36_0805_causal_path_formal.sh`。入口把五轮拆成五个连续阶段：stage 1从基座
+开始，stage 2–5用`resume_from_checkpoint`和`resume_only_model=false`恢复上一阶段完整Trainer
+状态，同时把累计`num_train_epochs`设为2–5，使每次只新增一个epoch并加载对应
+`train_endpoint_epoch_01..05`采样表。所有阶段使用constant scheduler和零warmup。
+
+完整resume会恢复旧optimizer/scheduler状态，因此仅传新的`--learning_rate`并不充分。
+`scripts/qwen36_0805_fixed_stage_lr_plugin.py`会在train/epoch/step开始时把optimizer参数组、
+scheduler的`base_lrs`和`_last_lr`重设为当轮目标值；每次设置与Trainer日志均写入
+`control/learning_rate_audit.jsonl`，任一实际值与目标不符都会立即终止训练。
+
 checkpoint 仍在 q12、q20、q38、q71、q86、q100 上各运行 2 次完整 Agent 选择；固定
 `reasoning_effort=high`，依次比较严格准确率、模型硬超时、平均耗时、SFT eval loss 和
 epoch。入选 checkpoint 再在全部 12 道验证题上各形成 5 次结果，复用选择阶段 12 次并
 新增 48 次。基础设施失败和人为中断不进入样本或分母。
 
-`scripts/train_qwen36_0805_causal_path_quick.sh` 仅保留与 0804 历史 1 epoch 快跑一致的
+`scripts/train_qwen36_0805_causal_path_quick.sh`仅保留与0804历史1 epoch快跑一致的
 数据、静态校验和 tokenizer 冒烟入口，不替代上述正式 5 epoch 对比方案。训练前必须
 通过目标 tokenizer 的 16,384 token 长度预检。
 
@@ -165,15 +176,27 @@ python -B scripts/convert_0805_causal_path_reasoning_sft.py
 python -B scripts/validate_0805_causal_path_reasoning_sft.py
 ```
 
-在训练机上执行与0804历史快跑相同的16K冒烟；`TRAIN_EPOCH_INDEX`选择对应轮次的完整
+在训练机上执行正式五阶段训练：
+
+```bash
+bash scripts/train_qwen36_0805_causal_path_formal.sh
+```
+
+可以用`TRAIN_ENV`、`MODEL_PATH`和`OUTPUT_DIR`覆盖默认训练环境、基座和输出目录。同一
+`OUTPUT_DIR`存在合法epoch checkpoint时，入口验证`trainer_state.json`中的epoch边界后从
+下一阶段继续；如果旧运行已经启动但没有形成checkpoint，则拒绝混写，必须改用新的输出目录。
+入口会固化Git提交、环境版本以及配置、正式入口、manifest、core、五轮端点表、验证数据、
+LR插件和模型目录全部文件的SHA256；resume前会逐项重新校验。
+
+以下命令只执行与0804历史快跑相同的16K单轮冒烟；`TRAIN_EPOCH_INDEX`选择要冒烟的完整
 路径端点组采样表：
 
 ```bash
 TRAIN_EPOCH_INDEX=1 bash scripts/train_qwen36_0805_causal_path_quick.sh
 ```
 
-该入口一次只允许训练1个epoch；五轮正式实验必须逐轮选择`TRAIN_EPOCH_INDEX=1..5`并按既定
-学习率和checkpoint续训，不能把`NUM_TRAIN_EPOCHS`直接设为5后重复使用同一个采样表。
+quick入口一次只允许训练1个epoch，不读取上一checkpoint，也不会自动切换学习率；不得通过
+手工连续运行`TRAIN_EPOCH_INDEX=1..5`来冒充正式续训。正式实验必须使用formal入口。
 
 当前数据状态为 `auto_clustered_draft_requires_domain_review`；静态一致性检查已经通过，
 正式训练结论仍应在领域抽检和目标 tokenizer 预检通过后产生。

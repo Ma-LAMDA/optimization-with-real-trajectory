@@ -6,7 +6,7 @@
 ## 1. 当前版本与状态
 
 - 数据范围：仅`data/2026-08-05/`，不修改0804和0731。
-- manifest schema：`qwen36-0805-causal-path-reasoning-sft.v8`。
+- manifest schema：`qwen36-0805-causal-path-reasoning-sft.v9`。
 - cluster selection schema：`0805-causal-path-cluster-selection.v4`。
 - 状态：`auto_clustered_draft_requires_domain_review`。
 - 当前代码尚在本地工作树；在形成Git提交前，以本文列出的脚本、manifest文件哈希和独立
@@ -260,17 +260,54 @@ q0001: raw checkpoints=47, clusters=6, retained paths=4, selected nodes=26
 每题各选2条完整路径端点组，同一slot三类端点路径一致；五轮覆盖全部训练路径且同题路径
 曝光差不超过1；输出行数、字节数和SHA256与manifest一致。
 
-## 7. 目标tokenizer与loss mask预检
+## 7. 目标tokenizer、正式训练与运行时审计
 
-正式训练前，在实际训练机使用目标模型环境执行：
+正式训练前可以先在实际训练机使用目标模型环境执行独立quick预检：
 
 ```bash
 TRAIN_EPOCH_INDEX=1 bash scripts/train_qwen36_0805_causal_path_quick.sh
 ```
 
 该入口会重新生成、静态校验，并用目标Qwen tokenizer和ms-swift template检查固定core及
-全量唯一端点池的16K长度。一次只允许1个epoch；正式五轮必须使用
-`TRAIN_EPOCH_INDEX=1..5`逐轮续训，不能用同一个采样表直接训练5轮。
+全量唯一端点池的16K长度。它只执行一个独立冒烟epoch，梯度累积2、cosine scheduler、
+10% warmup，不读取上一checkpoint，也不属于正式五轮resume链。
+
+正式训练的权威机器可读配置与入口为：
+
+```text
+config/qwen36_0805_formal_training.json
+scripts/train_qwen36_0805_causal_path_formal.sh
+scripts/qwen36_0805_fixed_stage_lr_plugin.py
+```
+
+启动命令：
+
+```bash
+bash scripts/train_qwen36_0805_causal_path_formal.sh
+```
+
+正式入口必须保持以下状态机，任何一点不满足都不得称为0805正式对比训练：
+
+1. stage 1加载固定719条core与`train_endpoint_epoch_01`，从Qwen3.6-27B基座开始。
+2. stage 2–5分别加载对应`train_endpoint_epoch_02..05`，并用
+   `resume_from_checkpoint`、`resume_only_model=false`恢复上一stage的模型、optimizer、
+   scheduler、global step、随机数与Trainer状态。
+3. 五个stage的累计`num_train_epochs`依次为1、2、3、4、5；由于每轮数据长度相同，恢复后
+   每个进程只新增一个完整epoch，不重复已经完成的epoch。
+4. micro batch为1、梯度累积8、有效batch为8；constant scheduler、warmup为0；五轮目标
+   学习率依次为`2e-5`、`1.5e-5`、`1e-5`、`6e-6`、`3e-6`。
+5. 每轮末尾执行validation并保存checkpoint，保留全部五个，不启用early stopping，也不让
+   Trainer自动加载最低eval loss。
+6. 普通完整resume会恢复上一轮optimizer/scheduler学习率，命令行新LR可能被覆盖。因此
+   LR callback在`on_train_begin`、`on_epoch_begin`和每个`on_step_begin`重新设置optimizer
+   参数组及scheduler状态；`on_log`同时核验Trainer记录。任一值不等于当轮目标立即失败。
+7. `control/learning_rate_audit.jsonl`必须包含每轮train_begin、epoch_begin、step_begin和log
+   事件；入口在接受stage checkpoint前再次读取该文件并检查全部optimizer LR。
+8. 首次启动归档Git提交、工作树状态、训练环境与模型绝对路径、Python/ms-swift/PyTorch/
+   Transformers/PEFT/Accelerate版本，以及配置、正式入口、manifest、core、五轮端点表、
+   验证数据、LR插件和模型目录全部文件的SHA256。resume前逐项重新校验；中断后只允许从
+   相同Git提交、相同Python/训练包版本和完整epoch边界继续，已经开始但尚无checkpoint的
+   目录不得混写。
 
 当前尚未归档目标tokenizer的真实预检报告。正式训练前必须新增带以下内容的归档：
 
@@ -300,7 +337,21 @@ train_endpoint_epoch_05 432 b357863765f9ad95fb1e5fcce73e9ed6e8be31bed3984c743baa
 validation 245 d7fe066d56f545116d799e55207e14381ca426228088d7a2b9b9a4db1d66f76a
 ```
 
-## 9. v8变更记录
+## 9. v9变更记录
+
+2026-08-06相对v8修复正式训练入口与文档/manifest不一致：
+
+- 新增`config/qwen36_0805_formal_training.json`作为机器可读权威配置，固定五阶段、梯度累积8、
+  constant scheduler、零warmup、逐epoch固定LR以及完整状态resume规则。
+- 新增`train_qwen36_0805_causal_path_formal.sh`；五个stage使用各自端点采样表，stage 2–5验证
+  上一checkpoint处于正确epoch边界后完整恢复，累计epoch目标依次为1–5。
+- 新增`qwen36_0805_fixed_stage_lr_plugin.py`，在完整resume恢复optimizer/scheduler后强制覆盖
+  当轮目标LR，逐step核验并归档。正式入口会验证LR事件完整性后才接受新checkpoint。
+- quick入口继续保留，但manifest和文档明确它只负责独立单轮冒烟，不能替代正式resume链。
+- 独立校验器增加正式配置关键值、入口resume/训练参数和LR插件强制点检查；manifest升级为v9，
+  固化配置、正式入口、quick入口和插件的路径与哈希。
+
+## 10. v8变更记录
 
 2026-08-06相对v7完成三项关联修改：
 
@@ -315,7 +366,7 @@ validation 245 d7fe066d56f545116d799e55207e14381ca426228088d7a2b9b9a4db1d66f76a
 旧`train_decision_pool`和`train_decision_epoch_01..05`文件由生成器删除，替换为对应的
 `train_endpoint_pool`和`train_endpoint_epoch_01..05`，避免旧采样表被误用。
 
-## 10. 后续修改的强制流程
+## 11. 后续修改的强制流程
 
 任何来源、筛选、划分、聚类、节点、文本、排错信息、loss、采样、system prompt、工具协议、
 tokenizer、训练入口、验证器或生成文件修改，都必须在同一变更中完成：
@@ -327,7 +378,9 @@ tokenizer、训练入口、验证器或生成文件修改，都必须在同一�
 5. 运行独立验证、`git diff --check`以及适用的shell语法检查。
 6. 更新行数、目标类型、loss占比、长度、重复率、排错覆盖率和全部输出哈希。
 7. 正式训练前归档目标tokenizer长度及逐token loss mask结果。
-8. 提交时把代码、文档、manifest和生成数据放在同一提交；没有同步README不得推送。
+8. 对训练入口修改必须同时验证机器可读配置、resume链、实际optimizer LR审计点和quick/formal
+   边界，不能只比较命令行表面参数。
+9. 提交时把代码、文档、manifest和生成数据放在同一提交；没有同步README不得推送。
 
 仅修改生成文件而不修改生成器，或仅修改生成器而不更新本文和manifest，均视为不可复现，
 不得用于训练、比较、提交或推送。

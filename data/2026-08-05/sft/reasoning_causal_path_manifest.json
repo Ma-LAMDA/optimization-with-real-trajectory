@@ -1,10 +1,10 @@
 {
-  "schema_version": "qwen36-0805-causal-path-reasoning-sft.v8",
+  "schema_version": "qwen36-0805-causal-path-reasoning-sft.v9",
   "status": "auto_clustered_draft_requires_domain_review",
   "scope": "data/2026-08-05 only",
   "reproducibility": {
     "document": "data/2026-08-05/REPRODUCIBILITY.md",
-    "document_sha256_lf_normalized": "1b4d0c864886509d3228df9fece75e46e5cb647b50f1e2146e9c6955107bd7bd",
+    "document_sha256_lf_normalized": "94429020942b95e02849bf6edee37a1d6ebd6fdb8347f120f76ab0400616cf59",
     "change_policy": "every source, curation, split, conversion, loss, sampling, prompt, tool protocol, tokenizer, training-entry, validator, or generated-data change must update documentation, regenerate all artifacts, and pass independent validation",
     "tracked_files": {
       "repository_rules": {
@@ -13,15 +13,15 @@
       },
       "root_readme": {
         "path": "README.md",
-        "sha256_lf_normalized": "1fe64f44c7a1db5a4ce3636593db097f262a428e2c4e6d77ae6a0410aa33b725"
+        "sha256_lf_normalized": "1a34dbc4cb904331d70eb33537a1fb7c52cd1311ad05d58b0e0ad17f45773b3e"
       },
       "date_readme": {
         "path": "data/2026-08-05/README.md",
-        "sha256_lf_normalized": "d0f77d5af6bcedfdf5727cc6f034e09b720a063717df0d9d0a896da38971c803"
+        "sha256_lf_normalized": "1faba46dbd0e53ad2d6c76dc6dddfd44386ee4d8be16e324ee7b08d641724d22"
       },
       "reproducibility_document": {
         "path": "data/2026-08-05/REPRODUCIBILITY.md",
-        "sha256_lf_normalized": "1b4d0c864886509d3228df9fece75e46e5cb647b50f1e2146e9c6955107bd7bd"
+        "sha256_lf_normalized": "94429020942b95e02849bf6edee37a1d6ebd6fdb8347f120f76ab0400616cf59"
       },
       "archive_converter": {
         "path": "scripts/convert_accepted_only_100x10_to_sft.py",
@@ -33,17 +33,33 @@
       },
       "causal_path_converter": {
         "path": "scripts/convert_0805_causal_path_reasoning_sft.py",
-        "sha256_lf_normalized": "6da7b8d4b0ceaad961d3b9b666f67a425015022d6308da86a418135b8e0ec7c3"
+        "sha256_lf_normalized": "ce11e1a5133155b5525a9e54f00e2fdc645daa8aa7414b1a220c0386e196e888"
       },
       "causal_path_validator": {
         "path": "scripts/validate_0805_causal_path_reasoning_sft.py",
-        "sha256_lf_normalized": "d5938616421eafefb4059acb4ed8129609aa8790bc7de229dca22230c8067c8c"
+        "sha256_lf_normalized": "8b07e382fdf4e03256271b8881148560da1ee4280760ba8d48e6c3456c87f0b8"
       },
       "tokenizer_preflight": {
         "path": "scripts/check_0804_best1_token_lengths.py",
         "sha256_lf_normalized": "a531cb8dbb6a58b86bb3becf8ed65fa48ff7aa68078f858ae8b630b04aadb52d"
       },
-      "training_entry": {
+      "formal_training_config": {
+        "path": "config/qwen36_0805_formal_training.json",
+        "sha256_lf_normalized": "e4498e18920492c22ab86cc97611c3dbb402c4b9a96484c7af7dfb86f20bcb94"
+      },
+      "reference_0804_formal_training_entry": {
+        "path": "experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/control/run_0804_5epoch_training.sh",
+        "sha256_lf_normalized": "fdb3b223ab95e57cefd3d189dab4dcfe554649bb88e3044e0b991ac414993c22"
+      },
+      "formal_training_entry": {
+        "path": "scripts/train_qwen36_0805_causal_path_formal.sh",
+        "sha256_lf_normalized": "99e954bbc72ddc560645c6532587c48900820a4d371e95c29641d42394c37b9c"
+      },
+      "fixed_stage_lr_plugin": {
+        "path": "scripts/qwen36_0805_fixed_stage_lr_plugin.py",
+        "sha256_lf_normalized": "d29ce5ead91ed45f58b516afe733fa078a8b27df2ff96a111708ba0609b25763"
+      },
+      "quick_smoke_entry": {
         "path": "scripts/train_qwen36_0805_causal_path_quick.sh",
         "sha256_lf_normalized": "d504a0d5514589cc3c3d9005e9a0b847463200273516387d9c3848f568e26320"
       }
@@ -319,6 +335,9 @@
     "add_non_thinking_prefix": false,
     "tokenizer_preflight_required": true,
     "semantic_train_pool": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train.jsonl",
+    "formal_training_config": "config/qwen36_0805_formal_training.json",
+    "formal_training_entry": "scripts/train_qwen36_0805_causal_path_formal.sh",
+    "fixed_stage_lr_plugin": "scripts/qwen36_0805_fixed_stage_lr_plugin.py",
     "train_dataset_components_by_epoch": {
       "epoch_01": [
         "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_core.jsonl",
@@ -341,17 +360,33 @@
         "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_epoch_05.jsonl"
       ]
     },
-    "quick_smoke_entry": "one epoch at a time; select TRAIN_EPOCH_INDEX=1..5 so each run uses the matching balanced path-endpoint-group schedule"
+    "quick_smoke_entry": "scripts/train_qwen36_0805_causal_path_quick.sh",
+    "quick_smoke_scope": "independent one-epoch tokenizer/training smoke only; it is not the formal comparison entry and does not form a resume chain"
   },
   "comparison_experiment_plan": {
-    "reference": "experiments/2026-08-04-qwen36-27b-best1-agent-validation/README.md#下一轮5-epoch实验方案已确认未执行",
+    "schema_version": "qwen36-0805-formal-training.v1",
+    "reference_training_script": "experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/control/run_0804_5epoch_training.sh",
+    "model": "Qwen3.6-27B",
+    "check_model": false,
+    "tuner_type": "lora",
+    "torch_dtype": "bfloat16",
+    "freeze_vit": true,
+    "freeze_aligner": true,
+    "target_modules": "all-linear",
+    "lora_rank": 8,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "max_length": 16384,
+    "truncation_strategy": "delete",
+    "loss_scale": "default",
+    "is_binary_loss_scale": false,
+    "preserve_thinking": true,
+    "add_non_thinking_prefix": false,
     "epochs": 5,
     "per_device_train_batch_size": 1,
+    "per_device_eval_batch_size": 1,
     "gradient_accumulation_steps": 8,
     "effective_batch_size": 8,
-    "seed": 42,
-    "data_seed": 42,
-    "shuffle_each_epoch": true,
     "fixed_learning_rate_by_epoch": [
       2e-05,
       1.5e-05,
@@ -359,8 +394,35 @@
       6e-06,
       3e-06
     ],
+    "lr_scheduler_type": "constant",
+    "warmup_ratio": 0.0,
+    "gradient_checkpointing": true,
+    "packing": false,
+    "split_dataset_ratio": 0,
+    "dataset_num_proc": 1,
+    "dataloader_num_workers": 0,
+    "logging_steps": 1,
+    "eval_strategy": "epoch",
+    "save_strategy": "epoch",
+    "save_total_limit": 5,
+    "load_best_model_at_end": false,
+    "resume_only_model": false,
+    "seed": 42,
+    "data_seed": 42,
+    "report_to": "none",
+    "add_version": false,
     "epoch_specific_endpoint_schedule_required": true,
-    "sequential_one_epoch_resume_required": true,
+    "sequential_full_state_resume_required": true,
+    "learning_rate_runtime_audit_required": true,
+    "config_path": "config/qwen36_0805_formal_training.json",
+    "config_sha256_lf_normalized": "e4498e18920492c22ab86cc97611c3dbb402c4b9a96484c7af7dfb86f20bcb94",
+    "entry_path": "scripts/train_qwen36_0805_causal_path_formal.sh",
+    "entry_sha256_lf_normalized": "99e954bbc72ddc560645c6532587c48900820a4d371e95c29641d42394c37b9c",
+    "lr_audit_plugin_path": "scripts/qwen36_0805_fixed_stage_lr_plugin.py",
+    "lr_audit_plugin_sha256_lf_normalized": "d29ce5ead91ed45f58b516afe733fa078a8b27df2ff96a111708ba0609b25763",
+    "shuffle_each_epoch": true,
+    "resume_chain": "stage 1 starts from the base model; stages 2..5 resume the complete prior checkpoint with cumulative num_train_epochs=2..5 and the matching endpoint schedule",
+    "learning_rate_enforcement": "the callback overwrites optimizer and scheduler LR state after resume, reapplies it at every optimizer step, records train/epoch/step/log events, and fails on any target mismatch",
     "endpoint_group_exposures_per_query_per_epoch": 2,
     "endpoint_path_rotation_coverage": "all retained train paths appear across the five schedules; summary, stop, and decision always share one selected path and within-query path exposure differs by at most one",
     "checkpoint_policy": "evaluate and save at every epoch; retain all five; do not auto-select solely by eval loss",

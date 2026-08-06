@@ -34,6 +34,14 @@ MANIFEST_OUTPUT = SFT_DIR / "reasoning_causal_path_manifest.json"
 REPRODUCIBILITY_DOC = DATA_ROOT / "REPRODUCIBILITY.md"
 CODEX_MODEL_CATALOG = ROOT / "config" / "codex_qwen_model_catalog.json"
 CODEX_CLI_MODEL_SLUG = "Qwen3.6-27B-trained"
+FORMAL_TRAINING_CONFIG_PATH = ROOT / "config" / "qwen36_0805_formal_training.json"
+FORMAL_TRAINING_ENTRY = ROOT / "scripts" / "train_qwen36_0805_causal_path_formal.sh"
+QUICK_SMOKE_ENTRY = ROOT / "scripts" / "train_qwen36_0805_causal_path_quick.sh"
+FIXED_STAGE_LR_PLUGIN = ROOT / "scripts" / "qwen36_0805_fixed_stage_lr_plugin.py"
+FORMAL_TRAINING_CONFIG = json.loads(
+    FORMAL_TRAINING_CONFIG_PATH.read_text(encoding="utf-8")
+)
+FORMAL_TRAINING_REFERENCE = ROOT / FORMAL_TRAINING_CONFIG["reference_training_script"]
 
 MAX_RETAINED_PATHS_PER_CASE = 4
 MAX_ACTIONS_PER_STAGE = 2
@@ -93,7 +101,11 @@ REPRODUCIBILITY_FILES = {
     "causal_path_converter": Path(__file__).resolve(),
     "causal_path_validator": ROOT / "scripts" / "validate_0805_causal_path_reasoning_sft.py",
     "tokenizer_preflight": ROOT / "scripts" / "check_0804_best1_token_lengths.py",
-    "training_entry": ROOT / "scripts" / "train_qwen36_0805_causal_path_quick.sh",
+    "formal_training_config": FORMAL_TRAINING_CONFIG_PATH,
+    "reference_0804_formal_training_entry": FORMAL_TRAINING_REFERENCE,
+    "formal_training_entry": FORMAL_TRAINING_ENTRY,
+    "fixed_stage_lr_plugin": FIXED_STAGE_LR_PLUGIN,
+    "quick_smoke_entry": QUICK_SMOKE_ENTRY,
 }
 
 CODEX_CLI_TOOLS = [
@@ -2226,7 +2238,7 @@ def main() -> None:
             obsolete_path.unlink()
     validation_output = base.write_jsonl(VALIDATION_OUTPUT, validation_rows)
     manifest = {
-        "schema_version": "qwen36-0805-causal-path-reasoning-sft.v8",
+        "schema_version": "qwen36-0805-causal-path-reasoning-sft.v9",
         "status": "auto_clustered_draft_requires_domain_review",
         "scope": "data/2026-08-05 only",
         "reproducibility": {
@@ -2326,6 +2338,9 @@ def main() -> None:
             "add_non_thinking_prefix": False,
             "tokenizer_preflight_required": True,
             "semantic_train_pool": TRAIN_OUTPUT.relative_to(ROOT).as_posix(),
+            "formal_training_config": FORMAL_TRAINING_CONFIG_PATH.relative_to(ROOT).as_posix(),
+            "formal_training_entry": FORMAL_TRAINING_ENTRY.relative_to(ROOT).as_posix(),
+            "fixed_stage_lr_plugin": FIXED_STAGE_LR_PLUGIN.relative_to(ROOT).as_posix(),
             "train_dataset_components_by_epoch": {
                 f"epoch_{epoch:02d}": [
                     TRAIN_CORE_OUTPUT.relative_to(ROOT).as_posix(),
@@ -2333,20 +2348,20 @@ def main() -> None:
                 ]
                 for epoch in range(1, ENDPOINT_SCHEDULE_EPOCHS + 1)
             },
-            "quick_smoke_entry": "one epoch at a time; select TRAIN_EPOCH_INDEX=1..5 so each run uses the matching balanced path-endpoint-group schedule",
+            "quick_smoke_entry": QUICK_SMOKE_ENTRY.relative_to(ROOT).as_posix(),
+            "quick_smoke_scope": "independent one-epoch tokenizer/training smoke only; it is not the formal comparison entry and does not form a resume chain",
         },
         "comparison_experiment_plan": {
-            "reference": "experiments/2026-08-04-qwen36-27b-best1-agent-validation/README.md#下一轮5-epoch实验方案已确认未执行",
-            "epochs": 5,
-            "per_device_train_batch_size": 1,
-            "gradient_accumulation_steps": 8,
-            "effective_batch_size": 8,
-            "seed": 42,
-            "data_seed": 42,
+            **FORMAL_TRAINING_CONFIG,
+            "config_path": FORMAL_TRAINING_CONFIG_PATH.relative_to(ROOT).as_posix(),
+            "config_sha256_lf_normalized": base.digest_file(FORMAL_TRAINING_CONFIG_PATH),
+            "entry_path": FORMAL_TRAINING_ENTRY.relative_to(ROOT).as_posix(),
+            "entry_sha256_lf_normalized": base.digest_file(FORMAL_TRAINING_ENTRY),
+            "lr_audit_plugin_path": FIXED_STAGE_LR_PLUGIN.relative_to(ROOT).as_posix(),
+            "lr_audit_plugin_sha256_lf_normalized": base.digest_file(FIXED_STAGE_LR_PLUGIN),
             "shuffle_each_epoch": True,
-            "fixed_learning_rate_by_epoch": [2e-5, 1.5e-5, 1e-5, 6e-6, 3e-6],
-            "epoch_specific_endpoint_schedule_required": True,
-            "sequential_one_epoch_resume_required": True,
+            "resume_chain": "stage 1 starts from the base model; stages 2..5 resume the complete prior checkpoint with cumulative num_train_epochs=2..5 and the matching endpoint schedule",
+            "learning_rate_enforcement": "the callback overwrites optimizer and scheduler LR state after resume, reapplies it at every optimizer step, records train/epoch/step/log events, and fails on any target mismatch",
             "endpoint_group_exposures_per_query_per_epoch": ENDPOINT_EXPOSURES_PER_QUERY_PER_EPOCH,
             "endpoint_path_rotation_coverage": "all retained train paths appear across the five schedules; summary, stop, and decision always share one selected path and within-query path exposure differs by at most one",
             "checkpoint_policy": "evaluate and save at every epoch; retain all five; do not auto-select solely by eval loss",
