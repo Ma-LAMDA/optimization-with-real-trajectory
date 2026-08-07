@@ -25,6 +25,11 @@
 > `scripts/run_agent_validation.sh`；控制器只执行一个不调用工具的最小Codex turn，确认
 > catalog被加载且事件流无fallback warning，不会启动正式题目验证。
 
+> **0805 epoch-2 可移植检查点**：`checkpoint-288` 的推理完整 LoRA 包、逐文件哈希、
+> 基座模型哈希与固定 12题×5次 Agent 验证入口归档在
+> [`artifacts/0805-epoch2-checkpoint-288/`](artifacts/0805-epoch2-checkpoint-288/)。
+> 大权重由 Git LFS 管理；该包用于跨机器性能验证，不包含继续训练所需的 optimizer/RNG 状态。
+
 ## 当前数据
 
 | 目录 | 用途 | 规模与划分 | 状态 |
