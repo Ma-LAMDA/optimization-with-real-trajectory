@@ -7,14 +7,12 @@ import argparse
 import csv
 import json
 import math
-import re
 import statistics
 from collections import Counter
 from pathlib import Path
 from typing import Any
 
-
-RESULT_PATTERN = re.compile(r"<result>\s*(\[.*?\])\s*</result>", re.S)
+from final_answer_scoring import parse_final_answer
 
 
 def parse_args() -> argparse.Namespace:
@@ -83,17 +81,6 @@ def load_expected(path: Path) -> dict[int, Any]:
             expected_options(answer)
             rows[identifier] = answer
     return rows
-
-
-def parse_prediction(text: str) -> list[str] | dict[str, str] | None:
-    match = RESULT_PATTERN.search(text)
-    if not match:
-        return None
-    try:
-        value = json.loads(match.group(1))
-    except json.JSONDecodeError:
-        return {"parse_error": match.group(1)}
-    return value
 
 
 def selected_attempt(run: dict[str, Any]) -> int | None:
@@ -191,7 +178,8 @@ def parse_attempt(
         if answer_path and answer_path.is_file()
         else ""
     )
-    prediction = parse_prediction(answer_text)
+    parsed_answer = parse_final_answer(answer_text, expected)
+    prediction = parsed_answer.value
     runner_status = manifest.get(
         "status",
         "timeout" if timeout else "failed_before_manifest",
@@ -202,7 +190,7 @@ def parse_attempt(
         if metadata_path.is_file():
             metadata = load_json(metadata_path)
     event_type_counts = metadata.get("event_type_counts") or {}
-    model_completed_without_valid_answer = (
+    completed_model_turn = (
         runner_status == "failed"
         and metadata.get("exit_code") == 0
         and int(event_type_counts.get("turn.completed") or 0) > 0
@@ -210,13 +198,14 @@ def parse_attempt(
         and not metadata.get("invalid_jsonl_events")
         and not metadata.get("launch_error")
     )
+    model_completed_without_valid_answer = completed_model_turn and prediction is None
     infrastructure_failure = (
         runner_status != "succeeded"
         and not timeout
-        and not model_completed_without_valid_answer
+        and not completed_model_turn
     )
     correct = (
-        runner_status == "succeeded"
+        (runner_status == "succeeded" or completed_model_turn)
         and not timeout
         and prediction_matches(prediction, expected)
     )
@@ -248,6 +237,8 @@ def parse_attempt(
         "output_tokens": tokens.get("output_tokens", 0),
         "reasoning_output_tokens": tokens.get("reasoning_output_tokens", 0),
         "prediction": prediction,
+        "prediction_source": parsed_answer.source,
+        "format_recovered": parsed_answer.recovered,
         "expected": expected,
         "artifact_dir": str(root),
     }
@@ -452,7 +443,11 @@ def main() -> None:
             "worker_count": 2,
             "request_concurrency": 2,
         },
-        "scoring": "exact JSON list equality; timeout and runner failure are incorrect",
+        "scoring": (
+            "exact accepted-answer equality; normally parsed from one <result> JSON list; "
+            "when that wrapper is wholly absent, one unique non-conflicting fenced exact "
+            "match may be recovered; timeouts and infrastructure runner failures require retry"
+        ),
         "overall": overall,
         "counts": {
             "attempts": overall["attempts"],

@@ -6,12 +6,15 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import re
+import sys
 from pathlib import Path
 from typing import Any
 
+REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO / "scripts"))
 
-RESULT_RE = re.compile(r"<result>\s*([\s\S]*?)\s*</result>")
+from final_answer_scoring import parse_final_answer
+
 
 
 def sha256(path: Path) -> str:
@@ -51,14 +54,16 @@ def canonical_fault_set(value: Any) -> list[str]:
     return FaultSet(sorted(set(value)))
 
 
-def parse_prediction(text: str) -> tuple[bool, str, list[str] | None]:
-    matches = RESULT_RE.findall(text)
-    if len(matches) != 1:
-        return False, f"wrapper_count_{len(matches)}", None
+def parse_prediction(
+    text: str, gold: FaultSet | ReferenceOptions
+) -> tuple[bool, str, list[str] | None]:
+    parsed = parse_final_answer(text, gold)
+    if parsed.value is None:
+        return False, parsed.source, None
     try:
-        return True, "parsed", canonical_fault_set(json.loads(matches[0]))
-    except (json.JSONDecodeError, TypeError) as exc:
-        return False, f"json_error:{type(exc).__name__}", None
+        return True, parsed.source, canonical_fault_set(parsed.value)
+    except TypeError as exc:
+        return False, f"result_error:{type(exc).__name__}", None
 
 
 def read_row(dataset: Path, row_index: int) -> dict[str, Any]:
@@ -92,7 +97,6 @@ def main() -> int:
     args = parser.parse_args()
 
     final_text = args.final_answer.read_text(encoding="utf-8", errors="replace")
-    parsed_ok, parse_status, predicted = parse_prediction(final_text)
     row = read_row(args.dataset, args.row_index)
     if str(row.get("id")) != args.original_id:
         raise ValueError("row identity mismatch")
@@ -100,6 +104,7 @@ def main() -> int:
         gold = canonical_fault_set(json.loads(row["answer"]))
     except (KeyError, json.JSONDecodeError, TypeError) as exc:
         raise ValueError("source answer is invalid for the established comparator") from exc
+    parsed_ok, parse_status, predicted = parse_prediction(final_text, gold)
     correct = bool(parsed_ok and predicted == gold)
     payload = {
         "schema_version": "ip-distill-judgment.v1",
@@ -107,6 +112,7 @@ def main() -> int:
         "parsed": parsed_ok,
         "parse_status": parse_status,
         "correct": correct,
+        "format_recovered": parse_status == "recovered_fenced_exact_match",
         "comparator": "established_fault_set_exact_v1",
         "comparison_rule": "exact set equality for JSON string arrays; order ignored; missing/extra/different items fail",
         "final_answer_sha256": sha256(args.final_answer),

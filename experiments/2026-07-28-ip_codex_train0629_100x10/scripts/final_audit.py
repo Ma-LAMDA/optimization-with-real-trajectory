@@ -4,9 +4,15 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any
+
+REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO / "scripts"))
+
+from final_answer_scoring import parse_final_answer
 
 from prune_failed_trajectory_payloads import (
     MANIFEST as PRUNING_MANIFEST,
@@ -21,7 +27,6 @@ RUNS = EXPERIMENT / 'results' / 'runs'
 DATASET = REPO / 'data' / 'simulation' / 'train_0629.jsonl'
 EXPECTED_SOURCE_SHA256 = '79f961a2ce788fa2219e8ee5343b7fa87ca8d79ed3f3dec6049dca0ff7514ad9'
 MODEL = 'gpt-5.6-sol'
-RESULT_RE = re.compile(r'<result>\s*([\s\S]*?)\s*</result>')
 
 
 def load(path: Path) -> Any:
@@ -36,17 +41,9 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def parse_result(text: str) -> list[str] | None:
-    matches = RESULT_RE.findall(text)
-    if len(matches) != 1:
-        return None
-    try:
-        value = json.loads(matches[0])
-    except json.JSONDecodeError:
-        return None
-    if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
-        return None
-    return sorted(set(value))
+def parse_result(text: str, answer_text: str) -> list[str] | None:
+    parsed = parse_final_answer(text, json.loads(answer_text))
+    return sorted(set(parsed.value)) if parsed.value is not None else None
 
 
 def independent_correct(prediction: list[str] | None, answer_text: str) -> bool:
@@ -307,7 +304,10 @@ def main() -> int:
                 accepted_errors.append({'row_index': row_index, 'success': success_key, 'error': 'metadata_invalid'})
             if item.get('attempt_index') != metadata.get('attempt_index'):
                 accepted_errors.append({'row_index': row_index, 'success': success_key, 'error': 'attempt_index_mismatch'})
-            prediction = parse_result(final_path.read_text(encoding='utf-8', errors='replace'))
+            prediction = parse_result(
+                final_path.read_text(encoding='utf-8', errors='replace'),
+                records[row_index]['answer'],
+            )
             if not independent_correct(prediction, records[row_index]['answer']):
                 independent_recheck_failures.append(item['attempt_path'])
 
