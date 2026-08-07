@@ -504,7 +504,8 @@ metadata无fallback warning冒烟；模型硬超时计错，基础设施失败�
 LR审计确认每个epoch内部实际optimizer LR固定。最低eval loss是epoch 4，但固定六题
 Agent选择结果由epoch 3以6/12（50%）胜出，因此最终使用checkpoint-120。
 
-最终12题各5次共60次，严格正确23/60（38.33%），模型硬超时0，基础设施失败0；
+按题85包含式 OR 修正口径重算后，最终12题各5次共60次严格正确24/60（40.00%）；
+原始报告按旧标签记录为23/60（38.33%）。模型硬超时0，基础设施失败0；
 q19有两次模型正常完成turn但没有可解析最终答案，保留并按错误计分。60/60均捕获非空
 thinking，共2,443个reasoning item；cached input占全部input token约96.62%。完整结果、
 五个checkpoint表、warning和控制脚本归档在

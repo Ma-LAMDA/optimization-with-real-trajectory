@@ -17,8 +17,9 @@ Agent 结果选择 checkpoint，再在既定十二题上补齐每题五次。
   `2e-5`、`1.5e-5`、`1e-5`、`6e-6`、`3e-6`。
 - 最低 SFT eval loss 位于 epoch 4 / checkpoint-160（`0.14917336`）；但固定六题的
   Agent 选择结果以 epoch 3 / checkpoint-120 最好（6/12，50%），因此最终部署 epoch 3。
-- 最终十二题各五次，共 60 次：严格正确 23/60（38.33%），无模型硬超时、无进入
-  分母的基础设施失败；平均/中位/P95 耗时为 16.65/14.63/33.10 分钟。
+- 最终十二题各五次，共 60 次：按题85包含式 OR 修正口径严格正确 24/60（40.00%）；
+  原始旧标签报告为 23/60（38.33%）。无模型硬超时、无进入分母的基础设施失败；
+  平均/中位/P95 耗时为 16.65/14.63/33.10 分钟。
 - q19 的第 1、3 次是“模型 turn 正常完成，但没有可解析最终答案”，两次均按错误答案
   计分，不归类为基础设施失败，也不重试成更有利样本。
 - 60/60 均从事件与 session 中捕获非空 thinking，共 2,443 个 reasoning item、
@@ -54,13 +55,13 @@ Agent 结果选择 checkpoint，再在既定十二题上补齐每题五次。
 | q38 | 0/5 | 0% |
 | q65 | 1/5 | 20% |
 | q71 | 1/5 | 20% |
-| q85 | 4/5 | 80% |
+| q85 | 5/5 | 100% |
 | q86 | 4/5 | 80% |
 | q99 | 2/5 | 40% |
 | q100 | 3/5 | 60% |
 
-用于 checkpoint 选择的六题最终为 13/30（43.33%），未参与选择的六题为 10/30
-（33.33%）。正式结论采用全部 60 次；分组数值仅用于暴露 checkpoint 选择偏差。
+用于 checkpoint 选择的六题最终为 13/30（43.33%），未参与选择的六题按修正口径为
+11/30（36.67%）。正式结论采用全部 60 次；分组数值仅用于暴露 checkpoint 选择偏差。
 
 ## 重试和计分口径
 
@@ -88,7 +89,7 @@ vLLM Responses API 日志出现五次 `JSONDecodeError`。控制器没有把这�
 ## 对比边界
 
 - 旧 0804 一 epoch 运行的 8/39（20.51%）使用了 fallback model metadata，因此不能与
-  本轮 23/60 直接作为能力增益比较。
+  本轮修正后的 24/60 直接作为能力增益比较。
 - 修正 metadata 后的一 epoch checkpoint-159 在 q12、q100 各五次为 2/10；本轮相同
   两题为 3/10。表面提升 10 个百分点，但样本只有十次，应视为小样本信号。
 - 0731 LoRA 在另一组六题上为 12/30；本轮 checkpoint 选择六题为 13/30，但仅三题题号
@@ -109,7 +110,9 @@ vLLM Responses API 日志出现五次 `JSONDecodeError`。控制器没有把这�
 - [`training_summary.json`](training_summary.json)：五轮 eval loss 与训练完成状态。
 - [`checkpoint_selection_summary.json`](checkpoint_selection_summary.json)：五个 checkpoint
   的固定六题 Agent 指标和选择键。
-- [`validation_summary.json`](validation_summary.json)：最终 60 次的完整机器可读汇总。
+- [`validation_summary.json`](validation_summary.json)：最终 60 次按运行时旧标签生成的原始汇总。
+- [`validation_summary_q85_inclusive_or.json`](validation_summary_q85_inclusive_or.json)：
+  保留原始轨迹后，按题85包含式 OR 规则生成的修正汇总。
 - [`attempts.csv`](attempts.csv)：60 次逐题准确率、耗时、token、thinking 和选择复用标记。
 - [`p1_complete.json`](p1_complete.json)：P1 终态摘要。
 - [`epoch_lr_audit.jsonl`](epoch_lr_audit.jsonl)：逐 step 实际 optimizer LR 审计。

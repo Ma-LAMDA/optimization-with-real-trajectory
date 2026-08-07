@@ -253,7 +253,8 @@ checkpoint。入选checkpoint随后在全部12题上达到每题5次：上述6�
 
 五个checkpoint中，最低eval loss位于epoch 4 / checkpoint-160（`0.14917336`），但
 固定六题Agent准确率最高的是epoch 3 / checkpoint-120（6/12，50%），因此部署epoch 3。
-最终12题各5次严格正确23/60（38.33%），模型硬超时0、进入分母的基础设施失败0，
+按题85包含式 OR 修正口径重算后，最终12题各5次严格正确24/60（40.00%）；原始报告
+按旧标签记录为23/60（38.33%）。模型硬超时0、进入分母的基础设施失败0，
 60/60均捕获非空thinking；聚合cached input占比约96.62%。完整逐题结果、重试口径、
 warning和复现控制脚本见
 [`experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/`](experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/)。
@@ -455,7 +456,7 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
   decision池，而由五个epoch采样表对每个query每轮均衡选2条并轮换路径，每轮仍为1272条曝光。
 - 2026-08-07：修正验证题85的包含式 OR 标准答案；Core_SW_01、Core_SW_02 任一单独上报或
   两者同时上报均判为正确，并同步更新仿真源数据与07-27实验输入副本。历史轨迹保持不变，
-  后续报告按修正后的标签重新计分。
+  0804最终验证由旧口径23/60（38.33%）修正为24/60（40.00%），后续报告按修正后的标签计分。
 - 2026-08-06：阶段性版本按保留因果路径重建0805的停止监督；每条路径新增1个证据归纳和1个
   `decision_ready`，当时每题仍只保留1个最终答案，并把单调查节点工具上限从4降至2。
   该阶段生成训练1200、验证205个节点；训练集停止判断由4增至237，无工具节点由76
@@ -466,8 +467,8 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
   结果同步改为 Linux `find`/`grep` 展示及 Codex CLI transport 外形，且保持 context-only；
   工具调用有效 loss 占比由约 20.3% 降至约 11.9%。
 - 2026-08-06：完成0804 best1五epoch训练、五个checkpoint各12次Agent选择和入选
-  checkpoint的12题×5次最终验证；归档23/60结果、thinking与prefix-cache指标、LR审计、
-  基础设施重试口径和可复现控制脚本。
+  checkpoint的12题×5次最终验证；原始旧标签归档23/60，题85包含式 OR 修正后为24/60；
+  同步归档thinking与prefix-cache指标、LR审计、基础设施重试口径和可复现控制脚本。
 - 2026-08-06：0805 SFT 的 `system` 消息改为逐字复用 Codex CLI 模型目录中
   `Qwen3.6-27B-trained.base_instructions`，并在 manifest 和逐条 metadata 中固化来源与哈希，
   保证训练 prompt 与 LoRA Agent 评测 prompt 一致。

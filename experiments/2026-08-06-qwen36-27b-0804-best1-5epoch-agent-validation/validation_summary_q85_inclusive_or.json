@@ -1,0 +1,67 @@
+{
+  "schema_version": "0804-final-agent-validation.q85-inclusive-or.v1",
+  "status": "completed",
+  "source_validation_summary": "validation_summary.json",
+  "source_attempts": "attempts.csv",
+  "historical_trajectory_artifacts_modified": false,
+  "scoring_correction": {
+    "case_id": 85,
+    "semantics": "inclusive_or",
+    "accepted_predictions": [
+      [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      [
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      [
+        "Core_SW_01;VRRP Master角色规划不合理",
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      [
+        "Core_SW_02;VRRP Master角色规划不合理",
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ]
+    ],
+    "reclassified_attempts": [
+      {
+        "case_id": 85,
+        "repeat": 3,
+        "prediction": [
+          "Core_SW_01;VRRP Master角色规划不合理",
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ],
+        "original_correct": false,
+        "corrected_correct": true
+      }
+    ]
+  },
+  "overall": {
+    "attempts": 60,
+    "original_strict_correct": 23,
+    "original_accuracy_percent": 38.333333333333336,
+    "corrected_strict_correct": 24,
+    "corrected_accuracy_percent": 40.0,
+    "corrected_false_positives": 60,
+    "corrected_false_negatives": 61
+  },
+  "selection_cases": {
+    "attempts": 30,
+    "corrected_strict_correct": 13,
+    "corrected_accuracy_percent": 43.333333333333336
+  },
+  "nonselection_cases": {
+    "attempts": 30,
+    "original_strict_correct": 10,
+    "original_accuracy_percent": 33.333333333333336,
+    "corrected_strict_correct": 11,
+    "corrected_accuracy_percent": 36.666666666666664
+  },
+  "case_85": {
+    "attempts": 5,
+    "original_strict_correct": 4,
+    "original_accuracy_percent": 80.0,
+    "corrected_strict_correct": 5,
+    "corrected_accuracy_percent": 100.0
+  }
+}
