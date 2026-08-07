@@ -1,0 +1,49 @@
+{
+  "schema_version": "q73-q86-inclusive-or-rescore.v1",
+  "created_on": "2026-08-07",
+  "case_ids": [73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86],
+  "accepted_prediction_pattern": ["A", "B", "A+B", "B+A"],
+  "answer_a": "Core_SW_01;VRRP Master角色规划不合理",
+  "answer_b": "Core_SW_02;VRRP Master角色规划不合理",
+  "source_sha256_before_q85_correction": "737ff0d3736457a4d0262116653bed253cff8e79a0d7c5ced0db4fffd8d189d9",
+  "source_sha256_after_q85_only_correction": "d5cf05cea6e0c20c7a5dca83a4148236704ae7b76663d7a8bc65faccaf9361ad",
+  "source_sha256_after_q73_q86_correction": "985f5522713c2f3ea37993a5bbe996f521e1c9011fe5b73e15db528168c48519",
+  "experiment_input_sha256_after_q73_q86_correction": "41c4e4f34b5d4af69c85fb18f9522ff18a559181910a840014a06ce3a3468499",
+  "source_and_experiment_input_semantically_equal": true,
+  "historical_artifacts_modified": false,
+  "rescored_results": [
+    {"name": "0804-old-best1-partial-valid", "attempts": 31, "original_correct": 8, "corrected_correct": 10},
+    {"name": "0804-p1-checkpoint-epoch-1", "attempts": 12, "original_correct": 3, "corrected_correct": 3},
+    {"name": "0804-p1-checkpoint-epoch-2", "attempts": 12, "original_correct": 4, "corrected_correct": 5},
+    {"name": "0804-p1-checkpoint-epoch-3", "attempts": 12, "original_correct": 6, "corrected_correct": 7},
+    {"name": "0804-p1-checkpoint-epoch-4", "attempts": 12, "original_correct": 4, "corrected_correct": 6},
+    {"name": "0804-p1-checkpoint-epoch-5", "attempts": 12, "original_correct": 4, "corrected_correct": 5},
+    {"name": "0804-p1-final", "attempts": 60, "original_correct": 23, "corrected_correct": 25},
+    {"name": "0804-old-checkpoint159-controlled", "attempts": 60, "original_correct": 14, "corrected_correct": 17}
+  ],
+  "reclassified_0804_p1_attempts": [
+    {"case_id": 85, "repeat": 3, "original_correct": false, "corrected_correct": true},
+    {"case_id": 86, "repeat": 2, "original_correct": false, "corrected_correct": true}
+  ],
+  "historical_batch_experiments": [
+    {
+      "name": "2026-07-28-ip_codex_train0629_100x10",
+      "q73_q86_accepted": 140,
+      "q73_q86_infrastructure_failures": 6,
+      "reclassified_recoverable_model_failures": 0,
+      "overall_accepted_before": 819,
+      "overall_accepted_after": 819
+    },
+    {
+      "name": "2026-08-02-ip_codex_gpt56-sol_100x10",
+      "q73_q86_accepted": 140,
+      "reclassified_recoverable_model_failures": 0,
+      "overall_accepted_before": 840,
+      "overall_accepted_after": 840,
+      "note": "failed payloads were not retained by the experiment policy"
+    }
+  ],
+  "unaffected": [
+    "0731 SFT fixed validation set contains no q73-q86 VRRP Master label"
+  ]
+}

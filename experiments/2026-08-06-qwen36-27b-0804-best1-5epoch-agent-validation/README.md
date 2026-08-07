@@ -15,9 +15,10 @@ Agent 结果选择 checkpoint，再在既定十二题上补齐每题五次。
 
 - 五轮训练共 200 optimizer step，有效 batch 为 8；epoch 内学习率固定，依次为
   `2e-5`、`1.5e-5`、`1e-5`、`6e-6`、`3e-6`。
-- 最低 SFT eval loss 位于 epoch 4 / checkpoint-160（`0.14917336`）；但固定六题的
-  Agent 选择结果以 epoch 3 / checkpoint-120 最好（6/12，50%），因此最终部署 epoch 3。
-- 最终十二题各五次，共 60 次：按题85包含式 OR 修正口径严格正确 24/60（40.00%）；
+- 最低 SFT eval loss 位于 epoch 4 / checkpoint-160（`0.14917336`）；按 q73-q86 包含式 OR
+  修正后，固定六题的 Agent 选择结果仍以 epoch 3 / checkpoint-120 最好（7/12，58.33%），
+  因此最终部署 epoch 3。
+- 最终十二题各五次，共 60 次：按 q73-q86 包含式 OR 修正口径严格正确 25/60（41.67%）；
   原始旧标签报告为 23/60（38.33%）。无模型硬超时、无进入分母的基础设施失败；
   平均/中位/P95 耗时为 16.65/14.63/33.10 分钟。
 - q19 的第 1、3 次是“模型 turn 正常完成，但没有可解析最终答案”，两次均按错误答案
@@ -35,10 +36,10 @@ Agent 结果选择 checkpoint，再在既定十二题上补齐每题五次。
 | Epoch | Step | 固定 LR | Eval loss | Agent 严格正确 | 平均耗时（分钟） | 选择 |
 | ---: | ---: | ---: | ---: | ---: | ---: | :---: |
 | 1 | 40 | `2.0e-5` | 0.23613213 | 3/12（25.00%） | 23.27 |  |
-| 2 | 80 | `1.5e-5` | 0.16515934 | 4/12（33.33%） | 21.12 |  |
-| 3 | 120 | `1.0e-5` | 0.15305212 | 6/12（50.00%） | 19.30 | 是 |
-| 4 | 160 | `6.0e-6` | 0.14917336 | 4/12（33.33%） | 13.47 |  |
-| 5 | 200 | `3.0e-6` | 0.14932011 | 4/12（33.33%） | 13.50 |  |
+| 2 | 80 | `1.5e-5` | 0.16515934 | 5/12（41.67%） | 21.12 |  |
+| 3 | 120 | `1.0e-5` | 0.15305212 | 7/12（58.33%） | 19.30 | 是 |
+| 4 | 160 | `6.0e-6` | 0.14917336 | 6/12（50.00%） | 13.47 |  |
+| 5 | 200 | `3.0e-6` | 0.14932011 | 5/12（41.67%） | 13.50 |  |
 
 五个 checkpoint 均无模型硬超时，60/60 checkpoint 选择 attempt 均捕获 thinking。
 该结果明确说明最低 eval loss 与最佳 Agent 准确率并不一致。
@@ -56,11 +57,11 @@ Agent 结果选择 checkpoint，再在既定十二题上补齐每题五次。
 | q65 | 1/5 | 20% |
 | q71 | 1/5 | 20% |
 | q85 | 5/5 | 100% |
-| q86 | 4/5 | 80% |
+| q86 | 5/5 | 100% |
 | q99 | 2/5 | 40% |
 | q100 | 3/5 | 60% |
 
-用于 checkpoint 选择的六题最终为 13/30（43.33%），未参与选择的六题按修正口径为
+用于 checkpoint 选择的六题按修正口径最终为 14/30（46.67%），未参与选择的六题为
 11/30（36.67%）。正式结论采用全部 60 次；分组数值仅用于暴露 checkpoint 选择偏差。
 
 ## 重试和计分口径
@@ -89,10 +90,10 @@ vLLM Responses API 日志出现五次 `JSONDecodeError`。控制器没有把这�
 ## 对比边界
 
 - 旧 0804 一 epoch 运行的 8/39（20.51%）使用了 fallback model metadata，因此不能与
-  本轮修正后的 24/60 直接作为能力增益比较。
+  本轮修正后的 25/60 直接作为能力增益比较。
 - 修正 metadata 后的一 epoch checkpoint-159 在 q12、q100 各五次为 2/10；本轮相同
   两题为 3/10。表面提升 10 个百分点，但样本只有十次，应视为小样本信号。
-- 0731 LoRA 在另一组六题上为 12/30；本轮 checkpoint 选择六题为 13/30，但仅三题题号
+- 0731 LoRA 在另一组六题上为 12/30；本轮 checkpoint 选择六题按修正口径为 14/30，但仅三题题号
   重合，不能把 1/30 的差异归因于本轮训练策略。
 
 ## 环境与溯源
@@ -111,8 +112,8 @@ vLLM Responses API 日志出现五次 `JSONDecodeError`。控制器没有把这�
 - [`checkpoint_selection_summary.json`](checkpoint_selection_summary.json)：五个 checkpoint
   的固定六题 Agent 指标和选择键。
 - [`validation_summary.json`](validation_summary.json)：最终 60 次按运行时旧标签生成的原始汇总。
-- [`validation_summary_q85_inclusive_or.json`](validation_summary_q85_inclusive_or.json)：
-  保留原始轨迹后，按题85包含式 OR 规则生成的修正汇总。
+- [`validation_summary_q73_q86_inclusive_or.json`](validation_summary_q73_q86_inclusive_or.json)：
+  保留原始轨迹后，按 q73-q86 包含式 OR 规则生成的修正汇总。
 - [`attempts.csv`](attempts.csv)：60 次逐题准确率、耗时、token、thinking 和选择复用标记。
 - [`p1_complete.json`](p1_complete.json)：P1 终态摘要。
 - [`epoch_lr_audit.jsonl`](epoch_lr_audit.jsonl)：逐 step 实际 optimizer LR 审计。
