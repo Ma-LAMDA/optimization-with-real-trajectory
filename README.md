@@ -29,6 +29,7 @@
 > 基座模型哈希与固定 12题×5次 Agent 验证入口归档在
 > [`artifacts/0805-epoch2-checkpoint-288/`](artifacts/0805-epoch2-checkpoint-288/)。
 > 大权重由 Git LFS 管理；该包用于跨机器性能验证，不包含继续训练所需的 optimizer/RNG 状态。
+> 校验器对二进制权重做严格字节校验，并兼容 Linux/Windows 的 LF/CRLF 文本换行。
 
 ## 当前数据
 

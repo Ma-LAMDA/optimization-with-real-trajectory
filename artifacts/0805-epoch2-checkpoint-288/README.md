@@ -41,7 +41,9 @@ python artifacts/0805-epoch2-checkpoint-288/verify_bundle.py \
 
 The verifier checks all bundle hashes, the Safetensors index, LoRA parameters,
 epoch/global-step identity, static eval metrics, the base-model files, and the
-training input files available in the checkout.
+training input files available in the checkout. Binary weights are checked
+byte-for-byte; tracked text files are normalized to LF before hashing so both
+Linux and Windows Git checkouts verify consistently.
 
 ## Run the fixed Agent validation
 

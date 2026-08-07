@@ -78,7 +78,10 @@ def main() -> None:
                 prefix = handle.read(64)
             if prefix.startswith(b"version https://git-lfs.github.com/spec/v1"):
                 raise SystemExit("adapter_model.safetensors is an unresolved Git LFS pointer; run git lfs pull")
-        actual = sha256(path)
+        # Git may materialize tracked text files with CRLF on Windows.  Keep
+        # the adapter byte-exact, but compare JSON payloads in canonical LF
+        # form so a valid cross-platform checkout is not rejected.
+        actual = sha256(path) if name.endswith(".safetensors") else sha256_lf_normalized(path)
         if actual != expected:
             raise SystemExit(f"SHA-256 mismatch for {name}: {actual} != {expected}")
 
