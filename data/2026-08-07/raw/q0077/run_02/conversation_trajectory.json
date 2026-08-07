@@ -1,0 +1,85 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0077_success_02",
+  "case_id": 77,
+  "row_index": 77,
+  "success_slot": 2,
+  "attempt_index": 2,
+  "source_record": {
+    "row_index": 77,
+    "original_id": 77,
+    "sample_id": 77,
+    "sample_key": "q0077",
+    "question": "在CampusNetwork_08组网中，从 HQ_HR_PC01 ping节点 SZ_Server_Cluster2（10.3.20.1）出现高延迟。已知，两个核心交换机Core_SW_01 和 Core_SW_02之间因链路距离较长，传输时延较大。基于当前配置框架，在STP规划合理的情况下，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先以“流量是否被迫跨越高时延核心互联”为主线，重点区分三类可证伪假设：MST实例/根路径规划异常、VRRP Master与二层根桥错位、接口或路由导致绕行。随后沿HQ_HR_PC01到10.3.20.1的实际二三层转发关系核验。"
+    },
+    {
+      "event_line": 48,
+      "item_id": "item_24",
+      "text": "项目与关键节点已确认。现有文件显示两台核心均保存了完整MST、VRRP、接口、路由与邻接状态，足以直接核验“二层根桥与三层网关是否同机”；我先读取这组高区分度证据，并用主机默认网关和去往10.3.20.0/24的路由补齐实际路径。"
+    },
+    {
+      "event_line": 79,
+      "item_id": "item_40",
+      "text": "关键矛盾已出现：HQ_HR_PC01位于VLAN30，VLAN30映射MST实例2；实例2的根桥是Core_SW_02，但VRRP 3的实际Master却是Core_SW_01。接下来只需核对接入侧实例2确实朝Core_SW_02转发，以及虚拟网关MAC是否因此经核心互联到达Core_SW_01，从而排除“仅配置表面不一致但未影响实际路径”的可能。"
+    },
+    {
+      "event_line": 120,
+      "item_id": "item_61",
+      "text": "<result>\n[\n\"Core_SW_01;VRRP Master角色规划不合理\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_01;VRRP Master角色规划不合理\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_01;VRRP Master角色规划不合理"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_01;VRRP Master角色规划不合理"
+    ],
+    [
+      "Core_SW_02;VRRP Master角色规划不合理"
+    ],
+    [
+      "Core_SW_01;VRRP Master角色规划不合理",
+      "Core_SW_02;VRRP Master角色规划不合理"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0077_r02/attempt_002/judgment.json",
+    "judgment_sha256_lf_normalized": "85def9a2bc95db15b307801b3d1d4cf137559c261bf309cfd5195b1abf7e8907"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0077_r02/attempt_002",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0077_r02/attempt_002/events.jsonl",
+    "events_sha256_lf_normalized": "85d4ca37e93ba5d3bd9842d33fc09df07db7afb8844f51a6264cea1710bc9083",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0077_r02/attempt_002/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "57e02020fbcb5ea9c64d5dbbed68a142b759c8d13ff5dfebd94e738fafb329c4",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0077/source_record.json",
+    "source_record_sha256_lf_normalized": "e037f740509be11d3c9998853e36cf3c4a8dd5254a723147ec5b19699d479179",
+    "thread_id": "019fcbf9-f8da-72c2-b94f-e2497e83f71c",
+    "duration_seconds": 105.605
+  },
+  "reference_answer_revision": {
+    "policy": "q73_q86_inclusive_or_single_or_dual_exact_fault_set.v1",
+    "source_dataset": "data/simulation/train_0629.jsonl",
+    "source_dataset_sha256_lf_normalized": "2c9faac68eb9e366eaedd2ad732e599d220c9a38a07bfac8ce5597cb0315febf",
+    "original_independent_judgment_remains_correct": true,
+    "accepted_target_device_counts": [
+      1,
+      2
+    ],
+    "sft_endpoint_preference": "single evidence-strongest device; dual only after two independent VLAN-instance closures"
+  }
+}

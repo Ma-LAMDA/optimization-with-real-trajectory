@@ -17,7 +17,6 @@ INCLUSIVE_OR_OPTIONS = [
     [ANSWER_A],
     [ANSWER_B],
     [ANSWER_A, ANSWER_B],
-    [ANSWER_B, ANSWER_A],
 ]
 DEFAULT_PATHS = (
     Path("data/simulation/train_0629.jsonl"),

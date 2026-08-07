@@ -1,0 +1,582 @@
+{
+  "schema_version": "qwen36-0807-evidence-gated-case-balanced-sft.v7",
+  "status": "rule_and_target_tokenizer_validated_release_candidate",
+  "scope": "data/2026-08-07 only",
+  "reproducibility": {
+    "document": "data/2026-08-07/REPRODUCIBILITY.md",
+    "document_sha256_lf_normalized": "5df851a66471bdd3d361b8bdab28086c3ffb01ad3c91cc8e1a3ca56e8ad3366c",
+    "change_policy": "every source, curation, split, conversion, loss, sampling, prompt, tool protocol, tokenizer, training-entry, validator, or generated-data change must update documentation, regenerate all artifacts, and pass independent validation",
+    "tracked_files": {
+      "repository_rules": {
+        "path": "AGENTS.md",
+        "sha256_lf_normalized": "5acabca9391c2268187eebf11b2221374a9c7d660ff17d9162b5dc9c3d35991a"
+      },
+      "root_readme": {
+        "path": "README.md",
+        "sha256_lf_normalized": "5a267a88820a887739a140d2343626da829cfc64f8b410b0fd49f4bfbc9328f9"
+      },
+      "date_readme": {
+        "path": "data/2026-08-07/README.md",
+        "sha256_lf_normalized": "bb32e2edca89816be2809e4ce5717909ee871e06ddd2a5bbaa93f853c436c42e"
+      },
+      "reproducibility_document": {
+        "path": "data/2026-08-07/REPRODUCIBILITY.md",
+        "sha256_lf_normalized": "5df851a66471bdd3d361b8bdab28086c3ffb01ad3c91cc8e1a3ca56e8ad3366c"
+      },
+      "audit_report": {
+        "path": "data/2026-08-07/AUDIT_REPORT.md",
+        "sha256_lf_normalized": "df0f1e3005bcf56084635b0392b0436a2f13cd9c961665a4984431eaea745697"
+      },
+      "audit_metrics": {
+        "path": "data/2026-08-07/curation/AUDIT_METRICS.json",
+        "sha256_lf_normalized": "13d4ec5720934eaf4c06cfeaaf04189c16de16897215bfa6b1344914b920c360"
+      },
+      "archive_converter": {
+        "path": "scripts/convert_accepted_only_100x10_to_sft.py",
+        "sha256_lf_normalized": "f3b413ea63f222a519aaa4aeaa5b0218a7faf172f535daf85af264962ad7a132"
+      },
+      "inclusive_or_source_updater": {
+        "path": "scripts/update_q73_q86_inclusive_or.py",
+        "sha256_lf_normalized": "50d756bd1f5c512922085a9e5a5b8c89ed1d8038d6d3c99fcc99d7f179c98f38"
+      },
+      "inclusive_or_archive_sync": {
+        "path": "scripts/sync_0807_q73_q86_inclusive_or.py",
+        "sha256_lf_normalized": "ad05ad5d880e5b674125bbc7c672d070104c8f8c305a52fee0aa7ecad13cf5e1"
+      },
+      "source_dataset": {
+        "path": "data/simulation/train_0629.jsonl",
+        "sha256_lf_normalized": "2c9faac68eb9e366eaedd2ad732e599d220c9a38a07bfac8ce5597cb0315febf"
+      },
+      "base_reasoning_converter": {
+        "path": "scripts/convert_0804_best_trajectory_reasoning_sft.py",
+        "sha256_lf_normalized": "5129806263884533a07d16a48c6345e9f527dfab90b49a66d9dd47a51366911f"
+      },
+      "causal_path_converter": {
+        "path": "scripts/convert_0807_evidence_gated_reasoning_sft.py",
+        "sha256_lf_normalized": "97b41524429655c1abc3b84210f8f20e1c0d502a9d5ff28767a92b8cded88e87"
+      },
+      "causal_path_validator": {
+        "path": "scripts/validate_0807_evidence_gated_reasoning_sft.py",
+        "sha256_lf_normalized": "2c9fa896600ff6cf7990e58b5fbfed84ab33970988c35a78b5fdaef3efbc892c"
+      },
+      "independent_release_validator": {
+        "path": "scripts/independent_validate_0807_sft.py",
+        "sha256_lf_normalized": "8ab6fb046e1fd6429da505195b57e6e28571198ae03424337e2443d33e9baab2"
+      },
+      "audit_generator": {
+        "path": "scripts/audit_0807_evidence_gated_sft.py",
+        "sha256_lf_normalized": "2cb62fd61c619ff074dd37f9ee3ace6c22d296ed8f7a3b31a3779924b5fd3e3d"
+      },
+      "tokenizer_preflight": {
+        "path": "scripts/check_0807_target_tokenizer_preflight.py",
+        "sha256_lf_normalized": "0acd3a92be4866f45d85e159c65e5dfc615e6ed8fe61b8b336d83cde5146471a"
+      },
+      "training_entry": {
+        "path": "scripts/train_qwen36_0807_evidence_gated_5epoch.sh",
+        "sha256_lf_normalized": "682ff407dda88f19681b73b940a2e208f944875c2e5b81959caff4b173c21497"
+      },
+      "fixed_lr_callback": {
+        "path": "scripts/qwen36_0807_epoch_lr_callback.py",
+        "sha256_lf_normalized": "1f53445f145cd3b7c96a3f714858359fed4105b26aa633a82001cd672f21fe20"
+      },
+      "target_tokenizer_preflight_report": {
+        "path": "data/2026-08-07/sft/TARGET_TOKENIZER_PREFLIGHT.json",
+        "sha256_lf_normalized": "360dbb0b730878df7e14e47c8542088198c665d34bc76a61315d84e681d93dfc"
+      }
+    }
+  },
+  "source_curation": "data/2026-08-07/curation/accepted_trajectory_selection.json",
+  "source_curation_sha256_lf_normalized": "3884796a05badd5dce9ea02b187a1eb1dcf53500d770afc1f97c255a73e295bb",
+  "reference_answer_policy": {
+    "source_dataset": "data/simulation/train_0629.jsonl",
+    "source_dataset_sha256_lf_normalized": "2c9faac68eb9e366eaedd2ad732e599d220c9a38a07bfac8ce5597cb0315febf",
+    "q73_q86": "inclusive OR accepts singleton Core_SW_01, singleton Core_SW_02, or the two-device set; current accepted trajectories remain singleton",
+    "sft_endpoint_preference": "supervise the evidence-strongest singleton target; admit a dual target only when both devices independently satisfy the full VLAN/instance closure"
+  },
+  "cluster_selection": "data/2026-08-07/curation/causal_path_clusters_per_case.json",
+  "cluster_selection_sha256_lf_normalized": "5811ed23cb5c68d49c229ef59f1d359d289e69dda3bb4aeb39ff19bb2f93923b",
+  "system_prompt": {
+    "role": "system",
+    "source": "config/codex_qwen_model_catalog.json",
+    "source_sha256_lf_normalized": "de0ebe3b59453783657b846d2957002c81b14ad287c0d3fe9dafd830dcba3d31",
+    "model_slug": "Qwen3.6-27B-trained",
+    "field": "base_instructions",
+    "content_sha256": "f54052796d1557c843d758a5d8ea5a948205c10f7a4a6368b4d40e72ce4cb80b",
+    "content": "You are Codex, a coding and diagnostic agent powered by the locally deployed Qwen3.6-27B model with a trajectory-reasoning LoRA adapter. Follow the user's instructions, inspect the available local evidence with tools when needed, and do not invent evidence."
+  },
+  "split": {
+    "source": "frozen data/2026-08-04 case split",
+    "group_key": "case_id",
+    "train_case_count": 72,
+    "validation_case_count": 12,
+    "train_validation_case_intersection": [],
+    "validation_case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ]
+  },
+  "counts": {
+    "cases": 84,
+    "source_trajectories": 840,
+    "raw_visible_checkpoints": 3505,
+    "causal_prefix_checkpoints": 3016,
+    "path_clusters": 753,
+    "retained_path_clusters": 104,
+    "selected_sft_nodes": 398,
+    "evidence_summary_nodes": 104,
+    "hypothesis_elimination_nodes": 12,
+    "decision_ready_nodes": 104,
+    "decision_nodes": 104,
+    "synthetic_path_endpoint_nodes": 104,
+    "train_sft_rows": 346,
+    "train_core_rows": 255,
+    "train_core_schedule_rows_per_epoch": 144,
+    "train_endpoint_pool_rows": 91,
+    "train_endpoint_schedule_rows_per_epoch": 72,
+    "train_endpoint_groups_per_epoch": 72,
+    "effective_train_row_exposures_per_epoch": 216,
+    "validation_sft_rows": 52,
+    "target_types": {
+      "train": {
+        "endpoint_bundle": 91,
+        "hypothesis_elimination": 11,
+        "planning": 89,
+        "reasoning": 155
+      },
+      "validation": {
+        "endpoint_bundle": 13,
+        "hypothesis_elimination": 1,
+        "planning": 13,
+        "reasoning": 25
+      }
+    }
+  },
+  "conversion": {
+    "ten_successful_trajectories_per_case": true,
+    "trajectory_path_clustering": true,
+    "cross_trajectory_node_deduplication": true,
+    "one_sample_per_retained_valuable_checkpoint": true,
+    "at_most_one_source_grounded_hypothesis_elimination_per_query": true,
+    "evidence_gated_endpoints_only": true,
+    "all_training_queries_have_at_least_one_evidence_gated_endpoint": true,
+    "verified_label_present_in_summary_or_stop": false,
+    "verified_label_used_only_for_posthoc_endpoint_gate": true,
+    "core_exposures_per_query_per_epoch": 2,
+    "endpoint_group_exposures_per_query_per_epoch": 1,
+    "endpoint_schedule_epochs": 5,
+    "endpoint_sampling_policy": "retain one path-specific multi-target bundle per qualified path; each bundle jointly supervises evidence summary, cautious stop judgment, and final decision without repeating the context; each epoch chooses one bundle per query by deterministic round-robin",
+    "hypothesis_elimination_policy": "use at most one source rejection per query only after each retained factual clause binds exact earlier non-header observation spans and action IDs; delete every unsupported clause; allow an endpoint-unqualified source cluster only as an explicitly auxiliary elimination",
+    "investigative_action_selection": "greedy minimal label-independent next-action-intent coverage with no fixed action count cap; scope device/family pairs to local clauses to avoid Cartesian false positives; separately archive source-intent and final-supervised-intent full/partial/zero coverage plus explicit action bindings; 0-to-0 is never called a success",
+    "action_family_policy": "derive LLDP as an independent topology family; infer standalone LDP/MPLS tokens with alphanumeric boundaries so LLDP can never satisfy MPLS intent",
+    "original_message_policy": "retain only pure future procedural clauses verbatim; split mixed factual/procedural sentences at clause punctuation, rewrite each bindable fact into exact earlier non-header observation atoms, and delete every unbound factual clause; keep source text only in metadata; empty/header/help/truncated-config omission text cannot support a positive or absence claim",
+    "path_endpoint_text_policy": "extract label-independent atomic facts from same-snapshot visible history; compare them with the verified label only as a final gate; summary/stop use natural evidence-specific language, do not expose internal gate IDs, and state support for the current candidate rather than proof that every alternative was exhausted",
+    "endpoint_gate_policy": "STP disabled, BPDU filter, VRRP non-preempt, strict source-host VLAN -> Vlanif Master -> MST VLAN/instance -> same-instance Alternate/Discarding role misalignment, or a three-device IP/MPLS cycle whose next-hop ownership is derived from visible interface-address facts; every device in a dual VRRP target needs its own full closure; cross-snapshot and snapshot/device/filename glob evidence is ineligible",
+    "same_query_recovery_policy": "when no single successful run contains every atom, compose only real successful read-only actions from the same query and same snapshot, retain full provenance, and reduce their visible result to the selected exact lines",
+    "command_selection": "label-independent ranking of exact successful source commands by target snapshot, concrete target, information family, and source score; retain the minimal claim-cover set without a fixed numerical cap and strictly translate the admitted read-only subset",
+    "supervised_command_normalization": "exec_command + cmd + Linux read-only utilities + repository-relative saved_configs paths; unsupported source commands fail generation instead of receiving tool loss",
+    "source_command_audit": "retain exact archived command, canonical inner PowerShell, translation kind, and pre/post hashes in metadata",
+    "command_results": "relevant source excerpts with source hashes; PowerShell discovery/search presentation is normalized to Linux find/grep paths and all responses use the Codex CLI function-call-output shape; context-only transport token counts are heuristic",
+    "future_results_in_current_target": false,
+    "infrastructure_failures_and_interruptions": "not present and never recorded"
+  },
+  "loss_policy": {
+    "thinking_by_source": {
+      "pruned_original_visible_agent_message": 1.0,
+      "observation_bound_reasoning_reconstruction": 0.6,
+      "claim_bound_hypothesis_elimination": 0.6,
+      "evidence_summary_bridge": 0.05,
+      "stop_judgment_bridge": 0.1,
+      "fixed_bridge_template": 0.0,
+      "minimal_final_bridge": 0.0
+    },
+    "conclusion_by_source": {
+      "original_visible_conclusion": 1.0,
+      "evidence_aligned_reconstruction": 0.3,
+      "source_grounded_hypothesis_elimination": 0.6,
+      "path_evidence_synthesis": 0.05,
+      "verified_path_stop_judgment": 0.1,
+      "verified_final_answer": 1.0
+    },
+    "current_tool_calls": 0.02,
+    "historical_assistant_and_tool_calls": 0.0,
+    "tool_responses": "context_only",
+    "required_cli": "--loss_scale default --is_binary_loss_scale false"
+  },
+  "heuristic_training_signal_by_epoch": {
+    "epoch_01": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 216,
+      "target_type_rows": {
+        "endpoint_bundle": 72,
+        "hypothesis_elimination": 7,
+        "planning": 47,
+        "reasoning": 90
+      },
+      "raw_target_token_estimate": 49457,
+      "weighted_token_estimate": 10445.06,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 57.028873,
+        "thinking": 42.073478,
+        "tool_call": 0.897649
+      },
+      "weighted_target_type_percent": {
+        "endpoint_bundle": 43.427228,
+        "hypothesis_elimination": 6.187614,
+        "planning": 21.484415,
+        "reasoning": 28.900744
+      },
+      "auto_summary_stop_weighted_percent": 23.724134
+    },
+    "epoch_02": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 216,
+      "target_type_rows": {
+        "endpoint_bundle": 72,
+        "hypothesis_elimination": 4,
+        "planning": 51,
+        "reasoning": 89
+      },
+      "raw_target_token_estimate": 49732,
+      "weighted_token_estimate": 10700.1,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 55.411632,
+        "thinking": 43.732302,
+        "tool_call": 0.856067
+      },
+      "weighted_target_type_percent": {
+        "endpoint_bundle": 42.392127,
+        "hypothesis_elimination": 3.265016,
+        "planning": 22.693807,
+        "reasoning": 31.64905
+      },
+      "auto_summary_stop_weighted_percent": 23.158662
+    },
+    "epoch_03": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 216,
+      "target_type_rows": {
+        "endpoint_bundle": 72,
+        "hypothesis_elimination": 7,
+        "planning": 56,
+        "reasoning": 81
+      },
+      "raw_target_token_estimate": 49407,
+      "weighted_token_estimate": 10828.28,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 55.29918,
+        "thinking": 43.890165,
+        "tool_call": 0.810655
+      },
+      "weighted_target_type_percent": {
+        "endpoint_bundle": 41.89308,
+        "hypothesis_elimination": 6.002431,
+        "planning": 27.449974,
+        "reasoning": 24.654516
+      },
+      "auto_summary_stop_weighted_percent": 22.887291
+    },
+    "epoch_04": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 216,
+      "target_type_rows": {
+        "endpoint_bundle": 72,
+        "hypothesis_elimination": 5,
+        "planning": 55,
+        "reasoning": 84
+      },
+      "raw_target_token_estimate": 49566,
+      "weighted_token_estimate": 10624.62,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 55.446689,
+        "thinking": 43.662738,
+        "tool_call": 0.890573
+      },
+      "weighted_target_type_percent": {
+        "endpoint_bundle": 42.693292,
+        "hypothesis_elimination": 4.258035,
+        "planning": 26.094298,
+        "reasoning": 26.954376
+      },
+      "auto_summary_stop_weighted_percent": 23.323187
+    },
+    "epoch_05": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 216,
+      "target_type_rows": {
+        "endpoint_bundle": 72,
+        "hypothesis_elimination": 7,
+        "planning": 48,
+        "reasoning": 89
+      },
+      "raw_target_token_estimate": 49792,
+      "weighted_token_estimate": 10811.42,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 56.354299,
+        "thinking": 42.804738,
+        "tool_call": 0.840963
+      },
+      "weighted_target_type_percent": {
+        "endpoint_bundle": 41.955636,
+        "hypothesis_elimination": 5.867499,
+        "planning": 21.628056,
+        "reasoning": 30.548809
+      },
+      "auto_summary_stop_weighted_percent": 22.920208
+    }
+  },
+  "training_profile": {
+    "model": "Qwen3.6-27B",
+    "tuner_type": "lora",
+    "distributed_strategy": "ddp",
+    "world_size": 2,
+    "cuda_visible_devices": "0,1",
+    "lora_rank": 8,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "max_length": 16384,
+    "truncation_strategy": "delete",
+    "preserve_thinking": true,
+    "add_non_thinking_prefix": false,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 8,
+    "checkpoint_selection_strategy": "fixed_epoch",
+    "fixed_validation_epoch": 3,
+    "tokenizer_preflight_required": true,
+    "semantic_train_pool": "data/2026-08-07/sft/qwen3_6_27b_0807_train_semantic_pool.jsonl",
+    "semantic_train_pool_not_for_direct_training": true,
+    "core_pool_not_for_direct_training": true,
+    "endpoint_pool_not_for_direct_training": true,
+    "train_dataset_components_by_epoch": {
+      "epoch_01": [
+        "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_01.jsonl",
+        "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_01.jsonl"
+      ],
+      "epoch_02": [
+        "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_02.jsonl",
+        "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_02.jsonl"
+      ],
+      "epoch_03": [
+        "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_03.jsonl",
+        "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_03.jsonl"
+      ],
+      "epoch_04": [
+        "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_04.jsonl",
+        "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_04.jsonl"
+      ],
+      "epoch_05": [
+        "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_05.jsonl",
+        "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_05.jsonl"
+      ]
+    },
+    "formal_entry": "scripts/train_qwen36_0807_evidence_gated_5epoch.sh; prepare, dry-run, and train modes; five sequential full-state resume stages"
+  },
+  "target_tokenizer_preflight": {
+    "report": "data/2026-08-07/sft/TARGET_TOKENIZER_PREFLIGHT.json",
+    "report_sha256_lf_normalized": "360dbb0b730878df7e14e47c8542088198c665d34bc76a61315d84e681d93dfc",
+    "schema_version": "0807-target-tokenizer-loss-mask-preflight.v1",
+    "status": "passed",
+    "model_identity_files": {
+      "tokenizer.json": {
+        "bytes": 12807982,
+        "sha256_raw": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+      },
+      "tokenizer_config.json": {
+        "bytes": 16718,
+        "sha256_raw": "5186f0defcd7f232382c7f0aebcd2252d073bb921ab240e407b7ae8745d2b29b"
+      },
+      "chat_template.jinja": {
+        "bytes": 7764,
+        "sha256_raw": "e84f32a23fdda27689f868aa4a1a5621f41133e51a48d7f3efcbea2839574259"
+      },
+      "config.json": {
+        "bytes": 4308,
+        "sha256_raw": "69db4eb7196bc8190813231b3018ca05d8c2e3abc7b1af19d55c157af44a9d9c"
+      }
+    },
+    "template": {
+      "mode": "train",
+      "loss_scale": "default",
+      "is_binary_loss_scale": false,
+      "max_length_during_encode": null,
+      "release_max_length": 16384
+    },
+    "totals": {
+      "rows": 398,
+      "min_tokens": 1207,
+      "p99_tokens": 4001,
+      "max_tokens": 4146,
+      "over_max_length_rows": 0,
+      "loss_mask_failures": 0
+    }
+  },
+  "comparison_experiment_plan": {
+    "reference": "config/qwen36_0805_formal_training.json",
+    "epochs": 5,
+    "distributed_strategy": "ddp",
+    "world_size": 2,
+    "cuda_visible_devices": "0,1",
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 8,
+    "train_rows_per_stage": 216,
+    "optimizer_steps_per_stage": 27,
+    "expected_global_step_boundaries": [
+      0,
+      27,
+      54,
+      81,
+      108,
+      135
+    ],
+    "checkpoint_suffix_by_stage": [
+      27,
+      54,
+      81,
+      108,
+      135
+    ],
+    "training_postcondition": "each stage must audit exactly 27 consecutive step_begin events, exact start/end global steps, and checkpoint-<expected_end_step>",
+    "seed": 42,
+    "data_seed": 42,
+    "shuffle_each_epoch": true,
+    "fixed_learning_rate_by_epoch": [
+      2e-05,
+      1.5e-05,
+      1e-05,
+      6e-06,
+      3e-06
+    ],
+    "epoch_specific_endpoint_schedule_required": true,
+    "epoch_specific_core_schedule_required": true,
+    "sequential_one_epoch_resume_required": true,
+    "lr_scheduler_type": "constant",
+    "warmup_ratio": 0,
+    "endpoint_group_exposures_per_query_per_epoch": 1,
+    "endpoint_path_rotation_coverage": "all retained train paths appear across the five schedules; summary, stop, and decision always share one selected path and within-query path exposure differs by at most one",
+    "checkpoint_policy": "evaluate and save at every epoch; retain all five; eval loss is diagnostic only; always validate epoch 3",
+    "checkpoint_selection_strategy": "fixed_epoch",
+    "fixed_validation_epoch": 3,
+    "fixed_validation_checkpoint_suffix": 81,
+    "agent_checkpoint_selection": false,
+    "final_agent_validation": {
+      "selected_epoch": 3,
+      "selected_checkpoint_suffix": 81,
+      "case_ids": [
+        2,
+        12,
+        19,
+        20,
+        29,
+        38,
+        65,
+        71,
+        85,
+        86,
+        99,
+        100
+      ],
+      "repeats_per_case": 5,
+      "total_attempts": 60,
+      "reuse_checkpoint_selection_attempts": 0,
+      "new_attempts": 60
+    },
+    "infrastructure_failures_and_interruptions": "excluded from samples and denominators"
+  },
+  "outputs": {
+    "train": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_train_semantic_pool.jsonl",
+      "rows": 346,
+      "bytes": 5085830,
+      "sha256_lf_normalized": "085cdb1bf6dd5ce936c9d31628dc7f162c3de2cc79832bc3fe1564af338335eb"
+    },
+    "train_core": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_core_pool.jsonl",
+      "rows": 255,
+      "bytes": 3781353,
+      "sha256_lf_normalized": "bcc5e85e96cf8e6d7c90c1f9c28309fe49135de32fa1cd22ad80bba79dd31881"
+    },
+    "train_endpoint_pool": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_pool.jsonl",
+      "rows": 91,
+      "bytes": 1303457,
+      "sha256_lf_normalized": "11021af45863202f85ab9aaee0bd9db072877456b575393673f73c6b710176a5"
+    },
+    "train_core_epoch_01": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_01.jsonl",
+      "rows": 144,
+      "bytes": 2151461,
+      "sha256_lf_normalized": "1ce44401cef7dea1c54801f5ccc48e76c8a099de41b3a0fe6d4a71c1b3a4984c"
+    },
+    "train_core_epoch_02": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_02.jsonl",
+      "rows": 144,
+      "bytes": 2158886,
+      "sha256_lf_normalized": "6567dd50fff5bd39b2a6281cd3f4a33416d0c1a053200eea49a3dc957b5f59db"
+    },
+    "train_core_epoch_03": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_03.jsonl",
+      "rows": 144,
+      "bytes": 2089715,
+      "sha256_lf_normalized": "2bcf039af4507440548e00c862d595600d671cc2bfff3601db0d17d2738bf7a8"
+    },
+    "train_core_epoch_04": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_04.jsonl",
+      "rows": 144,
+      "bytes": 2152492,
+      "sha256_lf_normalized": "0ee25fe352ee857c20752b0a342dbb290c52437a95cf1b05a6603c744c93eafe"
+    },
+    "train_core_epoch_05": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_core_epoch_05.jsonl",
+      "rows": 144,
+      "bytes": 2150748,
+      "sha256_lf_normalized": "92f06cf98f8b43c88cbc699b888f9a275d76d19fb5ac699eaafccb44565b25ca"
+    },
+    "train_endpoint_epoch_01": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_01.jsonl",
+      "rows": 72,
+      "bytes": 1051449,
+      "sha256_lf_normalized": "5c1f3b288182bcbde61e60d994177db3c81f283d50df8da9f35a4b90d031411f"
+    },
+    "train_endpoint_epoch_02": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_02.jsonl",
+      "rows": 72,
+      "bytes": 1052307,
+      "sha256_lf_normalized": "6aeecf03f50c31bd85e306504cb87ce0a6e6cb1c7c6b5bc0c50b3359865ac82c"
+    },
+    "train_endpoint_epoch_03": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_03.jsonl",
+      "rows": 72,
+      "bytes": 1057101,
+      "sha256_lf_normalized": "ab444e512188284fdf6802927cc330f1116a3f26f0c1b61dd8d3c64e79a3169a"
+    },
+    "train_endpoint_epoch_04": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_04.jsonl",
+      "rows": 72,
+      "bytes": 1050539,
+      "sha256_lf_normalized": "434ad7edd15ebcdf2714579070520225d4488313d9fa45180299f41964c3ab41"
+    },
+    "train_endpoint_epoch_05": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_endpoint_epoch_05.jsonl",
+      "rows": 72,
+      "bytes": 1054225,
+      "sha256_lf_normalized": "123f6474c5ddfb1e136a1a9caff0695d623da84dadb207ab1459c678df5fdc64"
+    },
+    "validation": {
+      "path": "data/2026-08-07/sft/qwen3_6_27b_0807_validation.jsonl",
+      "rows": 52,
+      "bytes": 793250,
+      "sha256_lf_normalized": "9bcd99c73eaaa1a8b26a24c4b8c2eb8096460e0bacf47f70094086f7f9927961"
+    }
+  }
+}

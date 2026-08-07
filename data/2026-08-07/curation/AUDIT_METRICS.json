@@ -1,0 +1,704 @@
+{
+  "schema_version": "0807-evidence-gated-audit-metrics.v6",
+  "input_manifest_schema": "qwen36-0807-evidence-gated-case-balanced-sft.v7",
+  "status": "rule_and_target_tokenizer_validated_release_candidate",
+  "source": {
+    "cases": 84,
+    "successful_trajectories": 840,
+    "successful_trajectories_per_case": 10,
+    "model_valid_attempt_status": {
+      "accepted": 840,
+      "format_error": 0,
+      "incorrect": 502
+    },
+    "infrastructure_failures_or_interruptions_recorded": 0
+  },
+  "split": {
+    "source": "frozen data/2026-08-04 case split",
+    "group_key": "case_id",
+    "train_case_count": 72,
+    "validation_case_count": 12,
+    "train_validation_case_intersection": [],
+    "validation_case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ]
+  },
+  "q73_q86_inclusive_or_impact": {
+    "input_report": "trajectory-analysis/2026-08-07_q0073-q0086_inclusive_or_impact.md",
+    "input_report_sha256_lf_normalized": "8c3e5231ffd1ed2516a9ae6871a208b3921a7b4f02b29407d2056c83985d1164",
+    "source_dataset": "data/simulation/train_0629.jsonl",
+    "source_dataset_sha256_lf_normalized": "2c9faac68eb9e366eaedd2ad732e599d220c9a38a07bfac8ce5597cb0315febf",
+    "accepted_options_per_case": 3,
+    "synchronized_raw_trajectories": 140,
+    "current_dual_device_source_targets": 0,
+    "case_split_changed": false,
+    "successful_trajectory_count_changed": false,
+    "sft_policy": "evidence-strongest singleton; dual only after two independent source-VLAN/MST-instance closures",
+    "prior_q73_q86_semantic_rows": {
+      "train": {
+        "planning": 12,
+        "reasoning": 17,
+        "endpoint_bundle": 13,
+        "total": 42
+      },
+      "validation": {
+        "planning": 2,
+        "reasoning": 2,
+        "endpoint_bundle": 2,
+        "total": 6
+      },
+      "total": 48
+    },
+    "current_q73_q86_semantic_rows": {
+      "train": {
+        "endpoint_bundle": 12,
+        "planning": 12,
+        "reasoning": 17,
+        "total": 41
+      },
+      "validation": {
+        "endpoint_bundle": 2,
+        "planning": 2,
+        "reasoning": 2,
+        "total": 6
+      }
+    },
+    "strict_endpoint_closures": {
+      "prior_endpoints": 15,
+      "prior_fully_vlan_instance_closed": 4,
+      "prior_unsafe_or_incomplete": 11,
+      "current_endpoints": 14,
+      "current_fully_vlan_instance_closed": 14,
+      "current_unsafe_or_incomplete": 0,
+      "by_case": {
+        "73": {
+          "source_host": "hq_mkt_pc01",
+          "source_vlan": 10,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "74": {
+          "source_host": "hq_mkt_pc01",
+          "source_vlan": 10,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "75": {
+          "source_host": "hq_proc_pc01",
+          "source_vlan": 40,
+          "selected_target": [
+            "Core_SW_01;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "76": {
+          "source_host": "hq_proc_pc01",
+          "source_vlan": 40,
+          "selected_target": [
+            "Core_SW_01;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "77": {
+          "source_host": "hq_hr_pc01",
+          "source_vlan": 30,
+          "selected_target": [
+            "Core_SW_01;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "78": {
+          "source_host": "hq_hr_pc01",
+          "source_vlan": 30,
+          "selected_target": [
+            "Core_SW_01;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "79": {
+          "source_host": "hq_fin_client01",
+          "source_vlan": 20,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "80": {
+          "source_host": "hq_fin_client01",
+          "source_vlan": 20,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "81": {
+          "source_host": "guest_wifi_client02",
+          "source_vlan": 120,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "82": {
+          "source_host": "guest_wifi_client02",
+          "source_vlan": 120,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "83": {
+          "source_host": "employee_wifi_client01",
+          "source_vlan": 110,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "84": {
+          "source_host": "employee_wifi_client01",
+          "source_vlan": 110,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "85": {
+          "source_host": "guest_wifi_client03",
+          "source_vlan": 120,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        },
+        "86": {
+          "source_host": "guest_wifi_client03",
+          "source_vlan": 120,
+          "selected_target": [
+            "Core_SW_02;VRRP Master角色规划不合理"
+          ],
+          "gate_rule": "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment",
+          "evidence_selected_singleton": true
+        }
+      }
+    }
+  },
+  "paths_and_rows": {
+    "cases": 84,
+    "source_trajectories": 840,
+    "raw_visible_checkpoints": 3505,
+    "causal_prefix_checkpoints": 3016,
+    "path_clusters": 753,
+    "retained_path_clusters": 104,
+    "selected_sft_nodes": 398,
+    "evidence_summary_nodes": 104,
+    "hypothesis_elimination_nodes": 12,
+    "decision_ready_nodes": 104,
+    "decision_nodes": 104,
+    "synthetic_path_endpoint_nodes": 104,
+    "train_sft_rows": 346,
+    "train_core_rows": 255,
+    "train_core_schedule_rows_per_epoch": 144,
+    "train_endpoint_pool_rows": 91,
+    "train_endpoint_schedule_rows_per_epoch": 72,
+    "train_endpoint_groups_per_epoch": 72,
+    "effective_train_row_exposures_per_epoch": 216,
+    "validation_sft_rows": 52,
+    "target_types": {
+      "train": {
+        "endpoint_bundle": 91,
+        "hypothesis_elimination": 11,
+        "planning": 89,
+        "reasoning": 155
+      },
+      "validation": {
+        "endpoint_bundle": 13,
+        "hypothesis_elimination": 1,
+        "planning": 13,
+        "reasoning": 25
+      }
+    }
+  },
+  "v6_reaudit_response": {
+    "input_report": "trajectory-analysis/2026-08-07_1703_0807_sft_reaudit_v5.md",
+    "input_report_sha256_lf_normalized": "7b2bb6b25b14915d147cfda83ed91d5a754fb29aa291a22e970df7cb3fae3639",
+    "lldp_family_actions": 10,
+    "lldp_actions_misclassified_as_mpls": 0,
+    "unsafe_mixed_procedural_rows": [],
+    "supervised_intent_partial_rows": [],
+    "optimizer_step_contract": {
+      "rows_per_stage": 216,
+      "world_size": 2,
+      "per_device_train_batch_size": 1,
+      "gradient_accumulation_steps": 4,
+      "effective_batch_size": 8,
+      "optimizer_steps_per_stage": 27,
+      "global_step_boundaries": [
+        0,
+        27,
+        54,
+        81,
+        108,
+        135
+      ],
+      "checkpoint_suffixes": [
+        27,
+        54,
+        81,
+        108,
+        135
+      ]
+    }
+  },
+  "v7_0805_training_alignment": {
+    "distributed_strategy": "ddp",
+    "world_size": 2,
+    "cuda_visible_devices": "0,1",
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 8,
+    "checkpoint_selection_strategy": "fixed_epoch",
+    "fixed_validation_epoch": 3,
+    "fixed_validation_checkpoint_suffix": 81,
+    "agent_checkpoint_selection": false
+  },
+  "endpoint_audit": {
+    "qualified_paths": 104,
+    "qualified_cases": 84,
+    "all_retained_paths_have_complete_endpoint": true,
+    "gate_rules": {
+      "same_snapshot_fault_device_bpdu_filter_enable": 15,
+      "same_snapshot_fault_device_preempt_no_or_disable": 29,
+      "same_snapshot_fault_device_protocol_status_disabled": 14,
+      "same_snapshot_source_vlan_vrrp_mst_instance_role_misalignment": 14,
+      "three_device_same_prefix_static_route_next_hop_cycle": 16,
+      "three_device_static_lsp_next_hop_and_label_cycle": 16
+    },
+    "same_query_same_snapshot_recovery_paths": 54,
+    "label_derived_nondecision_rows": 0,
+    "exact_verified_answer_in_nondecision_target_rows": 0
+  },
+  "reasoning_grounding": {
+    "dropped_unsupported": 697,
+    "observation_bound_reasoning": 78,
+    "procedural_plan": 51
+  },
+  "tool_audit": {
+    "current_actions": 369,
+    "config_actions": 10,
+    "config_action_percent": 2.710027,
+    "cross_snapshot_actions": 0,
+    "snapshot_glob_actions": 0,
+    "device_glob_actions": 0,
+    "filename_glob_actions": 0,
+    "trainable_windows_path_targets": 0,
+    "current_action_count_histogram": {
+      "0": 104,
+      "1": 237,
+      "2": 39,
+      "3": 18
+    },
+    "tool_call_loss_scale": 0.02,
+    "action_selection_totals": {
+      "eligible_action_count": 5064,
+      "kept_action_count": 369,
+      "original_action_count": 10804
+    },
+    "source_intent_coverage": {
+      "full": 117,
+      "partial": 20,
+      "unscoped": 142,
+      "zero": 15
+    },
+    "supervised_intent_coverage": {
+      "full": 191,
+      "unscoped": 103
+    },
+    "supervised_intent_partial_rows": [],
+    "lldp_actions": 10,
+    "lldp_actions_misclassified_as_mpls": 0,
+    "zero_to_zero_counted_as_success": false
+  },
+  "elimination_audit": {
+    "rows": 12,
+    "bound_atomic_claims": 13,
+    "known_unsupported_regression_rows_present": []
+  },
+  "case_balanced_training": {
+    "core_pool_unique_rows": 255,
+    "core_pool_rows_exposed_at_least_once_across_five_epochs": 255,
+    "endpoint_pool_unique_rows": 91,
+    "schedule_by_epoch": {
+      "epoch_01": {
+        "core_rows": 144,
+        "endpoint_rows": 72,
+        "total_rows": 216,
+        "rows_per_query_min": 3,
+        "rows_per_query_max": 3,
+        "target_types": {
+          "endpoint_bundle": 72,
+          "hypothesis_elimination": 7,
+          "planning": 47,
+          "reasoning": 90
+        },
+        "heuristic_signal": {
+          "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+          "row_count": 216,
+          "target_type_rows": {
+            "endpoint_bundle": 72,
+            "hypothesis_elimination": 7,
+            "planning": 47,
+            "reasoning": 90
+          },
+          "raw_target_token_estimate": 49457,
+          "weighted_token_estimate": 10445.06,
+          "weighted_message_kind_percent": {
+            "conclusion_or_answer": 57.028873,
+            "thinking": 42.073478,
+            "tool_call": 0.897649
+          },
+          "weighted_target_type_percent": {
+            "endpoint_bundle": 43.427228,
+            "hypothesis_elimination": 6.187614,
+            "planning": 21.484415,
+            "reasoning": 28.900744
+          },
+          "auto_summary_stop_weighted_percent": 23.724134
+        }
+      },
+      "epoch_02": {
+        "core_rows": 144,
+        "endpoint_rows": 72,
+        "total_rows": 216,
+        "rows_per_query_min": 3,
+        "rows_per_query_max": 3,
+        "target_types": {
+          "endpoint_bundle": 72,
+          "hypothesis_elimination": 4,
+          "planning": 51,
+          "reasoning": 89
+        },
+        "heuristic_signal": {
+          "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+          "row_count": 216,
+          "target_type_rows": {
+            "endpoint_bundle": 72,
+            "hypothesis_elimination": 4,
+            "planning": 51,
+            "reasoning": 89
+          },
+          "raw_target_token_estimate": 49732,
+          "weighted_token_estimate": 10700.1,
+          "weighted_message_kind_percent": {
+            "conclusion_or_answer": 55.411632,
+            "thinking": 43.732302,
+            "tool_call": 0.856067
+          },
+          "weighted_target_type_percent": {
+            "endpoint_bundle": 42.392127,
+            "hypothesis_elimination": 3.265016,
+            "planning": 22.693807,
+            "reasoning": 31.64905
+          },
+          "auto_summary_stop_weighted_percent": 23.158662
+        }
+      },
+      "epoch_03": {
+        "core_rows": 144,
+        "endpoint_rows": 72,
+        "total_rows": 216,
+        "rows_per_query_min": 3,
+        "rows_per_query_max": 3,
+        "target_types": {
+          "endpoint_bundle": 72,
+          "hypothesis_elimination": 7,
+          "planning": 56,
+          "reasoning": 81
+        },
+        "heuristic_signal": {
+          "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+          "row_count": 216,
+          "target_type_rows": {
+            "endpoint_bundle": 72,
+            "hypothesis_elimination": 7,
+            "planning": 56,
+            "reasoning": 81
+          },
+          "raw_target_token_estimate": 49407,
+          "weighted_token_estimate": 10828.28,
+          "weighted_message_kind_percent": {
+            "conclusion_or_answer": 55.29918,
+            "thinking": 43.890165,
+            "tool_call": 0.810655
+          },
+          "weighted_target_type_percent": {
+            "endpoint_bundle": 41.89308,
+            "hypothesis_elimination": 6.002431,
+            "planning": 27.449974,
+            "reasoning": 24.654516
+          },
+          "auto_summary_stop_weighted_percent": 22.887291
+        }
+      },
+      "epoch_04": {
+        "core_rows": 144,
+        "endpoint_rows": 72,
+        "total_rows": 216,
+        "rows_per_query_min": 3,
+        "rows_per_query_max": 3,
+        "target_types": {
+          "endpoint_bundle": 72,
+          "hypothesis_elimination": 5,
+          "planning": 55,
+          "reasoning": 84
+        },
+        "heuristic_signal": {
+          "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+          "row_count": 216,
+          "target_type_rows": {
+            "endpoint_bundle": 72,
+            "hypothesis_elimination": 5,
+            "planning": 55,
+            "reasoning": 84
+          },
+          "raw_target_token_estimate": 49566,
+          "weighted_token_estimate": 10624.62,
+          "weighted_message_kind_percent": {
+            "conclusion_or_answer": 55.446689,
+            "thinking": 43.662738,
+            "tool_call": 0.890573
+          },
+          "weighted_target_type_percent": {
+            "endpoint_bundle": 42.693292,
+            "hypothesis_elimination": 4.258035,
+            "planning": 26.094298,
+            "reasoning": 26.954376
+          },
+          "auto_summary_stop_weighted_percent": 23.323187
+        }
+      },
+      "epoch_05": {
+        "core_rows": 144,
+        "endpoint_rows": 72,
+        "total_rows": 216,
+        "rows_per_query_min": 3,
+        "rows_per_query_max": 3,
+        "target_types": {
+          "endpoint_bundle": 72,
+          "hypothesis_elimination": 7,
+          "planning": 48,
+          "reasoning": 89
+        },
+        "heuristic_signal": {
+          "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+          "row_count": 216,
+          "target_type_rows": {
+            "endpoint_bundle": 72,
+            "hypothesis_elimination": 7,
+            "planning": 48,
+            "reasoning": 89
+          },
+          "raw_target_token_estimate": 49792,
+          "weighted_token_estimate": 10811.42,
+          "weighted_message_kind_percent": {
+            "conclusion_or_answer": 56.354299,
+            "thinking": 42.804738,
+            "tool_call": 0.840963
+          },
+          "weighted_target_type_percent": {
+            "endpoint_bundle": 41.955636,
+            "hypothesis_elimination": 5.867499,
+            "planning": 21.628056,
+            "reasoning": 30.548809
+          },
+          "auto_summary_stop_weighted_percent": 22.920208
+        }
+      }
+    }
+  },
+  "target_exact_repetition": {
+    "train": {
+      "endpoint_bundle": {
+        "rows": 91,
+        "unique_targets": 20,
+        "maximum_exact_repeat": 19,
+        "rows_whose_target_repeats": 83
+      },
+      "hypothesis_elimination": {
+        "rows": 11,
+        "unique_targets": 9,
+        "maximum_exact_repeat": 2,
+        "rows_whose_target_repeats": 4
+      },
+      "planning": {
+        "rows": 89,
+        "unique_targets": 81,
+        "maximum_exact_repeat": 5,
+        "rows_whose_target_repeats": 12
+      },
+      "reasoning": {
+        "rows": 155,
+        "unique_targets": 120,
+        "maximum_exact_repeat": 7,
+        "rows_whose_target_repeats": 53
+      }
+    },
+    "validation": {
+      "endpoint_bundle": {
+        "rows": 13,
+        "unique_targets": 9,
+        "maximum_exact_repeat": 3,
+        "rows_whose_target_repeats": 7
+      },
+      "hypothesis_elimination": {
+        "rows": 1,
+        "unique_targets": 1,
+        "maximum_exact_repeat": 1,
+        "rows_whose_target_repeats": 0
+      },
+      "planning": {
+        "rows": 13,
+        "unique_targets": 13,
+        "maximum_exact_repeat": 1,
+        "rows_whose_target_repeats": 0
+      },
+      "reasoning": {
+        "rows": 25,
+        "unique_targets": 25,
+        "maximum_exact_repeat": 1,
+        "rows_whose_target_repeats": 0
+      }
+    }
+  },
+  "frozen_validation_overlap": {
+    "exact_tool_calls": {
+      "train_unique": 253,
+      "validation_unique": 63,
+      "shared_unique": 31,
+      "validation_unique_seen_in_train_percent": 49.206349
+    },
+    "exact_tool_responses": {
+      "train_unique": 300,
+      "validation_unique": 64,
+      "shared_unique": 19,
+      "validation_unique_seen_in_train_percent": 29.6875
+    },
+    "interpretation": "case-isolated but not topology-heldout"
+  },
+  "heuristic_context_length": {
+    "method": "same mixed CJK/non-CJK approximation as converter; not target tokenizer",
+    "rows": 398,
+    "p99": 2464,
+    "max": 2675,
+    "max_row_id": "q0024_path_01_success_03_endpoint_bundle",
+    "over_16384": 0
+  },
+  "0805_baseline": {
+    "schema_version": "qwen36-0805-causal-path-reasoning-sft.v10",
+    "counts": {
+      "cases": 84,
+      "source_trajectories": 840,
+      "raw_visible_checkpoints": 3505,
+      "causal_prefix_checkpoints": 3496,
+      "path_clusters": 433,
+      "retained_path_clusters": 277,
+      "selected_sft_nodes": 1675,
+      "evidence_summary_nodes": 277,
+      "hypothesis_elimination_nodes": 120,
+      "decision_ready_nodes": 277,
+      "decision_nodes": 277,
+      "synthetic_path_endpoint_nodes": 554,
+      "train_sft_rows": 1430,
+      "train_core_rows": 719,
+      "train_endpoint_pool_rows": 711,
+      "train_endpoint_schedule_rows_per_epoch": 432,
+      "train_endpoint_groups_per_epoch": 144,
+      "effective_train_row_exposures_per_epoch": 1151,
+      "validation_sft_rows": 245,
+      "target_types": {
+        "train": {
+          "decision": 237,
+          "decision_ready": 237,
+          "evidence_summary": 237,
+          "hypothesis_elimination": 103,
+          "planning": 167,
+          "reasoning": 449
+        },
+        "validation": {
+          "decision": 40,
+          "decision_ready": 40,
+          "evidence_summary": 40,
+          "hypothesis_elimination": 17,
+          "planning": 29,
+          "reasoning": 79
+        }
+      }
+    },
+    "outputs": {
+      "train": {
+        "rows": 1430,
+        "bytes": 22213862
+      },
+      "train_core": {
+        "rows": 719,
+        "bytes": 10620244
+      },
+      "train_endpoint_pool": {
+        "rows": 711,
+        "bytes": 11593618
+      },
+      "train_endpoint_epoch_01": {
+        "rows": 432,
+        "bytes": 7060232
+      },
+      "train_endpoint_epoch_02": {
+        "rows": 432,
+        "bytes": 7055277
+      },
+      "train_endpoint_epoch_03": {
+        "rows": 432,
+        "bytes": 7083049
+      },
+      "train_endpoint_epoch_04": {
+        "rows": 432,
+        "bytes": 7050062
+      },
+      "train_endpoint_epoch_05": {
+        "rows": 432,
+        "bytes": 7065447
+      },
+      "validation": {
+        "rows": 245,
+        "bytes": 3727882
+      }
+    }
+  }
+}

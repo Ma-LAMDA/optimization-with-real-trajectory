@@ -1,11 +1,12 @@
 # Qwen3.6-27B 网络故障轨迹与 SFT
 
-本仓库用于构造、训练和评测网络故障诊断轨迹数据。当前保留四批日期数据：
+本仓库用于构造、训练和评测网络故障诊断轨迹数据。当前保留五批日期数据：
 
 - `2026-07-27`：人工策展的多阶段小样本基线；
 - `2026-07-31`：首轮 100×10 正确轨迹决策 SFT，也是现有训练方案的默认数据；
 - `2026-08-04`：GPT-5.6-Sol accepted-only 轨迹及每题最佳一条的原生多轮 SFT 快跑集。
 - `2026-08-05`：补跑后每题 10 条成功轨迹的因果路径聚类、跨轨迹去重原生多轮 SFT。
+- `2026-08-07`：在 0805 来源上重建的 evidence-gated、query 等权高置信多轮 SFT。
 
 旧版 decision SFT 只保留可复核的规划、推理或最终决策；0804 原生多轮 SFT 另在独立
 `tool_call`/`tool_response` 角色中保留对归因有价值的真实命令和结果。所有新 SFT 样本
@@ -39,7 +40,8 @@
 | [`data/2026-07-31/`](data/2026-07-31/) | 当前 LoRA 训练基线 | 819 decision；训练 759、验证 60 | 已训练、已评测 |
 | [`data/2026-08-04/`](data/2026-08-04/) | accepted-only 归档及 best1 多轮快跑集 | 814 decision；best1 84 轨迹、371 节点（训练 318、验证 53） | 数据已校验、GPU 快跑已归档 |
 | [`data/2026-08-05/`](data/2026-08-05/) | 10 轨迹因果路径聚类多轮 SFT | 840 来源轨迹；1675 语义节点（训练 1430、验证 245） | 静态校验通过、待领域审核与训练 |
-| [`data/simulation/`](data/simulation/) | 原始仿真资料 | prompt、JSONL、配置与评测轨迹 | 不可变来源 |
+| [`data/2026-08-07/`](data/2026-08-07/) | observation-bound、evidence-gated、query 等权五轮 SFT | 840 来源轨迹；398 语义样本（训练 346、验证 52）；每轮训练 216 | v7 双卡DDP、固定epoch-3、独立校验和目标 tokenizer 预检通过 |
+| [`data/simulation/`](data/simulation/) | 原始仿真资料 | prompt、JSONL、配置与评测轨迹 | 默认只读；标准答案纠错须显式审计并全链同步 |
 
 ### 2026-07-31 划分
 
@@ -104,9 +106,48 @@ q0001从47个原始节点整理为26个代表节点。完整规则和逐题审�
 完整、可执行的生成顺序、参数、审计口径、输出哈希和已知限制见
 [`data/2026-08-05/REPRODUCIBILITY.md`](data/2026-08-05/REPRODUCIBILITY.md)。
 
+### 2026-08-07 evidence-gated 重建
+
+0807 完整复用 0805 的 84 题 × 10 条严格成功来源和 0804 的 72/12 冻结题目划分，不修改
+0805、0804 或 0731。第七版沿用第六版的 q73–q86 inclusive-OR、严格 VLAN/实例闭环、
+LLDP/LDP family 边界、混合事实/计划处理和训练步数后置条件：事实性原句只用于选择相关
+证据，实际监督改写为更早工具回显中的非空、非表头 exact observation atoms；每个 atom 绑定
+action ID 和 span，原始推断仅留在 metadata。empty output、纯表头、帮助文本和
+`unselected lines omitted` 均不能支持正向或“未配置”断言；21 条已知越证据 reasoning 进入
+独立固定回归。
+
+3,505 个原始可见节点形成 753 个精确路径簇，104 条路径通过直接事实门控。每条路径的证据归纳、
+谨慎停止判断和最终答案仍合并为一条多目标 `endpoint_bundle`。训练语义池 346、验证 52，训练
+core pool 255、endpoint pool 91；每轮每个训练 query 固定 2 条 core 加 1 条 endpoint bundle，
+共 216 行、每题严格 3 行。仅 q89 的高置信 core pool 只有一条，因此每轮对该条做一次明确标记的
+等权 replay，不合成无证据节点。
+
+q73–q86 的 140 条 accepted 轨迹仍全是 singleton，因此成功数和 72/12 划分不变。SFT 只选择
+证据最强的 singleton；双设备答案必须分别满足源主机 VLAN、同 VLAN VRRP Master、MST
+VLAN-instance mapping 和同实例 Alternate/Discarding。旧版 15 个相关 endpoint 只有 4 个满足
+完整合同；v5 为 14/14，q86 已从错误的 VLAN30/实例2 改为 VLAN120/实例3。
+
+普通 reasoning 现有 78 条 observation-bound 事实归纳和 51 条纯未来计划；混合句中的事实必须
+绑定 earlier exact observation，无法绑定即删除。另保留 12 条逐事实绑定、且具有明确排除范围
+的候选降权样本。语义池 369 个动作中配置类 10 个（2.71%）、LLDP 10 个且误标 MPLS 为 0；
+跨快照、snapshot/device/filename glob 和训练目标 Windows 路径均为 0。源意图覆盖
+full/partial/zero/unscoped 为 117/20/15/142；最终监督意图为 191/0/0/103，validator 禁止
+最终监督 partial/zero。summary thinking/结论为 0.05，停止 thinking/结论
+为 0.10，observation-bound reasoning 与真实排错为 0.60，工具调用为 0.02，最终答案为 1.00。
+
+目标服务器已用 Qwen3.6-27B、ms-swift 4.4.2、`loss_scale=default` 和非二值 loss mask
+编码 v7 的 398 条唯一语义样本：p99 4,001 token、最大 4,146、超过 16,384 的样本为 0，逐
+token labels/loss-scale 不一致为 0。当前状态为
+`rule_and_target_tokenizer_validated_release_candidate`；官方校验器与不导入 0807 生成器的独立
+校验器均通过。
+完整规则、复现命令和输出哈希见
+[`data/2026-08-07/REPRODUCIBILITY.md`](data/2026-08-07/REPRODUCIBILITY.md)，问题回归与
+剩余限制见 [`data/2026-08-07/AUDIT_REPORT.md`](data/2026-08-07/AUDIT_REPORT.md)。
+
 ## 数据规则
 
-- `data/simulation/` 是不可变来源，只允许读取或复制，不得编辑、覆盖、移动或删除。
+- `data/simulation/` 默认按不可变来源管理；标准答案纠错只能在用户明确授权和审计报告支持下
+  修改，且必须同步实验输入副本、日期 raw/curation、派生 SFT、哈希、validator 与复现文档。
 - 新的日期归档只记录模型有效结果：`accepted`、`incorrect` 和 `format_error`。
 - 基础设施失败与中断可供 runner 临时控制流程，但不进入日期归档、报表或训练数据。
 - 训练/验证必须按 `case_id` 整题隔离，禁止把同题重复轨迹随机分到两侧。
@@ -129,6 +170,8 @@ python scripts/validate_100x10_sft.py
 python -B scripts/validate_accepted_only_100x10_sft.py
 python -B scripts/validate_0804_best_trajectory_reasoning_sft.py
 python -B scripts/validate_0805_causal_path_reasoning_sft.py
+python -B scripts/validate_0807_evidence_gated_reasoning_sft.py
+python -B scripts/audit_0807_evidence_gated_sft.py
 ```
 
 ### 重新生成日期数据
@@ -140,6 +183,8 @@ python -B scripts/convert_accepted_only_100x10_to_sft.py
 python -B scripts/convert_0804_best_trajectory_reasoning_sft.py
 python -B scripts/convert_accepted_only_100x10_to_sft.py --output-root data/2026-08-05 --archive-only
 python -B scripts/convert_0805_causal_path_reasoning_sft.py
+python -B scripts/convert_accepted_only_100x10_to_sft.py --output-root data/2026-08-07 --archive-only
+python -B scripts/convert_0807_evidence_gated_reasoning_sft.py
 ```
 
 已删除的 2026-07-28 历史留一数据仍可从保留的 14×10 来源实验重建：
@@ -190,6 +235,20 @@ bash scripts/train_qwen36_0805_causal_path_quick.sh
 quick入口在启动训练前也会重新生成数据、执行独立静态校验，并使用训练机上的目标tokenizer
 逐条确认没有样本超过16,384 token；未通过预检时会直接退出。quick的梯度累积2、cosine
 scheduler和单轮独立输出不得用于替代正式五阶段对比训练。
+
+0807 正式入口按每轮 query 等权 schedule 顺序恢复完整训练状态：
+
+```bash
+RUN_MODE=prepare bash scripts/train_qwen36_0807_evidence_gated_5epoch.sh
+RUN_MODE=dry-run bash scripts/train_qwen36_0807_evidence_gated_5epoch.sh
+bash scripts/train_qwen36_0807_evidence_gated_5epoch.sh
+```
+
+入口与0805一致使用GPU 0、1双进程DDP、每卡batch 1、梯度累积4，故全局有效batch仍为8；
+同时使用constant scheduler、零warmup和五个固定学习率。第2–5轮显式恢复上一轮模型、
+optimizer、scheduler与Trainer状态，callback在全部rank强制学习率且仅rank 0写审计。
+五轮eval loss只作诊断，不进行Agent checkpoint selection；固定使用epoch 3 / checkpoint-81
+执行12题×5次最终Agent验证。`prepare`的真实目标tokenizer预检及报告归档通过前不得训练。
 
 0804历史quick的SeaTACLOUD端到端入口会在GPU空闲检查通过后完成单轮训练，读取全部
 validation history选择`eval_loss`最低且checkpoint仍存在的步，然后以单个TP=2 vLLM
@@ -283,6 +342,7 @@ warning和复现控制脚本见
 │   ├── 2026-07-31/
 │   ├── 2026-08-04/
 │   ├── 2026-08-05/
+│   ├── 2026-08-07/
 │   └── simulation/
 ├── docs/
 │   ├── TRAINING_PLAN.md
@@ -434,6 +494,20 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-07：将0807 v7正式训练方式与0805对齐：改为GPU 0、1双进程DDP、每卡batch 1、
+  梯度累积4，全局有效batch仍为8；LR callback仅由rank 0写审计。取消6题×2次Agent
+  checkpoint选择，五轮eval loss仅作诊断，固定使用epoch 3 / checkpoint-81进行12题×5次
+  最终验证。数据内容、每阶段216行与27 optimizer steps保持不变。
+- 2026-08-07：按 17:03 独立复审升级 0807 v6：新增独立 LLDP family 并以 token 边界隔离
+  LDP/MPLS；混合事实/计划逐子句处理，纯未来计划才可直接监督；原始多步 conclusion 必须被
+  当前动作完整覆盖，最终监督 partial/zero 降为 0。排除节点保持 12 条；训练/验证 346/52、
+  路径 104、每轮 216。训练入口固定每阶段 27 optimizer steps 和 checkpoint/global-step
+  边界；真实 Qwen tokenizer 检查 398 行，最大 4,146/16,384，loss-mask 错误 0。
+- 2026-08-07：按 q73–q86 inclusive-OR 影响报告升级 0807 v5：源答案规范为 `[A]`、`[B]`、
+  `[A,B]` 三个 exact-set 选项并同步 140 个 raw/curation；SFT target 与判分宽容度分离，
+  VRRP/STP 角色错位改为源 VLAN、同 VLAN Master、MST 映射和同实例 Alternate 的完整闭环。
+  旧相关终点仅 4/15 完整，现为 14/14；训练/验证 344/53、路径 103、每轮仍 216。真实
+  Qwen tokenizer 检查 397 行，最大 4,867/16,384，loss-mask 错误 0。
 - 2026-08-07：0805正式训练改为GPU 0、1双进程DDP，每卡micro batch 1、梯度累积4，
   全局有效batch保持8；加入设备、world size和batch算术校验，LR插件改为全部rank强制、
   rank 0独占写审计。五轮eval loss仅作诊断，固定使用epoch-3 checkpoint执行12题×5次验证，
@@ -441,7 +515,22 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 - 2026-08-07：补齐 2026-07-27-ip_codex_train0629_14x10 实验目录中后续固定验证集
   使用的 12 道题面与来源记录（q2、q12、q19、q20、q29、q38、q65、q71、q85、q86、
   q99、q100）；仅补充静态输入快照，不改变原 14×10 运行和准确率统计。
-
+- 2026-08-07：按 12:20 独立复审升级 0807 v4：普通事实 reasoning 改为 action/exact-span
+  observation atoms，21 条越证据样本进入固定回归；排除节点只保留有明确反证范围的 12 条；
+  动作审计拆分源意图与最终监督意图并公开 full/partial/zero/unscoped。训练/验证变为 346/53，
+  104 条 endpoint 路径，每轮仍为 216 行；v4 目标 tokenizer 实测最大 4,867/16,384，
+  loss-mask 错误 0。
+- 2026-08-07：按 0807 独立严格复审完成 v3 优化：排除结论改为逐事实 action/span 绑定并将
+  三条已知错误加入回归；完整禁止 snapshot/device/filename glob；用最小 claim coverage
+  取代固定动作上限；三条终点合并为单行多目标 bundle；IP/MPLS next-hop 归属改由可见接口
+  地址证明；学习率 callback 改为逐 step 记录。训练/验证缩为 369/63，每轮 216 行。目标
+  Qwen3.6 tokenizer 实测最大 6,306/16,384 token，loss-mask 错误 0，官方与独立校验通过。
+- 2026-08-06：从 0805 的 840 条严格成功轨迹建立独立 0807 evidence-gated 数据；复用
+  0804 的 72/12 题目划分，修复 label 反向端点、证据断链、config 目录污染、跨快照引用、
+  query 权重不均和五轮训练合同问题。最终保留 173 条可靠闭环路径、51 条真实排错节点，
+  训练/验证语义池为 904/145；每轮每题固定 5 条、共 360 条。新增转换器、独立校验器、
+  机器审计、连续 resume 训练入口、复现文档与严格审计报告；正式训练仍需目标 tokenizer
+  和逐 token loss-mask 预检。
 - 2026-08-06：0805新增120条真实错误候选排除节点，只使用可见原始排错句和该节点之前
   已返回且与排错协议/观察相关的成功工具证据；训练/验证分别103/17条。证据归纳、停止判断和最终回答改为同一路径
   三节点组，按query每轮选2条路径共同轮换，不再把归纳/停止固定进core。自动端点thinking和

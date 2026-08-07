@@ -1,0 +1,90 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0085_success_10",
+  "case_id": 85,
+  "row_index": 85,
+  "success_slot": 10,
+  "attempt_index": 10,
+  "source_record": {
+    "row_index": 85,
+    "original_id": 85,
+    "sample_id": 85,
+    "sample_key": "q0085",
+    "question": "在CampusNetwork_08组网中，从 GUEST_WIFI_CLIENT03 ping节点 Internet_PC01（200.200.200.200）出现高延迟。已知，两个核心交换机Core_SW_01 和 Core_SW_02之间因链路距离较长，传输时延较大。基于当前配置框架，在STP规划合理的情况下，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先定位 CampusNetwork_08 的实际节点与可用命令回显，围绕“STP路径是否错误选经高时延核心互联链路”提出并区分少量假设，再沿 GUEST_WIFI_CLIENT03 到出口的二层/三层转发路径核验。"
+    },
+    {
+      "event_line": 6,
+      "item_id": "item_3",
+      "text": "当前环境限制了计划记录工具，但不影响只读调查；我将直接读取 `saved_configs`，不修改任何文件。首轮重点比较三类可证伪假设：STP实例路径开销不合理、VRRP主备规划导致跨核心转发、以及接口拥塞/物理状态异常。"
+    },
+    {
+      "event_line": 41,
+      "item_id": "item_21",
+      "text": "客户端证据已将问题域收窄到 VLAN 120：地址 `10.1.120.247/24`、网关 VRRP VIP `10.1.120.254`，主机接口和邻居解析均正常。下一步直接比对两台核心的 VLAN 120 VRRP角色、MST实例归属及实例根路径开销，判断是否发生“二层根在一台核心、三层主网关在另一台核心”的跨高时延互联转发。"
+    },
+    {
+      "event_line": 149,
+      "item_id": "item_79",
+      "text": "运行状态已经证实了跨核心绕行：客户端 MAC `ee2e-ed39-d59c` 在 Core_SW_01 从直连 AGG_SW_04 端口学习，而 Core_SW_02 通过核心互联 Eth-Trunk1 学习；反向地，VRRP 虚拟 MAC `0000-5e00-0106` 在 Core_SW_01 也从 Eth-Trunk1 学习。也就是 VLAN 120 的 STP 根落在 Core_SW_01，但网关 Master 落在 Core_SW_02。最后我会核对互联及出口接口无拥塞/错误、默认路由正常，以排除并列根因。"
+    },
+    {
+      "event_line": 166,
+      "item_id": "item_88",
+      "text": "<result>\n[\n\"Core_SW_02;VRRP Master角色规划不合理\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_02;VRRP Master角色规划不合理\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_02;VRRP Master角色规划不合理"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_01;VRRP Master角色规划不合理"
+    ],
+    [
+      "Core_SW_02;VRRP Master角色规划不合理"
+    ],
+    [
+      "Core_SW_01;VRRP Master角色规划不合理",
+      "Core_SW_02;VRRP Master角色规划不合理"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0085_r10/attempt_010/judgment.json",
+    "judgment_sha256_lf_normalized": "3d478772ff68a1964ef99cb762857978fc741e5752179c6ad6c50b3e2ddfc0d6"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0085_r10/attempt_010",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0085_r10/attempt_010/events.jsonl",
+    "events_sha256_lf_normalized": "4a7fc43c5989b5e767e6f0e0cf96e55a1b51d2a1f3808db5b707522603bed19e",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0085_r10/attempt_010/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "8dfcd7cac358b527f373203a634af149f31d0d2ddf8ea34a08b247f6da6b09fe",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0085/source_record.json",
+    "source_record_sha256_lf_normalized": "0ad5b4cc57797417c2d6b29521686fbd6c54b92196be7fbf271475f73898da9c",
+    "thread_id": "019fcc2a-3979-7f91-8152-a979e871e288",
+    "duration_seconds": 149.847
+  },
+  "reference_answer_revision": {
+    "policy": "q73_q86_inclusive_or_single_or_dual_exact_fault_set.v1",
+    "source_dataset": "data/simulation/train_0629.jsonl",
+    "source_dataset_sha256_lf_normalized": "2c9faac68eb9e366eaedd2ad732e599d220c9a38a07bfac8ce5597cb0315febf",
+    "original_independent_judgment_remains_correct": true,
+    "accepted_target_device_counts": [
+      1,
+      2
+    ],
+    "sft_endpoint_preference": "single evidence-strongest device; dual only after two independent VLAN-instance closures"
+  }
+}

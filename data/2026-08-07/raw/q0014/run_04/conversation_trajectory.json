@@ -1,0 +1,72 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0014_success_04",
+  "case_id": 14,
+  "row_index": 14,
+  "success_slot": 4,
+  "attempt_index": 4,
+  "source_record": {
+    "row_index": 14,
+    "original_id": 14,
+    "sample_id": 14,
+    "sample_key": "q0014",
+    "question": "在CampusNetwork_04组网中，从 HQ_MKT_PC01 ping节点 GoogleWebServer01（114.114.114.114）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。\n## 已定位的信息\n\nL2转发路径：\nHQ_MKT_PC01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/3) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/8) -> FW_01(GigabitEthernet1/0/1) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/4) -> GoogleWebServer01(Ethernet0),\nHQ_MKT_PC01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/3) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/9) -> FW_02(GigabitEthernet1/0/1) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/4) -> GoogleWebServer01(Ethernet0),\nHQ_MKT_PC01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/3) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/8) -> FW_01(GigabitEthernet1/0/2) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/4) -> GoogleWebServer01(Ethernet0),\nHQ_MKT_PC01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/3) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/9) -> FW_02(GigabitEthernet1/0/2) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/4) -> GoogleWebServer01(Ethernet0)",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先精确定位 CampusNetwork_04 的节点与命令文件，围绕“高延迟”优先检验带宽挤占、MTU、路由环路及冗余转发规划，再沿四条候选路径交叉核验。"
+    },
+    {
+      "event_line": 28,
+      "item_id": "item_14",
+      "text": "节点清单显示链路两端、核心、防火墙和出口设备均有运行态接口/路由记录。下一步先用接口速率、丢弃/错误计数和 MTU 把“拥塞”与“链路异常/配置错误”区分开，再核对对应配置归属。"
+    },
+    {
+      "event_line": 95,
+      "item_id": "item_56",
+      "text": "初步证据把范围收敛到二层控制面：AGG_SW_01 的核心上联 HundredGigE1/0/1 明确配置了 `stp port bpdu-filter enable`，而另一条核心上联没有同类配置。该差异可让冗余三角链路失去正常 STP 约束；我正在用 STP 端口状态和异常组播计数确认它是否足以解释高延迟，并排除另一个独立故障。"
+    },
+    {
+      "event_line": 200,
+      "item_id": "item_109",
+      "text": "STP 运行态已形成闭合的全转发三角：VLAN 10 所属 MSTI 1 上，AGG_SW_01 两条核心上联均为 forwarding，Core_SW_01/Core_SW_02 间 Eth-Trunk1 也为 forwarding；同时两核心相关端口累计报文几乎全部是异常组播。主机、出口路由/NAT、安全策略、HRP 和邻接均正常，暂未发现需要加入最小集合的第二个根因。最后再核查日志中的 MAC/STP 抖动迹象。"
+    },
+    {
+      "event_line": 255,
+      "item_id": "item_137",
+      "text": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>",
+  "actual_result_items": [
+    "AGG_SW_01;STP BPDU被过滤"
+  ],
+  "reference_answer_options": [
+    [
+      "AGG_SW_01;STP BPDU被过滤"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0014_r04/attempt_004/judgment.json",
+    "judgment_sha256_lf_normalized": "e85be45396bdddeab2dce124d4d3abd7b62a88b73d4ce85f6763b0a671a14d3e"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0014_r04/attempt_004",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0014_r04/attempt_004/events.jsonl",
+    "events_sha256_lf_normalized": "f516acc73ff7a391d11bc21ebcfe79d71a0a2dbfe270dcbeb2e5c5f1000c7337",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0014_r04/attempt_004/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "523884ef5991fe92f2c031d5baabc1ffa3753b2eb205362450fbea961460542a",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0014/source_record.json",
+    "source_record_sha256_lf_normalized": "568f1ef1a230777e282fd3d9ab34499086fbfa79bca8a6a778a9acdc1fb7f561",
+    "thread_id": "019fc850-c481-7302-9b62-df646b666dee",
+    "duration_seconds": 285.966
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0021_success_03",
+  "case_id": 21,
+  "row_index": 21,
+  "success_slot": 3,
+  "attempt_index": 6,
+  "source_record": {
+    "row_index": 21,
+    "original_id": 21,
+    "sample_id": 21,
+    "sample_key": "q0021",
+    "question": "在CampusNetwork_04组网中，从 HQ_MKT_PC01 ping节点 SZ_Server_Cluster3（10.3.30.1）出现高延迟。已知，设备PE1 和 PE2之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先精确定位 CampusNetwork_04 的节点和命令文件，再围绕“实际路径是否经过高时延 PE1-PE2 链路”对比路由/SR Policy 的配置意图与运行状态。"
+    },
+    {
+      "event_line": 30,
+      "item_id": "item_15",
+      "text": "首轮证据显示该跨园区业务使用 PE 侧 L3VPN/MPLS，SRv6 状态为空；因此优先检验三项可证伪假设：PE1 的 VPN 路由选路错误、ISIS 底层开销未避开 PE1-PE2 长距链路、或接口拥塞导致排队时延。下一步直接读取 PE 配置、VPN 路由和接口状态。"
+    },
+    {
+      "event_line": 115,
+      "item_id": "item_58",
+      "text": "关键转发证据已排除拥塞、接口/MTU异常和 MPLS 绕行：去程在 PE1 将 10.3.30.0/24 解析到 PE3 的直连 Ethernet1/0/2，回程在 PE3 将 10.1.10.0/24 解析到 PE1 的直连 Ethernet1/0/1。为避免把题干中的长距链路提示机械地当作根因，我再核对项目内是否存在与基准框架不同的配置项。"
+    },
+    {
+      "event_line": 164,
+      "item_id": "item_83",
+      "text": "已定位到与现象直接吻合的配置变更：AGG_SW_01 的上联 HundredGigE1/0/1 开启 BPDU filter 后，MSTI 1 的两条上联同时处于 forwarding，日志随后出现该口 BPDU 接收超时和 CPU 告警；而 PE1-PE2 长距链路并不在该业务的实际双向路径上。最后核对该接入汇聚设备的告警/CPU状态后收敛最小集合。"
+    },
+    {
+      "event_line": 173,
+      "item_id": "item_88",
+      "text": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"AGG_SW_01;STP BPDU被过滤\"\n]\n</result>",
+  "actual_result_items": [
+    "AGG_SW_01;STP BPDU被过滤"
+  ],
+  "reference_answer_options": [
+    [
+      "AGG_SW_01;STP BPDU被过滤"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0021_r03/attempt_006/judgment.json",
+    "judgment_sha256_lf_normalized": "e85be45396bdddeab2dce124d4d3abd7b62a88b73d4ce85f6763b0a671a14d3e"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0021_r03/attempt_006",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0021_r03/attempt_006/events.jsonl",
+    "events_sha256_lf_normalized": "91ee4056295e74aa1508ea3b149a1a6eafa36019d67ec04ac9f996e0a018e0be",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0021_r03/attempt_006/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "523884ef5991fe92f2c031d5baabc1ffa3753b2eb205362450fbea961460542a",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0021/source_record.json",
+    "source_record_sha256_lf_normalized": "15854a6815962c1870ed8abb2e179b36155852a4a11568df8d161ea88f79d12a",
+    "thread_id": "019fc87e-f731-7171-89e5-ed0763ed315c",
+    "duration_seconds": 309.982
+  }
+}
