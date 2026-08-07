@@ -2238,7 +2238,7 @@ def main() -> None:
             obsolete_path.unlink()
     validation_output = base.write_jsonl(VALIDATION_OUTPUT, validation_rows)
     manifest = {
-        "schema_version": "qwen36-0805-causal-path-reasoning-sft.v9",
+        "schema_version": "qwen36-0805-causal-path-reasoning-sft.v10",
         "status": "auto_clustered_draft_requires_domain_review",
         "scope": "data/2026-08-05 only",
         "reproducibility": {
@@ -2336,6 +2336,16 @@ def main() -> None:
             "truncation_strategy": "delete",
             "preserve_thinking": True,
             "add_non_thinking_prefix": False,
+            "distributed_strategy": FORMAL_TRAINING_CONFIG["distributed_strategy"],
+            "world_size": FORMAL_TRAINING_CONFIG["world_size"],
+            "cuda_visible_devices": FORMAL_TRAINING_CONFIG["cuda_visible_devices"],
+            "per_device_train_batch_size": FORMAL_TRAINING_CONFIG[
+                "per_device_train_batch_size"
+            ],
+            "gradient_accumulation_steps": FORMAL_TRAINING_CONFIG[
+                "gradient_accumulation_steps"
+            ],
+            "effective_batch_size": FORMAL_TRAINING_CONFIG["effective_batch_size"],
             "tokenizer_preflight_required": True,
             "semantic_train_pool": TRAIN_OUTPUT.relative_to(ROOT).as_posix(),
             "formal_training_config": FORMAL_TRAINING_CONFIG_PATH.relative_to(ROOT).as_posix(),
@@ -2361,28 +2371,21 @@ def main() -> None:
             "lr_audit_plugin_sha256_lf_normalized": base.digest_file(FIXED_STAGE_LR_PLUGIN),
             "shuffle_each_epoch": True,
             "resume_chain": "stage 1 starts from the base model; stages 2..5 resume the complete prior checkpoint with cumulative num_train_epochs=2..5 and the matching endpoint schedule",
-            "learning_rate_enforcement": "the callback overwrites optimizer and scheduler LR state after resume, reapplies it at every optimizer step, records train/epoch/step/log events, and fails on any target mismatch",
+            "learning_rate_enforcement": "the callback overwrites optimizer and scheduler LR state after resume on every DDP rank, reapplies it at every optimizer step, fails on any target mismatch, and only rank zero appends train/epoch/step/log audit events",
             "endpoint_group_exposures_per_query_per_epoch": ENDPOINT_EXPOSURES_PER_QUERY_PER_EPOCH,
             "endpoint_path_rotation_coverage": "all retained train paths appear across the five schedules; summary, stop, and decision always share one selected path and within-query path exposure differs by at most one",
-            "checkpoint_policy": "evaluate and save at every epoch; retain all five; do not auto-select solely by eval loss",
-            "checkpoint_agent_selection": {
-                "case_ids": [12, 20, 38, 71, 86, 100],
-                "repeats_per_case_per_checkpoint": 2,
-                "reasoning_effort": "high",
-                "ranking": [
-                    "strict_accuracy_desc",
-                    "model_hard_timeout_asc",
-                    "average_duration_asc",
-                    "sft_eval_loss_asc",
-                    "epoch_asc"
-                ]
+            "checkpoint_policy": "evaluate and save at every epoch; retain all five; eval loss is diagnostic only; final Agent validation always uses the epoch-3 checkpoint",
+            "checkpoint_selection": {
+                "strategy": "fixed_epoch",
+                "epoch": 3,
+                "agent_selection": False,
+                "eval_loss_selection": False
             },
             "final_agent_validation": {
                 "case_ids": sorted(source_validation),
                 "repeats_per_case": 5,
                 "total_attempts": 60,
-                "reuse_selected_checkpoint_selection_attempts": 12,
-                "new_attempts_after_checkpoint_selection": 48
+                "new_attempts": 60
             },
             "infrastructure_failures_and_interruptions": "excluded from samples and denominators",
         },

@@ -60,11 +60,14 @@ def digest_output(path: Path) -> str:
 def validate_formal_training_contract(manifest: dict[str, Any]) -> None:
     config = load_json(converter.FORMAL_TRAINING_CONFIG_PATH)
     expected_critical = {
-        "schema_version": "qwen36-0805-formal-training.v1",
+        "schema_version": "qwen36-0805-formal-training.v2",
+        "distributed_strategy": "ddp",
+        "world_size": 2,
+        "cuda_visible_devices": "0,1",
         "epochs": 5,
         "per_device_train_batch_size": 1,
         "per_device_eval_batch_size": 1,
-        "gradient_accumulation_steps": 8,
+        "gradient_accumulation_steps": 4,
         "effective_batch_size": 8,
         "max_length": 16384,
         "fixed_learning_rate_by_epoch": [2e-5, 1.5e-5, 1e-5, 6e-6, 3e-6],
@@ -78,16 +81,40 @@ def validate_formal_training_contract(manifest: dict[str, Any]) -> None:
         "epoch_specific_endpoint_schedule_required": True,
         "sequential_full_state_resume_required": True,
         "learning_rate_runtime_audit_required": True,
+        "checkpoint_selection_strategy": "fixed_epoch",
+        "fixed_validation_epoch": 3,
+        "agent_checkpoint_selection": False,
     }
     for key, expected in expected_critical.items():
         if config.get(key) != expected:
             raise ValueError(
                 f"formal training config {key}={config.get(key)!r}, expected {expected!r}"
             )
+    calculated_effective_batch = (
+        config["world_size"]
+        * config["per_device_train_batch_size"]
+        * config["gradient_accumulation_steps"]
+    )
+    if calculated_effective_batch != config["effective_batch_size"]:
+        raise ValueError(
+            "formal training effective-batch arithmetic is inconsistent: "
+            f"{calculated_effective_batch} != {config['effective_batch_size']}"
+        )
     if not converter.FORMAL_TRAINING_REFERENCE.is_file():
         raise ValueError("formal 0804 reference training entry is missing")
 
     profile = manifest["training_profile"]
+    expected_profile_values = {
+        "distributed_strategy": "ddp",
+        "world_size": 2,
+        "cuda_visible_devices": "0,1",
+        "per_device_train_batch_size": 1,
+        "gradient_accumulation_steps": 4,
+        "effective_batch_size": 8,
+    }
+    for key, expected in expected_profile_values.items():
+        if profile.get(key) != expected:
+            raise ValueError(f"manifest training profile has stale {key}")
     expected_profile_paths = {
         "formal_training_config": converter.FORMAL_TRAINING_CONFIG_PATH,
         "formal_training_entry": converter.FORMAL_TRAINING_ENTRY,
@@ -123,6 +150,9 @@ def validate_formal_training_contract(manifest: dict[str, Any]) -> None:
 
     entry = converter.FORMAL_TRAINING_ENTRY.read_text(encoding="utf-8")
     required_entry_snippets = (
+        'CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1}"',
+        'NPROC_PER_NODE="${NPROC_PER_NODE:-2}"',
+        "export NPROC_PER_NODE",
         "for ((stage = start_stage; stage <= 5; stage++))",
         '--resume_from_checkpoint "${existing_checkpoint}"',
         '--resume_only_model "${CFG[resume_only_model]}"',
@@ -146,6 +176,7 @@ def validate_formal_training_contract(manifest: dict[str, Any]) -> None:
     if missing_entry:
         raise ValueError(f"formal training entry lacks required controls: {missing_entry}")
     forbidden_entry_snippets = (
+        'CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"',
         "--lr_scheduler_type cosine",
         "--gradient_accumulation_steps 2",
         "--warmup_ratio 0.1",
@@ -160,6 +191,8 @@ def validate_formal_training_contract(manifest: dict[str, Any]) -> None:
         'QWEN36_0805_TRAIN_STAGE',
         'QWEN36_0805_TARGET_LR',
         'QWEN36_0805_LR_AUDIT_PATH',
+        'PROCESS_RANK = int(os.environ.get("RANK", "0"))',
+        'if PROCESS_RANK != 0:',
         'def _assert_target',
         'def on_train_begin',
         'def on_epoch_begin',
@@ -357,7 +390,7 @@ def main() -> None:
     frozen = load_json(FROZEN_0804_CURATION)
     selection = load_json(SELECTION)
     manifest = load_json(MANIFEST)
-    if manifest["schema_version"] != "qwen36-0805-causal-path-reasoning-sft.v9":
+    if manifest["schema_version"] != "qwen36-0805-causal-path-reasoning-sft.v10":
         raise ValueError("manifest schema version is not the formal-training-contract revision")
     if selection["schema_version"] != "0805-causal-path-cluster-selection.v4":
         raise ValueError("selection schema version is not the elimination/endpoint-group revision")

@@ -16,10 +16,12 @@ CORE_DATASET_PATH="${CORE_DATASET_PATH:-${DATA_ROOT}/sft/qwen3_6_27b_reasoning_c
 ENDPOINT_POOL_DATASET_PATH="${ENDPOINT_POOL_DATASET_PATH:-${DATA_ROOT}/sft/qwen3_6_27b_reasoning_causal_path_train_endpoint_pool.jsonl}"
 VALIDATION_DATASET_PATH="${VALIDATION_DATASET_PATH:-${DATA_ROOT}/sft/qwen3_6_27b_reasoning_causal_path_validation.jsonl}"
 MANIFEST_PATH="${MANIFEST_PATH:-${DATA_ROOT}/sft/reasoning_causal_path_manifest.json}"
-CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
+CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1}"
+NPROC_PER_NODE="${NPROC_PER_NODE:-2}"
 PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
 
 export CUDA_VISIBLE_DEVICES
+export NPROC_PER_NODE
 export PYTORCH_CUDA_ALLOC_CONF
 
 for path in \
@@ -73,6 +75,9 @@ with open(path, encoding="utf-8") as handle:
 
 keys = (
     "schema_version",
+    "distributed_strategy",
+    "world_size",
+    "cuda_visible_devices",
     "epochs",
     "check_model",
     "tuner_type",
@@ -92,6 +97,7 @@ keys = (
     "per_device_train_batch_size",
     "per_device_eval_batch_size",
     "gradient_accumulation_steps",
+    "effective_batch_size",
     "lr_scheduler_type",
     "warmup_ratio",
     "gradient_checkpointing",
@@ -123,16 +129,33 @@ for value in config["fixed_learning_rate_by_epoch"]:
 PY
 )
 
-if [[ "${CFG[schema_version]:-}" != "qwen36-0805-formal-training.v1" ]]; then
+if [[ "${CFG[schema_version]:-}" != "qwen36-0805-formal-training.v2" ]]; then
   echo "Unexpected formal-training config schema: ${CFG[schema_version]:-missing}" >&2
+  exit 1
+fi
+if [[ "${CFG[distributed_strategy]}" != "ddp" || "${CFG[world_size]}" != "2" ]]; then
+  echo "Formal training requires two-process DDP." >&2
+  exit 1
+fi
+if [[ "${CUDA_VISIBLE_DEVICES}" != "${CFG[cuda_visible_devices]}" ]]; then
+  echo "CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES} differs from config ${CFG[cuda_visible_devices]}." >&2
+  exit 1
+fi
+if [[ "${NPROC_PER_NODE}" != "${CFG[world_size]}" ]]; then
+  echo "NPROC_PER_NODE=${NPROC_PER_NODE} differs from configured world_size=${CFG[world_size]}." >&2
   exit 1
 fi
 if [[ "${CFG[epochs]}" != "5" || "${#LEARNING_RATES[@]}" -ne 5 ]]; then
   echo "Formal training requires exactly five stages and five learning rates." >&2
   exit 1
 fi
-if [[ "${CFG[gradient_accumulation_steps]}" != "8" ]]; then
-  echo "Formal training requires gradient_accumulation_steps=8." >&2
+if [[ "${CFG[per_device_train_batch_size]}" != "1" || "${CFG[gradient_accumulation_steps]}" != "4" ]]; then
+  echo "Formal training requires per-device batch 1 and gradient_accumulation_steps=4." >&2
+  exit 1
+fi
+calculated_effective_batch="$((CFG[world_size] * CFG[per_device_train_batch_size] * CFG[gradient_accumulation_steps]))"
+if [[ "${calculated_effective_batch}" != "${CFG[effective_batch_size]}" || "${CFG[effective_batch_size]}" != "8" ]]; then
+  echo "Formal training effective-batch arithmetic is inconsistent: ${calculated_effective_batch} != ${CFG[effective_batch_size]}." >&2
   exit 1
 fi
 if [[ "${CFG[lr_scheduler_type]}" != "constant" || "${CFG[warmup_ratio]}" != "0.0" ]]; then

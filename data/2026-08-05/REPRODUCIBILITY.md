@@ -294,20 +294,25 @@ bash scripts/train_qwen36_0805_causal_path_formal.sh
    scheduler、global step、随机数与Trainer状态。
 3. 五个stage的累计`num_train_epochs`依次为1、2、3、4、5；由于每轮数据长度相同，恢复后
    每个进程只新增一个完整epoch，不重复已经完成的epoch。
-4. micro batch为1、梯度累积8、有效batch为8；constant scheduler、warmup为0；五轮目标
-   学习率依次为`2e-5`、`1.5e-5`、`1e-5`、`6e-6`、`3e-6`。
-5. 每轮末尾执行validation并保存checkpoint，保留全部五个，不启用early stopping，也不让
-   Trainer自动加载最低eval loss。
+4. 固定使用GPU 0、1上的两个DDP rank，`CUDA_VISIBLE_DEVICES=0,1`、
+   `NPROC_PER_NODE=2`；每rank micro batch为1、梯度累积4，全局有效batch为
+   `2 × 1 × 4 = 8`。constant scheduler、warmup为0；五轮目标学习率依次为
+   `2e-5`、`1.5e-5`、`1e-5`、`6e-6`、`3e-6`。
+5. 每轮末尾只执行一次validation并保存checkpoint，保留全部五个，不启用early stopping，
+   也不让Trainer自动加载最低eval loss。eval loss只记录诊断曲线；最终固定选择epoch-3
+   checkpoint，不运行Agent checkpoint-selection，也不按eval loss改选。
 6. 普通完整resume会恢复上一轮optimizer/scheduler学习率，命令行新LR可能被覆盖。因此
-   LR callback在`on_train_begin`、`on_epoch_begin`和每个`on_step_begin`重新设置optimizer
-   参数组及scheduler状态；`on_log`同时核验Trainer记录。任一值不等于当轮目标立即失败。
-7. `control/learning_rate_audit.jsonl`必须包含每轮train_begin、epoch_begin、step_begin和log
-   事件；入口在接受stage checkpoint前再次读取该文件并检查全部optimizer LR。
+   LR callback在每个DDP rank的`on_train_begin`、`on_epoch_begin`和每个
+   `on_step_begin`重新设置optimizer参数组及scheduler状态；`on_log`同时核验Trainer记录。
+   任一rank的值不等于当轮目标立即失败。
+7. `control/learning_rate_audit.jsonl`由rank 0独占写入，必须包含每轮train_begin、
+   epoch_begin、step_begin和log事件；入口在接受stage checkpoint前再次读取该文件并检查
+   全部optimizer LR。
 8. 首次启动归档Git提交、工作树状态、训练环境与模型绝对路径、Python/ms-swift/PyTorch/
    Transformers/PEFT/Accelerate版本，以及配置、正式入口、manifest、core、五轮端点表、
    验证数据、LR插件和模型目录全部文件的SHA256。resume前逐项重新校验；中断后只允许从
    相同Git提交、相同Python/训练包版本和完整epoch边界继续，已经开始但尚无checkpoint的
-   目录不得混写。
+   目录不得混写。训练完成后epoch-3 checkpoint直接执行12题×5次Agent验证。
 
 当前尚未归档目标tokenizer的真实预检报告。正式训练前必须新增带以下内容的归档：
 
@@ -337,7 +342,19 @@ train_endpoint_epoch_05 432 b357863765f9ad95fb1e5fcce73e9ed6e8be31bed3984c743baa
 validation 245 d7fe066d56f545116d799e55207e14381ca426228088d7a2b9b9a4db1d66f76a
 ```
 
-## 9. v9变更记录
+## 9. v10变更记录
+
+2026-08-07相对v9将正式训练改为双卡DDP并固定验证checkpoint：
+
+- 正式入口固定`CUDA_VISIBLE_DEVICES=0,1`与`NPROC_PER_NODE=2`；每rank micro batch为1、
+  梯度累积由8改为4，全局有效batch仍为8，并在启动前校验设备、world size和batch算术。
+- LR callback继续在所有rank强制和核验当轮学习率，但只有rank 0写审计文件，避免DDP进程
+  同时追加同一JSONL。
+- 五个epoch仍逐轮计算eval loss并保存checkpoint；eval loss仅诊断，固定使用epoch-3执行
+  12题×5次最终Agent验证，不再运行6题×2次checkpoint选择。
+- 正式配置schema升级为v2，manifest升级为v10，生成器、独立校验器和三份说明同步更新。
+
+## 10. v9变更记录
 
 2026-08-06相对v8修复正式训练入口与文档/manifest不一致：
 
@@ -351,7 +368,7 @@ validation 245 d7fe066d56f545116d799e55207e14381ca426228088d7a2b9b9a4db1d66f76a
 - 独立校验器增加正式配置关键值、入口resume/训练参数和LR插件强制点检查；manifest升级为v9，
   固化配置、正式入口、quick入口和插件的路径与哈希。
 
-## 10. v8变更记录
+## 11. v8变更记录
 
 2026-08-06相对v7完成三项关联修改：
 
@@ -366,7 +383,7 @@ validation 245 d7fe066d56f545116d799e55207e14381ca426228088d7a2b9b9a4db1d66f76a
 旧`train_decision_pool`和`train_decision_epoch_01..05`文件由生成器删除，替换为对应的
 `train_endpoint_pool`和`train_endpoint_epoch_01..05`，避免旧采样表被误用。
 
-## 11. 后续修改的强制流程
+## 12. 后续修改的强制流程
 
 任何来源、筛选、划分、聚类、节点、文本、排错信息、loss、采样、system prompt、工具协议、
 tokenizer、训练入口、验证器或生成文件修改，都必须在同一变更中完成：

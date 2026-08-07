@@ -116,29 +116,32 @@ q0001 的 10 条成功轨迹共有 47 个原始可见节点，聚为 6 类路径
   为可复核的近似值，整条 tool response 只作上下文、不计入 loss。
 - 训练必须使用 `--loss_scale default --is_binary_loss_scale false`。
 
-## 与 0804 相同的实验方案
+## 0805正式实验方案（双卡DDP）
 
-正式对比沿用 0804 已确认的下一轮 5 epoch 方案：Qwen3.6-27B、LoRA rank 8 / alpha 32 /
-dropout 0.05、16,384 token；micro batch 1、梯度累积 8，有效 batch 8；seed 和 data seed
-均为 42，每轮重新 shuffle。五轮内部使用固定学习率，依次为 `2e-5`、`1.5e-5`、
-`1e-5`、`6e-6`、`3e-6`。每轮结束评估并保留 checkpoint，不单凭最低 eval loss
-自动决定最终模型。
+正式训练使用Qwen3.6-27B、LoRA rank 8 / alpha 32 / dropout 0.05和16,384 token。
+训练由GPU 0、1上的两个DDP进程共同执行：每卡micro batch为1、梯度累积4步，因此全局
+有效batch为`2 × 1 × 4 = 8`，与旧单卡累计8步的优化器更新语义一致；seed和data seed均为42，
+每轮重新shuffle。五轮内部使用固定学习率，依次为`2e-5`、`1.5e-5`、`1e-5`、
+`6e-6`、`3e-6`。每轮结束只计算一次eval loss并保留checkpoint，eval loss仅作诊断，
+不参与checkpoint选择。
 
 机器可读权威配置为`config/qwen36_0805_formal_training.json`，正式入口为
-`scripts/train_qwen36_0805_causal_path_formal.sh`。入口把五轮拆成五个连续阶段：stage 1从基座
+`scripts/train_qwen36_0805_causal_path_formal.sh`。入口固定
+`CUDA_VISIBLE_DEVICES=0,1`与`NPROC_PER_NODE=2`，并把五轮拆成五个连续阶段：stage 1从基座
 开始，stage 2–5用`resume_from_checkpoint`和`resume_only_model=false`恢复上一阶段完整Trainer
 状态，同时把累计`num_train_epochs`设为2–5，使每次只新增一个epoch并加载对应
 `train_endpoint_epoch_01..05`采样表。所有阶段使用constant scheduler和零warmup。
 
 完整resume会恢复旧optimizer/scheduler状态，因此仅传新的`--learning_rate`并不充分。
-`scripts/qwen36_0805_fixed_stage_lr_plugin.py`会在train/epoch/step开始时把optimizer参数组、
-scheduler的`base_lrs`和`_last_lr`重设为当轮目标值；每次设置与Trainer日志均写入
-`control/learning_rate_audit.jsonl`，任一实际值与目标不符都会立即终止训练。
+`scripts/qwen36_0805_fixed_stage_lr_plugin.py`会在所有DDP rank的train/epoch/step开始时把
+optimizer参数组、scheduler的`base_lrs`和`_last_lr`重设为当轮目标值；所有rank都执行
+数值核验，但只有rank 0写入`control/learning_rate_audit.jsonl`，避免并发写文件。任一实际值
+与目标不符都会立即终止训练。
 
-checkpoint 仍在 q12、q20、q38、q71、q86、q100 上各运行 2 次完整 Agent 选择；固定
-`reasoning_effort=high`，依次比较严格准确率、模型硬超时、平均耗时、SFT eval loss 和
-epoch。入选 checkpoint 再在全部 12 道验证题上各形成 5 次结果，复用选择阶段 12 次并
-新增 48 次。基础设施失败和人为中断不进入样本或分母。
+训练完成后固定使用第3个epoch结束时的checkpoint，不运行6题×2次或任何Agent选点流程，
+也不改选eval loss最低的epoch。该epoch-3 checkpoint直接在全部12道验证题上各运行5次，
+形成60次全新结果。基础设施失败和人为中断不进入样本或分母；模型无有效答案、错误工具调用
+或错误归因按模型失败计错。
 
 `scripts/train_qwen36_0805_causal_path_quick.sh`仅保留与0804历史1 epoch快跑一致的
 数据、静态校验和 tokenizer 冒烟入口，不替代上述正式 5 epoch 对比方案。训练前必须

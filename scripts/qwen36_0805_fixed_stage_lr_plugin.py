@@ -21,6 +21,7 @@ def _required_env(name: str) -> str:
 STAGE = int(_required_env("QWEN36_0805_TRAIN_STAGE"))
 TARGET_LR = float(_required_env("QWEN36_0805_TARGET_LR"))
 AUDIT_PATH = Path(_required_env("QWEN36_0805_LR_AUDIT_PATH"))
+PROCESS_RANK = int(os.environ.get("RANK", "0"))
 
 if STAGE not in range(1, 6):
     raise RuntimeError(f"QWEN36_0805_TRAIN_STAGE must be 1..5, found {STAGE}")
@@ -68,9 +69,12 @@ def _write(event: str, state, optimizer, logs=None) -> None:
         raise RuntimeError(
             f"stage {STAGE} {event}: logged LR {logged_lr} differs from target {TARGET_LR}"
         )
+    if PROCESS_RANK != 0:
+        return
     payload = {
         "at": datetime.now(timezone(timedelta(hours=8))).isoformat(),
         "event": event,
+        "rank": PROCESS_RANK,
         "stage": STAGE,
         "epoch": epoch,
         "global_step": state.global_step,

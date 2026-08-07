@@ -73,12 +73,14 @@ loss 权重为 0.4，阶段结论、实际工具调用和最终结果为 1.0，�
 节点。每条路径都有证据归纳、停止判断和最终回答；另外从可见原始轨迹中抽取120条有历史
 成功工具证据支撑的错误候选排除节点，覆盖67题、120条路径，缺少真实排除表述时不补造。
 q0001从47个原始节点整理为26个代表节点。完整规则和逐题审计见
-[`data/2026-08-05/README.md`](data/2026-08-05/README.md)。正式训练和 Agent checkpoint
-选择沿用下文 0804 已确认的 5 epoch 方案；正式入口为
+[`data/2026-08-05/README.md`](data/2026-08-05/README.md)。正式训练使用GPU 0、1上的
+双进程DDP：每卡micro batch 1、梯度累积4，全局有效batch为8；正式入口为
 `scripts/train_qwen36_0805_causal_path_formal.sh`，配置由
 `config/qwen36_0805_formal_training.json`固化。五个阶段分别加载对应端点采样表，第2–5阶段
-完整恢复上一阶段模型、优化器、scheduler和Trainer状态；恢复后由专用callback强制覆盖并
-逐step审计当轮固定学习率。1 epoch quick入口只作历史同配置冒烟，不构成正式resume链。
+完整恢复上一阶段模型、优化器、scheduler和Trainer状态；恢复后由专用callback在全部rank
+强制覆盖并逐step审计当轮固定学习率，rank 0独占写审计文件。五轮eval loss仅作诊断，最终
+固定使用epoch-3 checkpoint执行12题×5次Agent验证，不进行Agent选点。1 epoch quick入口
+只作历史同配置冒烟，不构成正式resume链。
 0804 文件保持原样。0805 的 thinking 按来源分级监督：裁剪后的原始可见分析为 0.60、自动端点证据
 桥接为 0.20，固定调查模板和最终固定桥接为 0；原始有效结论为 1.0，真实来源排错结论为
 0.60，自动重建阶段结论为0.40，证据归纳和停止判断为0.20，严格最终答案为1.0。训练时
@@ -165,11 +167,13 @@ bash scripts/train_qwen36_0804_best1_quick.sh
 bash scripts/train_qwen36_0805_causal_path_formal.sh
 ```
 
-该入口使用梯度累积8、constant scheduler、零warmup，每阶段加载对应端点采样表并在epoch
-边界保存checkpoint。训练中断后在同一`OUTPUT_DIR`重启会从最近的完整epoch checkpoint继续；
-学习率callback在恢复optimizer/scheduler后重新设置目标值，并把逐step校验写入
-`control/learning_rate_audit.jsonl`。首次运行还会归档代码、全部训练输入和模型目录文件哈希，
-resume前逐项复核，避免跨代码、数据或基座继续训练。
+该入口使用双进程DDP（GPU 0、1）、每卡micro batch 1、梯度累积4，因此全局有效batch仍为8；
+同时固定constant scheduler和零warmup，每阶段加载对应端点采样表并在epoch边界保存checkpoint。
+训练中断后在同一`OUTPUT_DIR`重启会从最近的完整epoch checkpoint继续；学习率callback在所有
+rank恢复optimizer/scheduler后重新设置并核验目标值，只有rank 0把逐step审计写入
+`control/learning_rate_audit.jsonl`。五轮eval loss只作诊断，训练后固定用epoch-3 checkpoint
+执行12题×5次Agent验证。首次运行还会归档代码、全部训练输入和模型目录文件哈希，resume前
+逐项复核，避免跨代码、数据或基座继续训练。
 
 0805同时保留与0804历史快跑配置一致的独立冒烟入口：
 
@@ -422,6 +426,10 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-07：0805正式训练改为GPU 0、1双进程DDP，每卡micro batch 1、梯度累积4，
+  全局有效batch保持8；加入设备、world size和batch算术校验，LR插件改为全部rank强制、
+  rank 0独占写审计。五轮eval loss仅作诊断，固定使用epoch-3 checkpoint执行12题×5次验证，
+  不再运行Agent checkpoint-selection；正式配置/manifest schema升级为v2/v10。
 - 2026-08-07：补齐 2026-07-27-ip_codex_train0629_14x10 实验目录中后续固定验证集
   使用的 12 道题面与来源记录（q2、q12、q19、q20、q29、q38、q65、q71、q85、q86、
   q99、q100）；仅补充静态输入快照，不改变原 14×10 运行和准确率统计。

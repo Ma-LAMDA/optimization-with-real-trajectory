@@ -1,10 +1,10 @@
 {
-  "schema_version": "qwen36-0805-causal-path-reasoning-sft.v9",
+  "schema_version": "qwen36-0805-causal-path-reasoning-sft.v10",
   "status": "auto_clustered_draft_requires_domain_review",
   "scope": "data/2026-08-05 only",
   "reproducibility": {
     "document": "data/2026-08-05/REPRODUCIBILITY.md",
-    "document_sha256_lf_normalized": "94429020942b95e02849bf6edee37a1d6ebd6fdb8347f120f76ab0400616cf59",
+    "document_sha256_lf_normalized": "3f9d1b8215695e0dc05a1f494778e605a58d6f609855bff05e42fff74f7f0e2d",
     "change_policy": "every source, curation, split, conversion, loss, sampling, prompt, tool protocol, tokenizer, training-entry, validator, or generated-data change must update documentation, regenerate all artifacts, and pass independent validation",
     "tracked_files": {
       "repository_rules": {
@@ -13,15 +13,15 @@
       },
       "root_readme": {
         "path": "README.md",
-        "sha256_lf_normalized": "1a34dbc4cb904331d70eb33537a1fb7c52cd1311ad05d58b0e0ad17f45773b3e"
+        "sha256_lf_normalized": "3f65762c6228667cbd9bbce840b11fb42b29d47b3c95df42c5d8d6eba5dae236"
       },
       "date_readme": {
         "path": "data/2026-08-05/README.md",
-        "sha256_lf_normalized": "1faba46dbd0e53ad2d6c76dc6dddfd44386ee4d8be16e324ee7b08d641724d22"
+        "sha256_lf_normalized": "43c3aa1a3118ff0fe04dd7673f97c5cc06a9cd44f06992593abf49a1bb2eb82a"
       },
       "reproducibility_document": {
         "path": "data/2026-08-05/REPRODUCIBILITY.md",
-        "sha256_lf_normalized": "94429020942b95e02849bf6edee37a1d6ebd6fdb8347f120f76ab0400616cf59"
+        "sha256_lf_normalized": "3f9d1b8215695e0dc05a1f494778e605a58d6f609855bff05e42fff74f7f0e2d"
       },
       "archive_converter": {
         "path": "scripts/convert_accepted_only_100x10_to_sft.py",
@@ -33,11 +33,11 @@
       },
       "causal_path_converter": {
         "path": "scripts/convert_0805_causal_path_reasoning_sft.py",
-        "sha256_lf_normalized": "ce11e1a5133155b5525a9e54f00e2fdc645daa8aa7414b1a220c0386e196e888"
+        "sha256_lf_normalized": "5320c277faa03b8db4ed61850040959830b63873280fd92f9aa6ebea30b352b3"
       },
       "causal_path_validator": {
         "path": "scripts/validate_0805_causal_path_reasoning_sft.py",
-        "sha256_lf_normalized": "8b07e382fdf4e03256271b8881148560da1ee4280760ba8d48e6c3456c87f0b8"
+        "sha256_lf_normalized": "d64258f60b0755b6b3f04d5ede948210508c87f1fd1cb17f49a07e216e88aaaf"
       },
       "tokenizer_preflight": {
         "path": "scripts/check_0804_best1_token_lengths.py",
@@ -45,7 +45,7 @@
       },
       "formal_training_config": {
         "path": "config/qwen36_0805_formal_training.json",
-        "sha256_lf_normalized": "e4498e18920492c22ab86cc97611c3dbb402c4b9a96484c7af7dfb86f20bcb94"
+        "sha256_lf_normalized": "49e87359cc9f601bdc0a178458071aadaf566f27264e51f844b889391d8e8db2"
       },
       "reference_0804_formal_training_entry": {
         "path": "experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/control/run_0804_5epoch_training.sh",
@@ -53,11 +53,11 @@
       },
       "formal_training_entry": {
         "path": "scripts/train_qwen36_0805_causal_path_formal.sh",
-        "sha256_lf_normalized": "99e954bbc72ddc560645c6532587c48900820a4d371e95c29641d42394c37b9c"
+        "sha256_lf_normalized": "1eb60a7aaf65c23cb2a00826c709d8d9152d193133aa55654e3e543133e2e70a"
       },
       "fixed_stage_lr_plugin": {
         "path": "scripts/qwen36_0805_fixed_stage_lr_plugin.py",
-        "sha256_lf_normalized": "d29ce5ead91ed45f58b516afe733fa078a8b27df2ff96a111708ba0609b25763"
+        "sha256_lf_normalized": "e6af0eb85f16124c3ec5b09e660e7786b5a92fb805b3e5ffac709bac89f74ce4"
       },
       "quick_smoke_entry": {
         "path": "scripts/train_qwen36_0805_causal_path_quick.sh",
@@ -333,6 +333,12 @@
     "truncation_strategy": "delete",
     "preserve_thinking": true,
     "add_non_thinking_prefix": false,
+    "distributed_strategy": "ddp",
+    "world_size": 2,
+    "cuda_visible_devices": "0,1",
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 8,
     "tokenizer_preflight_required": true,
     "semantic_train_pool": "data/2026-08-05/sft/qwen3_6_27b_reasoning_causal_path_train.jsonl",
     "formal_training_config": "config/qwen36_0805_formal_training.json",
@@ -364,7 +370,10 @@
     "quick_smoke_scope": "independent one-epoch tokenizer/training smoke only; it is not the formal comparison entry and does not form a resume chain"
   },
   "comparison_experiment_plan": {
-    "schema_version": "qwen36-0805-formal-training.v1",
+    "schema_version": "qwen36-0805-formal-training.v2",
+    "distributed_strategy": "ddp",
+    "world_size": 2,
+    "cuda_visible_devices": "0,1",
     "reference_training_script": "experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/control/run_0804_5epoch_training.sh",
     "model": "Qwen3.6-27B",
     "check_model": false,
@@ -385,7 +394,7 @@
     "epochs": 5,
     "per_device_train_batch_size": 1,
     "per_device_eval_batch_size": 1,
-    "gradient_accumulation_steps": 8,
+    "gradient_accumulation_steps": 4,
     "effective_batch_size": 8,
     "fixed_learning_rate_by_epoch": [
       2e-05,
@@ -414,36 +423,26 @@
     "epoch_specific_endpoint_schedule_required": true,
     "sequential_full_state_resume_required": true,
     "learning_rate_runtime_audit_required": true,
+    "checkpoint_selection_strategy": "fixed_epoch",
+    "fixed_validation_epoch": 3,
+    "agent_checkpoint_selection": false,
     "config_path": "config/qwen36_0805_formal_training.json",
-    "config_sha256_lf_normalized": "e4498e18920492c22ab86cc97611c3dbb402c4b9a96484c7af7dfb86f20bcb94",
+    "config_sha256_lf_normalized": "49e87359cc9f601bdc0a178458071aadaf566f27264e51f844b889391d8e8db2",
     "entry_path": "scripts/train_qwen36_0805_causal_path_formal.sh",
-    "entry_sha256_lf_normalized": "99e954bbc72ddc560645c6532587c48900820a4d371e95c29641d42394c37b9c",
+    "entry_sha256_lf_normalized": "1eb60a7aaf65c23cb2a00826c709d8d9152d193133aa55654e3e543133e2e70a",
     "lr_audit_plugin_path": "scripts/qwen36_0805_fixed_stage_lr_plugin.py",
-    "lr_audit_plugin_sha256_lf_normalized": "d29ce5ead91ed45f58b516afe733fa078a8b27df2ff96a111708ba0609b25763",
+    "lr_audit_plugin_sha256_lf_normalized": "e6af0eb85f16124c3ec5b09e660e7786b5a92fb805b3e5ffac709bac89f74ce4",
     "shuffle_each_epoch": true,
     "resume_chain": "stage 1 starts from the base model; stages 2..5 resume the complete prior checkpoint with cumulative num_train_epochs=2..5 and the matching endpoint schedule",
-    "learning_rate_enforcement": "the callback overwrites optimizer and scheduler LR state after resume, reapplies it at every optimizer step, records train/epoch/step/log events, and fails on any target mismatch",
+    "learning_rate_enforcement": "the callback overwrites optimizer and scheduler LR state after resume on every DDP rank, reapplies it at every optimizer step, fails on any target mismatch, and only rank zero appends train/epoch/step/log audit events",
     "endpoint_group_exposures_per_query_per_epoch": 2,
     "endpoint_path_rotation_coverage": "all retained train paths appear across the five schedules; summary, stop, and decision always share one selected path and within-query path exposure differs by at most one",
-    "checkpoint_policy": "evaluate and save at every epoch; retain all five; do not auto-select solely by eval loss",
-    "checkpoint_agent_selection": {
-      "case_ids": [
-        12,
-        20,
-        38,
-        71,
-        86,
-        100
-      ],
-      "repeats_per_case_per_checkpoint": 2,
-      "reasoning_effort": "high",
-      "ranking": [
-        "strict_accuracy_desc",
-        "model_hard_timeout_asc",
-        "average_duration_asc",
-        "sft_eval_loss_asc",
-        "epoch_asc"
-      ]
+    "checkpoint_policy": "evaluate and save at every epoch; retain all five; eval loss is diagnostic only; final Agent validation always uses the epoch-3 checkpoint",
+    "checkpoint_selection": {
+      "strategy": "fixed_epoch",
+      "epoch": 3,
+      "agent_selection": false,
+      "eval_loss_selection": false
     },
     "final_agent_validation": {
       "case_ids": [
@@ -462,8 +461,7 @@
       ],
       "repeats_per_case": 5,
       "total_attempts": 60,
-      "reuse_selected_checkpoint_selection_attempts": 12,
-      "new_attempts_after_checkpoint_selection": 48
+      "new_attempts": 60
     },
     "infrastructure_failures_and_interruptions": "excluded from samples and denominators"
   },
