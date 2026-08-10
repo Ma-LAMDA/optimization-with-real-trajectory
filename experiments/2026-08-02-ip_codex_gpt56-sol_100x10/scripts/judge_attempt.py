@@ -13,7 +13,7 @@ from typing import Any
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / "scripts"))
 
-from final_answer_scoring import parse_final_answer
+from final_answer_scoring import SCORING_POLICY_VERSION, parse_final_answer
 
 
 
@@ -108,6 +108,7 @@ def main() -> int:
     correct = bool(parsed_ok and predicted == gold)
     payload = {
         "schema_version": "ip-distill-judgment.v1",
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         "judge_status": "completed",
         "parsed": parsed_ok,
         "parse_status": parse_status,

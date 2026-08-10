@@ -3,6 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+source "${SCRIPT_DIR}/agent_validation_retry_policy.sh"
 
 PYTHON_BIN="${PYTHON_BIN:-/root/miniconda3/bin/python}"
 CODEX_BIN="${CODEX_BIN:-/usr/local/bin/codex}"
@@ -30,6 +31,8 @@ MODEL_METADATA_SMOKE_TIMEOUT_SECONDS="${MODEL_METADATA_SMOKE_TIMEOUT_SECONDS:-30
 # chat template to close the <think> block before generation.
 REASONING_EFFORT="${REASONING_EFFORT:-high}"
 INFRA_MAX_RETRIES="${INFRA_MAX_RETRIES:-3}"
+EARLY_STOP_ENABLED="${EARLY_STOP_ENABLED:-1}"
+EARLY_STOP_PHASE="${EARLY_STOP_PHASE:-$(dirname "${OUTPUT_ROOT}")}"
 
 if [[ ! "${REPEATS}" =~ ^[1-9][0-9]*$ ]]; then
   echo "REPEATS must be a positive integer." >&2
@@ -55,6 +58,10 @@ if [[ ! "${INFRA_MAX_RETRIES}" =~ ^[0-9]+$ ]]; then
   echo "INFRA_MAX_RETRIES must be a non-negative integer." >&2
   exit 1
 fi
+if [[ ! "${EARLY_STOP_ENABLED}" =~ ^[01]$ ]]; then
+  echo "EARLY_STOP_ENABLED must be 0 or 1." >&2
+  exit 1
+fi
 for path in \
   "${PYTHON_BIN}" \
   "${CODEX_BIN}" \
@@ -63,7 +70,9 @@ for path in \
   "${TEMPLATE}" \
   "${CODEX_MODEL_CATALOG_TEMPLATE}" \
   "${SCRIPT_DIR}/prepare_codex_model_catalog.py" \
-  "${SCRIPT_DIR}/enrich_codex_events_with_reasoning.py"; do
+  "${SCRIPT_DIR}/enrich_codex_events_with_reasoning.py" \
+  "${SCRIPT_DIR}/agent_validation_retry_policy.sh" \
+  "${SCRIPT_DIR}/monitor_agent_validation_early_stop.py"; do
   if [[ ! -e "${path}" ]]; then
     echo "Required path is missing: ${path}" >&2
     exit 1
@@ -189,6 +198,41 @@ trap cleanup_children EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
+start_early_stop_monitor() {
+  # The policy applies to every standard 12x5 Agent validation.  Non-standard
+  # diagnostics do not have a 60-cell ceiling and therefore skip this guard.
+  if [[ "${EARLY_STOP_ENABLED}" != "1" || ${#CASES[@]} -ne 12 || "${REPEATS}" -ne 5 ]]; then
+    return
+  fi
+  local expected_runs
+  expected_runs="$(realpath -m "${EARLY_STOP_PHASE}/runs")"
+  if [[ "$(realpath -m "${OUTPUT_ROOT}")" != "${expected_runs}" ]]; then
+    echo "12x5 early-stop guard requires OUTPUT_ROOT=EARLY_STOP_PHASE/runs." >&2
+    exit 1
+  fi
+  command -v setsid >/dev/null || {
+    echo "setsid is required for the independent early-stop guard." >&2
+    exit 1
+  }
+  mkdir -p "${EARLY_STOP_PHASE}/control"
+  local launcher_pid_file="${EARLY_STOP_PHASE}/control/agent_launcher.pid"
+  printf '%s\n' "$$" >"${launcher_pid_file}"
+  setsid "${PYTHON_BIN}" "${SCRIPT_DIR}/monitor_agent_validation_early_stop.py" \
+    --phase "${EARLY_STOP_PHASE}" \
+    --run-prefix "${RUN_PREFIX}" \
+    --dataset "${DATASET}" \
+    --launcher-pid-file "${launcher_pid_file}" \
+    --repo-scripts "${SCRIPT_DIR}" \
+    --case-ids "${CASES[@]}" \
+    --repeats "${REPEATS}" \
+    --timeout-seconds "${TIMEOUT_SECONDS}" \
+    --minimum-full-rounds 3 \
+    --minimum-wrong-count 30 \
+    --expected-launcher-fragment "run_agent_validation_resilient.sh" \
+    >>"${EARLY_STOP_PHASE}/control/early_stop_monitor.log" 2>&1 &
+  log "early-stop monitor started pid=$! policy=3-full-rounds-and-30-effective-wrong"
+}
+
 manifest_status() {
   "${PYTHON_BIN}" - "$1" <<'PY'
 import json
@@ -203,12 +247,21 @@ PY
 
 retryable_infrastructure_failure() {
   local run_root="$1"
-  "${PYTHON_BIN}" - "${run_root}" <<'PY'
+  local stderr_log="${2:-}"
+  "${PYTHON_BIN}" - "${run_root}" "${stderr_log}" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 root = Path(sys.argv[1])
+stderr_path = Path(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] else None
+if stderr_path and stderr_path.is_file():
+    stderr = stderr_path.read_text(encoding="utf-8", errors="replace")
+    if "failed to parse function arguments" in stderr:
+        # The model emitted an invalid tool call.  This is a model-terminal
+        # diagnostic, not retryable infrastructure.  Accuracy is determined
+        # solely from any final answer preserved by the attempt.
+        raise SystemExit(1)
 manifest_path = root / "manifest.json"
 try:
     manifest = json.load(manifest_path.open(encoding="utf-8"))
@@ -236,8 +289,8 @@ for path in metadata_paths:
         raise SystemExit(0)
 
 # Exit code 0 plus turn completion and no infrastructure errors means the
-# model itself failed to produce a valid final answer.  That is a scored wrong
-# answer and must never be retried into a more favorable sample.
+# model itself reached a terminal.  Its preserved final answer alone determines
+# correctness; a missing/invalid final answer is wrong and is not resampled.
 last = json.load(metadata_paths[-1].open(encoding="utf-8"))
 event_counts = last.get("event_type_counts") or {}
 if last.get("exit_code") == 0 and event_counts.get("turn.completed", 0) > 0:
@@ -262,12 +315,18 @@ run_one() {
   local archive_root=""
 
   if (( retry_count == 0 )); then
-    retry_count="$(find "${OUTPUT_ROOT}" -maxdepth 1 -type d \
-      -name "${run_name}.infra_failed_*" 2>/dev/null | wc -l)"
+    retry_count="$(agent_validation_retry_archive_count "${OUTPUT_ROOT}" "${run_name}")"
   fi
 
   if [[ -f "${timeout_marker}" ]]; then
-    log "skip timeout case=${case_id} repeat=${repeat}"
+    if (( retry_count >= INFRA_MAX_RETRIES )); then
+      log "timeout retries exhausted case=${case_id} repeat=${repeat} retries=${retry_count}"
+      return
+    fi
+    archive_root="$(agent_validation_archive_timeout "${run_root}")"
+    retry_count=$((retry_count + 1))
+    log "archive timeout case=${case_id} repeat=${repeat} retry=${retry_count}/${INFRA_MAX_RETRIES} archive=${archive_root}"
+    run_one "${case_id}" "${repeat}" "${retry_count}"
     return
   fi
   if [[ -f "${run_root}/manifest.json" ]]; then
@@ -276,7 +335,7 @@ run_one() {
       log "skip succeeded case=${case_id} repeat=${repeat}"
       return
     elif [[ "${prior_status}" == "failed" || "${prior_status}" == "interrupted" ]]; then
-      if ! retryable_infrastructure_failure "${run_root}"; then
+      if ! retryable_infrastructure_failure "${run_root}" "${stderr_log}"; then
         log "skip terminal model failure case=${case_id} repeat=${repeat} status=${prior_status}"
         return
       fi
@@ -370,9 +429,19 @@ run_one() {
   fi
   mkdir -p "${run_root}"
   printf '%s\n' "${rc}" >"${run_root}/.runner_exit_code"
+  if grep -Fq 'failed to parse function arguments' "${stderr_log}" 2>/dev/null; then
+    touch "${run_root}/.model_protocol_failure"
+  fi
   log "end case=${case_id} repeat=${repeat} rc=${rc} timeout=${timed_out} wall_seconds=$(($(date +%s)-started))"
-  if (( rc != 0 && timed_out == 0 && retry_count < INFRA_MAX_RETRIES )) \
-    && retryable_infrastructure_failure "${run_root}"; then
+  if (( timed_out == 1 && retry_count < INFRA_MAX_RETRIES )); then
+    archive_root="$(agent_validation_archive_timeout "${run_root}")"
+    retry_count=$((retry_count + 1))
+    log "retry timeout case=${case_id} repeat=${repeat} retry=${retry_count}/${INFRA_MAX_RETRIES} archive=${archive_root}"
+    run_one "${case_id}" "${repeat}" "${retry_count}"
+  elif (( timed_out == 1 )); then
+    log "timeout retries exhausted case=${case_id} repeat=${repeat} retries=${retry_count}"
+  elif (( rc != 0 && retry_count < INFRA_MAX_RETRIES )) \
+    && retryable_infrastructure_failure "${run_root}" "${stderr_log}"; then
     archive_root="${run_root}.infra_failed_$(date -u +%Y%m%dT%H%M%S%NZ)"
     mv -- "${run_root}" "${archive_root}"
     retry_count=$((retry_count + 1))
@@ -383,6 +452,7 @@ run_one() {
   fi
 }
 
+start_early_stop_monitor
 log "Agent validation start prefix=${RUN_PREFIX} cases=${CASE_IDS} repeats=${REPEATS} topology=tp2x1/concurrency2 thinking=enabled raw_reasoning=captured reasoning_effort=${REASONING_EFFORT}"
 for repeat in $(seq 1 "${REPEATS}"); do
   # Keep two runner slots occupied continuously.  The previous implementation

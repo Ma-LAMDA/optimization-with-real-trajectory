@@ -19,7 +19,12 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from final_answer_scoring import expected_options, parse_final_answer
+from final_answer_scoring import (
+    SCORING_POLICY_VERSION,
+    accepted_options,
+    require_scoring_policy_version,
+    score_final_answer,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -35,21 +40,6 @@ def json_cell(value: str | None) -> Any:
         return json.loads(value or "null")
     except json.JSONDecodeError:
         return None
-
-
-def scoring_options(case_id: int, expected: Any) -> list[list[str]]:
-    options = expected_options(expected)
-    if (
-        73 <= case_id <= 86
-        and len(options) >= 2
-        and len(options[0]) == 1
-        and len(options[1]) == 1
-    ):
-        answer_a, answer_b = options[0][0], options[1][0]
-        for option in ([answer_a, answer_b], [answer_b, answer_a]):
-            if option not in options:
-                options.append(option)
-    return options
 
 
 def locate_final_answer(repo: Path, csv_path: Path, artifact: str) -> Path | None:
@@ -117,28 +107,30 @@ def rescore_attempts(repo: Path, path: Path) -> dict[str, Any]:
     for row in rows:
         case_id = int(row.get("case_id") or 0)
         expected = json_cell(row.get("expected"))
-        options = scoring_options(case_id, expected)
-        prediction = json_cell(row.get("prediction"))
-        source = "archived_prediction"
-        if prediction is None:
-            final_path = locate_final_answer(repo, path, row.get("artifact_dir") or "")
-            if final_path:
-                parsed = parse_final_answer(
-                    final_path.read_text(encoding="utf-8", errors="replace"), options
+        final_path = locate_final_answer(repo, path, row.get("artifact_dir") or "")
+        if final_path:
+            scored = score_final_answer(
+                final_path.read_text(encoding="utf-8", errors="replace"),
+                expected,
+                case_id=case_id,
+            )
+            prediction = scored.prediction
+            source = scored.source
+            is_correct = scored.correct
+            if scored.recovered:
+                recovered.append(
+                    {
+                        "case_id": case_id,
+                        "repeat": int(row.get("repeat") or 0),
+                        "source": source,
+                        "artifact": final_path.as_posix(),
+                    }
                 )
-                prediction = parsed.value
-                source = parsed.source
-                if parsed.recovered:
-                    recovered.append(
-                        {
-                            "case_id": case_id,
-                            "repeat": int(row.get("repeat") or 0),
-                            "source": source,
-                            "artifact": final_path.as_posix(),
-                        }
-                    )
+        else:
+            prediction = None
+            source = "missing_raw_final_answer"
+            is_correct = False
         was_correct = bool_cell(row.get("correct"))
-        is_correct = isinstance(prediction, list) and prediction in options
         original.append(was_correct)
         rescored.append(is_correct)
         status = str(row.get("runner_status") or row.get("status") or "").lower()
@@ -169,6 +161,18 @@ def rescore_attempts(repo: Path, path: Path) -> dict[str, Any]:
     }
 
 
+def case_id_from_identifier(value: Any) -> int | None:
+    """Extract a question number from legacy numeric or semantic sample IDs."""
+
+    if isinstance(value, int) and not isinstance(value, bool):
+        return value
+    text = str(value or "").strip()
+    if text.isdecimal():
+        return int(text)
+    match = re.search(r"(?:^|[^A-Za-z0-9])q0*(\d+)(?:_|$)", text, re.I)
+    return int(match.group(1)) if match else None
+
+
 def rescore_predictions(path: Path) -> dict[str, Any]:
     rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
     original: list[bool] = []
@@ -177,14 +181,20 @@ def rescore_predictions(path: Path) -> dict[str, Any]:
     recovered: list[dict[str, Any]] = []
     for row in rows:
         expected = row.get("expected_result_items")
-        prediction = row.get("actual_result_items")
-        if prediction is None and isinstance(row.get("response_text"), str):
-            parsed = parse_final_answer(row["response_text"], expected)
-            prediction = sorted(set(parsed.value)) if parsed.value is not None else None
-            if parsed.recovered:
-                recovered.append({"id": row.get("id"), "source": parsed.source})
+        case_id = case_id_from_identifier(row.get("id"))
+        response_text = row.get("response_text")
+        if isinstance(response_text, str):
+            scored = score_final_answer(response_text, expected, case_id=case_id)
+            prediction = scored.prediction
+            if scored.recovered:
+                recovered.append({"id": row.get("id"), "source": scored.source})
+            is_correct = scored.correct
+        else:
+            require_scoring_policy_version(row)
+            prediction = row.get("actual_result_items")
+            is_correct = bool(row.get("exact_match"))
         original.append(bool(row.get("exact_match")))
-        rescored.append(prediction == expected)
+        rescored.append(is_correct)
         effective.append(row.get("status") == "completed")
     return {
         "kind": "sft_validation_predictions",
@@ -211,13 +221,16 @@ def rescore_judgment(repo: Path, path: Path) -> tuple[bool, bool, bool]:
     if isinstance(expected, str):
         expected = json_cell(expected)
     try:
-        options = scoring_options(case_id, expected)
+        accepted_options(expected, case_id)
     except TypeError:
         original = bool(judgment.get("correct"))
         return original, original, False
-    parsed = parse_final_answer(answer.read_text(encoding="utf-8", errors="replace"), options)
-    rescored = parsed.value in options if parsed.value is not None else False
-    return bool(judgment.get("correct")), rescored, parsed.recovered
+    scored = score_final_answer(
+        answer.read_text(encoding="utf-8", errors="replace"),
+        expected,
+        case_id=case_id,
+    )
+    return bool(judgment.get("correct")), scored.correct, scored.recovered
 
 
 def main() -> None:
@@ -273,6 +286,7 @@ def main() -> None:
 
     payload = {
         "schema_version": "recoverable-final-answer-rescore.v1",
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "repository_head": subprocess.check_output(
             ["git", "-C", str(repo), "rev-parse", "HEAD"], text=True
@@ -281,7 +295,7 @@ def main() -> None:
         "rescore_script_sha256": sha256(Path(__file__)),
         "rule": {
             "strict": "single <result> JSON string list",
-            "recovery": "unique non-conflicting fenced exact match to an accepted answer",
+            "recovery": "exactly one fenced block whose complete answer exactly matches an accepted option",
             "prose_mentions_are_not_recovered": True,
             "q73_q86_inclusive_or": True,
         },

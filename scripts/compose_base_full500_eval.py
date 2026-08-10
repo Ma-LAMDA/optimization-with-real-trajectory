@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from final_answer_scoring import SCORING_POLICY_VERSION, require_scoring_policy_version
+
 from summarize_agent_validation import aggregate, false_counts
 
 
@@ -25,6 +27,7 @@ CURRENT_TOPOLOGY = {
 HISTORICAL_TOPOLOGY = {"worker_count": 8, "request_concurrency": 8}
 
 CSV_FIELDS = [
+    "scoring_policy_version",
     "model",
     "case_id",
     "repeat",
@@ -83,6 +86,7 @@ def parse_json_cell(value: str) -> Any:
 
 
 def validate_primary(payload: dict[str, Any]) -> None:
+    require_scoring_policy_version(payload)
     if payload.get("evaluation_method") != "full_codex_agent_with_tools":
         raise ValueError("primary evaluation method is not full Codex Agent")
     if payload.get("case_ids") != PRIMARY_CASE_IDS:
@@ -96,6 +100,7 @@ def validate_primary(payload: dict[str, Any]) -> None:
 
 
 def validate_replacements(payload: dict[str, Any]) -> None:
+    require_scoring_policy_version(payload)
     replacement_cases = sorted(case_id for case_id, _ in REPLACED_TIMEOUT_SLOTS)
     if payload.get("evaluation_method") != "full_codex_agent_with_tools":
         raise ValueError("replacement evaluation method is not full Codex Agent")
@@ -129,6 +134,9 @@ def load_historical_rows(path: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     with path.open(newline="", encoding="utf-8-sig") as handle:
         for source_row in csv.DictReader(handle):
+            require_scoring_policy_version(
+                source_row.get("scoring_policy_version", "")
+            )
             if source_row.get("model") != "base":
                 continue
             case_id = int(source_row["case_id"])
@@ -301,6 +309,7 @@ def main() -> None:
     overall = aggregate(rows)
     summary: dict[str, Any] = {
         "schema_version": "qwen36-codex-agent-validation.composite.v1",
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         "status": "completed",
         "evaluation_method": "full_codex_agent_with_tools",
         "model": primary["model"],

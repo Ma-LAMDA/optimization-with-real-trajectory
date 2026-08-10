@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from final_answer_scoring import SCORING_POLICY_VERSION, require_scoring_policy_version
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -32,6 +34,7 @@ def main() -> None:
         if not summary_path.is_file():
             continue
         summary = load_object(summary_path)
+        require_scoring_policy_version(summary)
         counts = summary.get("counts")
         rates = summary.get("rates")
         topology = summary.get("topology")
@@ -75,6 +78,7 @@ def main() -> None:
 
     aggregate = {
         "schema_version": "qwen36-sft-validation-sweep.v1",
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         "input_root": input_root.as_posix(),
         "base_target": base["target"] if base is not None else None,
         "targets": targets,

@@ -11,6 +11,15 @@ import statistics
 from pathlib import Path
 from typing import Any
 
+import sys
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
+from final_answer_scoring import (  # noqa: E402
+    SCORING_POLICY_VERSION,
+    require_scoring_policy_version,
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -44,7 +53,8 @@ def percentile_95(values: list[float]) -> float:
 
 
 def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    durations = [float(row["capped_minutes"]) for row in rows]
+    effective = [row for row in rows if row.get("effective_terminal", True)]
+    durations = [float(row["capped_minutes"]) for row in effective]
     mean = statistics.mean(durations)
     deviation = statistics.pstdev(durations)
     return {
@@ -53,8 +63,9 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "model_hard_timeouts": sum(row["timeout"] for row in rows),
         "infrastructure_failures": 0,
         "interruptions_recorded": 0,
-        "strict_correct": sum(row["correct"] for row in rows),
-        "accuracy_percent": 100 * sum(row["correct"] for row in rows) / len(rows),
+        "effective_terminals": len(effective),
+        "strict_correct": sum(row["correct"] for row in effective),
+        "accuracy_percent": 100 * sum(row["correct"] for row in effective) / len(effective),
         "false_positives": sum(row["false_positive_count"] for row in rows),
         "false_negatives": sum(row["false_negative_count"] for row in rows),
         "runtime_minutes": {
@@ -139,6 +150,7 @@ def main() -> None:
     for spec in args.fragments:
         path, offset = parse_fragment_spec(spec)
         payload = load_json(path)
+        require_scoring_policy_version(payload)
         if base is None:
             base = payload
         fragments.append(
@@ -176,6 +188,7 @@ def main() -> None:
 
     summary = {
         "schema_version": "qwen36-codex-agent-partial-validation.v1",
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         "status": "stopped_by_user_after_inflight_attempts",
         "evaluation_method": base["evaluation_method"],
         "model": base["model"],

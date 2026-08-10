@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 import json,sys,statistics,math,csv
 from pathlib import Path
+repo=Path(__file__).resolve().parents[3]
+sys.path.insert(0,str(repo/"scripts"))
+from final_answer_scoring import SCORING_POLICY_VERSION,require_scoring_policy_version
 run=Path(sys.argv[1])
 sel=json.load(open(run/"checkpoint_selection"/"selection_summary.json"))["selected"]
 chosen=json.load(open(sel["summary"]))
 extra=json.load(open(run/"final_validation"/"selected_extra"/"report"/"validation_summary.json"))
 other=json.load(open(run/"final_validation"/"nonselection"/"report"/"validation_summary.json"))
+for payload in (chosen,extra,other):require_scoring_policy_version(payload)
 rows=[]
 for source,offset,used in [(chosen,0,True),(extra,2,False),(other,0,False)]:
     for item in source["runs"]:
@@ -27,10 +31,11 @@ if sum(bool(x["used_for_checkpoint_selection"]) for x in rows)!=12:
 def p95(v):
     return sorted(v)[max(0,math.ceil(.95*len(v))-1)]
 def agg(rs):
-    dur=[float(x["capped_minutes"]) for x in rs];mean=statistics.mean(dur);sd=statistics.pstdev(dur)
+    effective=[x for x in rs if x.get("effective_terminal",True)]
+    dur=[float(x["capped_minutes"]) for x in effective];mean=statistics.mean(dur);sd=statistics.pstdev(dur)
     return {
-      "attempts":len(rs),"strict_correct":sum(bool(x["correct"]) for x in rs),
-      "accuracy_percent":100*sum(bool(x["correct"]) for x in rs)/len(rs),
+      "attempts":len(rs),"effective_terminals":len(effective),"strict_correct":sum(bool(x["correct"]) for x in effective),
+      "accuracy_percent":100*sum(bool(x["correct"]) for x in effective)/len(effective),
       "model_hard_timeouts":sum(bool(x["timeout"]) for x in rs),
       "runner_failures":sum(bool(x.get("infrastructure_failure", x["runner_status"]!="succeeded" and not x.get("timeout"))) for x in rs),
       "model_completed_without_valid_answer":sum(
@@ -50,6 +55,7 @@ selection_cases={12,20,38,71,86,100}
 overall=agg(rows)
 out={
  "schema_version":"0804-final-agent-validation.v1","status":"completed" if overall["runner_failures"]==0 else "incomplete",
+ "scoring_policy_version":SCORING_POLICY_VERSION,
  "selected_checkpoint":sel,"case_ids":expected_cases,"repeats_per_case":5,
  "selection_reused_attempts":12,
  "overall":overall,

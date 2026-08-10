@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import json,sys,statistics
 from pathlib import Path
+repo=Path(__file__).resolve().parents[3]
+sys.path.insert(0,str(repo/"scripts"))
+from final_answer_scoring import SCORING_POLICY_VERSION,require_scoring_policy_version
 run=Path(sys.argv[1])
 losses={1:0.23613213002681732,2:0.16515934467315674,3:0.15305212140083313,4:0.14917336404323578,5:0.1493201106786728}
 expected_cases=[12,20,38,71,86,100]
@@ -8,6 +11,7 @@ rows=[]
 for epoch,step in enumerate((40,80,120,160,200),1):
     p=run/"checkpoint_selection"/f"epoch-{epoch}"/"report"/"validation_summary.json"
     d=json.load(open(p))
+    require_scoring_policy_version(d)
     overall=d["overall"]
     if d.get("status")!="completed" or sorted(d["case_ids"])!=expected_cases:
         raise SystemExit(f"invalid summary for epoch {epoch}: status/cases")
@@ -28,7 +32,7 @@ for epoch,step in enumerate((40,80,120,160,200),1):
     item["selection_key"]=[-item["strict_correct"],item["model_hard_timeouts"],item["mean_runtime_minutes"],item["eval_loss"],item["epoch"]]
     rows.append(item)
 rows.sort(key=lambda x:tuple(x["selection_key"]))
-out={"schema_version":"0804-checkpoint-selection.v1","rule":["strict_accuracy_desc","model_hard_timeouts_asc","mean_runtime_asc","eval_loss_asc","epoch_asc"],"candidates":rows,"selected":rows[0]}
+out={"schema_version":"0804-checkpoint-selection.v1","scoring_policy_version":SCORING_POLICY_VERSION,"rule":["strict_accuracy_desc","model_hard_timeouts_asc","mean_runtime_asc","eval_loss_asc","epoch_asc"],"candidates":rows,"selected":rows[0]}
 p=run/"checkpoint_selection"/"selection_summary.json"
 p.write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
 (run/"checkpoint_selection"/"selected_epoch.txt").write_text(str(rows[0]["epoch"])+"\n")

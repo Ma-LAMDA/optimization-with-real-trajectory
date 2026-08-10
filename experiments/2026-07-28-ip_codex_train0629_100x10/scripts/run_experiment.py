@@ -26,6 +26,8 @@ from typing import Any
 
 EXPERIMENT_ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_ROOT = EXPERIMENT_ROOT.parents[1]
+sys.path.insert(0, str(REPOSITORY_ROOT / "scripts"))
+from final_answer_scoring import require_scoring_policy_version  # noqa: E402
 SCRIPTS_DIR = EXPERIMENT_ROOT / "scripts"
 RUNTIME_DIR = EXPERIMENT_ROOT / "runtime"
 REPORT_DIR = EXPERIMENT_ROOT / "results" / "report"
@@ -1148,6 +1150,7 @@ def execute_attempt(task: dict[str, Any]) -> dict[str, Any]:
             outcome = "infrastructure_failure"
         else:
             judgment = load_json(attempt_dir / "judgment.json")
+            require_scoring_policy_version(judgment)
             if judgment.get("correct") is True:
                 outcome = "correct"
             elif judgment.get("parsed") is True:
@@ -1461,7 +1464,10 @@ def validate_integrity(state: dict[str, Any]) -> dict[str, Any]:
             attempt_dir = EXPERIMENT_ROOT / attempt_path
             judgment_path = attempt_dir / "judgment.json"
             metadata_path = attempt_dir / "metadata.json"
-            if not judgment_path.exists() or load_json(judgment_path).get("correct") is not True:
+            stored_judgment = load_json(judgment_path) if judgment_path.exists() else None
+            if stored_judgment is not None:
+                require_scoring_policy_version(stored_judgment)
+            if stored_judgment is None or stored_judgment.get("correct") is not True:
                 accepted_errors.append(f"{attempt_path}: missing positive judgment")
             if not metadata_path.exists() or load_json(metadata_path).get("status") != "accepted":
                 accepted_errors.append(f"{attempt_path}: metadata is not accepted")

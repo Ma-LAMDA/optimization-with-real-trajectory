@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import json
+import re
 import statistics
 import time
 import urllib.error
@@ -13,7 +14,11 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-from final_answer_scoring import parse_final_answer
+from final_answer_scoring import (
+    SCORING_POLICY_VERSION,
+    parse_final_answer,
+    score_final_answer,
+)
 
 LEAK_MARKERS = (
     "tool_call",
@@ -64,8 +69,7 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def parse_result(text: str, expected: list[str] | None = None) -> tuple[list[str] | None, str]:
     parsed = parse_final_answer(text, expected)
-    value = sorted(set(parsed.value)) if parsed.value is not None else None
-    return value, parsed.source
+    return parsed.value, parsed.source
 
 
 def percentile(values: list[float], proportion: float) -> float:
@@ -151,6 +155,7 @@ def request_completion(
     if response is None:
         return {
             "id": identifier,
+            "scoring_policy_version": SCORING_POLICY_VERSION,
             "status": "request_failed",
             "attempts": attempts,
             "error": error,
@@ -166,6 +171,7 @@ def request_completion(
     except (KeyError, IndexError, TypeError) as exc:
         return {
             "id": identifier,
+            "scoring_policy_version": SCORING_POLICY_VERSION,
             "status": "response_malformed",
             "attempts": attempts,
             "error": f"{type(exc).__name__}: {exc}",
@@ -174,7 +180,10 @@ def request_completion(
             "response": response,
         }
 
-    actual, answer_source = parse_result(content, expected)
+    identifier_match = re.search(r"\d+", identifier)
+    case_id = int(identifier_match.group()) if identifier_match else None
+    scored = score_final_answer(content, expected, case_id=case_id)
+    actual, answer_source = scored.prediction, scored.source
     lowered = content.lower()
     leak_hits = sorted(
         marker for marker in LEAK_MARKERS if marker.lower() in lowered
@@ -182,6 +191,7 @@ def request_completion(
     usage = response.get("usage")
     return {
         "id": identifier,
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         "status": "completed",
         "attempts": attempts,
         "duration_seconds": duration,
@@ -191,7 +201,7 @@ def request_completion(
         "format_valid": actual is not None,
         "answer_parse_source": answer_source,
         "format_recovered": answer_source == "recovered_fenced_exact_match",
-        "exact_match": actual == expected,
+        "exact_match": scored.correct,
         "leak_marker_hits": leak_hits,
         "response_text": content,
         "usage": usage if isinstance(usage, dict) else None,
@@ -248,6 +258,7 @@ def main() -> None:
     leak_free = sum(not item.get("leak_marker_hits") for item in completed)
     summary = {
         "schema_version": "qwen36-sft-validation-eval.v1",
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         "git_commit": args.git_commit,
         "checkpoint": args.checkpoint,
         "dataset": dataset.as_posix(),

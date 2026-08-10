@@ -12,7 +12,11 @@ from typing import Any
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / "scripts"))
 
-from final_answer_scoring import parse_final_answer
+from final_answer_scoring import (
+    SCORING_POLICY_VERSION,
+    parse_final_answer,
+    require_scoring_policy_version,
+)
 
 from prune_failed_trajectory_payloads import (
     MANIFEST as PRUNING_MANIFEST,
@@ -296,6 +300,7 @@ def main() -> int:
                 accepted_errors.append({'row_index': row_index, 'success': success_key, 'error': 'missing_artifact'})
                 continue
             judgment = load(judgment_path)
+            require_scoring_policy_version(judgment)
             metadata = load(metadata_path)
             accepted_comparators[str(judgment.get('comparator'))] += 1
             if not judgment.get('correct') or not judgment.get('parsed'):
@@ -375,6 +380,7 @@ def main() -> int:
     }
     audit = {
         'schema_version': 'ip-distill-final-audit.v3',
+        'scoring_policy_version': SCORING_POLICY_VERSION,
         'experiment_root': str(EXPERIMENT),
         'source_path': str(DATASET),
         'source_sha256': source_hash,

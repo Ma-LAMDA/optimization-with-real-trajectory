@@ -12,7 +12,12 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from final_answer_scoring import parse_final_answer
+from final_answer_scoring import (
+    SCORING_POLICY_VERSION,
+    accepted_options,
+    require_scoring_policy_version,
+    score_final_answer,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -36,29 +41,10 @@ def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def expected_options(expected: Any) -> list[list[str]]:
-    if isinstance(expected, list) and all(isinstance(item, str) for item in expected):
-        return [expected]
-    if (
-        isinstance(expected, list)
-        and expected
-        and all(isinstance(option, list) for option in expected)
-        and all(all(isinstance(item, str) for item in option) for option in expected)
-    ):
-        return expected
-    raise TypeError("expected answer must be a JSON list of strings or alternatives")
-
-
-def prediction_matches(prediction: Any, expected: Any) -> bool:
-    return isinstance(prediction, list) and any(
-        prediction == option for option in expected_options(expected)
-    )
-
-
-def false_counts(prediction: Any, expected: Any) -> tuple[int, int]:
+def false_counts(prediction: Any, expected: Any, case_id: int) -> tuple[int, int]:
     prediction_set = set(prediction) if isinstance(prediction, list) else set()
     differences = []
-    for option in expected_options(expected):
+    for option in accepted_options(expected, case_id):
         option_set = set(option)
         differences.append(
             (
@@ -78,7 +64,7 @@ def load_expected(path: Path) -> dict[int, Any]:
             answer = json.loads(row.get("answer", "null"))
             if not isinstance(identifier, int):
                 raise ValueError(f"{path}:{line_number}: invalid id or answer")
-            expected_options(answer)
+            accepted_options(answer, identifier)
             rows[identifier] = answer
     return rows
 
@@ -178,8 +164,8 @@ def parse_attempt(
         if answer_path and answer_path.is_file()
         else ""
     )
-    parsed_answer = parse_final_answer(answer_text, expected)
-    prediction = parsed_answer.value
+    scored_answer = score_final_answer(answer_text, expected, case_id=case_id)
+    prediction = scored_answer.prediction
     runner_status = manifest.get(
         "status",
         "timeout" if timeout else "failed_before_manifest",
@@ -198,18 +184,40 @@ def parse_attempt(
         and not metadata.get("invalid_jsonl_events")
         and not metadata.get("launch_error")
     )
-    model_completed_without_valid_answer = completed_model_turn and prediction is None
+    model_protocol_failure = (root / ".model_protocol_failure").is_file() or any(
+        "failed to parse function arguments"
+        in path.read_text(encoding="utf-8", errors="replace")
+        for path in slot.glob("attempt_*/stderr.log")
+        if path.is_file()
+    )
+    has_valid_final_answer = prediction is not None
+    model_completed_without_valid_answer = (
+        (runner_status == "succeeded" or completed_model_turn or model_protocol_failure)
+        and not has_valid_final_answer
+    )
     infrastructure_failure = (
         runner_status != "succeeded"
         and not timeout
+        and not has_valid_final_answer
         and not completed_model_turn
+        and not model_protocol_failure
     )
-    correct = (
-        (runner_status == "succeeded" or completed_model_turn)
-        and not timeout
-        and prediction_matches(prediction, expected)
+    effective_terminal = (
+        not timeout
+        and not infrastructure_failure
+        and (
+            has_valid_final_answer
+            or runner_status == "succeeded"
+            or completed_model_turn
+            or model_protocol_failure
+        )
     )
-    false_positive_count, false_negative_count = false_counts(prediction, expected)
+    # Accuracy is intentionally final-answer-only.  Tool-call/router/protocol
+    # diagnostics remain archived, but never override a valid final answer.
+    correct = effective_terminal and scored_answer.correct
+    false_positive_count, false_negative_count = false_counts(
+        prediction, expected, case_id
+    )
     events = event_metrics(slot)
     tokens = token_metrics(slot)
     return {
@@ -217,6 +225,10 @@ def parse_attempt(
         "case_id": case_id,
         "repeat": repeat,
         "runner_status": runner_status,
+        "scoring_policy_version": SCORING_POLICY_VERSION,
+        "effective_terminal": effective_terminal,
+        "model_protocol_failure": model_protocol_failure,
+        "has_valid_final_answer": has_valid_final_answer,
         "model_completed_without_valid_answer": model_completed_without_valid_answer,
         "infrastructure_failure": infrastructure_failure,
         "duration_seconds": round(duration, 3),
@@ -224,7 +236,11 @@ def parse_attempt(
         "timeout": timeout,
         "completed_within_limit": not timeout,
         "correct": correct,
-        "result": "timeout" if timeout else ("correct" if correct else "wrong"),
+        "result": (
+            "timeout" if timeout else
+            "infrastructure_failure" if infrastructure_failure else
+            "correct" if correct else "wrong"
+        ),
         "false_positive_count": false_positive_count,
         "false_negative_count": false_negative_count,
         "events": events.get("events", 0),
@@ -237,8 +253,8 @@ def parse_attempt(
         "output_tokens": tokens.get("output_tokens", 0),
         "reasoning_output_tokens": tokens.get("reasoning_output_tokens", 0),
         "prediction": prediction,
-        "prediction_source": parsed_answer.source,
-        "format_recovered": parsed_answer.recovered,
+        "prediction_source": scored_answer.source,
+        "format_recovered": scored_answer.recovered,
         "expected": expected,
         "artifact_dir": str(root),
     }
@@ -250,47 +266,52 @@ def percentile_95(values: list[float]) -> float:
 
 
 def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    durations = [float(row["capped_minutes"]) for row in rows]
-    mean = statistics.mean(durations)
-    deviation = statistics.pstdev(durations)
+    effective = [row for row in rows if row.get("effective_terminal", True)]
+    durations = [float(row["capped_minutes"]) for row in effective]
+    mean = statistics.mean(durations) if durations else None
+    deviation = statistics.pstdev(durations) if durations else None
+    strict_correct = sum(bool(row["correct"]) for row in effective)
     return {
         "attempts": len(rows),
-        "completed_within_limit": sum(row["completed_within_limit"] for row in rows),
+        "effective_terminals": len(effective),
+        "effective_model_wrong": len(effective) - strict_correct,
+        "completed_within_limit": len(effective),
         "timeouts": sum(row["timeout"] for row in rows),
         "runner_failures": sum(
             row["infrastructure_failure"] for row in rows
         ),
-        "strict_correct": sum(row["correct"] for row in rows),
-        "accuracy_percent": 100 * sum(row["correct"] for row in rows) / len(rows),
-        "false_positives": sum(row["false_positive_count"] for row in rows),
-        "false_negatives": sum(row["false_negative_count"] for row in rows),
+        "strict_correct": strict_correct,
+        "accuracy_percent": 100 * strict_correct / len(effective) if effective else None,
+        "false_positives": sum(row["false_positive_count"] for row in effective),
+        "false_negatives": sum(row["false_negative_count"] for row in effective),
         "runtime_minutes": {
             "mean": mean,
-            "median": statistics.median(durations),
-            "p95": percentile_95(durations),
+            "median": statistics.median(durations) if durations else None,
+            "p95": percentile_95(durations) if durations else None,
             "population_stddev": deviation,
-            "coefficient_of_variation": deviation / mean if mean else None,
+            "coefficient_of_variation": deviation / mean if mean and deviation is not None else None,
         },
-        "events": sum(row["events"] for row in rows),
-        "commands": sum(row["commands"] for row in rows),
-        "agent_messages": sum(row["agent_messages"] for row in rows),
-        "reasoning_items": sum(row["reasoning_items"] for row in rows),
-        "reasoning_characters": sum(row["reasoning_characters"] for row in rows),
+        "events": sum(row["events"] for row in effective),
+        "commands": sum(row["commands"] for row in effective),
+        "agent_messages": sum(row["agent_messages"] for row in effective),
+        "reasoning_items": sum(row["reasoning_items"] for row in effective),
+        "reasoning_characters": sum(row["reasoning_characters"] for row in effective),
         "attempts_with_captured_reasoning": sum(
-            row["reasoning_items"] > 0 for row in rows
+            row["reasoning_items"] > 0 for row in effective
         ),
-        "input_tokens": sum(row["input_tokens"] for row in rows),
-        "cached_input_tokens": sum(row["cached_input_tokens"] for row in rows),
-        "output_tokens": sum(row["output_tokens"] for row in rows),
-        "reasoning_output_tokens": sum(row["reasoning_output_tokens"] for row in rows),
+        "input_tokens": sum(row["input_tokens"] for row in effective),
+        "cached_input_tokens": sum(row["cached_input_tokens"] for row in effective),
+        "output_tokens": sum(row["output_tokens"] for row in effective),
+        "reasoning_output_tokens": sum(row["reasoning_output_tokens"] for row in effective),
         "attempts_with_reasoning_output": sum(
-            row["reasoning_output_tokens"] > 0 for row in rows
+            row["reasoning_output_tokens"] > 0 for row in effective
         ),
     }
 
 
 def baseline_rows(path: Path, case_ids: list[int]) -> list[dict[str, Any]]:
     payload = load_json(path)
+    require_scoring_policy_version(payload)
     if payload.get("cases") != case_ids:
         raise ValueError("baseline cases differ from candidate cases")
     rows = [row for row in payload.get("runs", []) if row.get("condition") == "tp2x1"]
@@ -300,11 +321,15 @@ def baseline_rows(path: Path, case_ids: list[int]) -> list[dict[str, Any]]:
     for row in rows:
         prediction = row.get("prediction")
         expected = row.get("expected") or []
-        false_positive_count, false_negative_count = false_counts(prediction, expected)
+        case_id = int(row["case_id"])
+        false_positive_count, false_negative_count = false_counts(
+            prediction, expected, case_id
+        )
         normalized.append(
             {
                 **row,
                 "completed_within_limit": row.get("completed_within_60m", not row.get("timeout")),
+                "effective_terminal": not row.get("timeout"),
                 "runner_failures": 0,
                 "false_positive_count": false_positive_count,
                 "false_negative_count": false_negative_count,
@@ -417,10 +442,15 @@ def main() -> None:
     overall = aggregate(rows)
     summary: dict[str, Any] = {
         "schema_version": "qwen36-codex-agent-validation.v1",
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         # A runner failure is an infrastructure-level incomplete slot, not an
         # incorrect Agent answer.  Keep the row for audit, but force the
         # orchestration layer to retry before accepting this summary.
-        "status": "completed" if overall["runner_failures"] == 0 else "incomplete",
+        "status": (
+            "completed"
+            if overall["effective_terminals"] == len(rows)
+            else "incomplete"
+        ),
         "evaluation_method": "full_codex_agent_with_tools",
         "model": args.model,
         "checkpoint": args.checkpoint,
@@ -451,6 +481,8 @@ def main() -> None:
         "overall": overall,
         "counts": {
             "attempts": overall["attempts"],
+            "effective_terminals": overall["effective_terminals"],
+            "effective_model_wrong": overall["effective_model_wrong"],
             "strict_correct": overall["strict_correct"],
             "timeouts": overall["timeouts"],
             "runner_failures": overall["runner_failures"],
