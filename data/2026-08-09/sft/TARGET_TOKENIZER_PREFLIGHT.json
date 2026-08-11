@@ -1,0 +1,704 @@
+{
+  "schema_version": "0809-target-tokenizer-loss-mask-preflight.v1",
+  "status": "passed",
+  "created_at_utc": "2026-08-11T12:52:21.620614+00:00",
+  "resolved_data_root": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09",
+  "python": "3.12.3",
+  "ms_swift_version": "4.4.2",
+  "transformers_version": "5.12.1",
+  "model_path": "/root/autodl-tmp/qwen3.6-27b/models/Qwen3.6-27B",
+  "model_identity_files": {
+    "tokenizer.json": {
+      "bytes": 12807982,
+      "sha256_raw": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+    },
+    "tokenizer_config.json": {
+      "bytes": 16718,
+      "sha256_raw": "5186f0defcd7f232382c7f0aebcd2252d073bb921ab240e407b7ae8745d2b29b"
+    },
+    "chat_template.jinja": {
+      "bytes": 7764,
+      "sha256_raw": "e84f32a23fdda27689f868aa4a1a5621f41133e51a48d7f3efcbea2839574259"
+    },
+    "config.json": {
+      "bytes": 4308,
+      "sha256_raw": "69db4eb7196bc8190813231b3018ca05d8c2e3abc7b1af19d55c157af44a9d9c"
+    },
+    "generation_config.json": {
+      "bytes": 202,
+      "sha256_raw": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e"
+    },
+    "model.safetensors.index.json": {
+      "bytes": 112216,
+      "sha256_raw": "a8ad2c26fb707ff8c245806315b03e3b4b74595528492423af5dae0ce39b4d9b"
+    }
+  },
+  "template": {
+    "mode": "train",
+    "loss_scale": "default",
+    "is_binary_loss_scale": false,
+    "max_length_during_encode": null,
+    "release_max_length": 16384
+  },
+  "datasets": {
+    "train_semantic_pool": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_train_semantic_pool.jsonl",
+      "sha256_lf_normalized": "01e031df6c3cd8f69f4571163ca008891bfc4f87eecb7a9847ac7362f0c3d497",
+      "bytes": 20706273,
+      "rows": 1151,
+      "token_length": {
+        "min": 1227,
+        "median": 2527,
+        "p95": 4022,
+        "p99": 4542,
+        "max": 5235
+      },
+      "supervised_tokens": 312247,
+      "weighted_supervised_token_sum": 102247.45001814,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 26936,
+        "0.06666667": 6405,
+        "0.075": 980,
+        "0.1": 69299,
+        "0.15": 1550,
+        "0.2": 15527,
+        "0.25": 27650,
+        "0.3": 11416,
+        "0.33333333": 1041,
+        "0.35": 41728,
+        "0.4": 27749,
+        "0.5": 3327,
+        "0.6": 65516,
+        "0.65": 1007,
+        "1": 12116
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "counterfactual_action_selection": 23306.1,
+        "endpoint_bundle": 10631.90001788,
+        "hypothesis_elimination": 8348.7,
+        "hypothesis_elimination_replay": 637.4,
+        "planning": 13582.4,
+        "post_closure_stop_repair": 2167.05,
+        "reasoning": 43573.9
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 4269.150006,
+        "VRRP Master角色规划不合理": 6767.0,
+        "VRRP工作在非抢占模式": 3455.7500062,
+        "unknown": 65614.4,
+        "全局STP未使能": 2941.15000568,
+        "存在IP路由环路": 9852.3,
+        "存在MPLS标签环路": 9347.7
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "counterfactual_action_selection||STP BPDU被过滤": 2282.1,
+        "counterfactual_action_selection||VRRP Master角色规划不合理": 5151.7,
+        "counterfactual_action_selection||VRRP工作在非抢占模式": 1443.95,
+        "counterfactual_action_selection||全局STP未使能": 1356.15,
+        "counterfactual_action_selection||存在IP路由环路": 6717.7,
+        "counterfactual_action_selection||存在MPLS标签环路": 6354.5,
+        "endpoint_bundle||STP BPDU被过滤": 949.000006,
+        "endpoint_bundle||VRRP Master角色规划不合理": 1615.3,
+        "endpoint_bundle||VRRP工作在非抢占模式": 1032.8000062,
+        "endpoint_bundle||全局STP未使能": 907.00000568,
+        "endpoint_bundle||存在IP路由环路": 3134.6,
+        "endpoint_bundle||存在MPLS标签环路": 2993.2,
+        "hypothesis_elimination_replay||unknown": 637.4,
+        "hypothesis_elimination||STP BPDU被过滤": 89.0,
+        "hypothesis_elimination||unknown": 7820.7,
+        "hypothesis_elimination||全局STP未使能": 439.0,
+        "planning||unknown": 13582.4,
+        "post_closure_stop_repair||STP BPDU被过滤": 949.05,
+        "post_closure_stop_repair||VRRP工作在非抢占模式": 979.0,
+        "post_closure_stop_repair||全局STP未使能": 239.0,
+        "reasoning||unknown": 43573.9
+      }
+    },
+    "validation": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_validation.jsonl",
+      "sha256_lf_normalized": "93456db24466c15f4fe0f985c99eb211daf79a3d26fa35dd32984fcf966ff3de",
+      "bytes": 3804227,
+      "rows": 245,
+      "token_length": {
+        "min": 1221,
+        "median": 3220,
+        "p95": 4531,
+        "p99": 4905,
+        "max": 5635
+      },
+      "supervised_tokens": 49658,
+      "weighted_supervised_token_sum": 14040.40000001,
+      "supervised_token_count_by_loss_scale": {
+        "0.1": 12656,
+        "0.2": 24780,
+        "0.4": 2696,
+        "0.6": 6964,
+        "1": 2562
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "decision": 1385.0,
+        "decision_ready": 2352.6,
+        "evidence_summary": 2763.4,
+        "hypothesis_elimination": 1284.4,
+        "planning": 1573.6,
+        "reasoning": 4681.4
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "unknown": 14040.4
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "decision_ready||unknown": 2352.6,
+        "decision||unknown": 1385.0,
+        "evidence_summary||unknown": 2763.4,
+        "hypothesis_elimination||unknown": 1284.4,
+        "planning||unknown": 1573.6,
+        "reasoning||unknown": 4681.4
+      }
+    },
+    "core_epoch_01": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_01.jsonl",
+      "sha256_lf_normalized": "93a82a059ad6c28360cbc5d8026ab6e06c2c9037018eace92dbd5495b19e1354",
+      "bytes": 18095379,
+      "rows": 1035,
+      "token_length": {
+        "min": 1227,
+        "median": 2424,
+        "p95": 3950,
+        "p99": 4432,
+        "max": 5109
+      },
+      "supervised_tokens": 264347,
+      "weighted_supervised_token_sum": 91615.55000009,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 25056,
+        "0.1": 62972,
+        "0.25": 27330,
+        "0.35": 41728,
+        "0.4": 27749,
+        "0.5": 2849,
+        "0.6": 65516,
+        "0.65": 1007,
+        "1": 10140
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "counterfactual_action_selection": 23306.1,
+        "hypothesis_elimination": 8348.7,
+        "hypothesis_elimination_replay": 637.4,
+        "planning": 13582.4,
+        "post_closure_stop_repair": 2167.05,
+        "reasoning": 43573.9
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 3320.15,
+        "VRRP Master角色规划不合理": 5151.7,
+        "VRRP工作在非抢占模式": 2422.95,
+        "unknown": 65614.4,
+        "全局STP未使能": 2034.15,
+        "存在IP路由环路": 6717.7,
+        "存在MPLS标签环路": 6354.5
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "counterfactual_action_selection||STP BPDU被过滤": 2282.1,
+        "counterfactual_action_selection||VRRP Master角色规划不合理": 5151.7,
+        "counterfactual_action_selection||VRRP工作在非抢占模式": 1443.95,
+        "counterfactual_action_selection||全局STP未使能": 1356.15,
+        "counterfactual_action_selection||存在IP路由环路": 6717.7,
+        "counterfactual_action_selection||存在MPLS标签环路": 6354.5,
+        "hypothesis_elimination_replay||unknown": 637.4,
+        "hypothesis_elimination||STP BPDU被过滤": 89.0,
+        "hypothesis_elimination||unknown": 7820.7,
+        "hypothesis_elimination||全局STP未使能": 439.0,
+        "planning||unknown": 13582.4,
+        "post_closure_stop_repair||STP BPDU被过滤": 949.05,
+        "post_closure_stop_repair||VRRP工作在非抢占模式": 979.0,
+        "post_closure_stop_repair||全局STP未使能": 239.0,
+        "reasoning||unknown": 43573.9
+      }
+    },
+    "endpoint_epoch_01": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_01.jsonl",
+      "sha256_lf_normalized": "617f2268c8275f3baa1f3856046013fcf498a8905386d1d63ece58a2d3fd2126",
+      "bytes": 2642218,
+      "rows": 116,
+      "token_length": {
+        "min": 2089,
+        "median": 3217.5,
+        "p95": 4548,
+        "p99": 5006,
+        "max": 5235
+      },
+      "supervised_tokens": 47900,
+      "weighted_supervised_token_sum": 10631.90001788,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 1880,
+        "0.06666667": 6405,
+        "0.075": 980,
+        "0.1": 6327,
+        "0.15": 1550,
+        "0.2": 15527,
+        "0.25": 320,
+        "0.3": 11416,
+        "0.33333333": 1041,
+        "0.5": 478,
+        "1": 1976
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "endpoint_bundle": 10631.90001788
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 949.000006,
+        "VRRP Master角色规划不合理": 1615.3,
+        "VRRP工作在非抢占模式": 1032.8000062,
+        "全局STP未使能": 907.00000568,
+        "存在IP路由环路": 3134.6,
+        "存在MPLS标签环路": 2993.2
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "endpoint_bundle||STP BPDU被过滤": 949.000006,
+        "endpoint_bundle||VRRP Master角色规划不合理": 1615.3,
+        "endpoint_bundle||VRRP工作在非抢占模式": 1032.8000062,
+        "endpoint_bundle||全局STP未使能": 907.00000568,
+        "endpoint_bundle||存在IP路由环路": 3134.6,
+        "endpoint_bundle||存在MPLS标签环路": 2993.2
+      }
+    },
+    "core_epoch_02": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_02.jsonl",
+      "sha256_lf_normalized": "de4ad8f9c7937faae12e2032133e14638dbab5c263c6ca3e9efac068914c2bb3",
+      "bytes": 18095379,
+      "rows": 1035,
+      "token_length": {
+        "min": 1227,
+        "median": 2424,
+        "p95": 3950,
+        "p99": 4432,
+        "max": 5109
+      },
+      "supervised_tokens": 264347,
+      "weighted_supervised_token_sum": 91615.55000009,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 25056,
+        "0.1": 62972,
+        "0.25": 27330,
+        "0.35": 41728,
+        "0.4": 27749,
+        "0.5": 2849,
+        "0.6": 65516,
+        "0.65": 1007,
+        "1": 10140
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "counterfactual_action_selection": 23306.1,
+        "hypothesis_elimination": 8348.7,
+        "hypothesis_elimination_replay": 637.4,
+        "planning": 13582.4,
+        "post_closure_stop_repair": 2167.05,
+        "reasoning": 43573.9
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 3320.15,
+        "VRRP Master角色规划不合理": 5151.7,
+        "VRRP工作在非抢占模式": 2422.95,
+        "unknown": 65614.4,
+        "全局STP未使能": 2034.15,
+        "存在IP路由环路": 6717.7,
+        "存在MPLS标签环路": 6354.5
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "counterfactual_action_selection||STP BPDU被过滤": 2282.1,
+        "counterfactual_action_selection||VRRP Master角色规划不合理": 5151.7,
+        "counterfactual_action_selection||VRRP工作在非抢占模式": 1443.95,
+        "counterfactual_action_selection||全局STP未使能": 1356.15,
+        "counterfactual_action_selection||存在IP路由环路": 6717.7,
+        "counterfactual_action_selection||存在MPLS标签环路": 6354.5,
+        "hypothesis_elimination_replay||unknown": 637.4,
+        "hypothesis_elimination||STP BPDU被过滤": 89.0,
+        "hypothesis_elimination||unknown": 7820.7,
+        "hypothesis_elimination||全局STP未使能": 439.0,
+        "planning||unknown": 13582.4,
+        "post_closure_stop_repair||STP BPDU被过滤": 949.05,
+        "post_closure_stop_repair||VRRP工作在非抢占模式": 979.0,
+        "post_closure_stop_repair||全局STP未使能": 239.0,
+        "reasoning||unknown": 43573.9
+      }
+    },
+    "endpoint_epoch_02": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_02.jsonl",
+      "sha256_lf_normalized": "c8973c187c99121692e9ed7c254e423b8f93609c98a5b8edc3263d51b2b01c56",
+      "bytes": 2642218,
+      "rows": 116,
+      "token_length": {
+        "min": 2089,
+        "median": 3217.5,
+        "p95": 4548,
+        "p99": 5006,
+        "max": 5235
+      },
+      "supervised_tokens": 47900,
+      "weighted_supervised_token_sum": 10631.90001788,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 1880,
+        "0.06666667": 6405,
+        "0.075": 980,
+        "0.1": 6327,
+        "0.15": 1550,
+        "0.2": 15527,
+        "0.25": 320,
+        "0.3": 11416,
+        "0.33333333": 1041,
+        "0.5": 478,
+        "1": 1976
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "endpoint_bundle": 10631.90001788
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 949.000006,
+        "VRRP Master角色规划不合理": 1615.3,
+        "VRRP工作在非抢占模式": 1032.8000062,
+        "全局STP未使能": 907.00000568,
+        "存在IP路由环路": 3134.6,
+        "存在MPLS标签环路": 2993.2
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "endpoint_bundle||STP BPDU被过滤": 949.000006,
+        "endpoint_bundle||VRRP Master角色规划不合理": 1615.3,
+        "endpoint_bundle||VRRP工作在非抢占模式": 1032.8000062,
+        "endpoint_bundle||全局STP未使能": 907.00000568,
+        "endpoint_bundle||存在IP路由环路": 3134.6,
+        "endpoint_bundle||存在MPLS标签环路": 2993.2
+      }
+    },
+    "core_epoch_03": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_03.jsonl",
+      "sha256_lf_normalized": "dc7488dce86635c508ff598ee7826b546cf94fb6b7abd636ca6079a05c17caad",
+      "bytes": 18095379,
+      "rows": 1035,
+      "token_length": {
+        "min": 1227,
+        "median": 2424,
+        "p95": 3950,
+        "p99": 4432,
+        "max": 5109
+      },
+      "supervised_tokens": 264347,
+      "weighted_supervised_token_sum": 91615.55000009,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 25056,
+        "0.1": 62972,
+        "0.25": 27330,
+        "0.35": 41728,
+        "0.4": 27749,
+        "0.5": 2849,
+        "0.6": 65516,
+        "0.65": 1007,
+        "1": 10140
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "counterfactual_action_selection": 23306.1,
+        "hypothesis_elimination": 8348.7,
+        "hypothesis_elimination_replay": 637.4,
+        "planning": 13582.4,
+        "post_closure_stop_repair": 2167.05,
+        "reasoning": 43573.9
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 3320.15,
+        "VRRP Master角色规划不合理": 5151.7,
+        "VRRP工作在非抢占模式": 2422.95,
+        "unknown": 65614.4,
+        "全局STP未使能": 2034.15,
+        "存在IP路由环路": 6717.7,
+        "存在MPLS标签环路": 6354.5
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "counterfactual_action_selection||STP BPDU被过滤": 2282.1,
+        "counterfactual_action_selection||VRRP Master角色规划不合理": 5151.7,
+        "counterfactual_action_selection||VRRP工作在非抢占模式": 1443.95,
+        "counterfactual_action_selection||全局STP未使能": 1356.15,
+        "counterfactual_action_selection||存在IP路由环路": 6717.7,
+        "counterfactual_action_selection||存在MPLS标签环路": 6354.5,
+        "hypothesis_elimination_replay||unknown": 637.4,
+        "hypothesis_elimination||STP BPDU被过滤": 89.0,
+        "hypothesis_elimination||unknown": 7820.7,
+        "hypothesis_elimination||全局STP未使能": 439.0,
+        "planning||unknown": 13582.4,
+        "post_closure_stop_repair||STP BPDU被过滤": 949.05,
+        "post_closure_stop_repair||VRRP工作在非抢占模式": 979.0,
+        "post_closure_stop_repair||全局STP未使能": 239.0,
+        "reasoning||unknown": 43573.9
+      }
+    },
+    "endpoint_epoch_03": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_03.jsonl",
+      "sha256_lf_normalized": "af5b0916288be17957c50601089e001d8fabd8c96e33c7c8b207fac88c2ee1f4",
+      "bytes": 2642218,
+      "rows": 116,
+      "token_length": {
+        "min": 2089,
+        "median": 3217.5,
+        "p95": 4548,
+        "p99": 5006,
+        "max": 5235
+      },
+      "supervised_tokens": 47900,
+      "weighted_supervised_token_sum": 10631.90001788,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 1880,
+        "0.06666667": 6405,
+        "0.075": 980,
+        "0.1": 6327,
+        "0.15": 1550,
+        "0.2": 15527,
+        "0.25": 320,
+        "0.3": 11416,
+        "0.33333333": 1041,
+        "0.5": 478,
+        "1": 1976
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "endpoint_bundle": 10631.90001788
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 949.000006,
+        "VRRP Master角色规划不合理": 1615.3,
+        "VRRP工作在非抢占模式": 1032.8000062,
+        "全局STP未使能": 907.00000568,
+        "存在IP路由环路": 3134.6,
+        "存在MPLS标签环路": 2993.2
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "endpoint_bundle||STP BPDU被过滤": 949.000006,
+        "endpoint_bundle||VRRP Master角色规划不合理": 1615.3,
+        "endpoint_bundle||VRRP工作在非抢占模式": 1032.8000062,
+        "endpoint_bundle||全局STP未使能": 907.00000568,
+        "endpoint_bundle||存在IP路由环路": 3134.6,
+        "endpoint_bundle||存在MPLS标签环路": 2993.2
+      }
+    },
+    "core_epoch_04": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_04.jsonl",
+      "sha256_lf_normalized": "2c43ac8589373c23253c79f29bd09218ac52f0991c749fc65c882935f202a59c",
+      "bytes": 18095379,
+      "rows": 1035,
+      "token_length": {
+        "min": 1227,
+        "median": 2424,
+        "p95": 3950,
+        "p99": 4432,
+        "max": 5109
+      },
+      "supervised_tokens": 264347,
+      "weighted_supervised_token_sum": 91615.55000009,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 25056,
+        "0.1": 62972,
+        "0.25": 27330,
+        "0.35": 41728,
+        "0.4": 27749,
+        "0.5": 2849,
+        "0.6": 65516,
+        "0.65": 1007,
+        "1": 10140
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "counterfactual_action_selection": 23306.1,
+        "hypothesis_elimination": 8348.7,
+        "hypothesis_elimination_replay": 637.4,
+        "planning": 13582.4,
+        "post_closure_stop_repair": 2167.05,
+        "reasoning": 43573.9
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 3320.15,
+        "VRRP Master角色规划不合理": 5151.7,
+        "VRRP工作在非抢占模式": 2422.95,
+        "unknown": 65614.4,
+        "全局STP未使能": 2034.15,
+        "存在IP路由环路": 6717.7,
+        "存在MPLS标签环路": 6354.5
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "counterfactual_action_selection||STP BPDU被过滤": 2282.1,
+        "counterfactual_action_selection||VRRP Master角色规划不合理": 5151.7,
+        "counterfactual_action_selection||VRRP工作在非抢占模式": 1443.95,
+        "counterfactual_action_selection||全局STP未使能": 1356.15,
+        "counterfactual_action_selection||存在IP路由环路": 6717.7,
+        "counterfactual_action_selection||存在MPLS标签环路": 6354.5,
+        "hypothesis_elimination_replay||unknown": 637.4,
+        "hypothesis_elimination||STP BPDU被过滤": 89.0,
+        "hypothesis_elimination||unknown": 7820.7,
+        "hypothesis_elimination||全局STP未使能": 439.0,
+        "planning||unknown": 13582.4,
+        "post_closure_stop_repair||STP BPDU被过滤": 949.05,
+        "post_closure_stop_repair||VRRP工作在非抢占模式": 979.0,
+        "post_closure_stop_repair||全局STP未使能": 239.0,
+        "reasoning||unknown": 43573.9
+      }
+    },
+    "endpoint_epoch_04": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_04.jsonl",
+      "sha256_lf_normalized": "4235f54dfd213011aa1cc332ba13983647599ee0f8d4b86dbf60212e7943e990",
+      "bytes": 2642218,
+      "rows": 116,
+      "token_length": {
+        "min": 2089,
+        "median": 3217.5,
+        "p95": 4548,
+        "p99": 5006,
+        "max": 5235
+      },
+      "supervised_tokens": 47900,
+      "weighted_supervised_token_sum": 10631.90001788,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 1880,
+        "0.06666667": 6405,
+        "0.075": 980,
+        "0.1": 6327,
+        "0.15": 1550,
+        "0.2": 15527,
+        "0.25": 320,
+        "0.3": 11416,
+        "0.33333333": 1041,
+        "0.5": 478,
+        "1": 1976
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "endpoint_bundle": 10631.90001788
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 949.000006,
+        "VRRP Master角色规划不合理": 1615.3,
+        "VRRP工作在非抢占模式": 1032.8000062,
+        "全局STP未使能": 907.00000568,
+        "存在IP路由环路": 3134.6,
+        "存在MPLS标签环路": 2993.2
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "endpoint_bundle||STP BPDU被过滤": 949.000006,
+        "endpoint_bundle||VRRP Master角色规划不合理": 1615.3,
+        "endpoint_bundle||VRRP工作在非抢占模式": 1032.8000062,
+        "endpoint_bundle||全局STP未使能": 907.00000568,
+        "endpoint_bundle||存在IP路由环路": 3134.6,
+        "endpoint_bundle||存在MPLS标签环路": 2993.2
+      }
+    },
+    "core_epoch_05": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_05.jsonl",
+      "sha256_lf_normalized": "ca1565a1e3355ae8e624b7208b8ec29faf9b9a83d41053239e81e6fc05ccdbb2",
+      "bytes": 18095379,
+      "rows": 1035,
+      "token_length": {
+        "min": 1227,
+        "median": 2424,
+        "p95": 3950,
+        "p99": 4432,
+        "max": 5109
+      },
+      "supervised_tokens": 264347,
+      "weighted_supervised_token_sum": 91615.55000009,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 25056,
+        "0.1": 62972,
+        "0.25": 27330,
+        "0.35": 41728,
+        "0.4": 27749,
+        "0.5": 2849,
+        "0.6": 65516,
+        "0.65": 1007,
+        "1": 10140
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "counterfactual_action_selection": 23306.1,
+        "hypothesis_elimination": 8348.7,
+        "hypothesis_elimination_replay": 637.4,
+        "planning": 13582.4,
+        "post_closure_stop_repair": 2167.05,
+        "reasoning": 43573.9
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 3320.15,
+        "VRRP Master角色规划不合理": 5151.7,
+        "VRRP工作在非抢占模式": 2422.95,
+        "unknown": 65614.4,
+        "全局STP未使能": 2034.15,
+        "存在IP路由环路": 6717.7,
+        "存在MPLS标签环路": 6354.5
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "counterfactual_action_selection||STP BPDU被过滤": 2282.1,
+        "counterfactual_action_selection||VRRP Master角色规划不合理": 5151.7,
+        "counterfactual_action_selection||VRRP工作在非抢占模式": 1443.95,
+        "counterfactual_action_selection||全局STP未使能": 1356.15,
+        "counterfactual_action_selection||存在IP路由环路": 6717.7,
+        "counterfactual_action_selection||存在MPLS标签环路": 6354.5,
+        "hypothesis_elimination_replay||unknown": 637.4,
+        "hypothesis_elimination||STP BPDU被过滤": 89.0,
+        "hypothesis_elimination||unknown": 7820.7,
+        "hypothesis_elimination||全局STP未使能": 439.0,
+        "planning||unknown": 13582.4,
+        "post_closure_stop_repair||STP BPDU被过滤": 949.05,
+        "post_closure_stop_repair||VRRP工作在非抢占模式": 979.0,
+        "post_closure_stop_repair||全局STP未使能": 239.0,
+        "reasoning||unknown": 43573.9
+      }
+    },
+    "endpoint_epoch_05": {
+      "path": "/root/autodl-tmp/0809_v7_preflight_20260811_2055/data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_05.jsonl",
+      "sha256_lf_normalized": "3ec3b044cc4df283427fe8e742b5931d75faab74beb7d99120c70b3aeb895fd5",
+      "bytes": 2642218,
+      "rows": 116,
+      "token_length": {
+        "min": 2089,
+        "median": 3217.5,
+        "p95": 4548,
+        "p99": 5006,
+        "max": 5235
+      },
+      "supervised_tokens": 47900,
+      "weighted_supervised_token_sum": 10631.90001788,
+      "supervised_token_count_by_loss_scale": {
+        "0.05": 1880,
+        "0.06666667": 6405,
+        "0.075": 980,
+        "0.1": 6327,
+        "0.15": 1550,
+        "0.2": 15527,
+        "0.25": 320,
+        "0.3": 11416,
+        "0.33333333": 1041,
+        "0.5": 478,
+        "1": 1976
+      },
+      "weighted_supervised_token_sum_by_target": {
+        "endpoint_bundle": 10631.90001788
+      },
+      "weighted_supervised_token_sum_by_label": {
+        "STP BPDU被过滤": 949.000006,
+        "VRRP Master角色规划不合理": 1615.3,
+        "VRRP工作在非抢占模式": 1032.8000062,
+        "全局STP未使能": 907.00000568,
+        "存在IP路由环路": 3134.6,
+        "存在MPLS标签环路": 2993.2
+      },
+      "weighted_supervised_token_sum_by_target_label": {
+        "endpoint_bundle||STP BPDU被过滤": 949.000006,
+        "endpoint_bundle||VRRP Master角色规划不合理": 1615.3,
+        "endpoint_bundle||VRRP工作在非抢占模式": 1032.8000062,
+        "endpoint_bundle||全局STP未使能": 907.00000568,
+        "endpoint_bundle||存在IP路由环路": 3134.6,
+        "endpoint_bundle||存在MPLS标签环路": 2993.2
+      }
+    }
+  },
+  "totals": {
+    "rows": 7151,
+    "min_tokens": 1221,
+    "p99_tokens": 4561,
+    "max_tokens": 5635,
+    "over_max_length_rows": 0,
+    "loss_mask_failures": 0
+  },
+  "overlong_rows": [],
+  "loss_mask_failures": []
+}

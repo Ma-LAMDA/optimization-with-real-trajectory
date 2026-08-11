@@ -1,12 +1,13 @@
 # Qwen3.6-27B 网络故障轨迹与 SFT
 
-本仓库用于构造、训练和评测网络故障诊断轨迹数据。当前保留五批日期数据：
+本仓库用于构造、训练和评测网络故障诊断轨迹数据。当前保留六批日期数据：
 
 - `2026-07-27`：人工策展的多阶段小样本基线；
 - `2026-07-31`：首轮 100×10 正确轨迹决策 SFT，也是现有训练方案的默认数据；
 - `2026-08-04`：GPT-5.6-Sol accepted-only 轨迹及每题最佳一条的原生多轮 SFT 快跑集。
 - `2026-08-05`：补跑后每题 10 条成功轨迹的因果路径聚类、跨轨迹去重原生多轮 SFT。
 - `2026-08-07`：在 0805 来源上重建的 evidence-gated、query 等权高置信多轮 SFT。
+- `2026-08-09`：以 0805 为父版本、按 Agent 失败模式构造的预算匹配反事实 SFT。
 
 旧版 decision SFT 只保留可复核的规划、推理或最终决策；0804 原生多轮 SFT 另在独立
 `tool_call`/`tool_response` 角色中保留对归因有价值的真实命令和结果。所有新 SFT 样本
@@ -41,6 +42,7 @@
 | [`data/2026-08-04/`](data/2026-08-04/) | accepted-only 归档及 best1 多轮快跑集 | 814 decision；best1 84 轨迹、371 节点（训练 318、验证 53） | 数据已校验、GPU 快跑已归档 |
 | [`data/2026-08-05/`](data/2026-08-05/) | 10 轨迹因果路径聚类多轮 SFT | 840 来源轨迹；1675 语义节点（训练 1430、验证 245） | 静态校验通过、待领域审核与训练 |
 | [`data/2026-08-07/`](data/2026-08-07/) | observation-bound、evidence-gated、query 等权五轮 SFT | 840 来源轨迹；398 语义样本（训练 346、验证 52）；每轮训练 216 | v7 双卡DDP、固定epoch-3、独立校验和目标 tokenizer 预检通过 |
+| [`data/2026-08-09/`](data/2026-08-09/) | 0805 父级 + 结构门禁 action + 候选范围校准 endpoint | 840 来源轨迹；训练语义池 1151（core 719 + action 308 + elimination replay 8 + endpoint 116）、验证 245；每轮 1151 | v7 message-derived 结构门禁；116 条输入路径按题等权；候选排除不做闭世界推断 |
 | [`data/simulation/`](data/simulation/) | 原始仿真资料 | prompt、JSONL、配置与评测轨迹 | 默认只读；标准答案纠错须显式审计并全链同步 |
 
 ### 2026-07-31 划分
@@ -144,6 +146,45 @@ token labels/loss-scale 不一致为 0。当前状态为
 [`data/2026-08-07/REPRODUCIBILITY.md`](data/2026-08-07/REPRODUCIBILITY.md)，问题回归与
 剩余限制见 [`data/2026-08-07/AUDIT_REPORT.md`](data/2026-08-07/AUDIT_REPORT.md)。
 
+### 2026-08-09 Agent 错误感知重建
+
+0809 以 0805 的 840 条严格成功 raw 与 72/12 冻结划分为父级，不使用验证题或 Agent 评测轨迹。
+v7 延续此前删除推理时不存在的零 loss assistant 控制句，并把同一证据路径的
+closure/contrastive 改写合并为一个自然 completion。正式 endpoint 现在是 116 条不同原始证据路径，
+覆盖 72/72 题；每条路径在同一可达历史中同时监督证据归纳、正向标签边界、候选范围校准、当前证据最小集合、
+停止判断和最终 `<result>`。每题有 1–4 条路径，loss 按 `1/本题路径数` 归一化，避免多路径题获得
+额外 decision 权重。
+
+40 条恢复路径只合并同 query、同 snapshot 的 0805 成功事件，其中 216 个事实逐个回指 45 个真实
+event 文件里的成功 item、原始命令、输出哈希和逐字 span。IP、MPLS、role 与 BPDU 继续使用有向
+闭环、源 VLAN 链和 current configuration 的严格门禁。跨/不可解析 snapshot、路径 glob 和完整
+证据后继续调用的正监督均已清理。
+
+action 保留 308 个真实可达高信息上下文，覆盖 72/72 题；工具 call loss 为 0.05。父级保留
+103 条真实错误候选排除节点（58 题），其余 14 题不补造排除；另有 8 条透明
+的 exact same-target elimination replay，不冒充新路径或新语义。每轮完整曝光 719 core、308 action、
+8 replay 和 116 endpoint，共 1151 行/144 step；全部新目标在固定 epoch 3/checkpoint-432 前已出现。
+双卡 DDP、有效 batch 8、固定 LR、完整状态续训和固定 checkpoint 选择仍与 0805 一致。
+
+按 20:02 深审，action 门禁升级为从 messages 重算同题全部 strict endpoint binding：完整证据改为
+停止，未完整证据显式给出 matched/expected、缺失事实和待验证假设；全量 308 action 均未完整，
+父级 50 条 post-closure 行共移除 93 个正工具调用，点名的 17 条进入结构回归。endpoint 不再用正证据
+排除未经检查的邻近标签，116 条均做候选范围校准，rejected-label 声明为 0。endpoint 输入路径仍为
+116/116 不同，但输出正目标精确/condition-normalized 均只有 16/116 唯一（排除 q73–q86 后 7/104），
+两种多样性不再混写，也不以机械释义增大输出唯一数。
+
+manifest 只使用 checkout 内逻辑路径，设计输入与生成依赖全部进入仓库闭环。正式入口绑定实际
+config/plugin、tokenizer/model identity、ms-swift 与 transformers 版本。v7 已重新执行 12 份/7151 行
+Qwen3.6-27B tokenizer/loss-mask 预检，不复用 v6 哈希：p99 4561、最大 5635/16384，overlong 和
+loss-mask failure 均为 0；环境为 Python 3.12.3、ms-swift 4.4.2、transformers 5.12.1。
+
+当前 12 题已参与错误模式分析，只作为 error-mining/dev；正式泛化结论仍需未参与反推的新
+held-out Agent 集。完整规则与复现命令见
+[`data/2026-08-09/REPRODUCIBILITY.md`](data/2026-08-09/REPRODUCIBILITY.md)。
+完整规则、原始前缀多目标审计、condition-normalized diversity、命令和发布门禁见
+[`data/2026-08-09/REPRODUCIBILITY.md`](data/2026-08-09/REPRODUCIBILITY.md) 与
+[`data/2026-08-09/AUDIT_REPORT.md`](data/2026-08-09/AUDIT_REPORT.md)。
+
 ## 数据规则
 
 - `data/simulation/` 默认按不可变来源管理；标准答案纠错只能在用户明确授权和审计报告支持下
@@ -172,6 +213,9 @@ python -B scripts/validate_0804_best_trajectory_reasoning_sft.py
 python -B scripts/validate_0805_causal_path_reasoning_sft.py
 python -B scripts/validate_0807_evidence_gated_reasoning_sft.py
 python -B scripts/audit_0807_evidence_gated_sft.py
+python -B scripts/validate_0809_agent_error_aware_sft.py --data-root data/2026-08-09
+python -B scripts/independent_validate_0809_sft.py --data-root data/2026-08-09
+python -B scripts/audit_0809_agent_error_aware_sft.py --data-root data/2026-08-09
 ```
 
 ### 重新生成日期数据
@@ -185,6 +229,7 @@ python -B scripts/convert_accepted_only_100x10_to_sft.py --output-root data/2026
 python -B scripts/convert_0805_causal_path_reasoning_sft.py
 python -B scripts/convert_accepted_only_100x10_to_sft.py --output-root data/2026-08-07 --archive-only
 python -B scripts/convert_0807_evidence_gated_reasoning_sft.py
+python -B scripts/convert_0809_agent_error_aware_sft.py --data-root data/2026-08-09
 ```
 
 已删除的 2026-07-28 历史留一数据仍可从保留的 14×10 来源实验重建：
@@ -235,6 +280,18 @@ bash scripts/train_qwen36_0805_causal_path_quick.sh
 quick入口在启动训练前也会重新生成数据、执行独立静态校验，并使用训练机上的目标tokenizer
 逐条确认没有样本超过16,384 token；未通过预检时会直接退出。quick的梯度累积2、cosine
 scheduler和单轮独立输出不得用于替代正式五阶段对比训练。
+
+0809 的正式入口使用与 0805 相同的双卡 DDP、有效 batch 8、五阶段固定学习率和固定
+epoch-3 选点，但每个 epoch 同时加载当轮 core replacement 与 endpoint schedule。入口会对
+同一绝对 `DATA_ROOT` 依次执行生成、官方校验、独立校验、audit 和真实 target-tokenizer
+loss-mask 预检；每轮固定 1151 行、144 step，epoch 3 为 checkpoint-432。训练命令显式加载
+固定 LR external plugin，并在模型加载前验证 callback 注册：
+
+```bash
+bash scripts/train_qwen36_0809_agent_error_aware_5epoch.sh
+```
+
+在 Armstrong 主机上，仓库、环境、模型和输出若不位于 `/Qdata/mayf/`，入口会拒绝启动。
 
 0807 正式入口按每轮 query 等权 schedule 顺序恢复完整训练状态：
 
@@ -347,6 +404,7 @@ warning和复现控制脚本见
 │   ├── 2026-08-04/
 │   ├── 2026-08-05/
 │   ├── 2026-08-07/
+│   ├── 2026-08-09/
 │   └── simulation/
 ├── docs/
 │   ├── TRAINING_PLAN.md
@@ -498,6 +556,47 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-11：按 20:02 续审升级 0809 v7：action 从关键词门禁升级为 message-derived 完整结构
+  binding；308/308 action 仅监督待验证状态，完整 action 为 0。50 条父级 post-closure 行移除 93 个
+  正工具调用；q0023 的 1/1 完整节点改为停止。endpoint 取消 unsupported 邻近标签排除，116 条均改为
+  candidate-scope calibration；真实排除保持 103 行/58 题和 8 条透明 replay。数据规模、双卡 DDP、
+  每轮 1151 行/144 step 和固定 checkpoint-432 不变。
+- 2026-08-11：按 18:48 深审升级 0809 v6：对 308 条 action 建立首正 loss 前逐字证据和提前收敛
+  门禁，修复 30 条父级 source/其中 24 条 action，审计点名 7 条均加入双层回归 fixture，修复后
+  action 违规为 0；明确区分 116 条不同输入路径与 16/116 个唯一输出正目标，并纠正文档中的
+  Python 版本。数据规模、双卡 DDP、每轮 1151 行/144 step 和固定 checkpoint-432 不变；目标
+  tokenizer/loss-mask 已按 v6 重跑 7151 行，最大 5635/16384，overlong/loss-mask failure 均为 0。
+- 2026-08-11：按 17:21 续审升级 0809 v5：删除推理时不可达的零 loss assistant marker，把
+  closure/contrastive 同路径改写合并为 116 条真实证据路径综合 completion，并按题归一化 endpoint
+  loss；每轮完整曝光 719 core、308 可达 action、8 个透明 elimination replay 和 116 endpoint，仍为
+  1151 行/144 step/固定 checkpoint-432。发布路径改为 checkout 相对，设计与生成依赖纳入仓库闭环；
+  训练入口新增 config/plugin、模型/tokenizer 和库版本身份门禁。真实目标预检 7151 行，最大
+  5635/16384，overlong/loss-mask failure 均为 0。
+- 2026-08-11：按 15:58 深度续审升级 0809 v4：修正 432 个恢复事实的原始 event/item/command/
+  output provenance 并加入双验证器原始事件回查；严格 endpoint 扩展为 163 条真实路径链并按轮
+  选择每题两条；自然条件化后 summary/stop 前缀 100% 唯一、目标至少 95% 唯一。前三轮 action
+  覆盖 72/72 题和六标签；终点权重按真实 tokenizer 回调，最终 decision 权重不变。训练入口改为
+  manifest 驱动的全量 Git 门禁，并把 checkpoint-432 检查移到 stage-5 early-exit 之前。
+- 2026-08-11：按 12:13 严格续审再次升级 0809：删除跨/不可解析 snapshot 与 glob 的完整
+  call/response 条件历史；IP/MPLS 增加 next-hop owner 有向闭环，role 增加源 VLAN 闭环，BPDU
+  只认 current config；从同题同快照 0805 成功事件恢复 40 题，72 题各生成 closure/contrastive
+  两组三节点 endpoint。每轮 1151 份消息全部唯一且 core/endpoint 无交集；正式训练入口改为只读
+  消费已提交、已通过 tokenizer 预检的冻结 release。
+- 2026-08-11：按 09:58 续审升级 0809：对父级 237 个 endpoint 组执行全量严格门禁，重写
+  93 个合格组三节点并移除 144 个失败组；action 在完整证据后继续调用的正监督归零，动作池由
+  132 调整为 130；并修复父级 core 中 47 个同类残留。前三轮覆盖 stop 41、boundary 37、minimal 37、elimination 8。每题每轮仍
+  固定 6 行 endpoint 预算，全轮 1151 行/144 step。训练入口补充 `--external_plugins` 和
+  callback 注册 smoke check；两套 validator 将上述条件升级为硬门禁。
+- 2026-08-10：对0809反事实执行链级原始工具回显门禁：动作以132条覆盖72/72题，禁止glob、
+  跨快照和无关调用；停止/标签边界/最小集合只在41/72题同路径证据完整时生成，另外8题补
+  evidence-bound elimination，综合排除覆盖66/72；IP/MPLS要求三设备路径闭合，role要求
+  Vlanif→MST实例→ALTE链一致，其余样本不跨轨迹拼接、不从最终答案回填；
+  父级core中109个不安全路径调用及同组63个兄弟调用保留为零loss审计上下文。
+- 2026-08-10：以0805而非旧0807副本重建0809独立版本闭环；新增错误感知的动作、停止、
+  标签边界、最小集合和低权重 evidence-bound elimination。
+  默认五轮采用逐题替换式预算匹配，每轮仍为1151行/144 step，固定epoch 3/checkpoint-432；
+  generator、两套validator、audit、preflight和正式入口统一绝对DATA_ROOT，验证题错误轨迹不
+  进入训练，当前12题降级为error-mining/dev，最终泛化仍要求clean held-out。
 - 2026-08-07：将0807 v7正式训练方式与0805对齐：改为GPU 0、1双进程DDP、每卡batch 1、
   梯度累积4，全局有效batch仍为8；LR callback仅由rank 0写审计。取消6题×2次Agent
   checkpoint选择，五轮eval loss仅作诊断，固定使用epoch 3 / checkpoint-81进行12题×5次

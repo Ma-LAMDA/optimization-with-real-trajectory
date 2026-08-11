@@ -1,0 +1,72 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0007_success_08",
+  "case_id": 7,
+  "row_index": 7,
+  "success_slot": 8,
+  "attempt_index": 40,
+  "source_record": {
+    "row_index": 7,
+    "original_id": 7,
+    "sample_id": 7,
+    "sample_key": "q0007",
+    "question": "在CampusNetwork_03组网中，从SH_FAC_PC01 ping北京区域核心交换机（10.1.10.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先锁定CampusNetwork_03的实际节点与命令文件，再用路由/隧道状态还原SH_FAC_PC01到10.1.10.254的双向路径，重点区分“SRv6选路绕经PE2-PE3”“路由环路”和“接口拥塞”这几类假设。"
+    },
+    {
+      "event_line": 28,
+      "item_id": "item_14",
+      "text": "项目与节点已精确匹配。接下来先读主机寻址、上海出口配置以及PE1/PE2/PE3的SRv6/路由关键回显；这组证据能直接判断高延迟是否由业务策略把流量显式压到PE2-PE3长时延链路。"
+    },
+    {
+      "event_line": 72,
+      "item_id": "item_37",
+      "text": "目前控制面显示去程PE2到PE1、回程PE1到PE2都走直连，已排除普通IP/ISIS最短路把该业务直接绕经PE3的假设。现在核对业务实测轨迹与MPLS标签转发表，判断是否是标签层异常，而不是仅凭配置中的孤立条目下结论。"
+    },
+    {
+      "event_line": 328,
+      "item_id": "item_168",
+      "text": "转发证据已确认业务不经过PE2-PE3：PE2对北京前缀的VPN路由递归到1.1.1.1并从直连PE1的Ethernet1/0/1转发，PE1返回10.2.20.0/24也从直连PE2的Ethernet1/0/1转发。最后核验北京核心二层控制面的运行状态与环路迹象，以收敛最小根因。"
+    },
+    {
+      "event_line": 341,
+      "item_id": "item_175",
+      "text": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_02;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_02;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0007_r08/attempt_040/judgment.json",
+    "judgment_sha256_lf_normalized": "e04a15b9dd66c795d41aace9ebbeef70d236e904e7d0e0d7bb7952262b18b7bf"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0007_r08/attempt_040",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0007_r08/attempt_040/events.jsonl",
+    "events_sha256_lf_normalized": "574afdcdf4b8ab3c61e69ebfaca7df85b57fec6ebc9949ae0e49c1d24fa4eb3d",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0007_r08/attempt_040/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "2509e1c35e9533c628144e7fbcbc0545091d0675435e864cac25b6386663bed7",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0007/source_record.json",
+    "source_record_sha256_lf_normalized": "4d118d70fad0d70f44dbe63086acde6e3daf76a227452de377563316fa4328ae",
+    "thread_id": "019fcd03-be6b-79d1-9036-d61d53b67f7a",
+    "duration_seconds": 525.086
+  }
+}

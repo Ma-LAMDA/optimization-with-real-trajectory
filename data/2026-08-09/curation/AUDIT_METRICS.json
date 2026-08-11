@@ -1,0 +1,467 @@
+{
+  "schema_version": "0809-agent-error-aware-audit.v7",
+  "release_identity": {
+    "manifest_schema": "qwen36-0809-agent-error-aware-sft.v7",
+    "logical_data_root": "data/2026-08-09",
+    "design_input": {
+      "path": "data/2026-08-09/curation/DESIGN_AUDIT_INPUT.md",
+      "sha256_lf_normalized": "5099e53a2f941de9e17f0bca8614bf9062072c99365f0bd62d99014c01e0a033",
+      "scope_note": "repository-contained v7 design input: message-derived structural action closure, candidate-scope-calibrated endpoints, portable release paths, reachable marker-free targets, one bundle per real evidence path, runtime identity binding and complete dependency closure"
+    },
+    "parent_release": "data/2026-08-05",
+    "raw_byte_identical_to_parent": true
+  },
+  "split": {
+    "source": "frozen 0804/0805 case split",
+    "train_case_count": 72,
+    "validation_case_count": 12,
+    "validation_case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ],
+    "validation_role": "error-mining/dev; not a clean proof after its aggregate failures informed design",
+    "counterfactual_train_validation_intersection": [],
+    "agent_evaluation_trajectories_used_for_training": false,
+    "clean_topology_heldout_required_for_final_claim": true
+  },
+  "counts": {
+    "train_semantic_pool_rows": 1151,
+    "parent_train_rows": 1430,
+    "base_core_pool_rows": 719,
+    "counterfactual_pool_rows": 316,
+    "endpoint_pool_rows": 116,
+    "action_visible_grounding_parent_rows_repaired": 308,
+    "action_visible_grounding_action_rows_repaired": 308,
+    "structurally_incomplete_action_rows": 308,
+    "structural_action_matched_expected_distribution": {
+      "0/1": 103,
+      "0/4": 41,
+      "0/6": 128,
+      "1/4": 15,
+      "1/6": 7,
+      "2/4": 5,
+      "2/6": 7,
+      "4/6": 2
+    },
+    "post_closure_parent_rows_repaired": 50,
+    "post_closure_positive_tool_calls_removed": 93,
+    "strict_endpoint_groups": 116,
+    "unique_raw_evidence_paths": 116,
+    "elimination_replay_rows": 8,
+    "removed_inherited_endpoint_groups": 161,
+    "validation_rows": 245,
+    "real_hypothesis_elimination_rows": 103,
+    "real_hypothesis_elimination_case_count": 58,
+    "evidence_bound_elimination_rows": 0,
+    "endpoint_bundles_with_neighbor_elimination": 0,
+    "endpoint_bundles_with_candidate_scope_calibration": 116,
+    "endpoint_rejected_label_declarations": 0,
+    "combined_evidence_backed_elimination_case_count": 58,
+    "queries_without_real_elimination_node": [
+      13,
+      58,
+      59,
+      66,
+      67,
+      70,
+      73,
+      75,
+      81,
+      83,
+      89,
+      94,
+      95,
+      97
+    ]
+  },
+  "reachable_target_conditioning": {
+    "synthetic_assistant_control_marker_rows": 0,
+    "semantic_raw_first_positive_prefix_count": 784,
+    "raw_prefix_multitarget_group_count": 116,
+    "raw_prefix_multitarget_row_count": 325,
+    "multitarget_type_combinations": {
+      "counterfactual_action_selection + planning": 35,
+      "counterfactual_action_selection + reasoning": 61,
+      "planning": 20
+    },
+    "interpretation": "compatible natural continuations are reported, never hidden with zero-loss assistant markers"
+  },
+  "real_endpoint_paths": {
+    "objective_bundle_count": 116,
+    "unique_raw_evidence_path_count": 116,
+    "case_count": 72,
+    "path_count_distribution": {
+      "1": 47,
+      "2": 9,
+      "3": 13,
+      "4": 3
+    },
+    "query_normalized_total_path_weight_min": 0.99999999,
+    "query_normalized_total_path_weight_max": 1.0,
+    "exact_positive_target_count": 16,
+    "condition_normalized_positive_target_count": 16,
+    "condition_normalization_policy": "replace snapshot/query/config-path identifiers only; preserve devices, observations, labels and result items",
+    "excluding_q73_q86_row_count": 104,
+    "excluding_q73_q86_exact_positive_target_count": 7
+  },
+  "counterfactual": {
+    "rows_by_type": {
+      "counterfactual_action_selection": 308,
+      "hypothesis_elimination_replay": 8
+    },
+    "action_query_count": 72,
+    "action_row_count": 308,
+    "unique_reachable_action_prefix_command_pairs": 308,
+    "action_command_count": 475,
+    "action_glob_count": 0,
+    "positive_action_after_complete_binding_count": 0,
+    "exact_same_target_elimination_replay_count": 8
+  },
+  "action_visible_grounding": {
+    "policy": "recompute every strict same-query endpoint binding from literal tool responses before first positive loss; incomplete action nodes may supervise only matched facts, missing requirements, a pending hypothesis, and read-only actions",
+    "checked_action_rows": 308,
+    "repaired_parent_source_rows": 308,
+    "repaired_action_rows": 308,
+    "original_issue_counts": {
+      "premature_convergence_assertion": 8,
+      "unsupported_bpdu_filter_enabled": 16,
+      "unsupported_global_stp_disabled": 2,
+      "unsupported_stp_enabled": 2,
+      "unsupported_vrrp_nonpreempt": 1
+    },
+    "remaining_issue_row_count": 0,
+    "remaining_issues_by_row": {},
+    "latest_audit_seven_rows_repaired": true
+  },
+  "structural_action_closure": {
+    "message_derived_action_rows_checked": 308,
+    "structurally_complete_action_rows": 0,
+    "calibrated_pending_action_rows": 308,
+    "matched_expected_distribution": {
+      "0/1": 103,
+      "0/4": 41,
+      "0/6": 128,
+      "1/4": 15,
+      "1/6": 7,
+      "2/4": 5,
+      "2/6": 7,
+      "4/6": 2
+    },
+    "latest_audit_17_rows_present_and_incomplete": true,
+    "complete_base_rows_still_calling_tools": 0,
+    "post_closure_parent_rows_repaired": 50,
+    "audited_q0023_source_complete": true,
+    "audited_q0023_positive_tool_count": 0,
+    "audited_q0023_removed_positive_tool_count": 2
+  },
+  "hypothesis_elimination": {
+    "real_source_row_count": 103,
+    "real_source_case_count": 58,
+    "replay_count": 8,
+    "endpoint_generated_elimination_count": 0,
+    "queries_without_real_elimination_node": [
+      13,
+      58,
+      59,
+      66,
+      67,
+      70,
+      73,
+      75,
+      81,
+      83,
+      89,
+      94,
+      95,
+      97
+    ]
+  },
+  "endpoint_candidate_scope": {
+    "candidate_scope_calibration_bundles": 116,
+    "unsupported_exclusion_rows": [],
+    "rejected_label_declaration_count": 0,
+    "policy": "positive binding confirms the current label/current-evidence set; unchecked neighbors remain unverified and are not declared absent"
+  },
+  "recovery_provenance": {
+    "endpoint_path_rows": 40,
+    "fact_count": 216,
+    "distinct_event_file_count": 45,
+    "facts_with_raw_provenance": 216
+  },
+  "epoch_schedule": {
+    "epoch_01": {
+      "rows": 1151,
+      "core_rows": 1035,
+      "endpoint_real_path_rows": 116,
+      "unique_row_ids": 1151,
+      "unique_message_payloads": 1143,
+      "all_counterfactual_targets_exposed": true
+    },
+    "epoch_02": {
+      "rows": 1151,
+      "core_rows": 1035,
+      "endpoint_real_path_rows": 116,
+      "unique_row_ids": 1151,
+      "unique_message_payloads": 1143,
+      "all_counterfactual_targets_exposed": true
+    },
+    "epoch_03": {
+      "rows": 1151,
+      "core_rows": 1035,
+      "endpoint_real_path_rows": 116,
+      "unique_row_ids": 1151,
+      "unique_message_payloads": 1143,
+      "all_counterfactual_targets_exposed": true
+    },
+    "epoch_04": {
+      "rows": 1151,
+      "core_rows": 1035,
+      "endpoint_real_path_rows": 116,
+      "unique_row_ids": 1151,
+      "unique_message_payloads": 1143,
+      "all_counterfactual_targets_exposed": true
+    },
+    "epoch_05": {
+      "rows": 1151,
+      "core_rows": 1035,
+      "endpoint_real_path_rows": 116,
+      "unique_row_ids": 1151,
+      "unique_message_payloads": 1143,
+      "all_counterfactual_targets_exposed": true
+    }
+  },
+  "heuristic_training_signal": {
+    "epoch_01": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    },
+    "epoch_02": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    },
+    "epoch_03": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    },
+    "epoch_04": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    },
+    "epoch_05": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    }
+  },
+  "target_tokenizer_signal": {
+    "status": "passed",
+    "totals": {
+      "rows": 7151,
+      "min_tokens": 1221,
+      "p99_tokens": 4561,
+      "max_tokens": 5635,
+      "over_max_length_rows": 0,
+      "loss_mask_failures": 0
+    },
+    "model_identity_files": {
+      "tokenizer.json": {
+        "bytes": 12807982,
+        "sha256_raw": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+      },
+      "tokenizer_config.json": {
+        "bytes": 16718,
+        "sha256_raw": "5186f0defcd7f232382c7f0aebcd2252d073bb921ab240e407b7ae8745d2b29b"
+      },
+      "chat_template.jinja": {
+        "bytes": 7764,
+        "sha256_raw": "e84f32a23fdda27689f868aa4a1a5621f41133e51a48d7f3efcbea2839574259"
+      },
+      "config.json": {
+        "bytes": 4308,
+        "sha256_raw": "69db4eb7196bc8190813231b3018ca05d8c2e3abc7b1af19d55c157af44a9d9c"
+      },
+      "generation_config.json": {
+        "bytes": 202,
+        "sha256_raw": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e"
+      },
+      "model.safetensors.index.json": {
+        "bytes": 112216,
+        "sha256_raw": "a8ad2c26fb707ff8c245806315b03e3b4b74595528492423af5dae0ce39b4d9b"
+      }
+    },
+    "environment": {
+      "python": "3.12.3",
+      "ms_swift_version": "4.4.2",
+      "transformers_version": "5.12.1"
+    },
+    "per_epoch": {
+      "epoch_01": {
+        "weighted_supervised_token_sum": 102247.45001797001,
+        "endpoint_bundle_percent": 10.398206
+      },
+      "epoch_02": {
+        "weighted_supervised_token_sum": 102247.45001797001,
+        "endpoint_bundle_percent": 10.398206
+      },
+      "epoch_03": {
+        "weighted_supervised_token_sum": 102247.45001797001,
+        "endpoint_bundle_percent": 10.398206
+      },
+      "epoch_04": {
+        "weighted_supervised_token_sum": 102247.45001797001,
+        "endpoint_bundle_percent": 10.398206
+      },
+      "epoch_05": {
+        "weighted_supervised_token_sum": 102247.45001797001,
+        "endpoint_bundle_percent": 10.398206
+      }
+    }
+  },
+  "hard_negative_boundary": {
+    "malformed_protocol_and_rejected_sets_are_metadata_only": true,
+    "preference_or_grammar_eval_required_for_explicit_negative_learning": true
+  },
+  "release_gate": {
+    "windows_official_validator_required": true,
+    "windows_independent_validator_required": true,
+    "linux_checkout_both_validators_required": true,
+    "runtime_identity_gate_required": true,
+    "two_gpu_resume_lr_smoke_required": true,
+    "small_agent_canary_required_before_formal_training": true,
+    "git_commit_required_for_publication": true
+  }
+}
