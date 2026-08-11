@@ -2539,6 +2539,11 @@ def main() -> None:
         "training_entry": ROOT / "scripts" / "train_qwen36_0809_agent_error_aware_5epoch.sh",
         "lr_plugin": ROOT / "scripts" / "qwen36_0809_fixed_stage_lr_plugin.py",
         "formal_config": ROOT / "config" / "qwen36_0809_formal_training.json",
+        "agent_validation_launcher": ROOT / "scripts" / "run_agent_validation_resilient.sh",
+        "agent_validation_retry_policy": ROOT / "scripts" / "agent_validation_retry_policy.sh",
+        "agent_validation_early_stop": ROOT / "scripts" / "monitor_agent_validation_early_stop.py",
+        "agent_validation_summarizer": ROOT / "scripts" / "summarize_agent_validation.py",
+        "final_answer_scorer": ROOT / "scripts" / "final_answer_scoring.py",
         "parent_accepted_selection": PARENT_ROOT / "curation" / "accepted_trajectory_selection.json",
         "parent_causal_clusters": PARENT_ROOT / "curation" / "causal_path_clusters_per_case.json",
         "parent_filter_report": PARENT_ROOT / "curation" / "FILTER_REPORT.md",
@@ -2627,6 +2632,7 @@ def main() -> None:
         for row in action_rows
     )
     parent_manifest = load_json(PARENT_MANIFEST)
+    formal_config = load_json(ROOT / "config" / "qwen36_0809_formal_training.json")
     preflight = None
     if paths["preflight"].is_file():
         candidate = load_json(paths["preflight"])
@@ -2850,6 +2856,7 @@ def main() -> None:
                 for epoch in range(1, EPOCHS + 1)
             },
         },
+        "evaluation_protocol": formal_config["evaluation_policy"],
         "reproducibility": {
             "single_data_root_contract": True,
             "document": "data/2026-08-09/REPRODUCIBILITY.md",

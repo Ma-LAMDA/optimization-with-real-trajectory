@@ -49,6 +49,9 @@ EXPECTED_V7_STRUCTURAL_ACTION_REPAIRS = {
     "0809_cf_action_q0066_a03",
 }
 AUDITED_COMPLETE_CONTINUATION_SOURCE = "q0023_path_02_success_09_step_04"
+CANONICAL_SCORING_POLICY_VERSION = (
+    "agent-final-answer.v3.2026-08-10-final-answer-only"
+)
 PREMATURE_CONVERGENCE_PHRASES = (
     "证据已经形成闭环", "证据已形成闭环", "关键区分证据已出现",
     "决定性证据已出现", "唯一异常", "唯一的异常", "决定性异常", "根因应归",
@@ -1099,6 +1102,51 @@ def main() -> None:
             raise ValueError(f"training entry lacks runtime identity contract: {contract}")
     if '"${completed_stage}" -ge 3 && ! -d "${OUTPUT_DIR}/checkpoint-432"' not in training_entry:
         raise ValueError("training entry checks checkpoint-432 too late for stage-5 early exit")
+
+    formal = load_json(ROOT / "config" / "qwen36_0809_formal_training.json")
+    policy = formal.get("evaluation_policy", {})
+    if formal.get("schema_version") != "qwen36-0809-formal-training.v3":
+        raise ValueError("formal config does not use the canonical evaluation schema")
+    if (
+        policy.get("case_ids") != sorted(VALIDATION_CASES)
+        or policy.get("repeats_per_case") != 5
+        or policy.get("fixed_checkpoint") != "epoch_03/checkpoint-432"
+        or policy.get("scoring_entry") != "scripts/final_answer_scoring.py"
+        or policy.get("scoring_policy_version")
+        != CANONICAL_SCORING_POLICY_VERSION
+        or policy.get("correctness_basis") != "final_answer_only"
+        or policy.get("launcher") != "scripts/run_agent_validation_resilient.sh"
+        or policy.get("reasoning_effort") != "high"
+        or policy.get("timeout_seconds_per_case_repeat") != 3600
+        or policy.get("infrastructure_retry_limit") != 3
+        or "inclusive-OR" not in policy.get("q73_q86_policy", "")
+        or "diagnostic_only" not in policy.get(
+            "process_tool_or_reasoning_errors", ""
+        )
+        or policy.get("terminal_without_valid_final_answer") != "model_error"
+        or policy.get("clean_heldout_required_for_final_generalization_claim")
+        is not True
+    ):
+        raise ValueError("formal Agent evaluation policy is not the frozen v3 contract")
+    if manifest.get("evaluation_protocol") != policy:
+        raise ValueError("manifest evaluation protocol differs from formal config")
+    scorer = (ROOT / policy["scoring_entry"]).read_text(encoding="utf-8")
+    if (
+        f'SCORING_POLICY_VERSION = "{CANONICAL_SCORING_POLICY_VERSION}"'
+        not in scorer
+        or "q73-q86 VRRP inclusive OR" not in scorer
+    ):
+        raise ValueError("canonical final-answer scorer identity/OR policy differs")
+    launcher = (ROOT / policy["launcher"]).read_text(encoding="utf-8")
+    for contract in (
+        'REPEATS="${REPEATS:-5}"',
+        'TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-3600}"',
+        'REASONING_EFFORT="${REASONING_EFFORT:-high}"',
+        'INFRA_MAX_RETRIES="${INFRA_MAX_RETRIES:-3}"',
+        "topology=tp2x1/concurrency2",
+    ):
+        if contract not in launcher:
+            raise ValueError(f"Agent launcher lacks frozen evaluation contract: {contract}")
 
     sampling = manifest["sampling"]
     if sampling["effective_rows_per_epoch"] != 1151:

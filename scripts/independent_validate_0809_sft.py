@@ -46,6 +46,7 @@ STRUCTURAL_AUDIT_ACTIONS = {
     "0809_cf_action_q0066_a03",
 }
 AUDITED_COMPLETE_SOURCE = "q0023_path_02_success_09_step_04"
+EXPECTED_FINAL_ANSWER_SCORER = "agent-final-answer.v3.2026-08-10-final-answer-only"
 
 
 def parse_args() -> argparse.Namespace:
@@ -625,8 +626,50 @@ def main() -> None:
     if any(contract not in training for contract in contracts):
         raise ValueError("formal training entry lacks a release/runtime contract")
     formal = json.loads((ROOT / "config" / "qwen36_0809_formal_training.json").read_text(encoding="utf-8"))
-    if formal.get("schema_version") != "qwen36-0809-formal-training.v2" or formal.get("check_model") is not True:
+    if formal.get("schema_version") != "qwen36-0809-formal-training.v3" or formal.get("check_model") is not True:
         raise ValueError("formal config does not bind model identity")
+    evaluation = formal.get("evaluation_policy", {})
+    independent_contract = {
+        "case_ids": sorted(DEV_CASES),
+        "repeats_per_case": 5,
+        "fixed_checkpoint": "epoch_03/checkpoint-432",
+        "scoring_entry": "scripts/final_answer_scoring.py",
+        "scoring_policy_version": EXPECTED_FINAL_ANSWER_SCORER,
+        "correctness_basis": "final_answer_only",
+        "launcher": "scripts/run_agent_validation_resilient.sh",
+        "reasoning_effort": "high",
+        "timeout_seconds_per_case_repeat": 3600,
+        "infrastructure_retry_limit": 3,
+    }
+    if any(evaluation.get(key) != value for key, value in independent_contract.items()):
+        raise ValueError("formal config does not bind the shared v3 Agent protocol")
+    if (
+        "inclusive-OR" not in evaluation.get("q73_q86_policy", "")
+        or "diagnostic_only" not in evaluation.get(
+            "process_tool_or_reasoning_errors", ""
+        )
+        or evaluation.get("terminal_without_valid_final_answer") != "model_error"
+        or manifest.get("evaluation_protocol") != evaluation
+    ):
+        raise ValueError("Agent scoring semantics differ from the final-answer-only contract")
+    scorer_path = ROOT / evaluation["scoring_entry"]
+    scorer_source = scorer_path.read_text(encoding="utf-8")
+    if (
+        f'SCORING_POLICY_VERSION = "{EXPECTED_FINAL_ANSWER_SCORER}"'
+        not in scorer_source
+        or "q73-q86 VRRP inclusive OR" not in scorer_source
+    ):
+        raise ValueError("shared final-answer scorer implementation differs")
+    launcher_source = (ROOT / evaluation["launcher"]).read_text(encoding="utf-8")
+    for required in (
+        'REPEATS="${REPEATS:-5}"',
+        'TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-3600}"',
+        'REASONING_EFFORT="${REASONING_EFFORT:-high}"',
+        'INFRA_MAX_RETRIES="${INFRA_MAX_RETRIES:-3}"',
+        "topology=tp2x1/concurrency2",
+    ):
+        if required not in launcher_source:
+            raise ValueError(f"shared Agent launcher contract is absent: {required}")
 
     preflight_record = manifest["target_tokenizer_preflight"]
     if preflight_record.get("status") == "passed":

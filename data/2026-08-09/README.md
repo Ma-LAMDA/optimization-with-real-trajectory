@@ -74,6 +74,8 @@ bash scripts/train_qwen36_0809_agent_error_aware_5epoch.sh
 
 ## 评测与维护边界
 
-当前 12 题已经用于错误模式分析，只能作为 error-mining/dev 和历史 checkpoint 横向诊断；最终泛化结论必须使用未参与反推的新 topology-heldout Agent 集。q73–q86 使用 inclusive-OR v2 评分；基础设施失败和人为中断不进分母；无有效答案、错误归因和 malformed tool call 均计模型错误。
+当前 12 题已经用于错误模式分析，只能作为 error-mining/dev 和历史 checkpoint 横向诊断；最终泛化结论必须使用未参与反推的新 topology-heldout Agent 集。0809 与 0807 统一使用 `scripts/final_answer_scoring.py` 的 `agent-final-answer.v3.2026-08-10-final-answer-only`：正确性只看最终答案，q73–q86 inclusive-OR 由同一入口处理；过程中的错误归因或 malformed tool call 只作诊断，不能覆盖一个精确可接受的最终答案。终态无有效最终答案计模型错误；基础设施失败、超时和人为中断不进有效分母，保留原始证据后安全重试。
+
+最终 Agent 协议固定为 epoch 3/checkpoint-432、上述 12 题各 5 次、reasoning effort high、单次 3600 秒、一个 TP=2 vLLM 实例和两个 runner（总并发 2），基础设施最多重试 3 次。12×5 验证在至少完成 3 个有效完整轮次且累计 30 个有效模型错误时允许提前停止，但必须同时报告观察准确率和 60 格理论上限。
 
 以后对 0809 来源、划分、事实门禁、loss、采样、system prompt、工具协议、tokenizer、训练入口或生成文件的任何修改，都必须在同一变更中更新本 README、`REPRODUCIBILITY.md`、根 README、manifest 和审计报告，重生成全部派生文件并通过两套校验与目标 tokenizer 检查。

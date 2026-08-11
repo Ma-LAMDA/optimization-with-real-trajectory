@@ -101,7 +101,7 @@ for value in config["expected_cumulative_optimizer_steps"]:
 PY
 )
 
-if [[ "${CFG[schema_version]}" != "qwen36-0809-formal-training.v2" ]]; then
+if [[ "${CFG[schema_version]}" != "qwen36-0809-formal-training.v3" ]]; then
   echo "Unexpected 0809 training schema: ${CFG[schema_version]}" >&2
   exit 1
 fi

@@ -1,5 +1,5 @@
 {
-  "schema_version": "qwen36-0809-formal-training.v2",
+  "schema_version": "qwen36-0809-formal-training.v3",
   "release_id": "0809",
   "data_root": "data/2026-08-09",
   "distributed_strategy": "ddp",
@@ -71,10 +71,23 @@
   "agent_checkpoint_selection": false,
   "evaluation_policy": {
     "current_12_cases_role": "error-mining/dev",
+    "case_ids": [2, 12, 19, 20, 29, 38, 65, 71, 85, 86, 99, 100],
     "repeats_per_case": 5,
-    "scoring_policy": "v2 inclusive-OR for q73-q86",
+    "fixed_checkpoint": "epoch_03/checkpoint-432",
+    "scoring_entry": "scripts/final_answer_scoring.py",
+    "scoring_policy_version": "agent-final-answer.v3.2026-08-10-final-answer-only",
+    "correctness_basis": "final_answer_only",
+    "q73_q86_policy": "inclusive-OR retained inside the canonical v3 scorer",
+    "process_tool_or_reasoning_errors": "diagnostic_only; do not override an exact accepted final answer",
+    "terminal_without_valid_final_answer": "model_error",
+    "launcher": "scripts/run_agent_validation_resilient.sh",
+    "reasoning_effort": "high",
+    "timeout_seconds_per_case_repeat": 3600,
+    "topology": "one_vllm_tp2_instance_two_runners_total_concurrency_2",
+    "early_stop": "for 12x5 only: stop after at least 3 complete valid repeats and 30 cumulative valid model errors; report observed accuracy and 60-slot upper bound",
+    "infrastructure_retry_limit": 3,
     "clean_heldout_required_for_final_generalization_claim": true,
-    "infrastructure_failures_and_interruptions": "excluded",
-    "malformed_model_tool_calls": "model_error"
+    "infrastructure_failures_timeouts_and_interruptions": "excluded from the valid denominator; archive evidence and retry without overwriting",
+    "malformed_process_tool_calls": "diagnostic_only when an accepted final answer exists"
   }
 }

@@ -178,6 +178,13 @@ config/plugin、tokenizer/model identity、ms-swift 与 transformers 版本。v7
 Qwen3.6-27B tokenizer/loss-mask 预检，不复用 v6 哈希：p99 4561、最大 5635/16384，overlong 和
 loss-mask failure 均为 0；环境为 Python 3.12.3、ms-swift 4.4.2、transformers 5.12.1。
 
+0809 最终 Agent 测试与 0807 统一调用 `scripts/final_answer_scoring.py`，策略版本固定为
+`agent-final-answer.v3.2026-08-10-final-answer-only`。两者均固定 epoch 3、相同 12 题×5 次、
+reasoning effort high、3600 秒、TP=2 单实例/两个 runner/总并发 2；过程工具或推理错误只作诊断，
+正确性只看最终答案，q73–q86 inclusive-OR 由同一 scorer 处理。0809 的 checkpoint 是 432，
+0807 是 81，差异仅来自每轮 optimizer step 数不同；训练期 validation 节点数不同，eval loss 不作
+跨版本绝对值比较。
+
 当前 12 题已参与错误模式分析，只作为 error-mining/dev；正式泛化结论仍需未参与反推的新
 held-out Agent 集。完整规则与复现命令见
 [`data/2026-08-09/REPRODUCIBILITY.md`](data/2026-08-09/REPRODUCIBILITY.md)。
@@ -556,6 +563,11 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-11：将 0809 Agent 判分协议升级到仓库统一的
+  `agent-final-answer.v3.2026-08-10-final-answer-only`，与 0807 统一为相同 12 题×5 次、固定 epoch 3、
+  high thinking、3600 秒和 TP2×单实例/双 runner；过程错误只作诊断，q73–q86 inclusive-OR 继续由
+  canonical scorer 处理。formal config、manifest、双 validator、audit 和 scorer/launcher/retry/
+  early-stop/summarizer 依赖哈希同步冻结。
 - 2026-08-11：按 20:02 续审升级 0809 v7：action 从关键词门禁升级为 message-derived 完整结构
   binding；308/308 action 仅监督待验证状态，完整 action 为 0。50 条父级 post-closure 行移除 93 个
   正工具调用；q0023 的 1/1 完整节点改为停止。endpoint 取消 unsupported 邻近标签排除，116 条均改为

@@ -5,7 +5,7 @@
   "data_root": "data/2026-08-09",
   "design_input": {
     "path": "data/2026-08-09/curation/DESIGN_AUDIT_INPUT.md",
-    "sha256_lf_normalized": "5099e53a2f941de9e17f0bca8614bf9062072c99365f0bd62d99014c01e0a033",
+    "sha256_lf_normalized": "9eeedde9019af3dc9fe4d3ee6a4897a8c2b29a1631eac2f2c0269838a7e2f440",
     "scope_note": "repository-contained v7 design input: message-derived structural action closure, candidate-scope-calibrated endpoints, portable release paths, reachable marker-free targets, one bundle per real evidence path, runtime identity binding and complete dependency closure"
   },
   "parent_release": {
@@ -439,29 +439,63 @@
       ]
     }
   },
+  "evaluation_protocol": {
+    "current_12_cases_role": "error-mining/dev",
+    "case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ],
+    "repeats_per_case": 5,
+    "fixed_checkpoint": "epoch_03/checkpoint-432",
+    "scoring_entry": "scripts/final_answer_scoring.py",
+    "scoring_policy_version": "agent-final-answer.v3.2026-08-10-final-answer-only",
+    "correctness_basis": "final_answer_only",
+    "q73_q86_policy": "inclusive-OR retained inside the canonical v3 scorer",
+    "process_tool_or_reasoning_errors": "diagnostic_only; do not override an exact accepted final answer",
+    "terminal_without_valid_final_answer": "model_error",
+    "launcher": "scripts/run_agent_validation_resilient.sh",
+    "reasoning_effort": "high",
+    "timeout_seconds_per_case_repeat": 3600,
+    "topology": "one_vllm_tp2_instance_two_runners_total_concurrency_2",
+    "early_stop": "for 12x5 only: stop after at least 3 complete valid repeats and 30 cumulative valid model errors; report observed accuracy and 60-slot upper bound",
+    "infrastructure_retry_limit": 3,
+    "clean_heldout_required_for_final_generalization_claim": true,
+    "infrastructure_failures_timeouts_and_interruptions": "excluded from the valid denominator; archive evidence and retry without overwriting",
+    "malformed_process_tool_calls": "diagnostic_only when an accepted final answer exists"
+  },
   "reproducibility": {
     "single_data_root_contract": true,
     "document": "data/2026-08-09/REPRODUCIBILITY.md",
     "tracked_files": {
       "root_readme": {
         "path": "README.md",
-        "sha256_lf_normalized": "8f8734c0512ba94d53d688dd8138b72e246c94d11b2fda55f2531f3ebea97a9a"
+        "sha256_lf_normalized": "5ea527c01274560d5039ddc718197db770485cf4421bf50ca0dce8529d64f572"
       },
       "release_readme": {
         "path": "data/2026-08-09/README.md",
-        "sha256_lf_normalized": "c1e1b2c75feaaed90879fb184ee6a881cdc1b034f208446b0234efea48182197"
+        "sha256_lf_normalized": "f01fbae7f5f922e49be25dd90b04c2b24899fc2dd2140ef86288a1bdaeaa9247"
       },
       "reproducibility": {
         "path": "data/2026-08-09/REPRODUCIBILITY.md",
-        "sha256_lf_normalized": "ca72d614621b11418b669f1b272c3726145505a6778daefc7838de5ec4a37ce9"
+        "sha256_lf_normalized": "c9d509a2a126c5180da42a7cd256f604d2ac0d2de4e5d95ff104b821059c4f9a"
       },
       "design_audit_input": {
         "path": "data/2026-08-09/curation/DESIGN_AUDIT_INPUT.md",
-        "sha256_lf_normalized": "5099e53a2f941de9e17f0bca8614bf9062072c99365f0bd62d99014c01e0a033"
+        "sha256_lf_normalized": "9eeedde9019af3dc9fe4d3ee6a4897a8c2b29a1631eac2f2c0269838a7e2f440"
       },
       "converter": {
         "path": "scripts/convert_0809_agent_error_aware_sft.py",
-        "sha256_lf_normalized": "ee3299445ffb181acdbb343e7427e4ed2156a2671da7c2314ea857401992ddaa"
+        "sha256_lf_normalized": "6fe41980ab86d1403e1bb6ef461bd75f9f3a9921c7f09b77cadaff862840cdba"
       },
       "recovery_dependency": {
         "path": "scripts/convert_0807_evidence_gated_reasoning_sft.py",
@@ -469,15 +503,15 @@
       },
       "validator": {
         "path": "scripts/validate_0809_agent_error_aware_sft.py",
-        "sha256_lf_normalized": "012331e6925904640e3c373a170917994e6c54fc137109772c9e5b9659fbaab9"
+        "sha256_lf_normalized": "bec5d9d54a3fb38a7c5c30f2319471750e950ec4ee4baf64ad1f5cd8b68939a3"
       },
       "independent_validator": {
         "path": "scripts/independent_validate_0809_sft.py",
-        "sha256_lf_normalized": "f642593c5686607de72611bf25cc772fb03b0dc6998096f3c071509d368317f8"
+        "sha256_lf_normalized": "3b37b5931abae482f402bc2ebfc7bab42c6fa4f762590b60d12ae0b7036474ac"
       },
       "audit": {
         "path": "scripts/audit_0809_agent_error_aware_sft.py",
-        "sha256_lf_normalized": "1b41a9f9161409d2467eca698717f44c6d86c964bec0a9b71bd7f30488ad86bb"
+        "sha256_lf_normalized": "bc0c664a116de296f092dc33ec99540bd5db45bc7feb1766fc8b5bb5fe72f1ad"
       },
       "tokenizer_preflight": {
         "path": "scripts/check_0809_target_tokenizer_preflight.py",
@@ -485,7 +519,7 @@
       },
       "training_entry": {
         "path": "scripts/train_qwen36_0809_agent_error_aware_5epoch.sh",
-        "sha256_lf_normalized": "55e4bbb3ef63a1014e5741510648130c142f2ba98a9ae05f2973075710de07d2"
+        "sha256_lf_normalized": "4fb0caec899eb250d55a2240ce2b7ab52c92dbfdfb55b6788f6199702a95e138"
       },
       "lr_plugin": {
         "path": "scripts/qwen36_0809_fixed_stage_lr_plugin.py",
@@ -493,7 +527,27 @@
       },
       "formal_config": {
         "path": "config/qwen36_0809_formal_training.json",
-        "sha256_lf_normalized": "486456b9bc2d1a7766e8fac052cdbc0d0d944a6f7b12cba776fa238a1de043fc"
+        "sha256_lf_normalized": "044de7883f4838b0052116213ccd4137a7a003ab8e22cf772709cbaf30a4382b"
+      },
+      "agent_validation_launcher": {
+        "path": "scripts/run_agent_validation_resilient.sh",
+        "sha256_lf_normalized": "234506f85cd32c2f3497d61c0df20370401071953090d7c2620e3a25147c71b5"
+      },
+      "agent_validation_retry_policy": {
+        "path": "scripts/agent_validation_retry_policy.sh",
+        "sha256_lf_normalized": "2c44b1fdc38f37a1b09947cb8bcb800b3eee9103526a0965c78eb86d8cf50566"
+      },
+      "agent_validation_early_stop": {
+        "path": "scripts/monitor_agent_validation_early_stop.py",
+        "sha256_lf_normalized": "08d9b3ccd6930f5052cf0d8250443c46a9f62185b7ddc5e03afa775cdba82c33"
+      },
+      "agent_validation_summarizer": {
+        "path": "scripts/summarize_agent_validation.py",
+        "sha256_lf_normalized": "6252bc10aaf5c81ecd4fae5515ec954e0e84637c52e310a38a3495cc3d937b48"
+      },
+      "final_answer_scorer": {
+        "path": "scripts/final_answer_scoring.py",
+        "sha256_lf_normalized": "70e282aaac26a10513c142779ca0b0783f930177dd8a85ca4306c283a1573f35"
       },
       "parent_accepted_selection": {
         "path": "data/2026-08-05/curation/accepted_trajectory_selection.json",

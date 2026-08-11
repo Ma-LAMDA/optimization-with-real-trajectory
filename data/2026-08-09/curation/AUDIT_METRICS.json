@@ -5,7 +5,7 @@
     "logical_data_root": "data/2026-08-09",
     "design_input": {
       "path": "data/2026-08-09/curation/DESIGN_AUDIT_INPUT.md",
-      "sha256_lf_normalized": "5099e53a2f941de9e17f0bca8614bf9062072c99365f0bd62d99014c01e0a033",
+      "sha256_lf_normalized": "9eeedde9019af3dc9fe4d3ee6a4897a8c2b29a1631eac2f2c0269838a7e2f440",
       "scope_note": "repository-contained v7 design input: message-derived structural action closure, candidate-scope-calibrated endpoints, portable release paths, reachable marker-free targets, one bundle per real evidence path, runtime identity binding and complete dependency closure"
     },
     "parent_release": "data/2026-08-05",
@@ -450,6 +450,43 @@
         "endpoint_bundle_percent": 10.398206
       }
     }
+  },
+  "agent_evaluation_protocol": {
+    "current_12_cases_role": "error-mining/dev",
+    "case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ],
+    "repeats_per_case": 5,
+    "fixed_checkpoint": "epoch_03/checkpoint-432",
+    "scoring_entry": "scripts/final_answer_scoring.py",
+    "scoring_policy_version": "agent-final-answer.v3.2026-08-10-final-answer-only",
+    "correctness_basis": "final_answer_only",
+    "q73_q86_policy": "inclusive-OR retained inside the canonical v3 scorer",
+    "process_tool_or_reasoning_errors": "diagnostic_only; do not override an exact accepted final answer",
+    "terminal_without_valid_final_answer": "model_error",
+    "launcher": "scripts/run_agent_validation_resilient.sh",
+    "reasoning_effort": "high",
+    "timeout_seconds_per_case_repeat": 3600,
+    "topology": "one_vllm_tp2_instance_two_runners_total_concurrency_2",
+    "early_stop": "for 12x5 only: stop after at least 3 complete valid repeats and 30 cumulative valid model errors; report observed accuracy and 60-slot upper bound",
+    "infrastructure_retry_limit": 3,
+    "clean_heldout_required_for_final_generalization_claim": true,
+    "infrastructure_failures_timeouts_and_interruptions": "excluded from the valid denominator; archive evidence and retry without overwriting",
+    "malformed_process_tool_calls": "diagnostic_only when an accepted final answer exists",
+    "manifest_matches_formal_config": true,
+    "scoring_implementation_tracked": true,
+    "launcher_implementation_tracked": true
   },
   "hard_negative_boundary": {
     "malformed_protocol_and_rejected_sets_are_metadata_only": true,

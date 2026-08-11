@@ -167,6 +167,18 @@ bash scripts/train_qwen36_0809_agent_error_aware_5epoch.sh
 
 ## 11. 评测边界
 
-现有 12 题只用于 error-mining/dev 和历史 checkpoint 横向比较，不能单独证明新拓扑泛化。正式结论需要未参与反推的 topology-heldout Agent 集。q73–q86 使用 scoring v2 inclusive-OR；基础设施失败与人为中断不进分母；无有效答案、错误归因、错误集合和 malformed tool call 均计模型错误。
+现有 12 题只用于 error-mining/dev 和历史 checkpoint 横向比较，不能单独证明新拓扑泛化。正式结论需要未参与反推的 topology-heldout Agent 集。
+
+0809 与 0807 的最终 Agent 横向比较统一冻结如下协议：
+
+- case IDs：2、12、19、20、29、38、65、71、85、86、99、100，每题 5 次；
+- checkpoint：epoch 3 / checkpoint-432；eval loss 只作诊断，不参与选点；
+- 唯一判分入口：`scripts/final_answer_scoring.py`，策略版本 `agent-final-answer.v3.2026-08-10-final-answer-only`；
+- 正确性只看最终答案；过程工具调用、归因或协议告警只作诊断，不能推翻精确可接受答案；q73–q86 inclusive-OR 仍由同一 scorer 处理；
+- 终态无有效最终答案计模型错误；基础设施失败、超时和人为中断不进有效分母，完整归档后在同一参数下重试，最多 3 次；
+- `reasoning_effort=high`，单次 3600 秒，一个 vLLM TP=2 实例、两个 runner、总并发 2；
+- 12×5 在至少 3 个完整有效轮次且累计 30 个有效模型错误时允许提前停止；报告必须同时给出观察准确率、完整轮次、错误数、60 格理论上限和未运行槽位。
+
+formal config、manifest、两套 validator 和 audit 必须绑定相同策略版本与实现文件哈希。scorer、韧性 launcher、基础设施重试策略、提前停止器和汇总器都是发布依赖；历史结果若没有完全相同的 `scoring_policy_version`，必须重算或拒绝横向合并。
 
 训练后至少报告：六类 full/partial/none、首次决定性事实前命令数、full 后继续命令数、exact/FP/FN/额外项率、malformed tool-call 率、各故障族、global step、样本曝光和 supervised token。正式训练前仍必须完成双卡 resume/LR smoke 和小规模 Agent canary。
