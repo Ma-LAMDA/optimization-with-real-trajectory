@@ -1,0 +1,443 @@
+2026-08-04T03:55:45.777252Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T03:55:45.777317Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T03:55:45.778000Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T03:55:45.780901Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T03:55:45.790583Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-04T03:55:46.363465Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T03:55:46.363510Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T03:55:46.364351Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T03:55:46.367539Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T03:55:56.405465Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs' -Directory | Where-Object { $_.Name -eq 'CampusNetwork_05' } | Select-Object -ExpandProperty FullName; Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05' -Directory | Select-Object -ExpandProperty Name
+2026-08-04T03:56:06.863286Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg --files 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05'
+2026-08-04T03:56:41.084783Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\Core_SW_02\dis
+play_vrrp_brief.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz..._vrrp_brief.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T03:56:59.204051Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: PowerShell expressions and static method calls are forbidden. Command: Select-String -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\*\*.txt' -Pattern 'output rate [1-9][0-9]{8,} bits/sec'
+2026-08-04T03:57:53.493189Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: path is outside the allowed saved_configs root: D:\IP组网\optimization-with-real-trajectory\experiments\2026-08-02-ip_codex_gpt56-sol_100x10\results\runs\q0032_r07\attempt_013\workspace. Command: Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\experiments\2026-08-02-ip_codex_gpt56-sol_100x10\results\runs\q0032_r07\attempt_013\workspace' -Force
+2026-08-04T03:58:05.204840Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_ip
+_routing-table_10.1.110.0.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz..._10.1.110.0.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:25.286872Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 1.9 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\PE1\display_in
+terface_Ethernet1_0_2.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...hernet1_0_2.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:25.287026Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:25.287119Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.020522Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.027024Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.064734Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.069930Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.090744Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.095902Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.147317Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.180311Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.185451Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.198246Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.203711Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.258794Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.263625Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.270255Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.275317Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.382694Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.387606Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.401330Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.402214Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.405847Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.405983Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.434260Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.439215Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.442580Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.448361Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.484851Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.489490Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.514934Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.519841Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.526544Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.531192Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.531297Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.535864Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.544488Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.548976Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.549296Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.553754Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.554402Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.559182Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.568649Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.568769Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.573300Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.573420Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.595265Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.595266Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.596945Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.599280Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.599765Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.600119Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.600238Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.600340Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.600438Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.600525Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.607742Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.612446Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.613210Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.618049Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.622629Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.655962Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.660966Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.673417Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.678346Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.690915Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.696208Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.699455Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.704511Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.707599Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.712451Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.719211Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.723880Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.765968Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.766230Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.770799Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.770930Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.777016Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.781882Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.785089Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.785090Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.790052Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.790188Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.801929Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.807011Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.846041Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.850778Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.870840Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.875887Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.880636Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.885366Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.997186Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.997433Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:39.997185Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.006573Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.006707Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.006805Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.021282Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.023593Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.024227Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.026333Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.026476Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.026581Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.097121Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.098006Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.102058Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.102203Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.199257Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.310295Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.315261Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.334902Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.334901Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.342208Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.342312Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.395769Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.400799Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.491041Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.491341Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.495902Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.550070Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.567674Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.572443Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.582299Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.587073Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.605288Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.623616Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.628335Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.832192Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.832804Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.832940Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.833043Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.964872Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:40.964968Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.035391Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.040586Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.109478Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.114340Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.123764Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.132258Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.145100Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.163680Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.209363Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.209505Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.293989Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.315482Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.371183Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.380286Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.413893Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.428763Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.437322Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.443479Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.457939Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.462260Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 2.2 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\PE1\display_in
+terface_Ethernet1_0_2.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...hernet1_0_2.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:41.462450Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.489955Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.490066Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.510141Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.523129Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.523763Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.534741Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.535378Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.542003Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.567779Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.573844Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.575754Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.662086Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.666426Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.671896Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.678983Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.685066Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.686455Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.702904Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.703025Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.710158Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.712933Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.765641Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.766354Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.801518Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.802625Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.813133Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.822267Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.828953Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.834519Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.838169Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.839883Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.867603Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.890753Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.917810Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.918332Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.926002Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.946239Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.946390Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:41.971257Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.001651Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.016809Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.019879Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.030394Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.030774Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 1.4 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\PE3\display_in
+terface_Ethernet1_0_1.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...hernet1_0_1.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.030915Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.080314Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.088847Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.101340Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.101462Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.119958Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.218696Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 3.4 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\Core_SW_01\dis
+play_interface_GE1_0_8.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...ace_GE1_0_8.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.218889Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.222153Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 2.4 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\Core_SW_01\dis
+play_interface_GE1_0_9.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...ace_GE1_0_9.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.222346Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.233047Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 2.5 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\SZ_AR\display_
+interface_Ethernet1_0_0.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...hernet1_0_0.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.233122Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 1 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\SZ_AR\display_
+interface_Ethernet1_0_1.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...hernet1_0_1.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.233130Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 3.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\Core_SW_02\dis
+play_interface_GE1_0_9.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...ace_GE1_0_9.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.233144Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.233281Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.255225Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.262844Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 2.5 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\Core_SW_02\dis
+play_interface_GE1_0_8.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...ace_GE1_0_8.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.263028Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.298571Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 1.8 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\PE1\display_in
+terface_Ethernet2_0_0.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...hernet2_0_0.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.298735Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:42.595181Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 2.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_04\PE3\display_in
+terface_Ethernet1_0_0.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...hernet1_0_0.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:42.595400Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:51.917059Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:51.921064Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:51.937534Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:52.109777Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:52.112830Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:52.120580Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:52.128875Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:52.157815Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_cp
+u.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...display_cpu.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T04:00:52.157976Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.421272Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.427617Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.428426Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.431743Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.431867Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.437170Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.440481Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.446024Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.450041Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.450714Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.454979Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.707694Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.777919Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.792276Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.821772Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.832399Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.844065Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.875285Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:00:57.950083Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.697388Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.697483Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.697553Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.858307Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.868334Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.868399Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.869959Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.873012Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:01:03.878093Z  WARN codex_analytics::client: dropping analytics events: queue is full
+2026-08-04T04:02:01.453269Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fcae9-c49b-72a2-b566-ed272f2c407c turn_id=019fcae9-c576-75d2-bf0a-1e66742d7cff item_id="exec-957ebd4a-a3ca-413e-be15-13b703d7b883"
+2026-08-04T04:02:01.453295Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fcae9-c49b-72a2-b566-ed272f2c407c turn_id=019fcae9-c576-75d2-bf0a-1e66742d7cff item_id="exec-af0c7631-9f45-4a15-8795-73023629ac04"
+2026-08-04T04:02:08.086440Z  WARN codex_analytics::reducer: dropping tool item analytics event: missing item started notification thread_id=019fcae9-c49b-72a2-b566-ed272f2c407c turn_id=019fcae9-c576-75d2-bf0a-1e66742d7cff item_id="exec-87ca9152-7ef6-497a-950c-ca73799e6752"

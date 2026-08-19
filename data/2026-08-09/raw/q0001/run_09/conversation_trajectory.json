@@ -1,0 +1,72 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0001_success_09",
+  "case_id": 1,
+  "row_index": 1,
+  "success_slot": 9,
+  "attempt_index": 25,
+  "source_record": {
+    "row_index": 1,
+    "original_id": 1,
+    "sample_id": 1,
+    "sample_key": "q0001",
+    "question": "在CampusNetwork_02组网中，从SH_SAL_PC01 ping北京区域核心交换机（10.1.10.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先锁定 CampusNetwork_02 的实际节点和可用命令回显，再用“正常最短路径被错误引流 / 动态路由代价规划错误 / 隧道策略规划错误”等少量假设检查端到端转发路径。最终只输出证据支持的最小根因集合。"
+    },
+    {
+      "event_line": 28,
+      "item_id": "item_14",
+      "text": "已确认源端、上海核心/出口以及 PE1-PE3 都有完整的路由与 SRv6 状态回显。题目明确指出 PE2-PE3 是高时延链路，因此接下来优先核验：SH_SAL_PC01 的默认转发、SH_Core 到北京网段的下一跳，以及 SH_AR 实际命中的 SRv6 Policy 候选路径是否把流量绕经该链路。"
+    },
+    {
+      "event_line": 77,
+      "item_id": "item_40",
+      "text": "当前正向路径已排除主机网关、上海核心缺省路由和 SRv6 Policy：流量经 SH_AR 到 PE2，PE2 对北京前缀的 VPN 路由明确递归到 PE1 的直连接口。高延迟仍可能来自非对称返回路径；ISIS 链路开销可按方向配置，因此我正在核对 PE1 返回 2.2.2.2 时是否错误选择 PE3→PE2 的高时延链路。"
+    },
+    {
+      "event_line": 172,
+      "item_id": "item_90",
+      "text": "端到端路由状态显示 PE1↔PE2 的正反向 MPLS/ISIS 转发均走直连，并未实际经过 PE2-PE3；因此不能仅凭“该链路时延高”就把 SRv6 或 MPLS 判为根因。与此同时，北京核心主设备存在更强的运行态证据：Core_SW_01 配置中缺少全局 `stp enable`，且日志持续出现二层聚合链路抖动、VRRP 双主和 OSPF 邻接反复变化，这与 ping 高延迟直接一致。我再做一次跨同类配置核验，避免把无关的潜在规划问题计入最小集合。"
+    },
+    {
+      "event_line": 189,
+      "item_id": "item_99",
+      "text": "<result>\n[\n\"Core_SW_01;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_01;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_01;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_01;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0001_r09/attempt_025/judgment.json",
+    "judgment_sha256_lf_normalized": "12ef0cb4da16442c300f0ae44b1bb528af0e9d3ffdeffa3b78005f1f14dc13ab"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0001_r09/attempt_025",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0001_r09/attempt_025/events.jsonl",
+    "events_sha256_lf_normalized": "b488a914d52d9d4fe5a75340f8f404bfb30b2b2ff3ae7e71d6cee53bbaee09f9",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0001_r09/attempt_025/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "bfde251d11a776ff63ec6caee8768d198b2cb43258e1b53a639536b4b7adc6f6",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0001/source_record.json",
+    "source_record_sha256_lf_normalized": "0948e8029f20b1719f8890970f1d0495b6da393f28a9db7f7cba1bfcf939551f",
+    "thread_id": "019fc84d-3dcc-7870-a6c7-91b3a91fd34d",
+    "duration_seconds": 382.01
+  }
+}

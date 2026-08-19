@@ -1,0 +1,76 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0035_success_01",
+  "case_id": 35,
+  "row_index": 35,
+  "success_slot": 1,
+  "attempt_index": 1,
+  "source_record": {
+    "row_index": 35,
+    "original_id": 35,
+    "sample_id": 35,
+    "sample_key": "q0035",
+    "question": "在CampusNetwork_05组网中，从 SH_STO_PC01 ping北京区域核心交换机（10.1.30.254）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先枚举 CampusNetwork_05 的节点与回显文件，再围绕“端到端高延迟”优先排查路径环路、接口拥塞、MTU及二层生成树路径异常，并用配置和运行状态交叉核验。"
+    },
+    {
+      "event_line": 28,
+      "item_id": "item_14",
+      "text": "首轮证据表明源主机仅保存了本机网络状态，需由其默认网关 SH_Core 进入上海出口 SH_AR，再经 PE 骨干到北京核心。接下来我会先确认源地址、默认网关及去往 10.1.30.254 的逐跳路由，借此区分三层绕路/环路与链路层性能问题。"
+    },
+    {
+      "event_line": 112,
+      "item_id": "item_57",
+      "text": "三层可达性本身成立，但在 PE1/PE2/PE3 上发现两组首尾相接的主机静态路由，形成相反方向的三节点闭环；这可能持续消耗转发资源并抬高业务时延。我会继续核对这些路由是否真实下发、相关接口速率/利用率，以及 MPLS 标签表，避免把仅用于测试但未承载流量的配置误判为根因。"
+    },
+    {
+      "event_line": 295,
+      "item_id": "item_151",
+      "text": "运行态进一步支持三层闭环：六条主机路由均已下发到 FIB，三条骨干链路的转发计数呈环向对应，并在各 PE 入接口累计大量 TTL=1 报文。MPLS 表中只有 PE1 存在孤立的 1001 静态转发表项，PE2/PE3 无对应标签续接，因此它不能形成标签闭环，我会按保守原则不将其列为根因。最后再检查同框架配置是否把这些测试项作为基线，以确认节点归属。"
+    },
+    {
+      "event_line": 312,
+      "item_id": "item_160",
+      "text": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在IP路由环路",
+    "PE2;存在IP路由环路",
+    "PE3;存在IP路由环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在IP路由环路",
+      "PE2;存在IP路由环路",
+      "PE3;存在IP路由环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0035_r01/attempt_001/judgment.json",
+    "judgment_sha256_lf_normalized": "7405df03ec4c6888ceeea2e05a58b81a01aef93464effe73a004cc0e19b6ee50"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0035_r01/attempt_001",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0035_r01/attempt_001/events.jsonl",
+    "events_sha256_lf_normalized": "e5f0c6da902af79833fa46d2c937ea8f0b214fdbca867f52a05fb53172da5209",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0035_r01/attempt_001/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "18538f112ded8bb0406026ca2cac688f04a8b8a8acccb00ae8ebbefca14fc4f4",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0035/source_record.json",
+    "source_record_sha256_lf_normalized": "6b616d8e97e54112fb0b5b03e8609d55519789c92478eaae7d14efea6f721b19",
+    "thread_id": "019fca7a-92d2-7403-abf1-289db464fc78",
+    "duration_seconds": 357.437
+  }
+}

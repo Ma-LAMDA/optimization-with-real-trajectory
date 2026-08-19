@@ -1,0 +1,957 @@
+{
+  "schema_version": "recoverable-final-answer-rescore.v1",
+  "generated_at": "2026-08-07T14:08:07.046482+00:00",
+  "repository_head": "34fa0dbff027e7ab1241f229042441e7412e1223",
+  "scorer_sha256": "68219a17ff25c804f4a76761e476e0567df496c5b3c1f9aeea495c2d95dc7009",
+  "rescore_script_sha256": "b7649d5653fc28693bc6902d5a7c14ec693b34596582316560486b2e6329c4fb",
+  "rule": {
+    "strict": "single <result> JSON string list",
+    "recovery": "unique non-conflicting fenced exact match to an accepted answer",
+    "prose_mentions_are_not_recovered": true,
+    "q73_q86_inclusive_or": true
+  },
+  "files": {
+    "experiments/2026-07-31-qwen36-27b-base-eval/deployment-ab/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 40,
+      "original_correct": 8,
+      "rescored_correct": 8,
+      "accuracy_percent": 20.0,
+      "delta_correct": 0,
+      "effective_terminals": 38,
+      "effective_original_correct": 8,
+      "effective_rescored_correct": 8,
+      "effective_accuracy_percent": 21.05263157894737,
+      "format_recovered": [],
+      "changes": []
+    },
+    "experiments/2026-07-31-qwen36-27b-base-eval/full-eval/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 381,
+      "original_correct": 2,
+      "rescored_correct": 12,
+      "accuracy_percent": 3.1496062992125986,
+      "delta_correct": 10,
+      "effective_terminals": 49,
+      "effective_original_correct": 2,
+      "effective_rescored_correct": 12,
+      "effective_accuracy_percent": 24.489795918367346,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 73,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 73,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 73,
+          "repeat": 4,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 73,
+          "repeat": 5,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 75,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 77,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 78,
+          "repeat": 1,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 78,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 79,
+          "repeat": 1,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 80,
+          "repeat": 1,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/base/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 30,
+      "original_correct": 7,
+      "rescored_correct": 7,
+      "accuracy_percent": 23.333333333333332,
+      "delta_correct": 0,
+      "effective_terminals": 27,
+      "effective_original_correct": 7,
+      "effective_rescored_correct": 7,
+      "effective_accuracy_percent": 25.925925925925927,
+      "format_recovered": [],
+      "changes": []
+    },
+    "experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/lora/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 30,
+      "original_correct": 12,
+      "rescored_correct": 15,
+      "accuracy_percent": 50.0,
+      "delta_correct": 3,
+      "effective_terminals": 26,
+      "effective_original_correct": 12,
+      "effective_rescored_correct": 15,
+      "effective_accuracy_percent": 57.69230769230769,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 86,
+          "repeat": 1,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 5,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "experiments/2026-08-04-qwen36-27b-best1-agent-validation/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 39,
+      "original_correct": 8,
+      "rescored_correct": 10,
+      "accuracy_percent": 25.641025641025642,
+      "delta_correct": 2,
+      "effective_terminals": 33,
+      "effective_original_correct": 8,
+      "effective_rescored_correct": 10,
+      "effective_accuracy_percent": 30.303030303030305,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "experiments/2026-08-05-qwen36-27b-best1-q12-q100-reasoning-prefix-agent-validation/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 10,
+      "original_correct": 2,
+      "rescored_correct": 2,
+      "accuracy_percent": 20.0,
+      "delta_correct": 0,
+      "effective_terminals": 10,
+      "effective_original_correct": 2,
+      "effective_rescored_correct": 2,
+      "effective_accuracy_percent": 20.0,
+      "format_recovered": [],
+      "changes": []
+    },
+    "experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 60,
+      "original_correct": 23,
+      "rescored_correct": 25,
+      "accuracy_percent": 41.666666666666664,
+      "delta_correct": 2,
+      "effective_terminals": 60,
+      "effective_original_correct": 23,
+      "effective_rescored_correct": 25,
+      "effective_accuracy_percent": 41.666666666666664,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/checkpoint_selection/epoch-1/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 12,
+      "original_correct": 3,
+      "rescored_correct": 3,
+      "accuracy_percent": 25.0,
+      "delta_correct": 0,
+      "effective_terminals": 12,
+      "effective_original_correct": 3,
+      "effective_rescored_correct": 3,
+      "effective_accuracy_percent": 25.0,
+      "format_recovered": [],
+      "changes": []
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/checkpoint_selection/epoch-1/report.pre_model_failure_classification_20260805T170538679242863Z/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 12,
+      "original_correct": 3,
+      "rescored_correct": 3,
+      "accuracy_percent": 25.0,
+      "delta_correct": 0,
+      "effective_terminals": 12,
+      "effective_original_correct": 3,
+      "effective_rescored_correct": 3,
+      "effective_accuracy_percent": 25.0,
+      "format_recovered": [],
+      "changes": []
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/checkpoint_selection/epoch-1/report_methodology_smoke/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 12,
+      "original_correct": 3,
+      "rescored_correct": 3,
+      "accuracy_percent": 25.0,
+      "delta_correct": 0,
+      "effective_terminals": 12,
+      "effective_original_correct": 3,
+      "effective_rescored_correct": 3,
+      "effective_accuracy_percent": 25.0,
+      "format_recovered": [],
+      "changes": []
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/checkpoint_selection/epoch-2/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 12,
+      "original_correct": 4,
+      "rescored_correct": 5,
+      "accuracy_percent": 41.666666666666664,
+      "delta_correct": 1,
+      "effective_terminals": 12,
+      "effective_original_correct": 4,
+      "effective_rescored_correct": 5,
+      "effective_accuracy_percent": 41.666666666666664,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/checkpoint_selection/epoch-3/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 12,
+      "original_correct": 6,
+      "rescored_correct": 7,
+      "accuracy_percent": 58.333333333333336,
+      "delta_correct": 1,
+      "effective_terminals": 12,
+      "effective_original_correct": 6,
+      "effective_rescored_correct": 7,
+      "effective_accuracy_percent": 58.333333333333336,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/checkpoint_selection/epoch-4/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 12,
+      "original_correct": 4,
+      "rescored_correct": 6,
+      "accuracy_percent": 50.0,
+      "delta_correct": 2,
+      "effective_terminals": 12,
+      "effective_original_correct": 4,
+      "effective_rescored_correct": 6,
+      "effective_accuracy_percent": 50.0,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 86,
+          "repeat": 1,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/checkpoint_selection/epoch-5/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 12,
+      "original_correct": 4,
+      "rescored_correct": 5,
+      "accuracy_percent": 41.666666666666664,
+      "delta_correct": 1,
+      "effective_terminals": 12,
+      "effective_original_correct": 4,
+      "effective_rescored_correct": 5,
+      "effective_accuracy_percent": 41.666666666666664,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/final_validation/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 60,
+      "original_correct": 23,
+      "rescored_correct": 25,
+      "accuracy_percent": 41.666666666666664,
+      "delta_correct": 2,
+      "effective_terminals": 60,
+      "effective_original_correct": 23,
+      "effective_rescored_correct": 25,
+      "effective_accuracy_percent": 41.666666666666664,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/final_validation/nonselection/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 30,
+      "original_correct": 10,
+      "rescored_correct": 11,
+      "accuracy_percent": 36.666666666666664,
+      "delta_correct": 1,
+      "effective_terminals": 30,
+      "effective_original_correct": 10,
+      "effective_rescored_correct": 11,
+      "effective_accuracy_percent": 36.666666666666664,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0804/0804-5epoch-20260805T114046Z/final_validation/selected_extra/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 18,
+      "original_correct": 7,
+      "rescored_correct": 7,
+      "accuracy_percent": 38.888888888888886,
+      "delta_correct": 0,
+      "effective_terminals": 18,
+      "effective_original_correct": 7,
+      "effective_rescored_correct": 7,
+      "effective_accuracy_percent": 38.888888888888886,
+      "format_recovered": [],
+      "changes": []
+    },
+    "output/2026-08-05-nightly/0804/controlled-baseline/old-checkpoint159-20260806T092051Z/combined_60_report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 60,
+      "original_correct": 14,
+      "rescored_correct": 17,
+      "accuracy_percent": 28.333333333333332,
+      "delta_correct": 3,
+      "effective_terminals": 60,
+      "effective_original_correct": 14,
+      "effective_rescored_correct": 17,
+      "effective_accuracy_percent": 28.333333333333332,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0804/controlled-baseline/old-checkpoint159-20260806T092051Z/interim_round1_report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 12,
+      "original_correct": 2,
+      "rescored_correct": 2,
+      "accuracy_percent": 16.666666666666668,
+      "delta_correct": 0,
+      "effective_terminals": 12,
+      "effective_original_correct": 2,
+      "effective_rescored_correct": 2,
+      "effective_accuracy_percent": 16.666666666666668,
+      "format_recovered": [],
+      "changes": []
+    },
+    "output/2026-08-05-nightly/0804/controlled-baseline/old-checkpoint159-20260806T092051Z/new_50_report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 50,
+      "original_correct": 12,
+      "rescored_correct": 15,
+      "accuracy_percent": 30.0,
+      "delta_correct": 3,
+      "effective_terminals": 50,
+      "effective_original_correct": 12,
+      "effective_rescored_correct": 15,
+      "effective_accuracy_percent": 30.0,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0805/0805-formal-5epoch-2gpu-20260807T103558+0800/epoch3_final_validation/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 60,
+      "original_correct": 30,
+      "rescored_correct": 35,
+      "accuracy_percent": 58.333333333333336,
+      "delta_correct": 5,
+      "effective_terminals": 60,
+      "effective_original_correct": 30,
+      "effective_rescored_correct": 35,
+      "effective_accuracy_percent": 58.333333333333336,
+      "format_recovered": [
+        {
+          "case_id": 100,
+          "repeat": 5,
+          "source": "recovered_fenced_exact_match",
+          "artifact": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-05-nightly/0805/0805-formal-5epoch-2gpu-20260807T103558+0800/epoch3_final_validation/runs/0805-e3-final-q100-r05/q0100_r01/attempt_001/final_answer.txt"
+        }
+      ],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 1,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 5,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 100,
+          "repeat": 5,
+          "from": false,
+          "to": true,
+          "prediction_source": "recovered_fenced_exact_match"
+        }
+      ]
+    },
+    "output/2026-08-05-nightly/0805/0805-formal-5epoch-2gpu-20260807T103558+0800/epoch3_final_validation/report.pre_effective_retry_20260807T2131+0800/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 60,
+      "original_correct": 29,
+      "rescored_correct": 35,
+      "accuracy_percent": 58.333333333333336,
+      "delta_correct": 6,
+      "effective_terminals": 58,
+      "effective_original_correct": 29,
+      "effective_rescored_correct": 34,
+      "effective_accuracy_percent": 58.62068965517241,
+      "format_recovered": [
+        {
+          "case_id": 100,
+          "repeat": 5,
+          "source": "recovered_fenced_exact_match",
+          "artifact": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-05-nightly/0805/0805-formal-5epoch-2gpu-20260807T103558+0800/epoch3_final_validation/runs/0805-e3-final-q100-r05/q0100_r01/attempt_001/final_answer.txt"
+        }
+      ],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 1,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 2,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 29,
+          "repeat": 4,
+          "from": false,
+          "to": true,
+          "prediction_source": "result_tag"
+        },
+        {
+          "case_id": 86,
+          "repeat": 5,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 100,
+          "repeat": 5,
+          "from": false,
+          "to": true,
+          "prediction_source": "recovered_fenced_exact_match"
+        }
+      ]
+    },
+    "output/qwen36-27b-lora-0804-best1-20260804T141553Z/partial_eval_repeat4_3/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 3,
+      "original_correct": 0,
+      "rescored_correct": 0,
+      "accuracy_percent": 0.0,
+      "delta_correct": 0,
+      "effective_terminals": 2,
+      "effective_original_correct": 0,
+      "effective_rescored_correct": 0,
+      "effective_accuracy_percent": 0.0,
+      "format_recovered": [],
+      "changes": []
+    },
+    "output/qwen36-27b-lora-0804-best1-20260804T141553Z/partial_eval_repeats1_3/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 36,
+      "original_correct": 8,
+      "rescored_correct": 10,
+      "accuracy_percent": 27.77777777777778,
+      "delta_correct": 2,
+      "effective_terminals": 31,
+      "effective_original_correct": 8,
+      "effective_rescored_correct": 10,
+      "effective_accuracy_percent": 32.25806451612903,
+      "format_recovered": [],
+      "changes": [
+        {
+          "case_id": 85,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        },
+        {
+          "case_id": 86,
+          "repeat": 3,
+          "from": false,
+          "to": true,
+          "prediction_source": "archived_prediction"
+        }
+      ]
+    },
+    "output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/report/attempts.csv": {
+      "kind": "agent_attempts",
+      "rows": 10,
+      "original_correct": 2,
+      "rescored_correct": 2,
+      "accuracy_percent": 20.0,
+      "delta_correct": 0,
+      "effective_terminals": 10,
+      "effective_original_correct": 2,
+      "effective_rescored_correct": 2,
+      "effective_accuracy_percent": 20.0,
+      "format_recovered": [],
+      "changes": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/qwen36-27b-base/repeat_01/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 5,
+      "rescored_correct": 5,
+      "accuracy_percent": 8.333333333333334,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 5,
+      "effective_rescored_correct": 5,
+      "effective_accuracy_percent": 8.333333333333334,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/qwen36-27b-base/repeat_02/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 4,
+      "rescored_correct": 4,
+      "accuracy_percent": 6.666666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 4,
+      "effective_rescored_correct": 4,
+      "effective_accuracy_percent": 6.666666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/qwen36-27b-base/repeat_03/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 4,
+      "rescored_correct": 4,
+      "accuracy_percent": 6.666666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 4,
+      "effective_rescored_correct": 4,
+      "effective_accuracy_percent": 6.666666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/qwen36-27b-base/repeat_04/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 5,
+      "rescored_correct": 5,
+      "accuracy_percent": 8.333333333333334,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 5,
+      "effective_rescored_correct": 5,
+      "effective_accuracy_percent": 8.333333333333334,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/qwen36-27b-base/repeat_05/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 4,
+      "rescored_correct": 4,
+      "accuracy_percent": 6.666666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 4,
+      "effective_rescored_correct": 4,
+      "effective_accuracy_percent": 6.666666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/step500/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 47,
+      "rescored_correct": 47,
+      "accuracy_percent": 78.33333333333333,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 47,
+      "effective_rescored_correct": 47,
+      "effective_accuracy_percent": 78.33333333333333,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/step600/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 48,
+      "rescored_correct": 48,
+      "accuracy_percent": 80.0,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 48,
+      "effective_rescored_correct": 48,
+      "effective_accuracy_percent": 80.0,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/step700/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 49,
+      "rescored_correct": 49,
+      "accuracy_percent": 81.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 49,
+      "effective_rescored_correct": 49,
+      "effective_accuracy_percent": 81.66666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-base-step-sweep-0731/step760/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 49,
+      "rescored_correct": 49,
+      "accuracy_percent": 81.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 49,
+      "effective_rescored_correct": 49,
+      "effective_accuracy_percent": 81.66666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-lora-0731-20260731-759x60-2ep-r5/validation_eval/repeat_01/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 49,
+      "rescored_correct": 49,
+      "accuracy_percent": 81.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 49,
+      "effective_rescored_correct": 49,
+      "effective_accuracy_percent": 81.66666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-lora-0731-20260731-759x60-2ep-r5/validation_eval/repeat_02/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 49,
+      "rescored_correct": 49,
+      "accuracy_percent": 81.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 49,
+      "effective_rescored_correct": 49,
+      "effective_accuracy_percent": 81.66666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-lora-0731-20260731-759x60-2ep-r5/validation_eval/repeat_03/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 49,
+      "rescored_correct": 49,
+      "accuracy_percent": 81.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 49,
+      "effective_rescored_correct": 49,
+      "effective_accuracy_percent": 81.66666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-lora-0731-20260731-759x60-2ep-r5/validation_eval/repeat_04/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 49,
+      "rescored_correct": 49,
+      "accuracy_percent": 81.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 49,
+      "effective_rescored_correct": 49,
+      "effective_accuracy_percent": 81.66666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-lora-0731-20260731-759x60-2ep-r5/validation_eval/repeat_05/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 49,
+      "rescored_correct": 49,
+      "accuracy_percent": 81.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 49,
+      "effective_rescored_correct": 49,
+      "effective_accuracy_percent": 81.66666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-lora-0731-20260731-bb2a819e/validation_eval/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 10,
+      "original_correct": 10,
+      "rescored_correct": 10,
+      "accuracy_percent": 100.0,
+      "delta_correct": 0,
+      "effective_terminals": 10,
+      "effective_original_correct": 10,
+      "effective_rescored_correct": 10,
+      "effective_accuracy_percent": 100.0,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-step-extension-eval-0731/plus100/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 52,
+      "rescored_correct": 52,
+      "accuracy_percent": 86.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 52,
+      "effective_rescored_correct": 52,
+      "effective_accuracy_percent": 86.66666666666667,
+      "format_recovered": []
+    },
+    "output/qwen36-27b-step-extension-eval-0731/plus200/validation_predictions.jsonl": {
+      "kind": "sft_validation_predictions",
+      "rows": 60,
+      "original_correct": 52,
+      "rescored_correct": 52,
+      "accuracy_percent": 86.66666666666667,
+      "delta_correct": 0,
+      "effective_terminals": 60,
+      "effective_original_correct": 52,
+      "effective_rescored_correct": 52,
+      "effective_accuracy_percent": 86.66666666666667,
+      "format_recovered": []
+    },
+    "experiments/2026-07-28-ip_codex_train0629_100x10/results/runs/**/judgment.json": {
+      "kind": "distillation_judgments",
+      "rows": 1292,
+      "original_correct": 819,
+      "rescored_correct": 819,
+      "accuracy_percent": 63.39009287925697,
+      "delta_correct": 0,
+      "effective_terminals": 1292,
+      "effective_original_correct": 819,
+      "effective_rescored_correct": 819,
+      "effective_accuracy_percent": 63.39009287925697,
+      "format_recovered_count": 0
+    },
+    "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/**/judgment.json": {
+      "kind": "distillation_judgments",
+      "rows": 840,
+      "original_correct": 840,
+      "rescored_correct": 840,
+      "accuracy_percent": 100.0,
+      "delta_correct": 0,
+      "effective_terminals": 840,
+      "effective_original_correct": 840,
+      "effective_rescored_correct": 840,
+      "effective_accuracy_percent": 100.0,
+      "format_recovered_count": 0
+    }
+  },
+  "totals": {
+    "files": 44,
+    "rows": 4175,
+    "original_correct": 2459,
+    "rescored_correct": 2503,
+    "format_recovered_occurrences": 2,
+    "format_recovered_unique_trajectories": 1
+  }
+}

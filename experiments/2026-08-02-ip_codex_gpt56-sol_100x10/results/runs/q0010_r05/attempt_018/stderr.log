@@ -1,0 +1,42 @@
+2026-08-03T14:39:27.047288Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T14:39:27.047360Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T14:39:27.048094Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T14:39:27.051364Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T14:39:27.060731Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T14:39:27.764939Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T14:39:27.764972Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T14:39:27.765745Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T14:39:27.768766Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T14:39:44.003058Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: $root='D:\IP组网\optimization-with-real-trajectory\saved_configs'; Get-ChildItem -LiteralPath $root -Directory | Select-Object -ExpandProperty Name; Get-ChildItem -LiteralPath (Join-Path $root 'CampusNetwork_03') -Directory | Select-Object -ExpandProperty Name
+2026-08-03T14:41:12.722417Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'git '; use direct read-only files. Command: git diff --no-index -- 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork-for-perf\PE1\display_current-configuration.txt' 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_03\PE1\display_current-configuration.txt'
+2026-08-03T14:41:12.722417Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: forbidden marker 'git '; use direct read-only files. Command: git diff --no-index -- 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork-for-perf\PE2\display_current-configuration.txt' 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_03\PE2\display_current-configuration.txt'
+2026-08-03T14:41:18.638490Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: PowerShell expressions and static method calls are forbidden. Command: Compare-Object (Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork-for-perf\PE3\display_current-configuration.txt') (Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_03\PE3\display_current-configuration.txt')
+2026-08-03T14:41:18.638578Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: PowerShell expressions and static method calls are forbidden. Command: Compare-Object (Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork-for-perf\PE1\display_current-configuration.txt') (Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_03\PE1\display_current-configuration.txt')
+2026-08-03T14:41:18.638582Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: PowerShell expressions and static method calls are forbidden. Command: Compare-Object (Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork-for-perf\PE2\display_current-configuration.txt') (Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_03\PE2\display_current-configuration.txt')
+2026-08-03T14:41:25.191856Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: cmd /c fc /n "D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork-for-perf\PE2\display_current-configuration.txt" "D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_03\PE2\display_current-configuration.txt"
+2026-08-03T14:43:41.870644Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_03\Core_SW_02\dis
+play_ospf_routing_10.2.10.0.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...g_10.2.10.0.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-03T14:43:41.870698Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_03\Core_SW_01\dis
+play_ospf_routing_10.2.10.0.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...g_10.2.10.0.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+

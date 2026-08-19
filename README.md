@@ -1,347 +1,453 @@
-# Qwen3.6-27B 推理、计划与决策 SFT 数据
+# Qwen3.6-27B 网络故障轨迹与 SFT
 
-本项目按日期保存网络故障分析轨迹及其 SFT 数据。`2026-07-27` 数据由
-`q0014`、`q0017`、`q0018` 三段轨迹人工策展为多阶段样本；`2026-07-28`
-数据由 14×10 Codex 完整运行转换而来；`2026-07-31` 数据从 100×10 实验的
-819 条独立判题严格正确轨迹转换，并按题号执行留一验证划分。训练输出均不包含
-工具调用协议。训练目标是让模型学会：
+本仓库用于构造、训练和评测网络故障诊断轨迹数据。当前保留六批日期数据：
 
-- 根据当前信息判断还缺少哪些事实；
-- 说明下一步需要核验什么以及为什么核验；
-- 根据新增证据形成阶段判断；
-- 证据充分后给出最小故障根因集合。
+- `2026-07-27`：人工策展的多阶段小样本基线；
+- `2026-07-31`：首轮 100×10 正确轨迹决策 SFT，也是现有训练方案的默认数据；
+- `2026-08-04`：GPT-5.6-Sol accepted-only 轨迹及每题最佳一条的原生多轮 SFT 快跑集。
+- `2026-08-05`：补跑后每题 10 条成功轨迹的因果路径聚类、跨轨迹去重原生多轮 SFT。
+- `2026-08-07`：在 0805 来源上重建的 evidence-gated、query 等权高置信多轮 SFT。
+- `2026-08-09`：以 0805 为父版本、按 Agent 失败模式构造的预算匹配反事实 SFT。
 
-## 目录
+旧版 decision SFT 只保留可复核的规划、推理或最终决策；0804 原生多轮 SFT 另在独立
+`tool_call`/`tool_response` 角色中保留对归因有价值的真实命令和结果。所有新 SFT 样本
+当前均为 `draft`，正式使用前仍需领域审核。
 
-```text
-.
-├── docs/
-│   └── TRAINING_PLAN.md
-├── data/
-│   ├── 2026-07-27/
-│   │   ├── raw/
-│   │   │   ├── q0014/conversation_trajectory.json
-│   │   │   ├── q0017/conversation_trajectory.json
-│   │   │   └── q0018/conversation_trajectory.json
-│   │   ├── curation/
-│   │   │   └── reasoning_decision_annotations.json
-│   │   └── sft/
-│   │       ├── manifest.json
-│   │       └── qwen3_6_27b_reasoning_decision_sft.jsonl
-│   ├── 2026-07-28/
-│   │   ├── raw/
-│   │   │   └── qXXXX/run_XX/conversation_trajectory.json
-│   │   ├── curation/
-│   │   │   └── trajectory_selection.json
-│   │   └── sft/
-│   │       ├── manifest.json
-│   │       ├── qwen3_6_27b_reasoning_decision_train.jsonl
-│   │       └── qwen3_6_27b_reasoning_decision_validation.jsonl
-│   ├── 2026-07-31/
-│   │   ├── raw/
-│   │   ├── curation/
-│   │   └── sft/
-│   └── simulation/
-│       └── prompts, evaluation trajectories, configs and JSONL data
-├── experiments/
-│   ├── 2026-07-27-ip_codex_train0629_14x10/
-│   │   ├── inputs/
-│   │   ├── scripts/
-│   │   └── results/
-│   ├── 2026-07-28-ip_codex_train0629_10x10/
-│   ├── 2026-07-28-ip_codex_train0629_100x10/
-│   └── 2026-07-31-qwen36-27b-base-eval/
-├── saved_configs_service/
-└── scripts/
-    ├── convert_codex_run_trajectories.py
-    ├── convert_100x10_accepted_to_sft.py
-    ├── convert_trajectories.py
-    ├── evaluate_sft_validation.py
-    ├── finalize_lora_workflow.py
-    ├── run_seetacloud_lora_workflow.sh
-    ├── summarize_sft_training.py
-    ├── train_qwen36_lora_early_stop.sh
-    ├── train_qwen36_lora_smoke.sh
-    ├── validate_100x10_sft.py
-    ├── validate_codex_run_sft.py
-    └── validate_sft.py
+> **Thinking 强制策略**：自 2026-08-04 起，所有新的 Base/LoRA Agent 评测与
+> 对比实验必须显式开启 thinking，并在结果中记录 `reasoning_output_tokens`。
+> 完整规则见 [`docs/THINKING_POLICY.md`](docs/THINKING_POLICY.md)；未观察到可见
+> thinking 输出的历史运行不得与 thinking-on 运行混合为同一能力结论。
+
+> **Codex 模型 metadata 前置校验**：Agent 验证会从
+> [`config/codex_qwen_model_catalog.json`](config/codex_qwen_model_catalog.json) 为当前
+> vLLM/LoRA 模型名生成隔离的运行内 catalog，并显式传给 Codex CLI。未知模型名不得
+> 使用 fallback metadata；启动事件中出现 `Defaulting to fallback metadata` 时，该次
+> 能力评测无效，必须修正后重跑。
+> 可在vLLM就绪后设置 `MODEL_METADATA_SMOKE_ONLY=1` 调用
+> `scripts/run_agent_validation.sh`；控制器只执行一个不调用工具的最小Codex turn，确认
+> catalog被加载且事件流无fallback warning，不会启动正式题目验证。
+
+> **0805 epoch-2 可移植检查点**：`checkpoint-288` 的推理完整 LoRA 包、逐文件哈希、
+> 基座模型哈希与固定 12题×5次 Agent 验证入口归档在
+> [`artifacts/0805-epoch2-checkpoint-288/`](artifacts/0805-epoch2-checkpoint-288/)。
+> 大权重由 Git LFS 管理；该包用于跨机器性能验证，不包含继续训练所需的 optimizer/RNG 状态。
+> 校验器对二进制权重做严格字节校验，并兼容 Linux/Windows 的 LF/CRLF 文本换行。
+
+## 当前数据
+
+| 目录 | 用途 | 规模与划分 | 状态 |
+| --- | --- | --- | --- |
+| [`data/2026-07-27/`](data/2026-07-27/) | 多阶段策展基线 | 3 条原始轨迹；7 planning、2 reasoning、3 decision | 保留 |
+| [`data/2026-07-31/`](data/2026-07-31/) | 当前 LoRA 训练基线 | 819 decision；训练 759、验证 60 | 已训练、已评测 |
+| [`data/2026-08-04/`](data/2026-08-04/) | accepted-only 归档及 best1 多轮快跑集 | 814 decision；best1 84 轨迹、371 节点（训练 318、验证 53） | 数据已校验、GPU 快跑已归档 |
+| [`data/2026-08-05/`](data/2026-08-05/) | 10 轨迹因果路径聚类多轮 SFT | 840 来源轨迹；1675 语义节点（训练 1430、验证 245） | 静态校验通过、待领域审核与训练 |
+| [`data/2026-08-07/`](data/2026-08-07/) | observation-bound、evidence-gated、query 等权五轮 SFT | 840 来源轨迹；398 语义样本（训练 346、验证 52）；每轮训练 216 | v7 双卡DDP、固定epoch-3、独立校验和目标 tokenizer 预检通过 |
+| [`data/2026-08-09/`](data/2026-08-09/) | 0805 父级 + 结构门禁 action + 候选范围校准 endpoint | 840 来源轨迹；训练语义池 1151（core 719 + action 308 + elimination replay 8 + endpoint 116）、验证 245；每轮 1151 | v7 message-derived 结构门禁；116 条输入路径按题等权；候选排除不做闭世界推断 |
+| [`data/simulation/`](data/simulation/) | 原始仿真资料 | prompt、JSONL、配置与评测轨迹 | 默认只读；标准答案纠错须显式审计并全链同步 |
+
+### 2026-07-31 划分
+
+来源为
+[`experiments/2026-07-28-ip_codex_train0629_100x10/`](experiments/2026-07-28-ip_codex_train0629_100x10/)。
+819 条严格正确轨迹按 `case_id` 整题隔离；六种故障类型各留出一题
+（12、24、40、72、86、100），形成 759/60 训练验证划分。完整筛选口径见
+[`data/2026-07-31/README.md`](data/2026-07-31/README.md)。
+
+### 2026-08-04 划分
+
+来源为
+[`experiments/2026-08-02-ip_codex_gpt56-sol_100x10/`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/)。
+日期归档只统计 1,254 个模型有效 attempt：814 accepted、440 incorrect、0 format error；
+基础设施失败与中断不进入日期归档。814 条 accepted 轨迹全部通过二次答案、事件、哈希和
+证据清洁检查。
+
+验证集按六种故障类型各留两道完整题。五类只选择成功率 100% 且有 10 条 accepted
+轨迹的题；`全局STP未使能` 没有合格题，按显式回退规则选择成功率最高的 q12、q2。
+完整候选、回退规则和逐题统计见
+[`data/2026-08-04/README.md`](data/2026-08-04/README.md)。
+
+0804 快跑版暂不对同题的 10 条轨迹聚类，而是在每个训练题和验证题中各选择一条证据
+最充分、路径较短的最佳成功轨迹，再把每个有价值的推理节点生成一条原生多轮 SFT。
+共选择 84 条轨迹，得到训练 318、验证 53 个节点样本。reconstructed `<think>` 的 token
+loss 权重为 0.4，阶段结论、实际工具调用和最终结果为 1.0，历史轮次为 0；工具结果仅作
+上下文。绕路、重复、失败和无关命令被删除，证据已收敛的无调用节点保留为
+`decision_ready`，不会补造工具调用。该规则只作用于 0804，不修改 0731 数据与记录。
+
+### 2026-08-05 划分与聚类
+
+0805 使用补跑后 84 题 × 10 条成功轨迹，共 840 条；训练/验证题目完全复用 0804 的
+72/12 冻结划分。转换器先按“设备 × 协议/证据类型”的有序因果路径聚类，再删除低质量
+孤立绕路、重复动作和跨轨迹等价节点；每题最多保留4类路径，每条保留路径都连接一个严格
+正确decision。每条保留路径增加一个证据归纳和一个显式停止判断节点，每个调查节点最多
+监督 2 个工具。3505 个原始可见节点形成 433 个路径簇，保留 277 个路径、1675 个 SFT
+节点。每条路径都有证据归纳、停止判断和最终回答；另外从可见原始轨迹中抽取120条有历史
+成功工具证据支撑的错误候选排除节点，覆盖67题、120条路径，缺少真实排除表述时不补造。
+q0001从47个原始节点整理为26个代表节点。完整规则和逐题审计见
+[`data/2026-08-05/README.md`](data/2026-08-05/README.md)。正式训练使用GPU 0、1上的
+双进程DDP：每卡micro batch 1、梯度累积4，全局有效batch为8；正式入口为
+`scripts/train_qwen36_0805_causal_path_formal.sh`，配置由
+`config/qwen36_0805_formal_training.json`固化。五个阶段分别加载对应端点采样表，第2–5阶段
+完整恢复上一阶段模型、优化器、scheduler和Trainer状态；恢复后由专用callback在全部rank
+强制覆盖并逐step审计当轮固定学习率，rank 0独占写审计文件。五轮eval loss仅作诊断，最终
+固定使用epoch-3 checkpoint执行12题×5次Agent验证，不进行Agent选点。1 epoch quick入口
+只作历史同配置冒烟，不构成正式resume链。
+0804 文件保持原样。0805 的 thinking 按来源分级监督：裁剪后的原始可见分析为 0.60、自动端点证据
+桥接为 0.20，固定调查模板和最终固定桥接为 0；原始有效结论为 1.0，真实来源排错结论为
+0.60，自动重建阶段结论为0.40，证据归纳和停止判断为0.20，严格最终答案为1.0。训练时
+固定加载719条非端点core；五个epoch采样表为每个query轮换选择2条路径，并把每条路径的
+归纳、停止、decision作为不可拆分的三节点组同时采样；每轮432条端点、1151条有效曝光，
+五轮覆盖全部237条路径且同题路径累计曝光差不超过1。当前工具调用loss权重为0.10，
+并将监督协议严格转换为评测实际使用的 `exec_command` + `cmd`、Linux 只读命令和仓库内
+`saved_configs/...` 相对路径。完整原始 PowerShell 与规范化中间形态只保留在 metadata
+审计；不支持的转换会阻止生成。历史目录/搜索结果同时去除 PowerShell 表格、折行和 Windows
+绝对路径，采用 Linux `find`/`grep` 结果与 Codex CLI transport 外形，且不计 loss。
+按中英文混合文本近似token口径及第一轮端点采样估算，有效权重约为thinking 48.1%、结论/答案
+46.2%、工具调用5.7%；自动证据归纳与停止判断合计由51.6%降至23.8%，真实错误候选排除
+节点约占11.7%。证据归纳和停止判断均引用路径特有的
+设备、配置、实际回显与排除项；训练集两类结论分别有 230/237 和 210/237 个唯一文本。
+完整、可执行的生成顺序、参数、审计口径、输出哈希和已知限制见
+[`data/2026-08-05/REPRODUCIBILITY.md`](data/2026-08-05/REPRODUCIBILITY.md)。
+
+### 2026-08-07 evidence-gated 重建
+
+0807 完整复用 0805 的 84 题 × 10 条严格成功来源和 0804 的 72/12 冻结题目划分，不修改
+0805、0804 或 0731。第七版沿用第六版的 q73–q86 inclusive-OR、严格 VLAN/实例闭环、
+LLDP/LDP family 边界、混合事实/计划处理和训练步数后置条件：事实性原句只用于选择相关
+证据，实际监督改写为更早工具回显中的非空、非表头 exact observation atoms；每个 atom 绑定
+action ID 和 span，原始推断仅留在 metadata。empty output、纯表头、帮助文本和
+`unselected lines omitted` 均不能支持正向或“未配置”断言；21 条已知越证据 reasoning 进入
+独立固定回归。
+
+3,505 个原始可见节点形成 753 个精确路径簇，104 条路径通过直接事实门控。每条路径的证据归纳、
+谨慎停止判断和最终答案仍合并为一条多目标 `endpoint_bundle`。训练语义池 346、验证 52，训练
+core pool 255、endpoint pool 91；每轮每个训练 query 固定 2 条 core 加 1 条 endpoint bundle，
+共 216 行、每题严格 3 行。仅 q89 的高置信 core pool 只有一条，因此每轮对该条做一次明确标记的
+等权 replay，不合成无证据节点。
+
+q73–q86 的 140 条 accepted 轨迹仍全是 singleton，因此成功数和 72/12 划分不变。SFT 只选择
+证据最强的 singleton；双设备答案必须分别满足源主机 VLAN、同 VLAN VRRP Master、MST
+VLAN-instance mapping 和同实例 Alternate/Discarding。旧版 15 个相关 endpoint 只有 4 个满足
+完整合同；v5 为 14/14，q86 已从错误的 VLAN30/实例2 改为 VLAN120/实例3。
+
+普通 reasoning 现有 78 条 observation-bound 事实归纳和 51 条纯未来计划；混合句中的事实必须
+绑定 earlier exact observation，无法绑定即删除。另保留 12 条逐事实绑定、且具有明确排除范围
+的候选降权样本。语义池 369 个动作中配置类 10 个（2.71%）、LLDP 10 个且误标 MPLS 为 0；
+跨快照、snapshot/device/filename glob 和训练目标 Windows 路径均为 0。源意图覆盖
+full/partial/zero/unscoped 为 117/20/15/142；最终监督意图为 191/0/0/103，validator 禁止
+最终监督 partial/zero。summary thinking/结论为 0.05，停止 thinking/结论
+为 0.10，observation-bound reasoning 与真实排错为 0.60，工具调用为 0.02，最终答案为 1.00。
+
+目标服务器已用 Qwen3.6-27B、ms-swift 4.4.2、`loss_scale=default` 和非二值 loss mask
+编码 v7 的 398 条唯一语义样本：p99 4,001 token、最大 4,146、超过 16,384 的样本为 0，逐
+token labels/loss-scale 不一致为 0。当前状态为
+`rule_and_target_tokenizer_validated_release_candidate`；官方校验器与不导入 0807 生成器的独立
+校验器均通过。
+完整规则、复现命令和输出哈希见
+[`data/2026-08-07/REPRODUCIBILITY.md`](data/2026-08-07/REPRODUCIBILITY.md)，问题回归与
+剩余限制见 [`data/2026-08-07/AUDIT_REPORT.md`](data/2026-08-07/AUDIT_REPORT.md)。
+
+### 2026-08-09 Agent 错误感知重建
+
+0809 以 0805 的 840 条严格成功 raw 与 72/12 冻结划分为父级，不使用验证题或 Agent 评测轨迹。
+v7 延续此前删除推理时不存在的零 loss assistant 控制句，并把同一证据路径的
+closure/contrastive 改写合并为一个自然 completion。正式 endpoint 现在是 116 条不同原始证据路径，
+覆盖 72/72 题；每条路径在同一可达历史中同时监督证据归纳、正向标签边界、候选范围校准、当前证据最小集合、
+停止判断和最终 `<result>`。每题有 1–4 条路径，loss 按 `1/本题路径数` 归一化，避免多路径题获得
+额外 decision 权重。
+
+40 条恢复路径只合并同 query、同 snapshot 的 0805 成功事件，其中 216 个事实逐个回指 45 个真实
+event 文件里的成功 item、原始命令、输出哈希和逐字 span。IP、MPLS、role 与 BPDU 继续使用有向
+闭环、源 VLAN 链和 current configuration 的严格门禁。跨/不可解析 snapshot、路径 glob 和完整
+证据后继续调用的正监督均已清理。
+
+action 保留 308 个真实可达高信息上下文，覆盖 72/72 题；工具 call loss 为 0.05。父级保留
+103 条真实错误候选排除节点（58 题），其余 14 题不补造排除；另有 8 条透明
+的 exact same-target elimination replay，不冒充新路径或新语义。每轮完整曝光 719 core、308 action、
+8 replay 和 116 endpoint，共 1151 行/144 step；全部新目标在固定 epoch 3/checkpoint-432 前已出现。
+双卡 DDP、有效 batch 8、固定 LR、完整状态续训和固定 checkpoint 选择仍与 0805 一致。
+
+按 20:02 深审，action 门禁升级为从 messages 重算同题全部 strict endpoint binding：完整证据改为
+停止，未完整证据显式给出 matched/expected、缺失事实和待验证假设；全量 308 action 均未完整，
+父级 50 条 post-closure 行共移除 93 个正工具调用，点名的 17 条进入结构回归。endpoint 不再用正证据
+排除未经检查的邻近标签，116 条均做候选范围校准，rejected-label 声明为 0。endpoint 输入路径仍为
+116/116 不同，但输出正目标精确/condition-normalized 均只有 16/116 唯一（排除 q73–q86 后 7/104），
+两种多样性不再混写，也不以机械释义增大输出唯一数。
+
+manifest 只使用 checkout 内逻辑路径，设计输入与生成依赖全部进入仓库闭环。正式入口绑定实际
+config/plugin、tokenizer/model identity、ms-swift 与 transformers 版本。v7 已重新执行 12 份/7151 行
+Qwen3.6-27B tokenizer/loss-mask 预检，不复用 v6 哈希：p99 4561、最大 5635/16384，overlong 和
+loss-mask failure 均为 0；环境为 Python 3.12.3、ms-swift 4.4.2、transformers 5.12.1。
+
+0809 最终 Agent 测试与 0807 统一调用 `scripts/final_answer_scoring.py`，策略版本固定为
+`agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`。两者均固定 epoch 3、相同 12 题×5 次、
+reasoning effort high、3600 秒、TP=2 单实例/两个 runner/总并发 2；过程工具或推理错误只作诊断，
+正确性只看最终答案，q73–q86 inclusive-OR 由同一 scorer 处理。0809 的 checkpoint 是 432，
+0807 是 81，差异仅来自每轮 optimizer step 数不同；训练期 validation 节点数不同，eval loss 不作
+跨版本绝对值比较。
+
+当前 12 题已参与错误模式分析，只作为 error-mining/dev；正式泛化结论仍需未参与反推的新
+held-out Agent 集。完整规则与复现命令见
+[`data/2026-08-09/REPRODUCIBILITY.md`](data/2026-08-09/REPRODUCIBILITY.md)。
+完整规则、原始前缀多目标审计、condition-normalized diversity、命令和发布门禁见
+[`data/2026-08-09/REPRODUCIBILITY.md`](data/2026-08-09/REPRODUCIBILITY.md) 与
+[`data/2026-08-09/AUDIT_REPORT.md`](data/2026-08-09/AUDIT_REPORT.md)。
+
+## 数据规则
+
+- `data/simulation/` 默认按不可变来源管理；标准答案纠错只能在用户明确授权和审计报告支持下
+  修改，且必须同步实验输入副本、日期 raw/curation、派生 SFT、哈希、validator 与复现文档。
+- 新的日期归档只记录模型有效结果：`accepted`、`incorrect` 和 `format_error`。
+- 基础设施失败与中断可供 runner 临时控制流程，但不进入日期归档、报表或训练数据。
+- 训练/验证必须按 `case_id` 整题隔离，禁止把同题重复轨迹随机分到两侧。
+- accepted 样本必须通过参考答案、独立判题、最终事件、文件哈希和证据清洁检查。
+- 后续任何来源、划分、转换、loss、采样、system prompt、工具协议、tokenizer、训练入口或
+  生成文件修改，都必须在同一变更中更新根README、对应日期README和复现文档，重生成
+  manifest并通过独立校验；未形成可执行命令、参数、计数、哈希和已知限制记录时不得训练、
+  提交或推送。
+- 旧版 decision SFT 的 assistant 输出不得包含工具协议、工具名、命令、URL、API 路径
+  或文件路径；0804 原生轨迹 SFT 只允许在独立 `tool_call`/`tool_response` 角色中保留
+  对最终归因有因果价值的真实命令和结果，且工具结果不参与 loss。
+
+## 常用命令
+
+### 校验现有数据
+
+```powershell
+python scripts/validate_sft.py
+python scripts/validate_100x10_sft.py
+python -B scripts/validate_accepted_only_100x10_sft.py
+python -B scripts/validate_0804_best_trajectory_reasoning_sft.py
+python -B scripts/validate_0805_causal_path_reasoning_sft.py
+python -B scripts/validate_0807_evidence_gated_reasoning_sft.py
+python -B scripts/audit_0807_evidence_gated_sft.py
+python -B scripts/validate_0809_agent_error_aware_sft.py --data-root data/2026-08-09
+python -B scripts/independent_validate_0809_sft.py --data-root data/2026-08-09
+python -B scripts/audit_0809_agent_error_aware_sft.py --data-root data/2026-08-09
 ```
 
-## 保留什么，删除什么
-
-原始轨迹中的 assistant 内容按语义整理，而不是简单按消息角色保留或删除。
-
-保留并净化：
-
-- “先确认源端接入 VLAN 和实际转发路径”；
-- “需要比较两条冗余上联的 STP 与 VLAN 配置”；
-- “当前最强候选是 BPDU 过滤，但还要排除路由或策略异常”；
-- 基于证据形成的最终根因决策。
-
-删除：
-
-- 具体工具名、函数调用结构和调用 ID；
-- shell 命令、查询语句、URL、API 路径；
-- “使用某工具读取某文件”一类执行细节；
-- 工具失败、重试、待办列表和过程日志。
-
-工具返回不会作为 assistant 训练目标。与判断相关的内容会被提炼成自然语言事实，放入后续样本的“当前已知证据”。这样模型学习的是信息需求和决策过程，而不是具体执行工具的偏好。
-
-例如：
-
-```text
-原始思考：
-I should use Grep to inspect the uplink configuration and compare it with another port.
-
-整理后：
-下一步需要比较两条核心上联的 VLAN 与 STP 配置，确认异常是否只存在于实际转发路径。
-```
-
-## 多阶段样本
-
-`2026-07-27` 中一条原始轨迹可以生成多个训练样本，共生成 12 条：
-
-| 类型 | 数量 | 训练目标 |
-| --- | ---: | --- |
-| `planning` | 7 | 根据当前证据决定下一步需要核验的事实 |
-| `reasoning` | 2 | 形成阶段判断并指出仍需排除的候选 |
-| `decision` | 3 | 输出最终最小根因集合 |
-
-每条 JSONL 样本仍固定使用 `system + user + assistant`：
-
-```json
-{
-  "id": "q0014_plan_02",
-  "messages": [
-    {
-      "role": "system",
-      "content": "你是一名网络故障分析专家……"
-    },
-    {
-      "role": "user",
-      "content": "原始题目……\n\n## 当前任务阶段\n\n当前证据不足以形成最终结论……\n\n## 当前已知证据\n\n1. 已获得路径相关设备配置。\n2. 一条核心上联配置了 BPDU 过滤。"
-    },
-    {
-      "role": "assistant",
-      "content": "<think>\n当前发现的异常位于实际路径，但还需要比较冗余上联并排除其他候选。\n</think>\n\n下一步：对比两条核心上联的 VLAN 与 STP 配置，并核对沿途路由和安全策略。"
-    }
-  ],
-  "metadata": {
-    "dataset_type": "reasoning_decision",
-    "target_type": "planning",
-    "source_id": "q0014",
-    "source_message_index": 19,
-    "evidence_message_indices": [13, 16],
-    "review_status": "draft"
-  }
-}
-```
-
-`decision` 样本的 assistant 输出则以严格的题目格式结束：
-
-```text
-<think>
-异常位于实际转发路径，并且是并行链路之间最明确的差异……
-</think>
-
-<result>
-[
-"AGG_SW_01;STP BPDU被过滤"
-]
-</result>
-```
-
-## 策展与来源追踪
-
-`data/2026-07-27/curation/reasoning_decision_annotations.json` 为每个阶段样本记录：
-
-- `source_id`：来源轨迹；
-- `source_message_index`：被净化的原始 assistant 消息；
-- `evidence_message_indices`：当前阶段已经获得的工具观察；
-- `target_type`：`planning`、`reasoning` 或 `decision`；
-- `reasoning`：去除执行细节后的思考；
-- `response`：当前计划、阶段判断或最终结论；
-- `review_status`：`draft` 或 `reviewed`。
-
-转换器会保证证据消息出现在目标消息之前，并校验最终决策与原轨迹答案一致。当前 12 条标注均为 `draft`，正式训练前建议由网络领域专家审核。
-
-## 2026-07-28 Codex 留一数据
-
-`data/2026-07-28/` 来自
-`experiments/2026-07-27-ip_codex_train0629_14x10/results/runs/fullaccess/`。
-转换器将 140 条运行规范化到 `raw/`，并保留实验事件文件、最终答案、题目记录和
-SHA-256 来源信息。
-
-题 25、26、27、28 因 10 次运行的准确率未达到 100% 而整题排除。其余 10 道题
-均为 10/10 正确，共形成 100 条 `decision` 样本：
-
-| 集合 | 题号 | 样本数 |
-| --- | --- | ---: |
-| 训练集 | 13、14、17、18、87、88、91、92、93 | 90 |
-| 验证集 | 94 | 10 |
-| 排除 | 25、26、27、28 | 40 条原始轨迹，不进入 SFT |
-
-划分策略为按 `case_id` 分组的 `leave_one_case_out`。验证题 94 不会出现在训练集，
-因此不存在同题重复运行跨集合泄漏。仅当轨迹最终根因条目与原题标准答案完全一致、
-最终事件与落盘答案一致，并且最终证据摘要不含工具操作细节时才允许进入 SFT。
-源答案中的 Markdown 代码围栏会规范化为严格的 `<result>` 格式，原文仍保存在
-`raw/`。全部样本当前标记为 `draft`，正式训练前仍需领域审核。
-
-## 2026-07-31 严格正确轨迹 SFT 数据
-
-`data/2026-07-31/` 来自
-`experiments/2026-07-28-ip_codex_train0629_100x10/`。转换器扫描 1,313 个
-attempt，过滤 473 个 rejected、11 个 interrupted 和 10 个 infrastructure failure，
-保留 819 条 accepted 轨迹。所有保留轨迹均再次核对独立判题、参考答案精确集合匹配、
-最终事件、文件哈希和前置证据清洁性。
-
-| 集合 | 题号 | 样本数 |
-| --- | --- | ---: |
-| 训练集 | 6 类故障中除验证题外的 78 个题号 | 759 |
-| 验证集 | 12、24、40、72、86、100 | 60 |
-| 过滤 | 非 accepted attempt | 494 |
-
-训练和验证按 `case_id` 分组，题号交集为 0；每种合并后的故障类型留出 1 个完整题号。
-确定性选择规则为：优先留出该类型中严格正确轨迹数最多的题，数量并列时取题号最大
-者。819 条样本均为 `decision` 类型并标记为 `draft`。过滤报告按答案 label 汇总
-去重题目数与正确轨迹数，并忽略故障节点、按故障类型进一步合并统计；随后列出每类
-验证题，按每题成功次数汇总题目数量，再逐题列出 1–100 的 attempt 数、成功数、
-成功率、全部/成功 attempt 平均执行耗时、耗时覆盖、状态分布、SFT 入选数、划分和
-实验终态；其中 11 条 interrupted attempt 缺失耗时，不以 0 计入平均值。完整统计见
-[`data/2026-07-31/curation/FILTER_REPORT.md`](data/2026-07-31/curation/FILTER_REPORT.md)。
-
-## 重新生成与校验
-
-脚本只依赖 Python 标准库：
+### 重新生成日期数据
 
 ```powershell
 python scripts/convert_trajectories.py
-python scripts/validate_sft.py
-
-python scripts/convert_codex_run_trajectories.py
-python scripts/validate_codex_run_sft.py
-
 python scripts/convert_100x10_accepted_to_sft.py
-python scripts/validate_100x10_sft.py
+python -B scripts/convert_accepted_only_100x10_to_sft.py
+python -B scripts/convert_0804_best_trajectory_reasoning_sft.py
+python -B scripts/convert_accepted_only_100x10_to_sft.py --output-root data/2026-08-05 --archive-only
+python -B scripts/convert_0805_causal_path_reasoning_sft.py
+python -B scripts/convert_accepted_only_100x10_to_sft.py --output-root data/2026-08-07 --archive-only
+python -B scripts/convert_0807_evidence_gated_reasoning_sft.py
+python -B scripts/convert_0809_agent_error_aware_sft.py --data-root data/2026-08-09
 ```
 
-也可以指定其他目录：
+已删除的 2026-07-28 历史留一数据仍可从保留的 14×10 来源实验重建：
 
 ```powershell
-python scripts/convert_trajectories.py `
-  --input-dir D:\path\to\raw `
-  --annotation-file D:\path\to\reasoning_decision_annotations.json `
-  --output-dir D:\path\to\sft
-
-python scripts/validate_sft.py --sft-dir D:\path\to\sft
+python scripts/convert_codex_run_trajectories.py
+python scripts/validate_codex_run_sft.py
 ```
 
-校验器会检查：
+旧版 SFT 校验兼容 Git 工作区中的 LF/CRLF 换行差异；如果 2026-07-28 数据尚未重建，
+Codex-run 校验器会明确要求先运行转换器或通过 `--data-root` 指定数据目录。
 
-- JSONL 和 `system/user/assistant` 三消息结构；
-- planning、reasoning、decision 三类样本格式；
-- `<think>` 与最终响应分段；
-- 工具协议、具体工具名和执行操作未进入训练输出；
-- API 文档已从原始问题中移除；
-- 证据来源、样本数量、类型统计和文件哈希一致；
-- 0727 数据全部进入训练集，验证集为 0；
-- 0728 按题号留一；0731 按故障类型各留一题；两者训练与验证题号交集均为 0；
-- 0731 数据只接收独立判题完全正确、最终事件一致且证据清洁的 accepted 轨迹；
-- 0731 六种故障类型均恰有一个验证题，且验证题符合确定性选择规则；
-- 0731 过滤报告的 100 行逐题统计和总计均与原始 attempt metadata、实验 state
-  及最终 SFT 划分一致。
+### 训练
 
-## ms-swift 训练示例
+默认训练方案使用 2026-07-31 的 759/60 划分：
 
 ```bash
-swift sft \
-  --model Qwen/Qwen3.6-27B \
-  --dataset data/2026-07-31/sft/qwen3_6_27b_reasoning_decision_train.jsonl \
-  --val_dataset data/2026-07-31/sft/qwen3_6_27b_reasoning_decision_validation.jsonl \
-  --split_dataset_ratio 0 \
-  --tuner_type lora \
-  --torch_dtype bfloat16 \
-  --output_dir output/qwen36-27b-reasoning-lora
+bash scripts/run_seetacloud_lora_workflow.sh
 ```
 
-批大小、梯度累积、LoRA 参数、分布式策略和 `max_length` 应按训练硬件及目标
-tokenizer 的实际统计调整。Qwen3.6 的线性注意力训练还需要
-`flash-linear-attention`；当前环境基线固定为 0.5.1。完整训练门槛、服务器资源
-假设、早停参数、逐分钟监控项和验收标准见
-[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
-
-仓库保留两个入口：
-
-- `scripts/train_qwen36_lora_smoke.sh`：单卡单轮链路冒烟；
-- `scripts/run_seetacloud_lora_workflow.sh`：SeetaCloud 端到端工作流。
-
-端到端工作流会快进同步 `2026-07-31-sft`、重新生成并校验 759/60 的按故障类型
-各留一题划分，
-执行单卡 LoRA SFT，每 100 个优化步骤计算一次验证 loss，并在连续 3 次无改进时
-早停。脚本始终按最低 `eval_loss` 选择 checkpoint，而不是直接使用最后一次保存；
-之后启动单个 TP=2 vLLM 实例，以两个 worker、总并发 2 在 6 个验证题的 60 条样本
-上执行确定性严格集合匹配评测。
+0804 每题最佳一条的 16K、1 epoch 快跑使用独立入口，不读取或改写 0731：
 
 ```bash
-cd /root/autodl-tmp/optimization-with-real-trajectory
-RUN_ID=0731-production \
-  bash scripts/run_seetacloud_lora_workflow.sh
+bash scripts/train_qwen36_0804_best1_quick.sh
 ```
 
-需要在同一个单实例 TP=2 服务中连续验证多次时，设置
-`VALIDATION_REPEATS`。每次仍严格使用两个 worker、总并发 2；工作流分别保存
-逐次预测与摘要，并在 `validation_eval/validation_summary.json` 生成跨次汇总：
+0805正式五阶段训练入口会重新生成和校验数据、执行目标tokenizer预检，然后按
+`2e-5`、`1.5e-5`、`1e-5`、`6e-6`、`3e-6`依次完成五个完整状态续训阶段：
 
 ```bash
-RUN_ID=0731-2epoch-repeat5 \
-NUM_TRAIN_EPOCHS=2 \
-VALIDATION_REPEATS=5 \
-  bash scripts/run_seetacloud_lora_workflow.sh
+bash scripts/train_qwen36_0805_causal_path_formal.sh
 ```
 
-运行产物写入 `output/qwen36-27b-lora-0731-<RUN_ID>/`，其中
-`training_summary.json` 记录最低验证 loss 与 checkpoint，
-`validation_eval/validation_summary.json` 记录格式、严格正确率和泄漏率，
-`workflow_summary.json` 汇总提交、数据、训练和评测溯源。`output/` 默认不提交。
-若训练已经完成而后处理被中断，可用同一个 `RUN_ID` 并设置
-`REUSE_COMPLETED_TRAINING=1`，工作流会核对训练时与当前 manifest 哈希，并重新校验
-最低 loss 与 checkpoint 后继续评测；缺少训练时 manifest 哈希或划分不一致时拒绝
-复用。vLLM 服务固定设置 `VLLM_USE_FLASHINFER_SAMPLER=0`，绕过
-FlashInfer 0.6.13 在 Blackwell sm_120 上错误报告低于 sm75 的采样器 JIT
-兼容问题；该设置只切换采样器实现，不改变单实例 TP=2 与双并发评测拓扑。
-新运行会在输出目录保存训练源码提交；复用早期未保存该字段的训练时，须一次性设置
-`TRAINING_GIT_COMMIT=<训练时提交>`，避免后处理提交被误记成训练提交。
+该入口使用双进程DDP（GPU 0、1）、每卡micro batch 1、梯度累积4，因此全局有效batch仍为8；
+同时固定constant scheduler和零warmup，每阶段加载对应端点采样表并在epoch边界保存checkpoint。
+训练中断后在同一`OUTPUT_DIR`重启会从最近的完整epoch checkpoint继续；学习率callback在所有
+rank恢复optimizer/scheduler后重新设置并核验目标值，只有rank 0把逐step审计写入
+`control/learning_rate_audit.jsonl`。五轮eval loss只作诊断，训练后固定用epoch-3 checkpoint
+执行12题×5次Agent验证。首次运行还会归档代码、全部训练输入和模型目录文件哈希，resume前
+逐项复核，避免跨代码、数据或基座继续训练。
 
-历史 809/10 划分的 SeetaCloud 实跑在 step 600（epoch 1.4821）取得最低验证 loss
-`0.0057987166`，随后按 patience 继续观察至 step 900 并早停，最终加载
-checkpoint-600。该 checkpoint 在题 100 的 10 条验证样本上达到格式、严格集合
-匹配和无泄漏均 10/10；该结果不代表当前 759/60 划分，旧 checkpoint 也不得作为
-新划分的训练产物复用。完整参数、loss 曲线、运行路径及适用边界见
-[`docs/2026-07-31_QWEN36_27B_LORA_SFT_RESULT.md`](docs/2026-07-31_QWEN36_27B_LORA_SFT_RESULT.md)。
-
-## 推理生成约定
-
-后续离线评估、交互推理和服务请求默认将输出上限设为 8,000 个新 token：
+0805同时保留与0804历史快跑配置一致的独立冒烟入口：
 
 ```bash
-# ms-swift / Transformers
---max_new_tokens 8000
+bash scripts/train_qwen36_0805_causal_path_quick.sh
 ```
 
-```json
-{
-  "max_tokens": 8000
-}
+quick入口在启动训练前也会重新生成数据、执行独立静态校验，并使用训练机上的目标tokenizer
+逐条确认没有样本超过16,384 token；未通过预检时会直接退出。quick的梯度累积2、cosine
+scheduler和单轮独立输出不得用于替代正式五阶段对比训练。
+
+0809 的正式入口使用与 0805 相同的双卡 DDP、有效 batch 8、五阶段固定学习率和固定
+epoch-3 选点，但每个 epoch 同时加载当轮 core replacement 与 endpoint schedule。入口会对
+同一绝对 `DATA_ROOT` 依次执行生成、官方校验、独立校验、audit 和真实 target-tokenizer
+loss-mask 预检；每轮固定 1151 行、144 step，epoch 3 为 checkpoint-432。训练命令显式加载
+固定 LR external plugin，并在模型加载前验证 callback 注册：
+
+```bash
+bash scripts/train_qwen36_0809_agent_error_aware_5epoch.sh
 ```
 
-8,000 token 是最大允许长度，不会强制模型生成满该长度；模型输出 EOS 时正常提前结束。采样温度等参数由具体任务单独指定。当前原始基座模型在单卡 Transformers 环境、`temperature=0.7`、5,000-token 上限下的单样本实测生成速度约为 21.2 token/s；长上下文下的实际速度可能下降。详细约束与测试口径见 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
+在 Armstrong 主机上，仓库、环境、模型和输出若不位于 `/Qdata/mayf/`，入口会拒绝启动。
 
-## Qwen3.6-27B eval 并发策略
+0807 正式入口按每轮 query 等权 schedule 顺序恢复完整训练状态：
+
+```bash
+RUN_MODE=prepare bash scripts/train_qwen36_0807_evidence_gated_5epoch.sh
+RUN_MODE=dry-run bash scripts/train_qwen36_0807_evidence_gated_5epoch.sh
+bash scripts/train_qwen36_0807_evidence_gated_5epoch.sh
+```
+
+入口与0805一致使用GPU 0、1双进程DDP、每卡batch 1、梯度累积4，故全局有效batch仍为8；
+同时使用constant scheduler、零warmup和五个固定学习率。第2–5轮显式恢复上一轮模型、
+optimizer、scheduler与Trainer状态，callback在全部rank强制学习率且仅rank 0写审计。
+五轮eval loss只作诊断，不进行Agent checkpoint selection；固定使用epoch 3 / checkpoint-81
+执行12题×5次最终Agent验证。`prepare`的真实目标tokenizer预检及报告归档通过前不得训练。
+
+0804历史quick的SeaTACLOUD端到端入口会在GPU空闲检查通过后完成单轮训练，读取全部
+validation history选择`eval_loss`最低且checkpoint仍存在的步，然后以单个TP=2 vLLM
+实例部署该LoRA。最终使用Codex CLI完整Agent工具循环，在12道整题隔离验证题上各运行5次，
+固定`REASONING_EFFORT=high`并记录`reasoning_output_tokens`。该入口不适用于0805正式五阶段
+resume训练：
+
+```bash
+bash scripts/run_seetacloud_0804_best1_workflow.sh
+```
+
+环境、LoRA 参数、早停、部署和恢复流程统一记录在
+[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)，根 README 不再重复维护服务器路径和
+逐步操作说明。
+
+## 当前结果
+
+### LoRA SFT
+
+2026-07-31 的 759/60 数据从基座模型重新训练 2 epochs，最低验证 loss 出现在最终
+`checkpoint-760`。确定性生成验证连续执行五次，每次均为 49/60 严格匹配、60/60
+格式正确且无工具信息泄漏；合计 245/300（81.67%）。该结果用于训练流程和稳定性检查，
+不是独立随机测试集结论。
+
+详细训练参数和逐类错误见
+[`docs/2026-07-31_QWEN36_27B_LORA_SFT_759X60_2EPOCH_REPEAT5_RESULT.md`](docs/2026-07-31_QWEN36_27B_LORA_SFT_759X60_2EPOCH_REPEAT5_RESULT.md)。
+
+### 完整 Agent A/B
+
+当前完整 Agent 对比在题 12、24、40、72、86、100 上各运行五次：
+
+| 指标 | Base | LoRA checkpoint-760 +100 |
+| --- | ---: | ---: |
+| 严格正确 | 7/30（23.33%） | 12/30（40.00%） |
+| 平均封顶耗时 | 32.37 分钟 | 24.21 分钟 |
+| 超时 | 3 | 4 |
+
+LoRA 严格准确率提高 16.67 个百分点且典型耗时下降，但超时没有改善。逐题结果、运行拓扑
+和原始汇总见
+[`experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/`](experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/)。
+
+### 0804 best1 快跑
+
+0804 best1 原生多轮数据完成 1 epoch、159 step LoRA SFT；eval loss 从 step 40 的
+`0.3065788` 持续下降到 step 159 的 `0.1806803`，因此选择最终
+`checkpoint-159`。Codex CLI Agent 验证显式使用 `reasoning_effort=high`，原计划 12 题
+各 5 次；按用户指令，在当时在途的 q12、q19 第 4 次完成后停止，最终执行 39/60，
+严格正确 8/39（20.51%），模型硬超时 6 次，基础设施失败 0，剩余 21 次未启动且不计
+失败。2026-08-05复核发现39/39个Codex事件流均因served model名称未登记而使用fallback
+metadata；这些数值只保留为原运行记录，不能再作为0804与0731的有效能力对比，修正后需
+重新验证。完整逐题结果和可复现合并脚本见
+[`experiments/2026-08-04-qwen36-27b-best1-agent-validation/`](experiments/2026-08-04-qwen36-27b-best1-agent-validation/)。
+
+上述0804 best1后续实验已完成5 epochs：单卡micro batch为1、梯度累积为8（有效batch
+为8），每个epoch内部使用固定学习率，五轮依次为`2e-5`、`1.5e-5`、`1e-5`、
+`6e-6`、`3e-6`。每轮结束保存checkpoint；固定使用q12、q20、q38、q71、q86、
+q100（每个label一题，其中q12、q86、q100与0731重合）各运行2次完整Agent来选择
+checkpoint。入选checkpoint随后在全部12题上达到每题5次：上述6题复用挑选阶段的2次
+并各补3次，其余6题各运行5次，最终仍汇总60次。完整选择与计数规则见实验目录README
+及[`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md#11-0804-best1后续5-epoch实验已执行)。
+
+五个checkpoint中，最低eval loss位于epoch 4 / checkpoint-160（`0.14917336`），但
+固定六题按 q73-q86 包含式 OR 修正后，Agent准确率最高的仍是epoch 3 / checkpoint-120
+（7/12，58.33%），因此部署epoch 3。最终12题各5次严格正确25/60（41.67%）；原始报告
+按旧标签记录为23/60（38.33%）。模型硬超时0、进入分母的基础设施失败0，
+60/60均捕获非空thinking；聚合cached input占比约96.62%。完整逐题结果、重试口径、
+warning和复现控制脚本见
+[`experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/`](experiments/2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/)。
+
+## 评测约定
+
+- Agent 最终答案的唯一计分入口是 `scripts/final_answer_scoring.py`，当前策略版本为 `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`。新汇总必须写入同一 `scoring_policy_version`；复合报告和历史结果复用必须直接重新调用该入口，或拒绝没有相同版本标记的旧 `correct` / `exact_match` 字段。
+- v4 继续优先要求唯一合法 `<result>...</result>` JSON 字符串列表；新增的唯一例外只恢复一个完整的 `````<result>`` fenced JSON 列表在缺少 `</result>` 时的精确命中。恢复要求全篇只有一个 `<result>` 开始标记、没有结束标记、只有一个完整 fence，且其中 JSON 列表精确匹配可接受答案；普通正文、非 JSON、冲突答案、多 fence 或其他残缺标记仍判错。
+- 正常答案必须是唯一一个有效的 `<result>...</result>` JSON 字符串列表。只有在 `<result>` 完全不存在时才允许既有的 fenced-code 保守恢复：最终回答中必须恰好只有一个 fenced code block，且代码块完整内容精确匹配某个可接受答案，才标记 `recovered_fenced_exact_match`。此外仅有上一条定义的 v4 精确恢复允许一个未闭合 `<result>`；正文提及、第二个代码块（即使重复或无法解析）、其他非法或未闭合的 `<result>`、多个 `<result>`、模糊片段和近似匹配均不恢复。
+- 严格正确要求预测与一个完整可接受答案精确匹配；漏报、多报和错报均计错。
+- q73 至 q86 的 `Core_SW_01;VRRP Master角色规划不合理` 与 `Core_SW_02;VRRP Master角色规划不合理` 使用包含式 OR：只报 01、只报 02、同时按 01/02 或 02/01 顺序报告均可；该规则只用于汇总重算，不修改输入或历史事件。
+- 准确率只看最终答案：只要最终答案按上述统一入口精确匹配，即使过程包含错误/不支持的工具调用、错误归因或 runner 协议告警也仍计正确；这些过程信号仅保留为诊断证据，不得覆盖最终答案判定。模型到达终态但没有有效最终答案时计错；超时、纯基础设施失败和人为中断不进入有效分母，必须保留证据并安全重试。
+- 标准 12题×5次 Agent 验证在至少 3 个完整有效轮次且累计有效模型错误达到 30 个时立即提前终止，因为 60 格最终最多只能达到 30/60（50.00%）。提前终止报告必须同时给出已观察部分准确率、完整有效轮次、错误数、理论上限和剩余未运行槽位，不能伪装成 60/60 完整结果。
+- Agent 单元达到时间上限时不进入有效分母或模型错误数。韧性 launcher 会先把完整超时根目录移动到同级 `*.timeout_failed_<UTC>` 归档，再在同一单实例、相同 checkpoint 与参数下安全重试；基础设施失败和超时归档共同占用 `INFRA_MAX_RETRIES` 预算，原始证据不得覆盖或删除。
+- 2026-08-07 全量重算结果与逐文件机器报告见 [`docs/2026-08-07_RECOVERABLE_FINAL_ANSWER_RESCORE.md`](docs/2026-08-07_RECOVERABLE_FINAL_ANSWER_RESCORE.md)。
+- Qwen3.6-27B Base/LoRA Agent eval 固定单个 vLLM TP=2 实例、两个 runner、总并发 2。
+- 默认单次上限 3,600 秒，最大生成长度 8,000 个新 token。
+- validation loss 用于选点，不单独作为能力提升结论；正式对比必须使用相同题目、prompt、
+  工具链、并发、超时和判分口径。
+- 2026-08-11 的统一 v3 Agent checkpoint 对比见 [`docs/2026-08-11_0805_AGENT_CHECKPOINT_COMPARISON.md`](docs/2026-08-11_0805_AGENT_CHECKPOINT_COMPARISON.md)：0805 epoch-2/3/4/5 的完整结果依次为 36/60、35/60、37/60、35/60；epoch-1 在四个完整轮次、30 个有效模型错误时合规提前终止，观察值为 18/48（37.50%），理论上限为 30/60（50.00%），不得作为 60/60 完整值。
+
+基座部署 A/B 与历史全量评测保存在
+[`experiments/2026-07-31-qwen36-27b-base-eval/`](experiments/2026-07-31-qwen36-27b-base-eval/)。
+
+## 目录导航
+
+```text
+.
+├── data/
+│   ├── 2026-07-27/
+│   ├── 2026-07-31/
+│   ├── 2026-08-04/
+│   ├── 2026-08-05/
+│   ├── 2026-08-07/
+│   ├── 2026-08-09/
+│   └── simulation/
+├── docs/
+│   ├── TRAINING_PLAN.md
+│   └── 训练与评测结果报告
+├── experiments/
+│   ├── 2026-07-27-ip_codex_train0629_14x10/
+│   ├── 2026-07-28-ip_codex_train0629_10x10/
+│   ├── 2026-07-28-ip_codex_train0629_100x10/
+│   ├── 2026-07-31-qwen36-27b-base-eval/
+│   ├── 2026-08-02-ip_codex_gpt56-sol_100x10/
+│   ├── 2026-08-02-qwen36-27b-heldout6-agent-ab/
+│   ├── 2026-08-04-qwen36-27b-best1-agent-validation/
+│   └── 2026-08-06-qwen36-27b-0804-best1-5epoch-agent-validation/
+└── scripts/
+    ├── 数据转换与校验
+    ├── LoRA 训练
+    └── Base/LoRA Agent 评测
+```
+
+## 归档与清理状态
+
+- `data/2026-07-27/` 保留：它是唯一包含 planning/reasoning 目标的人工策展基线。
+- `data/2026-07-28/` 已删除：100 条 decision 样本已被更大数据替代，并可从来源实验重建。
+- `experiments/2026-07-31-qwen36-27b-agent-ab/` 已删除：其四道题进入过训练集，不能作为
+  泛化结论，已由六题完整 Agent A/B 替代。
+- 07-27 14×10、07-28 10×10、两轮 100×10 来源实验继续保留，用于来源审计和复现。
+- `2026-07-31-qwen36-27b-base-eval` 继续保留，因为部署决策和后续脚本仍引用该基线。
+
+## 维护规则
 
 凡调用本地 Qwen3.6-27B 基座或 LoRA adapter 服务进行的 eval，固定使用单实例
 双并发：只启动 1 个 vLLM 实例，当前双卡部署采用 `tp2x1`；固定 2 个 eval
-runner worker，总请求并发为 2。所有评测样本排队进入这两个槽位，重试也必须复用
-已有槽位。禁止在 27B eval 中启动 8 个 worker、8 路请求或自动扩容。该约束不适用于
+runner worker，总请求并发为 2。所有评测样本采用连续补位调度：任一 runner 结束后立即从
+队列启动下一个样本，重试也必须复用已有槽位。禁止在 27B eval 中启动 8 个 worker、8 路
+请求或自动扩容。该约束不适用于
 Codex 轨迹生成及其他数据采集任务；数据采集策略由各实验独立配置。完整约束见
 [`docs/TRAINING_PLAN.md`](docs/TRAINING_PLAN.md)。
 
@@ -380,6 +486,10 @@ Codex 轨迹生成及其他数据采集任务；数据采集策略由各实验�
 
 `experiments/2026-07-27-ip_codex_train0629_14x10/` 集中保存本次实验的输入、生成脚本、完整运行，以及耗时与准确率统计。完整运行直接位于 `results/runs/`，包含题号 13、14、17、18、25、26、27、28、87、88、91、92、93、94 各 10 条成功轨迹，共 140 条。
 
+results/questions/ 另行补齐后续固定验证集使用的 q2、q12、q19、q20、q29、q38、
+q65、q71、q85、q86、q99、q100 题面与来源记录；这些静态快照不增加原实验的运行轨迹，
+也不改变 14 题 × 10 次、共 140 条的统计口径。
+
 ```powershell
 python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_trajectories.py
 ```
@@ -400,6 +510,29 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 不受 Qwen3.6-27B eval 的单实例双并发约束。819 条 accepted 轨迹已经转换为
 `data/2026-07-31/` 下的严格正确 SFT 数据。
 
+`experiments/2026-08-02-ip_codex_gpt56-sol_100x10/` 是基于
+`IP user prompt by text.txt` 的新一轮本地 Codex CLI + `gpt-5.6-sol` 全量蒸馏。
+该目录同时保留原提示词副本和优化提示词；优化版将配置根目录明确为
+`saved_configs/`，说明 `<项目>/<节点>/<命令回显>.txt` 的三级目录与文件名转换规则，
+并要求生成器直接列目录、搜索和读取本地文件；HTTP/API 读取被禁止，标准答案仍由安全
+输入边界隔离。实验覆盖全部 100 题，每题只收录
+独立严格判题正确的 10 条轨迹；连续错误达到 10 次或累计错误达到 20 次时停止该题，
+基础设施失败不计入这两个阈值。运行状态、accepted 唯一映射和恢复方法见该实验的
+[`README.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/README.md)。2026-08-03 账号切换
+检查点曾归档 accepted 18 / 1,000；随后确认实际 user prompt 存在问题，旧 `results/`
+已整体作废并删除。实际 prompt 已在 2026-08-03 完成本地文件读取版优化，之后从 q0001
+attempt 1 全新启动，不恢复旧断点。实验已于 2026-08-04 完成，100 道题全部到达终态，
+共保留 814 条 accepted 轨迹：79 题收齐 10 条正确轨迹，19 题因连续 10 次错误停止，
+2 题因累计 20 次错误停止；最终完整性审计通过。新运行强制采用 accepted-only 保留策略：
+**失败或中断结果一律不保留**；错误、格式错误、基础设施失败、超时和中断只保留必要的
+状态计数，不归档、不提交、不长期保留其事件流、回答、日志或 attempt 目录。重置状态、
+固定的 Standard 速度/初始及最大并发 10 配置及启动清单见
+[`HANDOFF.md`](experiments/2026-08-02-ip_codex_gpt56-sol_100x10/HANDOFF.md)。
+2026-08-05 又仅对已有部分成功的题 3、7、21、22、23 以并发 4 补跑，零成功题不再尝试；
+五题分别新增 4、5、1、9、7 条 accepted 后全部达到 10 条，使全实验 accepted 总数增至
+840，完成 10 条的题目增至 84 道，其余 16 道零成功题保持原终态。补跑结束时剩余额度
+38%，最终审计再次通过。
+
 三个 Codex 轨迹实验已采用统一的紧凑归档：`prompt.txt` 和
 `source_record.json` 按“实验 + 题号”各保留一份；100×10 实验只保留
 `events.jsonl` 作为 Codex 原始标准输出流，并将共享 hooks 配置集中到
@@ -413,15 +546,191 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 归档到 [`experiments/2026-07-31-qwen36-27b-base-eval/`](experiments/2026-07-31-qwen36-27b-base-eval/)。
 目录将部署对比与全量结果分开保存，并提供总体、逐题和逐次明细。
 
+checkpoint-760 +100 与历史 base 的完整 Agent A/B 已归档到
+[`experiments/2026-07-31-qwen36-27b-agent-ab/`](experiments/2026-07-31-qwen36-27b-agent-ab/)。
+该实验复用 base 的 20 次 TP2 结果，只实跑 LoRA 侧；所有运行固定单实例 TP2、双并发
+和 60 分钟上限。
+
+checkpoint-760 +100 与 Base 在最新留出题 12、24、40、72、86、100 上的同条件完整 Agent
+A/B 已归档到 [`experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/`](experiments/2026-08-02-qwen36-27b-heldout6-agent-ab/)：
+LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 个百分点；两侧分别有
+4/3 次超时，均无非超时 runner failure。LoRA 平均/中位封顶耗时为 24.21/13.74 分钟，Base
+为 32.37/26.81 分钟。两侧题目、prompt、工具链、次数、3600 秒上限与单实例双并发拓扑一致，
+该结果作为当前最新留出划分的正式端到端泛化 A/B 结论。
+
 ## 提交维护规则
 
 每次创建并推送 GitHub 提交时，必须在同一个提交中同步更新本 README，记录该次变更对项目内容、数据、脚本或使用方式的影响。
 
 ### 更新记录
 
+- 2026-08-12：将唯一 Agent 判分协议升级为
+  `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`；只新增“全篇唯一、完整 fenced `<result>`
+  JSON 字符串列表仅缺 `</result>` 且精确命中”的恢复分支。23 项回归通过；归档 v3 与 v4 对全部
+  3,007 份原始最终答案作差，新增正确 1 条（temp0 q65-r03）、降级 0 条；原 0805 epoch-1/2/3/4/5
+  与部分 0807 epoch-3/5 总分均不变。0809 formal config、manifest、双 validator 和依赖哈希同步更新。
+- 2026-08-11：将 0809 Agent 判分协议升级到仓库统一的
+  `agent-final-answer.v3.2026-08-10-final-answer-only`，与 0807 统一为相同 12 题×5 次、固定 epoch 3、
+  high thinking、3600 秒和 TP2×单实例/双 runner；过程错误只作诊断，q73–q86 inclusive-OR 继续由
+  canonical scorer 处理。formal config、manifest、双 validator、audit 和 scorer/launcher/retry/
+  early-stop/summarizer 依赖哈希同步冻结。
+- 2026-08-11：按 20:02 续审升级 0809 v7：action 从关键词门禁升级为 message-derived 完整结构
+  binding；308/308 action 仅监督待验证状态，完整 action 为 0。50 条父级 post-closure 行移除 93 个
+  正工具调用；q0023 的 1/1 完整节点改为停止。endpoint 取消 unsupported 邻近标签排除，116 条均改为
+  candidate-scope calibration；真实排除保持 103 行/58 题和 8 条透明 replay。数据规模、双卡 DDP、
+  每轮 1151 行/144 step 和固定 checkpoint-432 不变。
+- 2026-08-11：按 18:48 深审升级 0809 v6：对 308 条 action 建立首正 loss 前逐字证据和提前收敛
+  门禁，修复 30 条父级 source/其中 24 条 action，审计点名 7 条均加入双层回归 fixture，修复后
+  action 违规为 0；明确区分 116 条不同输入路径与 16/116 个唯一输出正目标，并纠正文档中的
+  Python 版本。数据规模、双卡 DDP、每轮 1151 行/144 step 和固定 checkpoint-432 不变；目标
+  tokenizer/loss-mask 已按 v6 重跑 7151 行，最大 5635/16384，overlong/loss-mask failure 均为 0。
+- 2026-08-11：按 17:21 续审升级 0809 v5：删除推理时不可达的零 loss assistant marker，把
+  closure/contrastive 同路径改写合并为 116 条真实证据路径综合 completion，并按题归一化 endpoint
+  loss；每轮完整曝光 719 core、308 可达 action、8 个透明 elimination replay 和 116 endpoint，仍为
+  1151 行/144 step/固定 checkpoint-432。发布路径改为 checkout 相对，设计与生成依赖纳入仓库闭环；
+  训练入口新增 config/plugin、模型/tokenizer 和库版本身份门禁。真实目标预检 7151 行，最大
+  5635/16384，overlong/loss-mask failure 均为 0。
+- 2026-08-11：按 15:58 深度续审升级 0809 v4：修正 432 个恢复事实的原始 event/item/command/
+  output provenance 并加入双验证器原始事件回查；严格 endpoint 扩展为 163 条真实路径链并按轮
+  选择每题两条；自然条件化后 summary/stop 前缀 100% 唯一、目标至少 95% 唯一。前三轮 action
+  覆盖 72/72 题和六标签；终点权重按真实 tokenizer 回调，最终 decision 权重不变。训练入口改为
+  manifest 驱动的全量 Git 门禁，并把 checkpoint-432 检查移到 stage-5 early-exit 之前。
+- 2026-08-11：按 12:13 严格续审再次升级 0809：删除跨/不可解析 snapshot 与 glob 的完整
+  call/response 条件历史；IP/MPLS 增加 next-hop owner 有向闭环，role 增加源 VLAN 闭环，BPDU
+  只认 current config；从同题同快照 0805 成功事件恢复 40 题，72 题各生成 closure/contrastive
+  两组三节点 endpoint。每轮 1151 份消息全部唯一且 core/endpoint 无交集；正式训练入口改为只读
+  消费已提交、已通过 tokenizer 预检的冻结 release。
+- 2026-08-11：按 09:58 续审升级 0809：对父级 237 个 endpoint 组执行全量严格门禁，重写
+  93 个合格组三节点并移除 144 个失败组；action 在完整证据后继续调用的正监督归零，动作池由
+  132 调整为 130；并修复父级 core 中 47 个同类残留。前三轮覆盖 stop 41、boundary 37、minimal 37、elimination 8。每题每轮仍
+  固定 6 行 endpoint 预算，全轮 1151 行/144 step。训练入口补充 `--external_plugins` 和
+  callback 注册 smoke check；两套 validator 将上述条件升级为硬门禁。
+- 2026-08-10：对0809反事实执行链级原始工具回显门禁：动作以132条覆盖72/72题，禁止glob、
+  跨快照和无关调用；停止/标签边界/最小集合只在41/72题同路径证据完整时生成，另外8题补
+  evidence-bound elimination，综合排除覆盖66/72；IP/MPLS要求三设备路径闭合，role要求
+  Vlanif→MST实例→ALTE链一致，其余样本不跨轨迹拼接、不从最终答案回填；
+  父级core中109个不安全路径调用及同组63个兄弟调用保留为零loss审计上下文。
+- 2026-08-10：以0805而非旧0807副本重建0809独立版本闭环；新增错误感知的动作、停止、
+  标签边界、最小集合和低权重 evidence-bound elimination。
+  默认五轮采用逐题替换式预算匹配，每轮仍为1151行/144 step，固定epoch 3/checkpoint-432；
+  generator、两套validator、audit、preflight和正式入口统一绝对DATA_ROOT，验证题错误轨迹不
+  进入训练，当前12题降级为error-mining/dev，最终泛化仍要求clean held-out。
+- 2026-08-07：将0807 v7正式训练方式与0805对齐：改为GPU 0、1双进程DDP、每卡batch 1、
+  梯度累积4，全局有效batch仍为8；LR callback仅由rank 0写审计。取消6题×2次Agent
+  checkpoint选择，五轮eval loss仅作诊断，固定使用epoch 3 / checkpoint-81进行12题×5次
+  最终验证。数据内容、每阶段216行与27 optimizer steps保持不变。
+- 2026-08-07：按 17:03 独立复审升级 0807 v6：新增独立 LLDP family 并以 token 边界隔离
+  LDP/MPLS；混合事实/计划逐子句处理，纯未来计划才可直接监督；原始多步 conclusion 必须被
+  当前动作完整覆盖，最终监督 partial/zero 降为 0。排除节点保持 12 条；训练/验证 346/52、
+  路径 104、每轮 216。训练入口固定每阶段 27 optimizer steps 和 checkpoint/global-step
+  边界；真实 Qwen tokenizer 检查 398 行，最大 4,146/16,384，loss-mask 错误 0。
+- 2026-08-07：按 q73–q86 inclusive-OR 影响报告升级 0807 v5：源答案规范为 `[A]`、`[B]`、
+  `[A,B]` 三个 exact-set 选项并同步 140 个 raw/curation；SFT target 与判分宽容度分离，
+  VRRP/STP 角色错位改为源 VLAN、同 VLAN Master、MST 映射和同实例 Alternate 的完整闭环。
+  旧相关终点仅 4/15 完整，现为 14/14；训练/验证 344/53、路径 103、每轮仍 216。真实
+  Qwen tokenizer 检查 397 行，最大 4,867/16,384，loss-mask 错误 0。
+- 2026-08-07：0805正式训练改为GPU 0、1双进程DDP，每卡micro batch 1、梯度累积4，
+  全局有效batch保持8；加入设备、world size和batch算术校验，LR插件改为全部rank强制、
+  rank 0独占写审计。五轮eval loss仅作诊断，固定使用epoch-3 checkpoint执行12题×5次验证，
+  不再运行Agent checkpoint-selection；正式配置/manifest schema升级为v2/v10。
+- 2026-08-07：补齐 2026-07-27-ip_codex_train0629_14x10 实验目录中后续固定验证集
+  使用的 12 道题面与来源记录（q2、q12、q19、q20、q29、q38、q65、q71、q85、q86、
+  q99、q100）；仅补充静态输入快照，不改变原 14×10 运行和准确率统计。
+- 2026-08-07：按 12:20 独立复审升级 0807 v4：普通事实 reasoning 改为 action/exact-span
+  observation atoms，21 条越证据样本进入固定回归；排除节点只保留有明确反证范围的 12 条；
+  动作审计拆分源意图与最终监督意图并公开 full/partial/zero/unscoped。训练/验证变为 346/53，
+  104 条 endpoint 路径，每轮仍为 216 行；v4 目标 tokenizer 实测最大 4,867/16,384，
+  loss-mask 错误 0。
+- 2026-08-07：按 0807 独立严格复审完成 v3 优化：排除结论改为逐事实 action/span 绑定并将
+  三条已知错误加入回归；完整禁止 snapshot/device/filename glob；用最小 claim coverage
+  取代固定动作上限；三条终点合并为单行多目标 bundle；IP/MPLS next-hop 归属改由可见接口
+  地址证明；学习率 callback 改为逐 step 记录。训练/验证缩为 369/63，每轮 216 行。目标
+  Qwen3.6 tokenizer 实测最大 6,306/16,384 token，loss-mask 错误 0，官方与独立校验通过。
+- 2026-08-06：从 0805 的 840 条严格成功轨迹建立独立 0807 evidence-gated 数据；复用
+  0804 的 72/12 题目划分，修复 label 反向端点、证据断链、config 目录污染、跨快照引用、
+  query 权重不均和五轮训练合同问题。最终保留 173 条可靠闭环路径、51 条真实排错节点，
+  训练/验证语义池为 904/145；每轮每题固定 5 条、共 360 条。新增转换器、独立校验器、
+  机器审计、连续 resume 训练入口、复现文档与严格审计报告；正式训练仍需目标 tokenizer
+  和逐 token loss-mask 预检。
+- 2026-08-06：0805新增120条真实错误候选排除节点，只使用可见原始排错句和该节点之前
+  已返回且与排错协议/观察相关的成功工具证据；训练/验证分别103/17条。证据归纳、停止判断和最终回答改为同一路径
+  三节点组，按query每轮选2条路径共同轮换，不再把归纳/停止固定进core。自动端点thinking和
+  结论权重均降至0.20；每轮为719条core加432条端点，自动归纳与停止的估算有效loss占比
+  从51.6%降至23.8%。manifest/selection schema升级为v8/v4。
+- 2026-08-06：新增0805完整复现文档和仓库级数据变更规则；manifest绑定复现文档及关键
+  脚本哈希，独立校验器检查其同步状态。此后来源、划分、转换、loss、采样、协议、tokenizer
+  或生成数据的任何修改都必须同步文档、重生成并校验，正式训练前必须归档目标tokenizer
+  长度和逐token loss mask结果。
+- 2026-08-06：进一步消除0805自动模板监督：固定调查桥接和最终固定桥接改为loss 0，
+  自动重建结论、路径归纳和停止判断降为0.40；归纳与停止文本改为引用当前设备、配置、
+  实际回显和排除项，并解释停止条件。每条保留路径新增独立decision；训练不直接加载237条
+  decision池，而由五个epoch采样表对每个query每轮均衡选2条并轮换路径，每轮仍为1272条曝光。
 - 2026-08-07：将验证题 q73-q86 的 VRRP Master 角色规划答案统一修正为包含式 OR；
-  `Core_SW_01`、`Core_SW_02` 任一单独上报或两者同时上报（任意顺序）均判为正确，并同步
-  更新仿真源数据、07-27 实验输入副本及可复用批量修正脚本。历史轨迹保持不变，后续按修正标签重算。
+  Core_SW_01、Core_SW_02 任一单独上报或两者同时上报（任意顺序）均判为正确，并同步更新
+  数据源、实验输入、修正脚本与历史汇总。0804最终验证由旧口径23/60（38.33%）修正为
+  25/60（41.67%）；旧 checkpoint-159 同口径为17/60（28.33%），新 P1 提升13.33个百分点。
+  完整审计见 [`docs/2026-08-07_Q73_Q86_INCLUSIVE_OR_RESCORE.md`](docs/2026-08-07_Q73_Q86_INCLUSIVE_OR_RESCORE.md)。
+- 2026-08-06：阶段性版本按保留因果路径重建0805的停止监督；每条路径新增1个证据归纳和1个
+  `decision_ready`，当时每题仍只保留1个最终答案，并把单调查节点工具上限从4降至2。
+  该阶段生成训练1200、验证205个节点；训练集停止判断由4增至237，无工具节点由76
+  增至 546，工具调用有效 loss 占比降至约 4.1%。
+- 2026-08-06：将 0805 SFT 的工具监督从本地 PowerShell 协议严格转换为 LoRA Agent 评测
+  实际使用的 `exec_command` + `cmd`、Linux 只读命令与仓库相对路径；原始 PowerShell、
+  中间规范化命令、转换类型和哈希继续保留在 metadata，无法可靠转换时阻止生成。历史工具
+  结果同步改为 Linux `find`/`grep` 展示及 Codex CLI transport 外形，且保持 context-only；
+  工具调用有效 loss 占比由约 20.3% 降至约 11.9%。
+- 2026-08-06：完成0804 best1五epoch训练、五个checkpoint各12次Agent选择和入选
+  checkpoint的12题×5次最终验证；原始旧标签归档23/60，q73-q86 包含式 OR 修正后为25/60；
+  同步归档thinking与prefix-cache指标、LR审计、基础设施重试口径和可复现控制脚本。
+- 2026-08-06：0805 SFT 的 `system` 消息改为逐字复用 Codex CLI 模型目录中
+  `Qwen3.6-27B-trained.base_instructions`，并在 manifest 和逐条 metadata 中固化来源与哈希，
+  保证训练 prompt 与 LoRA Agent 评测 prompt 一致。
+- 2026-08-06：补齐0805正式五阶段训练入口和机器可读训练配置；每阶段加载独立端点采样表，
+  第2–5阶段完整resume上一checkpoint，固定使用梯度累积8、constant scheduler和零warmup；
+  专用callback在恢复后强制重设当轮学习率、逐step校验并归档审计，manifest v9和独立验证器
+  同步阻止quick参数误入正式训练。
+- 2026-08-05：新建 `data/2026-08-05/`，对补跑后的 84×10 条成功轨迹执行因果路径
+  聚类和跨轨迹节点去重；沿用 0804 的 72/12 题目划分、5 epoch 正式实验方案及 16K
+  历史快跑冒烟入口，生成训练 741、验证 129 个原生多轮节点并通过独立静态校验，0804
+  保持不变；工具调用 loss 权重进一步降为 0.10，重复 PowerShell 包装从监督文本中
+  规范化移除，完整原始命令继续保留用于审计；thinking 按原始可见分析 0.60、证据桥接
+  0.30、最终桥接 0.10 分级监督。
+- 2026-08-05：修正0804 Agent验证的Codex模型metadata缺失问题；验证控制器现在为
+  当前served model生成运行内catalog，避免未知LoRA名称回退到10,000-byte工具输出截断、
+  非并行工具调用和通用基础指令。
+- 2026-08-05：完成 0802 GPT-5.6-Sol 100×10 实验中题 3、7、21、22、23 的定向补跑，
+  五题全部补满 10 条 accepted；新增 26 条轨迹后全实验 accepted 总数为 840，84 道题
+  达到 10 条，最终完整性与输入隔离审计通过。
+- 2026-08-03：清理 0802 实验中未被引用的 smoke 输入、Python 字节码、空目录和
+  约 337 MiB 的可重建 Codex CLI 副本，并合并 `.gitignore` 中已被 `/runtime/` 覆盖的
+  重复规则；正式运行会自动重建所需 runtime 和输入索引。
+- 2026-08-03：进一步简化 0802 实验 prompt，删除对其他读取方式和只读快照属性的
+  重复强调，保留 `saved_configs/` 路径、三级目录解析、文件名转换和必要调查步骤；
+  运行侧的文件访问边界保持不变。
+- 2026-08-03：重写 0802 GPT-5.6-Sol 100×10 实验 prompt，将配置访问从本地 API
+  改为直接只读 `saved_configs/` 文件，补充项目、节点、命令回显文件的目录解析规则，
+  并同步切换输入边界、运行 hook、最终审计和交接文档；尚未启动新一轮采集。
+- 2026-08-01：增加 27B base 全量 Agent eval 的单实例 TP2、双并发重跑入口；重新
+  覆盖历史相同的 92 题×5 次范围，明确与旧 8-worker 轨迹隔离，并保留断点恢复能力。
+- 2026-08-01：完成 checkpoint-760 +100 与历史 base-eval 的同条件完整 Agent A/B；
+  LoRA 严格正确率 15/20（75%），较复用 base 的 3/20（15%）提升 60 个百分点，
+  平均耗时由 26.66 分钟降至 13.95 分钟，20 次均无超时；归档逐次结果并明确该四题
+  已进入训练集，正式泛化验收仍使用当前六题留出集。
+- 2026-07-31：将训练工作流的最终验证改为复用 base-eval 的完整 Codex Agent
+  runner、调查 prompt、离线工具和严格判分；最新 6 个留出题默认各跑 5 次，固定
+  单实例 TP2、双并发、单次 60 分钟，并增加复用历史 base 20 次结果的 checkpoint
+  端到端 A/B 入口。训练期 SFT validation loss 仍仅用于早停和 checkpoint 选择。
+- 2026-07-31：在当前 60 条验证集上完成原始 27B 基座的 5 次双并发验证，
+  扫描原训练 step500/600/700/760，并从 checkpoint-760 独立续训
+  +100/+200 steps；严格正确率从基座均值 7.33% 提升至 86.67%，推荐 +100。
+- 2026-07-31：训练脚本支持只加载既有 LoRA 权重并以独立优化器执行指定
+  `MAX_STEPS` 的额外训练，用于在原调度器已经衰减结束后复现实验性 step 扩展。
+- 2026-07-31：增加原始 27B 基座与多个 LoRA checkpoint 的统一验证扫描脚本；
+  同一单实例 TP=2 服务中，基座默认按双并发重复 5 次，checkpoint 默认各验证
+  1 次，并汇总严格正确率及相对基座变化。
+- 2026-07-31：按最新 759/60 分层划分完成 2-epoch LoRA SFT，最低验证 loss
+  位于 checkpoint-760；在同一单实例 TP=2 服务中完成 5 次双并发验证，每次严格
+  匹配 49/60，并归档按题号、故障类型和稳定错误模式的分析。
 - 2026-07-31：压缩三个 Codex 轨迹实验归档，删除与 `events.jsonl` 完全相同的
   1,313 份 `stdout.log`，并按题号集中 prompt/source record、集中共享 hooks；
   同步更新 metadata、转换器、校验器和后续 runner，净释放 926.49 MiB。
@@ -457,3 +766,13 @@ python experiments/2026-07-27-ip_codex_train0629_14x10/scripts/run_codex_ip_traj
 - 2026-07-27：将一轨迹一决策样本扩展为多阶段样本；保留抽象的下一步核验计划，删除具体工具与执行方式，共整理 7 条 planning、2 条 reasoning 和 3 条 decision 样本。
 - 2026-07-27：将生成目标升级为单一 `reasoning_decision` SFT；新增显式策展证据和推理标注，移除工具调用训练格式。
 - 2026-07-27：建立 README 同步维护规则，并增加仓库级协作说明。
+
+每次推送 GitHub 的提交都必须同步更新本 README，确保数据、脚本、实验和当前结论一致。
+## 2026-08-13 Agent timeout scheduling
+
+Agent validation now supports `DEFER_TIMEOUT_RETRIES=1`: a timed-out cell is
+archived and marked pending while the regular grid continues, and all pending
+timeout cells are retried together in bounded final sweeps. The 0809 temp-zero
+workflow uses this mode for epoch 3/4/5. Timeouts, infrastructure failures, and
+policy-transition interruptions remain excluded from canonical denominators;
+the TP=2/concurrency=2 and early-stop gates are unchanged.

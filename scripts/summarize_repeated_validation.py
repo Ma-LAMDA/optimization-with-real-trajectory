@@ -9,6 +9,8 @@ import statistics
 from pathlib import Path
 from typing import Any
 
+from final_answer_scoring import SCORING_POLICY_VERSION, require_scoring_policy_version
+
 
 TOPOLOGY = {
     "instance_count": 1,
@@ -91,6 +93,7 @@ def main() -> None:
         summary_path = repeat_root / "validation_summary.json"
         prediction_path = repeat_root / "validation_predictions.jsonl"
         summary = load_object(summary_path)
+        require_scoring_policy_version(summary)
         predictions = load_jsonl(prediction_path)
         counts = summary.get("counts")
         if not isinstance(counts, dict):
@@ -133,6 +136,7 @@ def main() -> None:
         raise ValueError("repeated validation has no predictions")
     aggregate = {
         "schema_version": "qwen36-sft-repeated-validation-eval.v1",
+        "scoring_policy_version": SCORING_POLICY_VERSION,
         "git_commit": common_value(summaries, "git_commit"),
         "checkpoint": common_value(summaries, "checkpoint"),
         "dataset": common_value(summaries, "dataset"),

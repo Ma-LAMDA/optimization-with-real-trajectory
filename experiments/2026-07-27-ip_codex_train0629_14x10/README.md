@@ -37,6 +37,11 @@
 `prompt.txt` 和 `source_record.json` 按题号集中保存在 `results/questions/qXXXX/`；
 各 attempt 的 `metadata.json` 使用相对路径引用它们，不再为每个重复运行保存相同副本。
 
+2026-08-07 补齐后续固定验证集使用的 q2、q12、q19、q20、q29、q38、q65、q71、
+q85、q86、q99、q100 共 12 道题的 prompt.txt 与 source_record.json。这些目录只
+归档静态题面和标准答案，没有向本实验增加运行轨迹，因此 fullaccess 的 14 题 × 10 次
+及 140 条统计口径保持不变。
+
 每个运行目录内同时保存 `manifest.json`、对应的 `runner.stdout.log`/`runner.stderr.log`，以及按 `q<题号>_r<轮次>/attempt_<序号>/` 组织的完整事件、最终答案、元数据和哈希。
 
 目录级 `.gitattributes` 禁止 Git 改写输入、轨迹和报表文件的换行符，以保证 metadata 中保存的 SHA-256 在克隆或切换分支后仍可复验。

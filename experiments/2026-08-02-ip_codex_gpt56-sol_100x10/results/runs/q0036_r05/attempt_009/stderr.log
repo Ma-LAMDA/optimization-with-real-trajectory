@@ -1,0 +1,53 @@
+2026-08-04T03:37:34.372663Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T03:37:34.372729Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T03:37:34.373409Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T03:37:34.376345Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T03:37:34.386521Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-04T03:37:34.989254Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T03:37:34.989287Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T03:37:34.990051Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T03:37:34.993122Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T03:37:47.548766Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: $root='D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05'; Get-ChildItem -LiteralPath $root -Directory | Select-Object -ExpandProperty Name; Get-ChildItem -LiteralPath $root -Directory | ForEach-Object { $n=$_.Name; Get-ChildItem -LiteralPath $_.FullName -File | ForEach-Object { [PSCustomObject]@{Node=$n; File=$_.Name} } } | Format-Table -AutoSize
+2026-08-04T03:37:57.160686Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg --files 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05'
+2026-08-04T03:39:20.441924Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 1.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\FW_01\display_
+ospf_routing_10.1.30.254.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...10.1.30.254.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T03:39:48.805116Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE1\display_ip
+_routing-table_10.2.30.0.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...e_10.2.30.0.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T03:39:53.674415Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 183ms)... turn_id=019fcad9-1e2c-76c0-943f-9145a0673f1a retries=1 max_retries=5 sampling_error=stream disconnected before completion: WebSocket protocol error: Connection reset without closing handshake
+2026-08-04T03:41:03.656845Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork-for-perf\PE1\display_current-configuration.txt' -Pattern 'static-lsp|ip route-static|vpn-target|route-distinguisher'
+2026-08-04T03:41:11.009662Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork-for-perf\PE1\display_current-configuration.txt' -Pattern 'static-lsp','ip route-static','vpn-target','route-distinguisher'
+2026-08-04T03:44:14.408169Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE1\display_cp
+u.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...display_cpu.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+

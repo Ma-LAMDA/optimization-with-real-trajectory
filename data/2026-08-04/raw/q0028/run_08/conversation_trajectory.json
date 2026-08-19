@@ -1,0 +1,76 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0028_success_08",
+  "case_id": 28,
+  "row_index": 28,
+  "success_slot": 8,
+  "attempt_index": 10,
+  "source_record": {
+    "row_index": 28,
+    "original_id": 28,
+    "sample_id": 28,
+    "sample_key": "q0028",
+    "question": "在CampusNetwork_05组网中，从 HQ_MKT_Client01 ping节点 SZ_Server_Cluster2（10.3.20.1）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。\n## 已定位的信息\n\nL2转发路径：\nHQ_MKT_Client01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/5) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/8) -> FW_01(GigabitEthernet1/0/1) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/2) -> SZ_Server_Cluster2(Ethernet0),\nHQ_MKT_Client01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/5) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/9) -> FW_02(GigabitEthernet1/0/1) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/2) -> SZ_Server_Cluster2(Ethernet0),\nHQ_MKT_Client01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/5) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/8) -> FW_01(GigabitEthernet1/0/2) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/2) -> SZ_Server_Cluster2(Ethernet0),\nHQ_MKT_Client01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/5) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/9) -> FW_02(GigabitEthernet1/0/2) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/2) -> SZ_Server_Cluster2(Ethernet0)",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先锁定CampusNetwork_05的实际节点与命令文件，再围绕“高延迟”优先检验带宽挤占、路由/标签环路和主备路径规划异常，并用沿途接口运行状态交叉核验。"
+    },
+    {
+      "event_line": 54,
+      "item_id": "item_27",
+      "text": "已确认路径节点均有完整配置与逐接口运行回显。下一步先比较PE1/PE3/SZ_AR的路由与接口负载，再检查总部双核心/双防火墙是否存在共同的主备或策略异常；这样可避免把四条等价L2路径误判成四个独立故障。"
+    },
+    {
+      "event_line": 315,
+      "item_id": "item_158",
+      "text": "目前已排除链路down、接口错误/丢包、沿途带宽饱和、目的端ARP/网关错误，以及到10.3.20.0/24的BGP/L3VPN和MPLS实际转发表异常。剩余重点是配置层面的路径代价/冗余规划，以及题目源网段是否在跨域发布与安全策略中完整匹配。"
+    },
+    {
+      "event_line": 470,
+      "item_id": "item_236",
+      "text": "已发现与现象直接相关的异常：PE三角形中存在两组方向相反的循环静态路由，且三条互联链路的累计单播计数呈闭环传递；这会让环流量反复经过PE1-PE3的业务链路。最后再核对三台PE的当前路由表和MPLS标签表，确认应归类为IP路由环路，而不是MPLS标签环路或单纯静态路由缺失。"
+    },
+    {
+      "event_line": 481,
+      "item_id": "item_242",
+      "text": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在IP路由环路",
+    "PE2;存在IP路由环路",
+    "PE3;存在IP路由环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在IP路由环路",
+      "PE2;存在IP路由环路",
+      "PE3;存在IP路由环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0028_r08/attempt_010/judgment.json",
+    "judgment_sha256_lf_normalized": "7405df03ec4c6888ceeea2e05a58b81a01aef93464effe73a004cc0e19b6ee50"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0028_r08/attempt_010",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0028_r08/attempt_010/events.jsonl",
+    "events_sha256_lf_normalized": "f89abf05f7b15043690518bf907fe34eebf5956d403e1a24f47f85bc24911765",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0028_r08/attempt_010/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "18538f112ded8bb0406026ca2cac688f04a8b8a8acccb00ae8ebbefca14fc4f4",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0028/source_record.json",
+    "source_record_sha256_lf_normalized": "d4f8f600fc3275af08732918962eb1c9dcb724b3113a65ff27b70cc915b27a26",
+    "thread_id": "019fca5e-06ca-75a3-9d9c-961b7503b8b1",
+    "duration_seconds": 702.29
+  }
+}

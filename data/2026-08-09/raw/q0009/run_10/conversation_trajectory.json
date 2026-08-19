@@ -1,0 +1,72 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0009_success_10",
+  "case_id": 9,
+  "row_index": 9,
+  "success_slot": 10,
+  "attempt_index": 22,
+  "source_record": {
+    "row_index": 9,
+    "original_id": 9,
+    "sample_id": 9,
+    "sample_key": "q0009",
+    "question": "在CampusNetwork_03组网中，从SH_SAL_PC01 ping北京区域核心交换机（10.1.20.254）出现高延迟。已知，设备PE2 和 PE3之间因链路距离较长，传输时延较大。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我先围绕高时延提出三类可证伪假设：业务被错误引入PE2-PE3长时延链路、动态路由代价规划错误、SRv6 Policy隧道规划错误。先确认项目节点与可用命令回显，再用路由/隧道运行状态还原实际往返路径。"
+    },
+    {
+      "event_line": 24,
+      "item_id": "item_12",
+      "text": "项目节点已确认。主机侧信息足以先确定源网段与第一跳；骨干设备回显很多，我会直接检索SRv6/ISIS/策略路由及目标前缀，避免被无关二层信息干扰。"
+    },
+    {
+      "event_line": 62,
+      "item_id": "item_32",
+      "text": "已确认源为10.2.10.1，上海出口SH_AR把10.1.20.0/24交给PE2；PE2的VPN路由也明确指向PE1并从Ethernet1/0/1直连转发。下一步核验MPLS标签转发表与回程路由，因为只有数据平面标签选路或回程绕行才会把业务带入PE2-PE3长链路。"
+    },
+    {
+      "event_line": 147,
+      "item_id": "item_75",
+      "text": "骨干控制面、VPN标签和接口利用率均显示PE2-PE1直达，未发现标签绕行或拥塞。为排除园区侧高时延，我再核对10.1.20.254所在核心的VRRP/STP运行状态与回程路由；其中若存在二层环路或主备路径错位，才可能在目的侧引入额外时延。"
+    },
+    {
+      "event_line": 196,
+      "item_id": "item_100",
+      "text": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"Core_SW_02;全局STP未使能\"\n]\n</result>",
+  "actual_result_items": [
+    "Core_SW_02;全局STP未使能"
+  ],
+  "reference_answer_options": [
+    [
+      "Core_SW_02;全局STP未使能"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0009_r10/attempt_022/judgment.json",
+    "judgment_sha256_lf_normalized": "e04a15b9dd66c795d41aace9ebbeef70d236e904e7d0e0d7bb7952262b18b7bf"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0009_r10/attempt_022",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0009_r10/attempt_022/events.jsonl",
+    "events_sha256_lf_normalized": "1d4bd74b3c0f023dd9eb143e1168d5bb37428af837470442a7ba0e696e8a9f26",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0009_r10/attempt_022/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "2509e1c35e9533c628144e7fbcbc0545091d0675435e864cac25b6386663bed7",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0009/source_record.json",
+    "source_record_sha256_lf_normalized": "18296499e97401d85ba4f0457468e974978f2a223cdc028049f89dd21fe31e83",
+    "thread_id": "019fc832-ccee-7501-acb0-7450988a6f8d",
+    "duration_seconds": 391.642
+  }
+}

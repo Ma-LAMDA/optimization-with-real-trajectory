@@ -1,0 +1,82 @@
+{
+  "schema_version": "0804-final-agent-validation.q73-q86-inclusive-or.v1",
+  "status": "completed",
+  "source_validation_summary": "validation_summary.json",
+  "source_attempts": "attempts.csv",
+  "historical_trajectory_artifacts_modified": false,
+  "scoring_correction": {
+    "case_ids": [73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86],
+    "semantics": "inclusive_or",
+    "accepted_prediction_pattern": ["A", "B", "A+B", "B+A"],
+    "answer_a": "Core_SW_01;VRRP Master角色规划不合理",
+    "answer_b": "Core_SW_02;VRRP Master角色规划不合理",
+    "reclassified_attempts": [
+      {
+        "case_id": 85,
+        "repeat": 3,
+        "prediction": [
+          "Core_SW_01;VRRP Master角色规划不合理",
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ],
+        "original_correct": false,
+        "corrected_correct": true
+      },
+      {
+        "case_id": 86,
+        "repeat": 2,
+        "prediction": [
+          "Core_SW_01;VRRP Master角色规划不合理",
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ],
+        "original_correct": false,
+        "corrected_correct": true
+      }
+    ]
+  },
+  "overall": {
+    "attempts": 60,
+    "original_strict_correct": 23,
+    "original_accuracy_percent": 38.333333333333336,
+    "corrected_strict_correct": 25,
+    "corrected_accuracy_percent": 41.666666666666664,
+    "corrected_false_positives": 59,
+    "corrected_false_negatives": 61
+  },
+  "selection_cases": {
+    "attempts": 30,
+    "original_strict_correct": 13,
+    "original_accuracy_percent": 43.333333333333336,
+    "corrected_strict_correct": 14,
+    "corrected_accuracy_percent": 46.666666666666664
+  },
+  "nonselection_cases": {
+    "attempts": 30,
+    "original_strict_correct": 10,
+    "original_accuracy_percent": 33.333333333333336,
+    "corrected_strict_correct": 11,
+    "corrected_accuracy_percent": 36.666666666666664
+  },
+  "case_85": {
+    "attempts": 5,
+    "original_strict_correct": 4,
+    "corrected_strict_correct": 5
+  },
+  "case_86": {
+    "attempts": 5,
+    "original_strict_correct": 4,
+    "corrected_strict_correct": 5
+  },
+  "checkpoint_selection_rescore": [
+    {"epoch": 1, "attempts": 12, "original_correct": 3, "corrected_correct": 3},
+    {"epoch": 2, "attempts": 12, "original_correct": 4, "corrected_correct": 5},
+    {"epoch": 3, "attempts": 12, "original_correct": 6, "corrected_correct": 7},
+    {"epoch": 4, "attempts": 12, "original_correct": 4, "corrected_correct": 6},
+    {"epoch": 5, "attempts": 12, "original_correct": 4, "corrected_correct": 5}
+  ],
+  "controlled_baseline_comparison": {
+    "old_checkpoint_159": {"corrected_correct": 17, "attempts": 60, "accuracy_percent": 28.333333333333332},
+    "new_p1": {"corrected_correct": 25, "attempts": 60, "accuracy_percent": 41.666666666666664},
+    "absolute_gain_correct": 8,
+    "gain_percentage_points": 13.333333333333332
+  }
+}

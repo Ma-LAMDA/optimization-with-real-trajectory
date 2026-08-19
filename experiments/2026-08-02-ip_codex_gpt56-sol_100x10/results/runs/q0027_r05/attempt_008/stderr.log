@@ -1,0 +1,27 @@
+2026-08-03T17:53:36.070694Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T17:53:36.070760Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T17:53:36.071512Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T17:53:36.074802Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T17:53:36.084261Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-03T17:53:36.738776Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-03T17:53:36.738829Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-03T17:53:36.739697Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T17:53:36.743059Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-03T17:53:49.990342Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: $root='D:\IP组网\optimization-with-real-trajectory\saved_configs'; Get-ChildItem -LiteralPath $root -Directory | Where-Object Name -eq 'CampusNetwork_05' | Select-Object -ExpandProperty FullName; Get-ChildItem -LiteralPath (Join-Path $root 'CampusNetwork_05') -Directory | Select-Object -ExpandProperty Name
+2026-08-03T17:55:26.921682Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE1\display_bg
+p_routing-table_10.3.20.0_24.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...0.3.20.0_24.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-03T17:56:23.056803Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: rg -n -i "de16-17b5-baae|de:16:17:b5:ba:ae|9eb4-800a-5f59|9e:b4:80:0a:5f:59|10\.1\.10\.100|10\.3\.20\.1" 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05' -g '*.txt'
+2026-08-03T17:56:28.880603Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg -n -i "10\.1\.10\.100" 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05' -g '*.txt'
+2026-08-03T17:57:08.267712Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Select-String -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\*\display_interface*.txt' -Pattern '(?:input|output) rate:\s+(?:[1-9][0-9]{7,}) bits/sec'
+2026-08-03T17:57:49.959070Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: path is outside the allowed saved_configs root: .. Command: Get-ChildItem -LiteralPath '.' -Force -Name

@@ -1,0 +1,439 @@
+{
+  "schema_version": "qwen36-codex-agent-validation.v1",
+  "status": "completed",
+  "evaluation_method": "full_codex_agent_with_tools",
+  "model": "Qwen3.6-27B-0804-best1",
+  "checkpoint": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-20260804T141553Z/train/v0-20260804-221631/checkpoint-159",
+  "git_commit": "c242fe23b291bdfd4b8028aa5f7812e61e8861b9",
+  "dataset": "/root/autodl-tmp/optimization-with-real-trajectory/experiments/2026-07-27-ip_codex_train0629_14x10/inputs/train_0629.jsonl",
+  "case_ids": [
+    12,
+    100
+  ],
+  "repeats_per_case": 5,
+  "timeout_seconds": 3600,
+  "thinking": {
+    "requested": true,
+    "reasoning_effort": "high",
+    "verification": "raw reasoning items are restored from the matching Codex session rollout into events.jsonl and counted per attempt"
+  },
+  "topology": {
+    "instance_count": 1,
+    "tensor_parallel_size": 2,
+    "worker_count": 2,
+    "request_concurrency": 2
+  },
+  "scoring": "exact JSON list equality; timeout and runner failure are incorrect",
+  "overall": {
+    "attempts": 10,
+    "completed_within_limit": 10,
+    "timeouts": 0,
+    "runner_failures": 0,
+    "strict_correct": 2,
+    "accuracy_percent": 20.0,
+    "false_positives": 12,
+    "false_negatives": 8,
+    "runtime_minutes": {
+      "mean": 14.2301,
+      "median": 13.7875,
+      "p95": 22.467,
+      "population_stddev": 4.3481746848534035,
+      "coefficient_of_variation": 0.30556177994908
+    },
+    "events": 1488,
+    "commands": 428,
+    "agent_messages": 210,
+    "reasoning_items": 392,
+    "reasoning_characters": 847307,
+    "attempts_with_captured_reasoning": 10,
+    "input_tokens": 21743492,
+    "cached_input_tokens": 21064512,
+    "output_tokens": 283622,
+    "reasoning_output_tokens": 0,
+    "attempts_with_reasoning_output": 0
+  },
+  "counts": {
+    "attempts": 10,
+    "strict_correct": 2,
+    "timeouts": 0,
+    "runner_failures": 0
+  },
+  "per_case": {
+    "12": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 0,
+      "accuracy_percent": 0.0,
+      "false_positives": 9,
+      "false_negatives": 5,
+      "runtime_minutes": {
+        "mean": 17.0424,
+        "median": 17.139,
+        "p95": 22.467,
+        "population_stddev": 3.220211148356579,
+        "coefficient_of_variation": 0.18895291439917963
+      },
+      "events": 942,
+      "commands": 268,
+      "agent_messages": 131,
+      "reasoning_items": 260,
+      "reasoning_characters": 502135,
+      "attempts_with_captured_reasoning": 5,
+      "input_tokens": 16086511,
+      "cached_input_tokens": 15649424,
+      "output_tokens": 171926,
+      "reasoning_output_tokens": 0,
+      "attempts_with_reasoning_output": 0,
+      "runs": [
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong",
+        "wrong"
+      ]
+    },
+    "100": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 2,
+      "accuracy_percent": 40.0,
+      "false_positives": 3,
+      "false_negatives": 3,
+      "runtime_minutes": {
+        "mean": 11.417800000000002,
+        "median": 10.335,
+        "p95": 16.949,
+        "population_stddev": 3.409607566861618,
+        "coefficient_of_variation": 0.29862211344231093
+      },
+      "events": 546,
+      "commands": 160,
+      "agent_messages": 79,
+      "reasoning_items": 132,
+      "reasoning_characters": 345172,
+      "attempts_with_captured_reasoning": 5,
+      "input_tokens": 5656981,
+      "cached_input_tokens": 5415088,
+      "output_tokens": 111696,
+      "reasoning_output_tokens": 0,
+      "attempts_with_reasoning_output": 0,
+      "runs": [
+        "wrong",
+        "correct",
+        "correct",
+        "wrong",
+        "wrong"
+      ]
+    }
+  },
+  "runs": [
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 12,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 1028.345,
+      "capped_minutes": 17.139,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 186,
+      "commands": 51,
+      "agent_messages": 31,
+      "reasoning_items": 50,
+      "reasoning_characters": 105060,
+      "input_tokens": 3026539,
+      "cached_input_tokens": 2933728,
+      "output_tokens": 34184,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "PE2;ISIS配置错误",
+        "PE3;ISIS配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q12-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 100,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 800.09,
+      "capped_minutes": 13.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 108,
+      "commands": 32,
+      "agent_messages": 13,
+      "reasoning_items": 28,
+      "reasoning_characters": 87106,
+      "input_tokens": 1308325,
+      "cached_input_tokens": 1256752,
+      "output_tokens": 26062,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q100-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 12,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1081.873,
+      "capped_minutes": 18.031,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 166,
+      "commands": 52,
+      "agent_messages": 11,
+      "reasoning_items": 48,
+      "reasoning_characters": 118465,
+      "input_tokens": 3071850,
+      "cached_input_tokens": 2987824,
+      "output_tokens": 36952,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "PE2;BGP配置错误",
+        "PE3;BGP配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q12-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 100,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 560.138,
+      "capped_minutes": 9.336,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 112,
+      "commands": 35,
+      "agent_messages": 10,
+      "reasoning_items": 29,
+      "reasoning_characters": 48345,
+      "input_tokens": 1032366,
+      "cached_input_tokens": 990192,
+      "output_tokens": 18123,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q100-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 12,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1348.019,
+      "capped_minutes": 22.467,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 264,
+      "commands": 74,
+      "agent_messages": 40,
+      "reasoning_items": 73,
+      "reasoning_characters": 122216,
+      "input_tokens": 4847243,
+      "cached_input_tokens": 4751824,
+      "output_tokens": 46785,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "PE3;L3VPN配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q12-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 100,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 428.024,
+      "capped_minutes": 7.134,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 79,
+      "commands": 23,
+      "agent_messages": 16,
+      "reasoning_items": 14,
+      "reasoning_characters": 40619,
+      "input_tokens": 478825,
+      "cached_input_tokens": 440608,
+      "output_tokens": 14083,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q100-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 12,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 848.316,
+      "capped_minutes": 14.139,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 146,
+      "commands": 40,
+      "agent_messages": 24,
+      "reasoning_items": 39,
+      "reasoning_characters": 81757,
+      "input_tokens": 2166614,
+      "cached_input_tokens": 2092496,
+      "output_tokens": 27655,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "PE2;ISIS配置错误",
+        "PE3;ISIS配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q12-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 100,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1016.937,
+      "capped_minutes": 16.949,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 129,
+      "commands": 37,
+      "agent_messages": 20,
+      "reasoning_items": 32,
+      "reasoning_characters": 114782,
+      "input_tokens": 1509828,
+      "cached_input_tokens": 1456672,
+      "output_tokens": 33890,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "Core_SW_01;STP 端口下实例根路径开销规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q100-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 12,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 806.144,
+      "capped_minutes": 13.436,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "events": 180,
+      "commands": 51,
+      "agent_messages": 25,
+      "reasoning_items": 50,
+      "reasoning_characters": 74637,
+      "input_tokens": 2974265,
+      "cached_input_tokens": 2883552,
+      "output_tokens": 26350,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "PE2;ISIS配置错误",
+        "PE3;ISIS配置错误"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q12-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-0804-best1",
+      "case_id": 100,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 620.105,
+      "capped_minutes": 10.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 118,
+      "commands": 33,
+      "agent_messages": 20,
+      "reasoning_items": 29,
+      "reasoning_characters": 54320,
+      "input_tokens": 1327637,
+      "cached_input_tokens": 1270864,
+      "output_tokens": 19538,
+      "reasoning_output_tokens": 0,
+      "prediction": [
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-reasoning-prefix-q12-q100x5-20260805T095337Z/q12-q100x5-reasoning-prefix-20260805T095337Z-q100-r05"
+    }
+  ]
+}

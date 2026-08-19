@@ -1,0 +1,52 @@
+{
+  "schema_version": "qwen36-0804-best1-partial-workflow.v1",
+  "status": "stopped_by_user_after_inflight_attempts",
+  "run_id": "20260804T141553Z",
+  "training": {
+    "schema_version": "qwen36-lora-training-summary.v1",
+    "status": "completed",
+    "git_commit": "c242fe23b291bdfd4b8028aa5f7812e61e8861b9",
+    "output_dir": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-20260804T141553Z/train",
+    "trainer_state": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-20260804T141553Z/train/v0-20260804-221631/checkpoint-159/trainer_state.json",
+    "global_step": 159,
+    "best_model_checkpoint": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0804-best1-20260804T141553Z/train/v0-20260804-221631/checkpoint-159",
+    "best_metric_name": "eval_loss",
+    "best_metric": 0.1806803,
+    "minimum_validation_loss": {
+      "step": 159,
+      "eval_loss": 0.1806803047657013,
+      "epoch": 1.0
+    },
+    "validation_history": [
+      {
+        "step": 40,
+        "eval_loss": 0.30657878518104553,
+        "epoch": 0.25157232704402516
+      },
+      {
+        "step": 80,
+        "eval_loss": 0.19569316506385803,
+        "epoch": 0.5031446540880503
+      },
+      {
+        "step": 120,
+        "eval_loss": 0.18230891227722168,
+        "epoch": 0.7547169811320755
+      },
+      {
+        "step": 159,
+        "eval_loss": 0.1806803047657013,
+        "epoch": 1.0
+      }
+    ]
+  },
+  "validation": {
+    "attempts": 39,
+    "scheduled_attempts": 60,
+    "strict_correct": 8,
+    "accuracy_percent": 20.512820512820515,
+    "model_hard_timeouts": 6,
+    "infrastructure_failures": 0,
+    "unstarted_attempts": 21
+  }
+}

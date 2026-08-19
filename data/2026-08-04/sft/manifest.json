@@ -1,0 +1,263 @@
+{
+  "schema_version": "qwen36-reasoning-decision-sft.v6",
+  "source_experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+  "source_dataset": "data/simulation/train_0629.jsonl",
+  "source_dataset_sha256_lf_normalized": "b08f7e24262fe52db28f9cc768298ffeb2c1b619abd9f1e687b67dfed4797ccf",
+  "source_accepted_index": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/report/accepted_index.json",
+  "source_accepted_index_sha256_lf_normalized": "ae5d5262862e5b04fac99618e7b8124c4494df1d05cbb2211d39c18aff1a258e",
+  "source_state": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/report/state.json",
+  "source_state_sha256_lf_normalized": "6adb0532ab81e7cda052b926d1fa8f3f539bb764a35320553570ad58233c46e1",
+  "source_manifest": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/report/manifest.json",
+  "source_manifest_sha256_lf_normalized": "270506c8e0bf72438c96f85abbdc7f37fed4da1dc2eafadcadcf64136b83c361",
+  "source_attempt_count": 1254,
+  "source_attempt_count_scope": "model_valid_outcomes_only",
+  "accepted_candidate_count": 814,
+  "selected_trajectory_count": 814,
+  "excluded_candidate_count": 0,
+  "filtered_nonaccepted_attempt_count": 440,
+  "curation_file": "data/2026-08-04/curation/accepted_trajectory_selection.json",
+  "curation_sha256_lf_normalized": "ccea8437f7a7663fa1dd0fec232da7c825e1d3a4d6485db5cc83ac4ff4870070",
+  "target_type_counts": {
+    "train": {
+      "decision": 694
+    },
+    "validation": {
+      "decision": 120
+    }
+  },
+  "split": {
+    "strategy": "leave_n_full_cases_out_per_fault_type_by_success_rate",
+    "group_key": "case_id",
+    "stratification_key": "fault_type",
+    "validation_case_count_per_fault_type": 2,
+    "required_selected_trajectories_per_validation_case": 10,
+    "success_rate_formula": "accepted/(accepted+incorrect+format_error)",
+    "required_success_rate": 1.0,
+    "selection_rule": "success_rate_equals_1_then_max_case_id",
+    "relaxed_fault_types": [
+      "全局STP未使能"
+    ],
+    "fallback_selection_rule": "max_success_rate_then_max_case_id",
+    "source_query_counts_by_fault_type": {
+      "STP BPDU被过滤": 12,
+      "VRRP Master角色规划不合理": 14,
+      "VRRP工作在非抢占模式": 14,
+      "全局STP未使能": 12,
+      "存在IP路由环路": 32,
+      "存在MPLS标签环路": 16
+    },
+    "full_query_counts_by_fault_type": {
+      "STP BPDU被过滤": 9,
+      "VRRP Master角色规划不合理": 14,
+      "VRRP工作在非抢占模式": 14,
+      "全局STP未使能": 10,
+      "存在IP路由环路": 16,
+      "存在MPLS标签环路": 16
+    },
+    "perfect_success_query_counts_by_fault_type": {
+      "STP BPDU被过滤": 8,
+      "VRRP Master角色规划不合理": 14,
+      "VRRP工作在非抢占模式": 14,
+      "全局STP未使能": 0,
+      "存在IP路由环路": 2,
+      "存在MPLS标签环路": 4
+    },
+    "perfect_success_case_ids_by_fault_type": {
+      "STP BPDU被过滤": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "VRRP Master角色规划不合理": [
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86
+      ],
+      "VRRP工作在非抢占模式": [
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+      ],
+      "全局STP未使能": [],
+      "存在IP路由环路": [
+        29,
+        38
+      ],
+      "存在MPLS标签环路": [
+        58,
+        59,
+        65,
+        71
+      ]
+    },
+    "validation_cases_by_fault_type": {
+      "STP BPDU被过滤": [
+        20,
+        19
+      ],
+      "VRRP Master角色规划不合理": [
+        86,
+        85
+      ],
+      "VRRP工作在非抢占模式": [
+        100,
+        99
+      ],
+      "全局STP未使能": [
+        12,
+        2
+      ],
+      "存在IP路由环路": [
+        38,
+        29
+      ],
+      "存在MPLS标签环路": [
+        71,
+        65
+      ]
+    },
+    "validation_case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ],
+    "train_case_ids": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      39,
+      40,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      66,
+      67,
+      68,
+      69,
+      70,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98
+    ],
+    "case_groups_disjoint": true,
+    "train": 694,
+    "validation": 120
+  },
+  "selection": {
+    "included": 814,
+    "excluded_candidates": 0,
+    "filtered_nonaccepted_attempts": 440,
+    "candidate_exclusion_reason_counts": {},
+    "source_attempt_status_counts": {
+      "accepted": 814,
+      "format_error": 0,
+      "incorrect": 440
+    }
+  },
+  "outputs": [
+    {
+      "path": "data/2026-08-04/sft/qwen3_6_27b_reasoning_decision_train.jsonl",
+      "samples": 694,
+      "normalized_bytes": 3970704,
+      "sha256_lf_normalized": "5718f68ac6c19cbbdb8dbbf12d8f2ad3615a3261b5049ad161038cad01f52c37"
+    },
+    {
+      "path": "data/2026-08-04/sft/qwen3_6_27b_reasoning_decision_validation.jsonl",
+      "samples": 120,
+      "normalized_bytes": 668128,
+      "sha256_lf_normalized": "5ef464f5a0b5334ff8e370a2e343b6ed8dd260adba5a577238be6c665f2aa8f9"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+2026-08-04T08:21:12.118008Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T08:21:12.118078Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T08:21:12.118793Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T08:21:12.121791Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T08:21:12.132510Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-04T08:21:12.843422Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T08:21:12.843469Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T08:21:12.844381Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T08:21:12.847520Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T08:21:23.510371Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs' -Directory | Where-Object { $_.Name -eq 'CampusNetwork_07' } | Select-Object -ExpandProperty FullName; Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07' -Directory | Select-Object -ExpandProperty Name
+2026-08-04T08:21:46.521796Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.4 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\SH_AR\display_
+ip_routing-table_10.1.40.254.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...10.1.40.254.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T08:21:53.385402Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg --files -g '*10.1.40*' 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\SH_AR'
+2026-08-04T08:21:53.385402Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg --files -g '*routing-table*' 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\SH_AR'
+2026-08-04T08:23:47.558367Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_07\BJHQ_CSR1000V_
+GW_01\show_interfaces.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz..._interfaces.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T08:24:21.544471Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\PE1\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.634407Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.708291Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_06\PE2\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.720323Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_08\PE3\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.720329Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_06\PE3\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.735795Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_08\PE1\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.767768Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE2\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.789488Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\PE3\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.894166Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\PE2\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.903675Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE1\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:21.964568Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_08\PE2\display_current-configuration.txt' -Pattern 'static-lsp'
+2026-08-04T08:24:22.021317Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: select-string requires exactly one quoted -path value. Command: Select-String -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_06\PE1\display_current-configuration.txt' -Pattern 'static-lsp'

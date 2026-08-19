@@ -1,0 +1,68 @@
+{
+  "schema_version": "qwen36-0805-portable-inference-checkpoint.v1",
+  "artifact_id": "0805-epoch2-checkpoint-288",
+  "purpose": "cross-machine LoRA inference and fixed Agent performance validation",
+  "source": {
+    "repository": "Ma-LAMDA/optimization-with-real-trajectory",
+    "branch": "2026-07-31-sft",
+    "git_commit": "34fa0dbff027e7ab1241f229042441e7412e1223",
+    "run_root": "output/2026-08-05-nightly/0805/0805-formal-5epoch-2gpu-20260807T103558+0800",
+    "checkpoint": "checkpoint-288"
+  },
+  "checkpoint_boundary": {
+    "epoch": 2.0,
+    "global_step": 288,
+    "eval_loss": 0.15015004575252533,
+    "eval_token_acc": 0.9293184783699688
+  },
+  "adapter": {
+    "format": "PEFT LoRA Safetensors",
+    "base_model": "Qwen3.6-27B",
+    "rank": 8,
+    "alpha": 32,
+    "dropout": 0.05,
+    "tensor_count": 992,
+    "total_elements": 58363904,
+    "dtype": "torch.float32"
+  },
+  "payload_sha256": {
+    "adapter_model.safetensors": "f39313e8f28160a58fcdd8a35916382f8959e12c335ccb5c26252885647ad06b",
+    "adapter_config.json": "660828605d3031bfb63e166f079d1e7e2a01254d207ed201338a562e88bef4a5",
+    "additional_config.json": "c7799462ebedae6557ffad31566029e2d2f958b7b40e46e972cf901bcaf45733",
+    "args.json": "3ce5c1f6aa58233fdb46e84fa7779858258b3cbff79f04223962ff665fd63cd9",
+    "trainer_state.json": "ddb278031f80e4c9fc1ca2dd0345d29543ad80b3db89087fa7427d4f44023fca"
+  },
+  "runtime": {
+    "python": "3.12.3",
+    "ms_swift": "4.4.2",
+    "torch": "2.8.0+cu128",
+    "transformers": "5.12.1",
+    "peft": "0.19.1",
+    "accelerate": "1.14.0"
+  },
+  "validation_protocol": {
+    "case_ids": [2, 12, 19, 20, 29, 38, 65, 71, 85, 86, 99, 100],
+    "repeats_per_case": 5,
+    "expected_effective_attempts": 60,
+    "tensor_parallel_size": 2,
+    "runner_concurrency": 2,
+    "reasoning_effort": "high",
+    "show_raw_agent_reasoning": true,
+    "reasoning_parser": "qwen3",
+    "tool_call_parser": "qwen3_coder",
+    "automatic_prefix_caching": true,
+    "max_model_len": 262144,
+    "gpu_memory_utilization": 0.9
+  },
+  "bundle_scope": {
+    "inference_complete": true,
+    "training_resume_complete": false,
+    "excluded_as_not_required_for_validation": [
+      "optimizer.pt",
+      "scheduler.pt",
+      "rng_state_0.pth",
+      "rng_state_1.pth",
+      "training_args.bin"
+    ]
+  }
+}

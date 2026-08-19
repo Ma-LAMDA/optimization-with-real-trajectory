@@ -1,0 +1,1090 @@
+{
+  "schema_version": "qwen36-codex-agent-validation.v1",
+  "status": "completed",
+  "evaluation_method": "full_codex_agent_with_tools",
+  "model": "Qwen3.6-27B-trained",
+  "checkpoint": "/root/autodl-tmp/optimization-with-real-trajectory/output/qwen36-27b-lora-0731-step760-plus200-v2/train/v0-20260731-203846/checkpoint-100",
+  "git_commit": "086331418cfecf1c03d601b54220c620aa96c5e9",
+  "dataset": "/root/autodl-tmp/optimization-with-real-trajectory/experiments/2026-07-27-ip_codex_train0629_14x10/inputs/train_0629.jsonl",
+  "case_ids": [
+    12,
+    24,
+    40,
+    72,
+    86,
+    100
+  ],
+  "repeats_per_case": 5,
+  "timeout_seconds": 3600,
+  "topology": {
+    "instance_count": 1,
+    "tensor_parallel_size": 2,
+    "worker_count": 2,
+    "request_concurrency": 2
+  },
+  "scoring": "exact JSON list equality; timeout and runner failure are incorrect",
+  "overall": {
+    "attempts": 30,
+    "completed_within_limit": 26,
+    "timeouts": 4,
+    "runner_failures": 0,
+    "strict_correct": 12,
+    "accuracy_percent": 40.0,
+    "false_positives": 18,
+    "false_negatives": 31,
+    "runtime_minutes": {
+      "mean": 24.2116,
+      "median": 13.737,
+      "p95": 60.0,
+      "population_stddev": 21.104198126755097,
+      "coefficient_of_variation": 0.8716564839479876
+    },
+    "events": 3445,
+    "commands": 1394,
+    "agent_messages": 569,
+    "input_tokens": 52383471,
+    "output_tokens": 486622
+  },
+  "counts": {
+    "attempts": 30,
+    "strict_correct": 12,
+    "timeouts": 4,
+    "runner_failures": 0
+  },
+  "per_case": {
+    "12": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 5,
+      "accuracy_percent": 100.0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "runtime_minutes": {
+        "mean": 11.1522,
+        "median": 11.335,
+        "p95": 17.688,
+        "population_stddev": 4.436710015315403,
+        "coefficient_of_variation": 0.39783271599463804
+      },
+      "events": 419,
+      "commands": 160,
+      "agent_messages": 84,
+      "input_tokens": 6267389,
+      "output_tokens": 57348,
+      "runs": [
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "correct"
+      ]
+    },
+    "24": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 2,
+      "accuracy_percent": 40.0,
+      "false_positives": 4,
+      "false_negatives": 0,
+      "runtime_minutes": {
+        "mean": 15.637599999999999,
+        "median": 15.472,
+        "p95": 20.698,
+        "population_stddev": 3.6913430943221734,
+        "coefficient_of_variation": 0.2360556027985224
+      },
+      "events": 623,
+      "commands": 263,
+      "agent_messages": 82,
+      "input_tokens": 7666228,
+      "output_tokens": 93909,
+      "runs": [
+        "wrong",
+        "correct",
+        "wrong",
+        "correct",
+        "wrong"
+      ]
+    },
+    "40": {
+      "attempts": 5,
+      "completed_within_limit": 3,
+      "timeouts": 2,
+      "runner_failures": 0,
+      "strict_correct": 0,
+      "accuracy_percent": 0.0,
+      "false_positives": 6,
+      "false_negatives": 15,
+      "runtime_minutes": {
+        "mean": 50.3174,
+        "median": 55.628,
+        "p95": 60.0,
+        "population_stddev": 10.793162606020534,
+        "coefficient_of_variation": 0.21450159598907206
+      },
+      "events": 1124,
+      "commands": 476,
+      "agent_messages": 159,
+      "input_tokens": 18688098,
+      "output_tokens": 109932,
+      "runs": [
+        "timeout",
+        "wrong",
+        "wrong",
+        "timeout",
+        "wrong"
+      ]
+    },
+    "72": {
+      "attempts": 5,
+      "completed_within_limit": 3,
+      "timeouts": 2,
+      "runner_failures": 0,
+      "strict_correct": 0,
+      "accuracy_percent": 0.0,
+      "false_positives": 3,
+      "false_negatives": 15,
+      "runtime_minutes": {
+        "mean": 54.992,
+        "median": 55.929,
+        "p95": 60.0,
+        "population_stddev": 5.074039850060305,
+        "coefficient_of_variation": 0.09226869090159123
+      },
+      "events": 788,
+      "commands": 322,
+      "agent_messages": 129,
+      "input_tokens": 15266431,
+      "output_tokens": 129848,
+      "runs": [
+        "timeout",
+        "timeout",
+        "wrong",
+        "wrong",
+        "wrong"
+      ]
+    },
+    "86": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 2,
+      "accuracy_percent": 40.0,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "runtime_minutes": {
+        "mean": 6.2498000000000005,
+        "median": 6.335,
+        "p95": 7.494,
+        "population_stddev": 1.1761736946556829,
+        "coefficient_of_variation": 0.18819381334693636
+      },
+      "events": 241,
+      "commands": 87,
+      "agent_messages": 52,
+      "input_tokens": 2344189,
+      "output_tokens": 44522,
+      "runs": [
+        "wrong",
+        "wrong",
+        "correct",
+        "correct",
+        "wrong"
+      ]
+    },
+    "100": {
+      "attempts": 5,
+      "completed_within_limit": 5,
+      "timeouts": 0,
+      "runner_failures": 0,
+      "strict_correct": 3,
+      "accuracy_percent": 60.0,
+      "false_positives": 2,
+      "false_negatives": 1,
+      "runtime_minutes": {
+        "mean": 6.9206,
+        "median": 6.774,
+        "p95": 8.045,
+        "population_stddev": 0.8825392002625153,
+        "coefficient_of_variation": 0.1275235095602282
+      },
+      "events": 250,
+      "commands": 86,
+      "agent_messages": 63,
+      "input_tokens": 2151136,
+      "output_tokens": 51063,
+      "runs": [
+        "wrong",
+        "correct",
+        "correct",
+        "wrong",
+        "correct"
+      ]
+    }
+  },
+  "runs": [
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 12,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 428.223,
+      "capped_minutes": 7.137,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 66,
+      "commands": 25,
+      "agent_messages": 13,
+      "input_tokens": 612453,
+      "cached_input_tokens": 0,
+      "output_tokens": 9026,
+      "prediction": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q12-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 24,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 609.964,
+      "capped_minutes": 10.166,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 0,
+      "events": 87,
+      "commands": 38,
+      "agent_messages": 8,
+      "input_tokens": 860838,
+      "cached_input_tokens": 0,
+      "output_tokens": 14433,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤",
+        "Core_SW_02;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q24-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 40,
+      "repeat": 1,
+      "runner_status": "failed",
+      "duration_seconds": 3603.284,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_limit": false,
+      "correct": false,
+      "result": "timeout",
+      "false_positive_count": 0,
+      "false_negative_count": 3,
+      "events": 251,
+      "commands": 105,
+      "agent_messages": 39,
+      "input_tokens": 0,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "prediction": null,
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q40-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 72,
+      "repeat": 1,
+      "runner_status": "failed",
+      "duration_seconds": 3603.26,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_limit": false,
+      "correct": false,
+      "result": "timeout",
+      "false_positive_count": 0,
+      "false_negative_count": 3,
+      "events": 178,
+      "commands": 77,
+      "agent_messages": 22,
+      "input_tokens": 0,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "prediction": null,
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q72-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 86,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 350.365,
+      "capped_minutes": 5.839,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 0,
+      "events": 49,
+      "commands": 17,
+      "agent_messages": 12,
+      "input_tokens": 482404,
+      "cached_input_tokens": 0,
+      "output_tokens": 7517,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理",
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q86-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 100,
+      "repeat": 1,
+      "runner_status": "succeeded",
+      "duration_seconds": 482.699,
+      "capped_minutes": 8.045,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 0,
+      "events": 57,
+      "commands": 19,
+      "agent_messages": 16,
+      "input_tokens": 642372,
+      "cached_input_tokens": 0,
+      "output_tokens": 11384,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式",
+        "Core_SW_02;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q100-r01"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 12,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1061.308,
+      "capped_minutes": 17.688,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 93,
+      "commands": 37,
+      "agent_messages": 16,
+      "input_tokens": 1604185,
+      "cached_input_tokens": 0,
+      "output_tokens": 17677,
+      "prediction": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q12-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 24,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 1241.903,
+      "capped_minutes": 20.698,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 180,
+      "commands": 71,
+      "agent_messages": 35,
+      "input_tokens": 2598366,
+      "cached_input_tokens": 0,
+      "output_tokens": 20957,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q24-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 40,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 2613.644,
+      "capped_minutes": 43.561,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 221,
+      "commands": 95,
+      "agent_messages": 28,
+      "input_tokens": 6559978,
+      "cached_input_tokens": 0,
+      "output_tokens": 42732,
+      "prediction": [
+        "Core_SW_02;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q40-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 72,
+      "repeat": 2,
+      "runner_status": "failed",
+      "duration_seconds": 3603.23,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_limit": false,
+      "correct": false,
+      "result": "timeout",
+      "false_positive_count": 0,
+      "false_negative_count": 3,
+      "events": 127,
+      "commands": 45,
+      "agent_messages": 33,
+      "input_tokens": 0,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "prediction": null,
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q72-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 86,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 449.651,
+      "capped_minutes": 7.494,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 0,
+      "events": 48,
+      "commands": 17,
+      "agent_messages": 11,
+      "input_tokens": 555041,
+      "cached_input_tokens": 0,
+      "output_tokens": 11288,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理",
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q86-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 100,
+      "repeat": 2,
+      "runner_status": "succeeded",
+      "duration_seconds": 336.655,
+      "capped_minutes": 5.611,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 54,
+      "commands": 19,
+      "agent_messages": 13,
+      "input_tokens": 352045,
+      "cached_input_tokens": 0,
+      "output_tokens": 7825,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q100-r02"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 12,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 680.104,
+      "capped_minutes": 11.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 89,
+      "commands": 32,
+      "agent_messages": 22,
+      "input_tokens": 1487170,
+      "cached_input_tokens": 0,
+      "output_tokens": 11160,
+      "prediction": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q12-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 24,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 928.306,
+      "capped_minutes": 15.472,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 0,
+      "events": 118,
+      "commands": 46,
+      "agent_messages": 23,
+      "input_tokens": 1280998,
+      "cached_input_tokens": 0,
+      "output_tokens": 18466,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤",
+        "FW_01;安全策略规则未放通对应的用户",
+        "FW_02;安全策略规则未放通对应的用户"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q24-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 40,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 1943.851,
+      "capped_minutes": 32.398,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 2,
+      "false_negative_count": 3,
+      "events": 200,
+      "commands": 89,
+      "agent_messages": 19,
+      "input_tokens": 6081417,
+      "cached_input_tokens": 0,
+      "output_tokens": 21768,
+      "prediction": [
+        "Core_SW_01;错误开启了边缘端口功能",
+        "Core_SW_02;错误开启了边缘端口功能"
+      ],
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q40-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 72,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 2792.403,
+      "capped_minutes": 46.54,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 130,
+      "commands": 54,
+      "agent_messages": 19,
+      "input_tokens": 3439880,
+      "cached_input_tokens": 0,
+      "output_tokens": 46069,
+      "prediction": [
+        "PE1;BGP配置错误"
+      ],
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q72-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 86,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 440.101,
+      "capped_minutes": 7.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 43,
+      "commands": 17,
+      "agent_messages": 6,
+      "input_tokens": 478021,
+      "cached_input_tokens": 0,
+      "output_tokens": 10776,
+      "prediction": [
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q86-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 100,
+      "repeat": 3,
+      "runner_status": "succeeded",
+      "duration_seconds": 386.336,
+      "capped_minutes": 6.439,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 46,
+      "commands": 16,
+      "agent_messages": 11,
+      "input_tokens": 439261,
+      "cached_input_tokens": 0,
+      "output_tokens": 8741,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q100-r03"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 12,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 842.218,
+      "capped_minutes": 14.037,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 109,
+      "commands": 43,
+      "agent_messages": 20,
+      "input_tokens": 1906514,
+      "cached_input_tokens": 0,
+      "output_tokens": 13203,
+      "prediction": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q12-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 24,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 1104.927,
+      "capped_minutes": 18.415,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 110,
+      "commands": 46,
+      "agent_messages": 15,
+      "input_tokens": 1430237,
+      "cached_input_tokens": 0,
+      "output_tokens": 21717,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q24-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 40,
+      "repeat": 4,
+      "runner_status": "failed",
+      "duration_seconds": 3603.236,
+      "capped_minutes": 60.0,
+      "timeout": true,
+      "completed_within_limit": false,
+      "correct": false,
+      "result": "timeout",
+      "false_positive_count": 0,
+      "false_negative_count": 3,
+      "events": 226,
+      "commands": 95,
+      "agent_messages": 34,
+      "input_tokens": 0,
+      "cached_input_tokens": 0,
+      "output_tokens": 0,
+      "prediction": null,
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q40-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 72,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 3149.458,
+      "capped_minutes": 52.491,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 167,
+      "commands": 66,
+      "agent_messages": 32,
+      "input_tokens": 5669033,
+      "cached_input_tokens": 0,
+      "output_tokens": 37658,
+      "prediction": [
+        "PE1;L3VPN配置错误"
+      ],
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q72-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 86,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 254.789,
+      "capped_minutes": 4.246,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 48,
+      "commands": 17,
+      "agent_messages": 11,
+      "input_tokens": 280318,
+      "cached_input_tokens": 0,
+      "output_tokens": 6264,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q86-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 100,
+      "repeat": 4,
+      "runner_status": "succeeded",
+      "duration_seconds": 406.427,
+      "capped_minutes": 6.774,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 1,
+      "events": 41,
+      "commands": 14,
+      "agent_messages": 10,
+      "input_tokens": 295974,
+      "cached_input_tokens": 0,
+      "output_tokens": 11606,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q100-r04"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 12,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 333.812,
+      "capped_minutes": 5.564,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 62,
+      "commands": 23,
+      "agent_messages": 13,
+      "input_tokens": 657067,
+      "cached_input_tokens": 0,
+      "output_tokens": 6282,
+      "prediction": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "expected": [
+        "Core_SW_02;全局STP未使能"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q12-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 24,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 806.235,
+      "capped_minutes": 13.437,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 0,
+      "events": 128,
+      "commands": 62,
+      "agent_messages": 1,
+      "input_tokens": 1495789,
+      "cached_input_tokens": 0,
+      "output_tokens": 18336,
+      "prediction": [
+        "AGG_SW_01;STP BPDU被过滤",
+        "FW_01;安全策略规则未放通对应的用户"
+      ],
+      "expected": [
+        "AGG_SW_01;STP BPDU被过滤"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q24-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 40,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 3337.687,
+      "capped_minutes": 55.628,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 3,
+      "false_negative_count": 3,
+      "events": 226,
+      "commands": 92,
+      "agent_messages": 39,
+      "input_tokens": 6046703,
+      "cached_input_tokens": 0,
+      "output_tokens": 45432,
+      "prediction": [
+        "PE1;黑洞路由",
+        "PE2;黑洞路由",
+        "PE3;黑洞路由"
+      ],
+      "expected": [
+        "PE1;存在IP路由环路",
+        "PE2;存在IP路由环路",
+        "PE3;存在IP路由环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q40-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 72,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 3355.724,
+      "capped_minutes": 55.929,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 3,
+      "events": 186,
+      "commands": 80,
+      "agent_messages": 23,
+      "input_tokens": 6157518,
+      "cached_input_tokens": 0,
+      "output_tokens": 46121,
+      "prediction": [
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        "PE1;存在MPLS标签环路",
+        "PE2;存在MPLS标签环路",
+        "PE3;存在MPLS标签环路"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q72-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 86,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 380.089,
+      "capped_minutes": 6.335,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": false,
+      "result": "wrong",
+      "false_positive_count": 1,
+      "false_negative_count": 0,
+      "events": 53,
+      "commands": 19,
+      "agent_messages": 12,
+      "input_tokens": 548405,
+      "cached_input_tokens": 0,
+      "output_tokens": 8677,
+      "prediction": [
+        "Core_SW_01;VRRP Master角色规划不合理",
+        "Core_SW_02;VRRP Master角色规划不合理"
+      ],
+      "expected": [
+        [
+          "Core_SW_01;VRRP Master角色规划不合理"
+        ],
+        [
+          "Core_SW_02;VRRP Master角色规划不合理"
+        ]
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q86-r05"
+    },
+    {
+      "model": "Qwen3.6-27B-trained",
+      "case_id": 100,
+      "repeat": 5,
+      "runner_status": "succeeded",
+      "duration_seconds": 464.019,
+      "capped_minutes": 7.734,
+      "timeout": false,
+      "completed_within_limit": true,
+      "correct": true,
+      "result": "correct",
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "events": 52,
+      "commands": 18,
+      "agent_messages": 13,
+      "input_tokens": 421484,
+      "cached_input_tokens": 0,
+      "output_tokens": 11507,
+      "prediction": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "expected": [
+        "Core_SW_01;VRRP工作在非抢占模式"
+      ],
+      "artifact_dir": "/root/autodl-tmp/qwen-codex-eval/lora-heldout6-step760-plus100-agent5-20260801T144226Z-q100-r05"
+    }
+  ]
+}

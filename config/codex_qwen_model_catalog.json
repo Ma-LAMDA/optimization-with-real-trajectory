@@ -1,0 +1,94 @@
+{
+  "models": [
+    {
+      "slug": "Qwen3.6-27B-trained",
+      "display_name": "Qwen3.6-27B Trained",
+      "description": "Local Qwen3.6-27B with a trajectory-reasoning LoRA adapter.",
+      "default_reasoning_level": "medium",
+      "supported_reasoning_levels": [
+        {
+          "effort": "low",
+          "description": "Faster responses with lighter reasoning"
+        },
+        {
+          "effort": "medium",
+          "description": "Balanced reasoning"
+        },
+        {
+          "effort": "high",
+          "description": "More reasoning for complex tasks"
+        }
+      ],
+      "shell_type": "shell_command",
+      "visibility": "list",
+      "supported_in_api": true,
+      "priority": 1,
+      "base_instructions": "You are Codex, a coding and diagnostic agent powered by the locally deployed Qwen3.6-27B model with a trajectory-reasoning LoRA adapter. Follow the user's instructions, inspect the available local evidence with tools when needed, and do not invent evidence.",
+      "include_skills_usage_instructions": true,
+      "default_reasoning_summary": "none",
+      "support_verbosity": false,
+      "apply_patch_tool_type": "freeform",
+      "truncation_policy": {
+        "mode": "tokens",
+        "limit": 10000
+      },
+      "supports_parallel_tool_calls": true,
+      "supports_image_detail_original": true,
+      "context_window": 262144,
+      "max_context_window": 262144,
+      "effective_context_window_percent": 95,
+      "experimental_supported_tools": [],
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "supports_search_tool": false,
+      "use_responses_lite": false
+    },
+    {
+      "slug": "Qwen3.6-27B-base",
+      "display_name": "Qwen3.6-27B Base",
+      "description": "Local base Qwen3.6-27B served by vLLM.",
+      "default_reasoning_level": "medium",
+      "supported_reasoning_levels": [
+        {
+          "effort": "low",
+          "description": "Faster responses with lighter reasoning"
+        },
+        {
+          "effort": "medium",
+          "description": "Balanced reasoning"
+        },
+        {
+          "effort": "high",
+          "description": "More reasoning for complex tasks"
+        }
+      ],
+      "shell_type": "shell_command",
+      "visibility": "list",
+      "supported_in_api": true,
+      "priority": 2,
+      "base_instructions": "You are Codex, a coding and diagnostic agent powered by the locally deployed base Qwen3.6-27B model. Follow the user's instructions, inspect the available local evidence with tools when needed, and do not invent evidence.",
+      "include_skills_usage_instructions": true,
+      "default_reasoning_summary": "none",
+      "support_verbosity": false,
+      "apply_patch_tool_type": "freeform",
+      "truncation_policy": {
+        "mode": "tokens",
+        "limit": 10000
+      },
+      "supports_parallel_tool_calls": true,
+      "supports_image_detail_original": true,
+      "context_window": 262144,
+      "max_context_window": 262144,
+      "effective_context_window_percent": 95,
+      "experimental_supported_tools": [],
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "supports_search_tool": false,
+      "use_responses_lite": false
+    }
+  ]
+}

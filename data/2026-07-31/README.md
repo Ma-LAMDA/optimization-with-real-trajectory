@@ -4,6 +4,16 @@
 来源共有 1,313 个 attempt，其中 819 条状态为 accepted，473 条为 rejected，
 11 条为 interrupted，10 条为 infrastructure failure。
 
+## 实验目的
+
+本实验把 2026-07-28 的 14×10 决策 SFT 路线扩展到 100 道网络故障题：从多次真实
+Codex Agent 排障 attempt 中只保留经独立判题和来源审计确认正确的轨迹，构造
+Qwen3.6-27B LoRA 的最终决策 SFT 数据。实验同时按故障类型留出完整题目，用于检验
+模型能否把正确轨迹中的诊断决策能力迁移到未参与训练的题目，而不是记住同题答案。
+
+本目录记录的是训练数据构造与验证集划分实验；模型训练参数和训练后 Agent 评测结果
+另见仓库 `docs/` 与相应 `experiments/` 目录。
+
 819 条 accepted 轨迹均通过以下准入检查：
 
 - 独立判题状态为 parsed 且 correct；

@@ -1,0 +1,71 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0025_success_08",
+  "case_id": 25,
+  "row_index": 25,
+  "success_slot": 8,
+  "attempt_index": 10,
+  "source_record": {
+    "row_index": 25,
+    "original_id": 25,
+    "sample_id": 25,
+    "sample_key": "q0025",
+    "question": "在CampusNetwork_05组网中，从 HQ_FIN_PC01 ping节点 SZ_Server_Cluster1（10.3.10.1）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我先围绕高延迟优先检验三类可证伪假设:实际路径上的带宽挤占/队列异常,路由环路或绕行,以及二层/STP路径规划异常。随后用端到端路径和配置意图交叉核验,只保留最小根因集合。"
+    },
+    {
+      "event_line": 24,
+      "item_id": "item_12",
+      "text": "已确认两端主机和跨站点路由节点均有完整运行态文件。接下来直接比较源/目的主机地址与网关,并扫描各候选转发接口的实时利用率和丢弃计数,以区分正常跨站时延与具体端口拥塞。"
+    },
+    {
+      "event_line": 194,
+      "item_id": "item_99",
+      "text": "路径已收敛为HQ_FIN_PC01->AGG_SW_02->Core_SW_01->FW_01->BJHQ_CSR1000V_GW_01->PE1->PE3->SZ_AR->SZ_Core->SZ_Server_Cluster1。各跳目标/回程路由、BGP VPN路由和安全策略均可达且无路由回指；接口利用率也远低于拥塞阈值。现在重点核对路径上的异常显式配置,避免把无关的空闲/管理关闭端口当成根因。"
+    },
+    {
+      "event_line": 249,
+      "item_id": "item_128",
+      "text": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在IP路由环路",
+    "PE2;存在IP路由环路",
+    "PE3;存在IP路由环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在IP路由环路",
+      "PE2;存在IP路由环路",
+      "PE3;存在IP路由环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0025_r08/attempt_010/judgment.json",
+    "judgment_sha256_lf_normalized": "7405df03ec4c6888ceeea2e05a58b81a01aef93464effe73a004cc0e19b6ee50"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0025_r08/attempt_010",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0025_r08/attempt_010/events.jsonl",
+    "events_sha256_lf_normalized": "8efd7bfd0b73cf1d2e232bf0205c4f1a4d3f4b39c12adf9867440799ac76811c",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0025_r08/attempt_010/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "18538f112ded8bb0406026ca2cac688f04a8b8a8acccb00ae8ebbefca14fc4f4",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0025/source_record.json",
+    "source_record_sha256_lf_normalized": "23fd604534b6ca0585a9ebdbec671e15115e4d1408568333b699fa0a1d45e98d",
+    "thread_id": "019fc8c8-3753-78d3-8b02-96eace2aa442",
+    "duration_seconds": 450.496
+  }
+}

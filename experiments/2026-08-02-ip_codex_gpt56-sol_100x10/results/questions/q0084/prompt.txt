@@ -1,0 +1,84 @@
+根据题目描述和本地组网配置定位故障根因。
+
+## 题目
+
+在CampusNetwork_08组网中，从 EMPLOYEE_WIFI_CLIENT01 ping节点 BaiduWebServer01（8.8.8.8）出现高延迟。已知，两个核心交换机Core_SW_01 和 Core_SW_02之间因链路距离较长，传输时延较大。基于当前配置框架，在STP规划合理的情况下，请给出一组最小故障根因集合。
+## 已定位的信息
+
+L2转发路径：
+EMPLOYEE_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/1) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/1) -> Core_SW_02(GE1/0/1) -> Core_SW_02(GE1/0/8) -> FW_01(GigabitEthernet1/0/2) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/5) -> BaiduWebServer01(Ethernet0),
+EMPLOYEE_WIFI_CLIENT01(Ethernet0) -> HQ_MKT_AP01(GE1/0/1) -> HQ_MKT_AP01(GE1/0/0) -> AGG_SW_01(HundredGigE1/0/4) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/1) -> Core_SW_02(GE1/0/1) -> Core_SW_02(GE1/0/9) -> FW_02(GigabitEthernet1/0/2) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet1) -> ChinaUnicom_SW(GE1/0/1) -> ChinaUnicom_SW(GE1/0/5) -> BaiduWebServer01(Ethernet0)
+
+## 配置文件
+
+配置根目录为 `D:\IP组网\optimization-with-real-trajectory\saved_configs`，即仓库根目录下的 `saved_configs/`。
+通过列目录、搜索和读取其中的本地 `.txt` 文件获取配置证据。
+
+目录固定为三级结构：
+
+```text
+saved_configs/
+└── <项目目录>/
+    └── <节点目录>/
+        └── <命令回显文件>.txt
+```
+
+解析方法：
+
+1. `<项目目录>` 对应题目中的组网名，例如 `CampusNetwork_02`。精确匹配项目后，从该
+   项目获取后续证据。
+2. `<节点目录>` 对应设备或主机，例如 `SH_Core`、`PE1`。先列出实际节点和文件，再
+   选择与故障路径相关的内容。
+3. `<命令回显文件>.txt` 保存命令结果。原命令中的数字、英文字母、下划线、点和连字符
+   保持不变，其他每个字符替换为下划线，再添加 `.txt`。例如 `show ip route` 对应
+   `show_ip_route.txt`，`cat /etc/resolv.conf` 对应 `cat__etc_resolv.conf.txt`。
+
+文件名只用于定位；关键结论需读取相关 `.txt` 文件的完整内容核验。
+
+文件读取示例：
+
+```powershell
+Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs' -Directory
+Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\<项目目录>' -Directory
+Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\<项目目录>\<节点目录>' -File
+Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\<项目目录>\<节点目录>\<文件名>.txt' -Raw
+Select-String -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\<项目目录>\<节点目录>\*.txt' -Pattern '<关键字>'
+```
+
+## 调查要求
+
+1. 根据故障现象提出少量可证伪假设，优先读取最能区分这些假设的证据。
+2. 沿实际转发路径核对相关节点。按需检查接口与邻接、VLAN/STP/MAC/聚合、IP/ARP/
+   路由/VRF、动态路由、安全策略和主机侧状态。
+3. 用配置意图和运行状态交叉验证关键结论，输出证据支持的最小故障根因集合；证据不足
+   时采用保守结论。
+
+## 答案格式
+
+本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。
+故障输出格式为：
+```
+<result>
+[
+"故障节点;故障原因"
+]
+</result>
+```
+故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。
+请务必给出最具体的故障原因。
+故障示例：
+```
+<result>
+[
+"Test-Zone1-Spine-01;黑洞路由",
+"Core-Zone-Core-Switch-02;缺失静态路由",
+"Core-Zone-Core-Switch-02;ARP配置错误",
+"Test-Zone1-Border-Leaf-01;接口shutdown",
+"Test-Zone1-Server-Leaf-01;流量挤占端口带宽",
+"Test-Zone1-Server-Leaf-01;接口IP错误"
+]
+</result>
+```
+
+最终答案必须包含且只包含一个 `<result>...</result>` 结果块。块内必须是合法 JSON
+字符串数组；不要使用 Markdown 代码围栏，不要在结果数组中加入证据、解释或修复建议。

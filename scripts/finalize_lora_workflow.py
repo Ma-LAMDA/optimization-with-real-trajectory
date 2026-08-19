@@ -45,17 +45,28 @@ def main() -> None:
 
     if training.get("status") != "completed":
         raise ValueError("training summary is not complete")
-    if validation.get("counts", {}).get("failed") != 0:
-        raise ValueError("validation summary contains failed requests")
+    if validation.get("status") != "completed":
+        raise ValueError("Agent validation summary is not complete")
+    if validation.get("evaluation_method") != "full_codex_agent_with_tools":
+        raise ValueError("final validation did not use the full Codex Agent runner")
     if validation.get("topology") != {
         "instance_count": 1,
+        "tensor_parallel_size": 2,
         "worker_count": 2,
         "request_concurrency": 2,
     }:
         raise ValueError("validation topology is not single-instance dual-concurrency")
+    validation_case_ids = manifest.get("split", {}).get("validation_case_ids")
+    if validation.get("case_ids") != validation_case_ids:
+        raise ValueError("Agent validation cases differ from the manifest holdout cases")
+    expected_attempts = len(validation_case_ids) * int(
+        validation.get("repeats_per_case") or 0
+    )
+    if validation.get("counts", {}).get("attempts") != expected_attempts:
+        raise ValueError("Agent validation attempt count is incomplete")
 
     result = {
-        "schema_version": "qwen36-lora-sft-workflow.v1",
+        "schema_version": "qwen36-lora-sft-workflow.v2",
         "status": "completed",
         "run_id": args.run_id,
         "branch": args.branch,
@@ -66,9 +77,7 @@ def main() -> None:
             "manifest_sha256_lf_normalized": digest(manifest_path),
             "train_samples": manifest.get("split", {}).get("train"),
             "validation_samples": manifest.get("split", {}).get("validation"),
-            "validation_case_ids": manifest.get("split", {}).get(
-                "validation_case_ids"
-            ),
+            "validation_case_ids": validation_case_ids,
             "case_groups_disjoint": manifest.get("split", {}).get(
                 "case_groups_disjoint"
             ),

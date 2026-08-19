@@ -1,0 +1,541 @@
+2026-08-04T02:04:30.052558Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T02:04:30.052628Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T02:04:30.053282Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T02:04:30.056163Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T02:04:30.066154Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-04T02:04:30.691564Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T02:04:30.691596Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T02:04:30.692256Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T02:04:30.695468Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T02:04:43.332511Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: $root = 'D:\IP组网\optimization-with-real-trajectory\saved_configs'; Get-ChildItem -LiteralPath $root -Directory | Where-Object { $_.Name -eq 'CampusNetwork_05' } | Select-Object FullName; Get-ChildItem -LiteralPath (Join-Path $root 'CampusNetwork_05') -Directory | Select-Object Name,FullName
+2026-08-04T02:04:53.288210Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg --files 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05'
+2026-08-04T02:05:12.492222Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.6 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\SZ_AR\show_run
+ning-config.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...ning-config.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T02:06:04.799829Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Select-String -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\*\show_running-config.txt' -Pattern 'service-policy|policy-map|class-map|bandwidth|mtu|spanning-tree.*cost|bpdufilter|portfast|ip route|mpls|segment-routing|track'
+2026-08-04T02:06:04.799869Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Select-String -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\*\display_interface*.txt' -Pattern 'Input bandwidth utilization|Output bandwidth utilization|input rate|output rate|drops|discard|error'
+2026-08-04T02:06:04.799834Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Select-String -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\*\display_current-configuration.txt' -Pattern 'traffic-policy|qos|car |bandwidth|mtu|stp cost|root-protection|bpdu-filter|edged-port|ip route-static|mpls|srv6|vrrp vrid.*track|undo stp enable'
+2026-08-04T02:06:04.800075Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Select-String -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\*\show_interface*.txt' -Pattern 'input rate|output rate|drops|discard|error|reliability|load'
+2026-08-04T02:06:33.775695Z ERROR codex_core::tools::router: error=Exit code: 124
+Wall time: 20 seconds
+Total output lines: 11581
+Output:
+command timed out after 20005 milliseconds
+
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:11:    La
+st 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:12:    La
+st 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:44:    La
+st 300 seconds input rate: 0 bits/sec, 1 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:45:    La
+st 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:77:    La
+st 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:78:    La
+st 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:110:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:111:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:143:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:144:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:176:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:177:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:209:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:210:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:242:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:243:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:275:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:276:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:308:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:309:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:341:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:342:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:374:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:375:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:407:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:408:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:440:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:441:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:473:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:474:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:506:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:507:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:539:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:540:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:572:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:573:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:605:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:606:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:638:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:639:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:671:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:672:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:704:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:705:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:737:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:738:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:770:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:771:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:803:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:804:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:836:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:837:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:869:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:870:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:902:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:903:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:935:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:936:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:968:    L
+ast 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:969:    L
+ast 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1001:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1002:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1034:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1035:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1067:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1068:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1100:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1101:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1133:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1134:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1166:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1167:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1199:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1200:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1232:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1233:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1265:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1266:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1298:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1299:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1331:    
+Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1332:    
+Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1361:    
+Last 300 seconds input rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1362:    
+Last 300 seconds output rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1365:    
+       0 errors,0 drops
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1368:    
+       0 errors,0 drops
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1381:    
+Last 300 seconds input rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1382:    
+Last 300 seconds output rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1397:    
+Last 300 seconds input rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1398:    
+Last 300 seconds output rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1413:    
+Last 300 seconds input rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1414:    
+Last 300 seconds output rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1429:    
+Last 300 seconds input rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface.txt:1430:    
+Last 300 seconds output rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief.txt:12:
+(sd): STP instance discarding
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief.txt:13:
+(ed): error down
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief.txt:15:
+Interface                  PHY      Protocol  InUti OutUti   inErrors  outErrors
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_0.txt:13:(sd): STP instance discarding
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_0.txt:14:(ed): error down
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_0.txt:16:Interface                  PHY      Protocol  InUti OutUti   inErrors  outErrors
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_1.txt:13:(sd): STP instance discarding
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_1.txt:14:(ed): error down
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_1.txt:16:Interface                  PHY      Protocol  InUti OutUti   inErrors  outErrors
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_2.txt:13:(sd): STP instance discarding
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_2.txt:14:(ed): error down
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_2.txt:16:Interface                  PHY      Protocol  InUti OutUti   inErrors  outErrors
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_3.txt:13:(sd): STP instance discarding
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_3.txt:14:(ed): error down
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_3.txt:16:Interface                  PHY      Protocol  InUti OutUti   inErrors  outErrors
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_brief___inclu
+de_GE1_0_4.txt:13:(sd): STP instance discarding
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\ChinaUnicom_SW\display_interface_bri…252155 tokens truncated…\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_0_8.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_0_9.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_0_9.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_0.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_0.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_1.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_1.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_2.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_2.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_3.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_3.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_4.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_4.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_5.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_5.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_6.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_6.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_7.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_7.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_8.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_8.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_9.txt:14:    Last
+ 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Eth2_1_9.txt:15:    Last
+ 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_0.txt:15:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_0.txt:16:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_1.txt:15:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_1.txt:16:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_2.txt:15:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_2.txt:16:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_3.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_3.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_4.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_4.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_5.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_5.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_6.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_6.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_7.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_7.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_8.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_8.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_9.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_0_9.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_0.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_0.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_1.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_1.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_2.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_2.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_3.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_3.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_4.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_4.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_5.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_5.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_6.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_6.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_7.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_7.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_8.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_8.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_9.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet1_1_9.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_0.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_0.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_1.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_1.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_2.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_2.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_3.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_3.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_4.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_4.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_5.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_5.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_6.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_6.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_7.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_7.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_8.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_8.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_9.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_0_9.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_0.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_0.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_1.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_1.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_2.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_2.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_3.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_3.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_4.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_4.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_5.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_5.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_6.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_6.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_7.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_7.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_8.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_8.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_9.txt:14:   
+ Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Ethernet2_1_9.txt:15:   
+ Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_GigabitEthernet0_0_0.txt
+:13:    Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_GigabitEthernet0_0_0.txt
+:14:    Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_GigabitEthernet_0_0_0.tx
+t:13:    Last 300 seconds input rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_GigabitEthernet_0_0_0.tx
+t:14:    Last 300 seconds output rate: 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Loop0.txt:10:    Last 30
+0 seconds input rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Loop0.txt:11:    Last 30
+0 seconds output rate 0 bits/sec, 0 packets/sec
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_interface_Loop0.txt:14:           
+0 errors,0 drops
+D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNet
+2026-08-04T02:07:18.905808Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE1\display_ip
+_routing-table_vpn-instance_BJ.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...instance_BJ.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T02:09:18.446081Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE1\display_cp
+u.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...display_cpu.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T02:09:18.858710Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE2\display_cp
+u.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...display_cpu.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T02:09:19.270499Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\PE3\display_cp
+u.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...display_cpu.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T02:09:19.676610Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_05\SZ_AR\display_
+cpu.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...display_cpu.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+2026-08-04T02:11:20.270291Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: get-childitem requires exactly one quoted -literalpath value. Command: Get-ChildItem -Path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_*\SZ_Core\show_running-config.txt'

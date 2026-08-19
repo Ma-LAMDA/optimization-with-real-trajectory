@@ -1,0 +1,74 @@
+{
+  "schema_version": "qwen36-0804-best1-reasoning-trajectory-sft.v1",
+  "status": "auto_curated_draft_fast_run",
+  "scope": "data/2026-08-04 only",
+  "source_curation": "data/2026-08-04/curation/accepted_trajectory_selection.json",
+  "source_curation_sha256_lf_normalized": "ccea8437f7a7663fa1dd0fec232da7c825e1d3a4d6485db5cc83ac4ff4870070",
+  "best_selection": "data/2026-08-04/curation/best_trajectory_per_case.json",
+  "best_selection_sha256_lf_normalized": "d7b9f5b3c40370b65bd85a5982d2fb3121708686b2dc5d7f049d98134f806689",
+  "split": {
+    "group_key": "case_id",
+    "train_case_count": 72,
+    "validation_case_count": 12,
+    "train_validation_case_intersection": [],
+    "validation_case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ]
+  },
+  "counts": {
+    "selected_train_trajectories": 72,
+    "selected_validation_trajectories": 12,
+    "train_sft_rows": 318,
+    "validation_sft_rows": 53
+  },
+  "conversion": {
+    "one_trajectory_per_case": true,
+    "one_sample_per_visible_reasoning_checkpoint": true,
+    "original_message_policy": "split into low-weight thinking and strict stage conclusion",
+    "command_selection": "top causally relevant successful unique commands per stage",
+    "max_actions_per_stage": 6,
+    "zero_action_nonfinal_checkpoint": "kept as decision_ready when the source evidence has converged; no unrelated tool call is fabricated",
+    "irrelevant_duplicate_failed_commands": "omitted",
+    "infrastructure_failures_and_interruptions": "not present and never archived"
+  },
+  "loss_policy": {
+    "thinking": 0.4,
+    "stage_conclusion_or_result": 1.0,
+    "current_tool_calls": 1.0,
+    "historical_assistant_and_tool_calls": 0.0,
+    "tool_responses": "context_only",
+    "required_cli": "--loss_scale default --is_binary_loss_scale false"
+  },
+  "training_profile": {
+    "max_length": 16384,
+    "truncation_strategy": "delete",
+    "preserve_thinking": true,
+    "add_non_thinking_prefix": false,
+    "tokenizer_preflight_required": true
+  },
+  "outputs": {
+    "train": {
+      "path": "data/2026-08-04/sft/qwen3_6_27b_reasoning_trajectory_best1_train.jsonl",
+      "rows": 318,
+      "bytes": 7559841,
+      "sha256_lf_normalized": "a471d123bcce9151c7f632e1e4ca72e0ae87b71da2bebaf0e9ebf02681f18bd1"
+    },
+    "validation": {
+      "path": "data/2026-08-04/sft/qwen3_6_27b_reasoning_trajectory_best1_validation.jsonl",
+      "rows": 53,
+      "bytes": 1224443,
+      "sha256_lf_normalized": "b5b6b4df976c682c6abf822a7389181592d2ad4e9fcb5db998dcfcff16f980ce"
+    }
+  }
+}

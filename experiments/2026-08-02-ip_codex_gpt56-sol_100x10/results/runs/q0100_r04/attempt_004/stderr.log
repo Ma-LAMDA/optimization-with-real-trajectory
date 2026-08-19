@@ -1,0 +1,1811 @@
+2026-08-04T09:58:56.390779Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T09:58:56.390849Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T09:58:56.391480Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T09:58:56.394548Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T09:58:56.406015Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-08-04T09:58:57.048862Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-04T09:58:57.048903Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-08-04T09:58:57.049784Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T09:58:57.054123Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///C:/Users/Administrator/.codex/plugins/cache/openai-primary-runtime/template-creator/26.802.11031/.codex-plugin/plugin.json
+2026-08-04T09:59:07.227369Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: command chaining, pipelines, redirection, and multiline input are forbidden. Command: Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs' -Directory | Where-Object { $_.Name -eq 'CampusNetwork_09' } | Select-Object -ExpandProperty FullName; Get-ChildItem -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09' -Directory | Select-Object -ExpandProperty Name
+2026-08-04T09:59:16.276431Z ERROR codex_core::tools::router: error=Command blocked by PreToolUse hook: only Get-ChildItem, Get-Content, Select-String, and Test-Path are allowed. Command: rg --files 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\AGG_SW_04' 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\Core_SW_01' 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\Core_SW_02' 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\FW_01' 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\FW_02'
+2026-08-04T09:59:39.959500Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.3 seconds
+Output:
+display current-configuration
+#
+ version 7.1.070, Release 7639P06
+#
+mdc Admin id 1
+#
+ sysname AGG_SW_04
+#
+ irf mac-address persistent timer
+ irf auto-update enable
+ irf auto-merge enable
+ undo irf link-delay
+ irf member 1 priority 1
+#
+ lldp global enable
+#
+ reserve-vlan-interface 3000 to 3500
+#
+ system-working-mode standard
+ xbar load-single
+ lpu-type f-series
+#
+vlan 1
+#
+vlan 40
+#
+vlan 100
+#
+vlan 110
+#
+vlan 120
+#
+stp region-configuration
+ region-name huawei
+ instance 1 vlan 10 20
+ instance 2 vlan 30 40
+ instance 3 vlan 100 110 120
+ active region-configuration
+#
+ stp global enable
+#
+ftth
+#
+interface NULL0
+#
+interface HundredGigE1/0/6
+ port link-mode route
+#
+interface HundredGigE1/0/7
+ port link-mode route
+#
+interface HundredGigE1/0/8
+ port link-mode route
+#
+interface HundredGigE1/0/9
+ port link-mode route
+#
+interface HundredGigE1/0/10
+ port link-mode route
+#
+interface HundredGigE1/0/11
+ port link-mode route
+#
+interface HundredGigE1/0/12
+ port link-mode route
+#
+interface HundredGigE1/0/13
+ port link-mode route
+#
+interface HundredGigE1/0/14
+ port link-mode route
+#
+interface HundredGigE1/0/15
+ port link-mode route
+#
+interface HundredGigE1/0/16
+ port link-mode route
+#
+interface HundredGigE1/0/17
+ port link-mode route
+#
+interface HundredGigE1/0/18
+ port link-mode route
+#
+interface HundredGigE1/0/19
+ port link-mode route
+#
+interface HundredGigE1/0/20
+ port link-mode route
+#
+interface HundredGigE1/0/21
+ port link-mode route
+#
+interface HundredGigE1/0/22
+ port link-mode route
+#
+interface HundredGigE1/0/23
+ port link-mode route
+#
+interface HundredGigE1/0/24
+ port link-mode route
+#
+interface HundredGigE1/0/25
+ port link-mode route
+#
+interface HundredGigE1/0/26
+ port link-mode route
+#
+interface HundredGigE1/0/27
+ port link-mode route
+#
+interface HundredGigE1/0/28
+ port link-mode route
+#
+interface HundredGigE1/0/29
+ port link-mode route
+#
+interface HundredGigE1/0/30
+ port link-mode route
+#
+interface HundredGigE1/0/31
+ port link-mode route
+#
+interface HundredGigE1/0/32
+ port link-mode route
+#
+interface HundredGigE1/0/33
+ port link-mode route
+#
+interface HundredGigE1/0/34
+ port link-mode route
+#
+interface HundredGigE1/0/35
+ port link-mode route
+#
+interface HundredGigE1/0/36
+ port link-mode route
+#
+interface HundredGigE1/0/37
+ port link-mode route
+#
+interface HundredGigE1/0/38
+ port link-mode route
+#
+interface HundredGigE1/0/39
+ port link-mode route
+#
+interface HundredGigE1/0/40
+ port link-mode route
+#
+interface HundredGigE1/0/41
+ port link-mode route
+#
+interface HundredGigE1/0/42
+ port link-mode route
+#
+interface HundredGigE1/0/43
+ port link-mode route
+#
+interface HundredGigE1/0/44
+ port link-mode route
+#
+interface HundredGigE1/0/45
+ port link-mode route
+#
+interface HundredGigE1/0/46
+ port link-mode route
+#
+interface HundredGigE1/0/47
+ port link-mode route
+#
+interface HundredGigE1/0/48
+ port link-mode route
+#
+interface HundredGigE1/0/49
+ port link-mode route
+#
+interface HundredGigE1/0/50
+ port link-mode route
+#
+interface HundredGigE1/0/51
+ port link-mode route
+#
+interface HundredGigE1/0/52
+ port link-mode route
+#
+interface HundredGigE1/0/53
+ port link-mode route
+#
+interface HundredGigE1/0/54
+ port link-mode route
+#
+interface HundredGigE1/0/55
+ port link-mode route
+#
+interface HundredGigE1/0/56
+ port link-mode route
+#
+interface HundredGigE1/0/57
+ port link-mode route
+#
+interface HundredGigE1/0/58
+ port link-mode route
+#
+interface HundredGigE1/0/59
+ port link-mode route
+#
+interface HundredGigE1/0/60
+ port link-mode route
+#
+interface HundredGigE1/0/61
+ port link-mode route
+#
+interface HundredGigE1/0/62
+ port link-mode route
+#
+interface HundredGigE1/0/63
+ port link-mode route
+#
+interface HundredGigE1/0/64
+ port link-mode route
+#
+interface HundredGigE1/0/65
+ port link-mode route
+#
+interface HundredGigE1/0/66
+ port link-mode route
+#
+interface HundredGigE1/0/67
+ port link-mode route
+#
+interface HundredGigE1/0/68
+ port link-mode route
+#
+interface HundredGigE1/0/69
+ port link-mode route
+#
+interface HundredGigE1/0/70
+ port link-mode route
+#
+interface HundredGigE1/0/71
+ port link-mode route
+#
+interface HundredGigE1/0/72
+ port link-mode route
+#
+interface HundredGigE1/0/73
+ port link-mode route
+#
+interface HundredGigE1/0/74
+ port link-mode route
+#
+interface HundredGigE1/0/75
+ port link-mode route
+#
+interface HundredGigE1/0/76
+ port link-mode route
+#
+interface HundredGigE1/0/77
+ port link-mode route
+#
+interface HundredGigE1/0/78
+ port link-mode route
+#
+interface HundredGigE1/0/79
+ port link-mode route
+#
+interface HundredGigE1/0/80
+ port link-mode route
+#
+interface HundredGigE1/0/81
+ port link-mode route
+#
+interface HundredGigE1/0/82
+ port link-mode route
+#
+interface HundredGigE1/0/83
+ port link-mode route
+#
+interface HundredGigE1/0/84
+ port link-mode route
+#
+interface HundredGigE1/0/85
+ port link-mode route
+#
+interface HundredGigE1/0/86
+ port link-mode route
+#
+interface HundredGigE1/0/87
+ port link-mode route
+#
+interface HundredGigE1/0/88
+ port link-mode route
+#
+interface HundredGigE1/0/89
+ port link-mode route
+#
+interface HundredGigE1/0/90
+ port link-mode route
+#
+interface HundredGigE1/0/91
+ port link-mode route
+#
+interface HundredGigE1/0/92
+ port link-mode route
+#
+interface HundredGigE1/0/93
+ port link-mode route
+#
+interface HundredGigE1/0/94
+ port link-mode route
+#
+interface HundredGigE1/0/95
+ port link-mode route
+#
+interface HundredGigE1/0/96
+ port link-mode route
+#
+interface HundredGigE1/0/97
+ port link-mode route
+#
+interface HundredGigE1/0/98
+ port link-mode route
+#
+interface HundredGigE1/0/99
+ port link-mode route
+#
+interface HundredGigE1/0/100
+ port link-mode route
+#
+interface HundredGigE1/0/101
+ port link-mode route
+#
+interface HundredGigE1/0/102
+ port link-mode route
+#
+interface HundredGigE1/0/103
+ port link-mode route
+#
+interface HundredGigE1/0/104
+ port link-mode route
+#
+interface HundredGigE1/0/105
+ port link-mode route
+#
+interface HundredGigE1/0/106
+ port link-mode route
+#
+interface HundredGigE1/0/107
+ port link-mode route
+#
+interface HundredGigE1/0/108
+ port link-mode route
+#
+interface HundredGigE1/0/109
+ port link-mode route
+#
+interface HundredGigE1/0/110
+ port link-mode route
+#
+interface HundredGigE1/0/111
+ port link-mode route
+#
+interface HundredGigE1/0/112
+ port link-mode route
+#
+interface HundredGigE1/0/113
+ port link-mode route
+#
+interface HundredGigE1/0/114
+ port link-mode route
+#
+interface HundredGigE1/0/115
+ port link-mode route
+#
+interface HundredGigE1/0/116
+ port link-mode route
+#
+interface HundredGigE1/0/117
+ port link-mode route
+#
+interface HundredGigE1/0/118
+ port link-mode route
+#
+interface HundredGigE1/0/119
+ port link-mode route
+#
+interface HundredGigE1/0/120
+ port link-mode route
+#
+interface HundredGigE1/0/121
+ port link-mode route
+#
+interface HundredGigE1/0/122
+ port link-mode route
+#
+interface HundredGigE1/0/123
+ port link-mode route
+#
+interface HundredGigE1/0/124
+ port link-mode route
+#
+interface HundredGigE1/0/125
+ port link-mode route
+#
+interface HundredGigE1/0/126
+ port link-mode route
+#
+interface HundredGigE1/0/127
+ port link-mode route
+#
+interface HundredGigE1/0/128
+ port link-mode route
+#
+interface HundredGigE1/0/129
+ port link-mode route
+#
+interface HundredGigE1/0/130
+ port link-mode route
+#
+interface HundredGigE1/0/131
+ port link-mode route
+#
+interface HundredGigE1/0/132
+ port link-mode route
+#
+interface HundredGigE1/0/133
+ port link-mode route
+#
+interface HundredGigE1/0/134
+ port link-mode route
+#
+interface HundredGigE1/0/135
+ port link-mode route
+#
+interface HundredGigE1/0/136
+ port link-mode route
+#
+interface HundredGigE1/0/137
+ port link-mode route
+#
+interface HundredGigE1/0/138
+ port link-mode route
+#
+interface HundredGigE1/0/139
+ port link-mode route
+#
+interface HundredGigE1/0/140
+ port link-mode route
+#
+interface HundredGigE1/0/141
+ port link-mode route
+#
+interface HundredGigE1/0/142
+ port link-mode route
+#
+interface HundredGigE1/0/143
+ port link-mode route
+#
+interface HundredGigE1/0/144
+ port link-mode route
+#
+interface HundredGigE1/0/145
+ port link-mode route
+#
+interface HundredGigE1/0/146
+ port link-mode route
+#
+interface HundredGigE1/0/147
+ port link-mode route
+#
+interface HundredGigE1/0/148
+ port link-mode route
+#
+interface HundredGigE1/0/149
+ port link-mode route
+#
+interface HundredGigE1/0/150
+ port link-mode route
+#
+interface HundredGigE1/0/151
+ port link-mode route
+#
+interface HundredGigE1/0/152
+ port link-mode route
+#
+interface HundredGigE1/0/153
+ port link-mode route
+#
+interface HundredGigE1/0/154
+ port link-mode route
+#
+interface HundredGigE1/0/155
+ port link-mode route
+#
+interface HundredGigE1/0/156
+ port link-mode route
+#
+interface HundredGigE1/0/157
+ port link-mode route
+#
+interface HundredGigE1/0/158
+ port link-mode route
+#
+interface HundredGigE1/0/159
+ port link-mode route
+#
+interface HundredGigE1/0/160
+ port link-mode route
+#
+interface HundredGigE1/0/161
+ port link-mode route
+#
+interface HundredGigE1/0/162
+ port link-mode route
+#
+interface HundredGigE1/0/163
+ port link-mode route
+#
+interface HundredGigE1/0/164
+ port link-mode route
+#
+interface HundredGigE1/0/165
+ port link-mode route
+#
+interface HundredGigE1/0/166
+ port link-mode route
+#
+interface HundredGigE1/0/167
+ port link-mode route
+#
+interface HundredGigE1/0/168
+ port link-mode route
+#
+interface HundredGigE1/0/169
+ port link-mode route
+#
+interface HundredGigE1/0/170
+ port link-mode route
+#
+interface HundredGigE1/0/171
+ port link-mode route
+#
+interface HundredGigE1/0/172
+ port link-mode route
+#
+interface HundredGigE1/0/173
+ port link-mode route
+#
+interface HundredGigE1/0/174
+ port link-mode route
+#
+interface HundredGigE1/0/175
+ port link-mode route
+#
+interface HundredGigE1/0/176
+ port link-mode route
+#
+interface HundredGigE1/0/177
+ port link-mode route
+#
+interface HundredGigE1/0/178
+ port link-mode route
+#
+interface HundredGigE1/0/179
+ port link-mode route
+#
+interface HundredGigE1/0/180
+ port link-mode route
+#
+interface HundredGigE1/0/181
+ port link-mode route
+#
+interface HundredGigE1/0/182
+ port link-mode route
+#
+interface HundredGigE1/0/183
+ port link-mode route
+#
+interface HundredGigE1/0/184
+ port link-mode route
+#
+interface HundredGigE1/0/185
+ port link-mode route
+#
+interface HundredGigE1/0/186
+ port link-mode route
+#
+interface HundredGigE1/0/187
+ port link-mode route
+#
+interface HundredGigE1/0/188
+ port link-mode route
+#
+interface HundredGigE1/0/189
+ port link-mode route
+#
+interface HundredGigE1/0/190
+ port link-mode route
+#
+interface HundredGigE1/0/191
+ port link-mode route
+#
+interface HundredGigE1/0/192
+ port link-mode route
+#
+interface HundredGigE1/0/193
+ port link-mode route
+#
+interface HundredGigE1/0/194
+ port link-mode route
+#
+interface HundredGigE1/0/195
+ port link-mode route
+#
+interface HundredGigE1/0/196
+ port link-mode route
+#
+interface HundredGigE1/0/197
+ port link-mode route
+#
+interface HundredGigE1/0/198
+ port link-mode route
+#
+interface HundredGigE1/0/199
+ port link-mode route
+#
+interface HundredGigE1/0/200
+ port link-mode route
+#
+interface HundredGigE1/0/201
+ port link-mode route
+#
+interface HundredGigE1/0/202
+ port link-mode route
+#
+interface HundredGigE1/0/203
+ port link-mode route
+#
+interface HundredGigE1/0/204
+ port link-mode route
+#
+interface HundredGigE1/0/205
+ port link-mode route
+#
+interface HundredGigE1/0/206
+ port link-mode route
+#
+interface HundredGigE1/0/207
+ port link-mode route
+#
+interface HundredGigE1/0/208
+ port link-mode route
+#
+interface HundredGigE1/0/209
+ port link-mode route
+#
+interface HundredGigE1/0/210
+ port link-mode route
+#
+interface HundredGigE1/0/211
+ port link-mode route
+#
+interface HundredGigE1/0/212
+ port link-mode route
+#
+interface HundredGigE1/0/213
+ port link-mode route
+#
+interface HundredGigE1/0/214
+ port link-mode route
+#
+interface HundredGigE1/0/215
+ port link-mode route
+#
+interface HundredGigE1/0/216
+ port link-mode route
+#
+interface HundredGigE1/0/217
+ port link-mode route
+#
+interface HundredGigE1/0/218
+ port link-mode route
+#
+interface HundredGigE1/0/219
+ port link-mode route
+#
+interface HundredGigE1/0/220
+ port link-mode route
+#
+interface HundredGigE1/0/221
+ port link-mode route
+#
+interface HundredGigE1/0/222
+ port link-mode route
+#
+interface HundredGigE1/0/223
+ port link-mode route
+#
+interface HundredGigE1/0/224
+ port link-mode route
+#
+interface HundredGigE1/0/225
+ port link-mode route
+#
+interface HundredGigE1/0/226
+ port link-mode route
+#
+interface HundredGigE1/0/227
+ port link-mode route
+#
+interface HundredGigE1/0/228
+ port link-mode route
+#
+interface HundredGigE1/0/229
+ port link-mode route
+#
+interface HundredGigE1/0/230
+ port link-mode route
+#
+interface HundredGigE1/0/231
+ port link-mode route
+#
+interface HundredGigE1/0/232
+ port link-mode route
+#
+interface HundredGigE1/0/233
+ port link-mode route
+#
+interface HundredGigE1/0/234
+ port link-mode route
+#
+interface HundredGigE1/0/235
+ port link-mode route
+#
+interface HundredGigE1/0/236
+ port link-mode route
+#
+interface HundredGigE1/0/237
+ port link-mode route
+#
+interface HundredGigE1/0/238
+ port link-mode route
+#
+interface HundredGigE1/0/239
+ port link-mode route
+#
+interface HundredGigE1/0/240
+ port link-mode route
+#
+interface HundredGigE1/0/241
+ port link-mode route
+#
+interface HundredGigE1/0/242
+ port link-mode route
+#
+interface HundredGigE1/0/243
+ port link-mode route
+#
+interface HundredGigE1/0/244
+ port link-mode route
+#
+interface HundredGigE1/0/245
+ port link-mode route
+#
+interface HundredGigE1/0/246
+ port link-mode route
+#
+interface HundredGigE1/0/247
+ port link-mode route
+#
+interface HundredGigE1/0/248
+ port link-mode route
+#
+interface HundredGigE1/0/249
+ port link-mode route
+#
+interface HundredGigE1/0/250
+ port link-mode route
+#
+interface HundredGigE1/0/251
+ port link-mode route
+#
+interface HundredGigE1/0/252
+ port link-mode route
+#
+interface HundredGigE1/0/253
+ port link-mode route
+#
+interface HundredGigE1/0/254
+ port link-mode route
+#
+interface HundredGigE1/0/255
+ port link-mode route
+#
+interface HundredGigE1/0/256
+ port link-mode route
+#
+interface HundredGigE1/0/1
+ port link-mode bridge
+ description to_Core_SW_01_GE1/0/6
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 40 100 110 120
+#
+interface HundredGigE1/0/2
+ port link-mode bridge
+ description to_Core_SW_02_GE1/0/6
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 40 100 110 120
+#
+interface HundredGigE1/0/3
+ port link-mode bridge
+ description to_HQ_PROC_PC01_eth0
+ port access vlan 40
+ stp edged-port
+#
+interface HundredGigE1/0/4
+ port link-mode bridge
+ description to_HQ_PROC_AP01_GE1/0/0
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 100 110 120
+ port trunk pvid vlan 100
+#
+interface HundredGigE1/0/5
+ port link-mode bridge
+ port access vlan 40
+ stp edged-port
+#
+interface M-GigabitEthernet0/0/0
+#
+ scheduler logfile size 16
+#
+line class aux
+ user-role network-operator
+#
+line class console
+ user-role network-admin
+#
+line class tty
+ user-role network-operator
+#
+line class vty
+ user-role network-operator
+#
+line aux 0
+ authentication-mode none
+ user-role network-admin
+ user-role network-operator
+#
+line con 0
+ user-role network-admin
+#
+line vty 0 63
+ user-role network-operator
+#
+domain system
+#
+ domain default enable system
+#
+role name level-0
+ description Predefined level-0 role
+#
+role name level-1
+ description Predefined level-1 role
+#
+role name level-2
+ description Predefined level-2 role
+#
+role name level-3
+ description Predefined level-3 role
+#
+role name level-4
+ description Predefined level-4 role
+#
+role name level-5
+ description Predefined level-5 role
+#
+role name level-6
+ description Predefined level-6 role
+#
+role name level-7
+ description Predefined level-7 role
+#
+role name level-8
+ description Predefined level-8 role
+#
+role name level-9
+ description Predefined level-9 role
+#
+role name level-10
+ description Predefined level-10 role
+#
+role name level-11
+ description Predefined level-11 role
+#
+role name level-12
+ description Predefined level-12 role
+#
+role name level-13
+ description Predefined level-13 role
+#
+role name level-14
+ description Predefined level-14 role
+#
+user-group system
+#
+ security-enhanced level 1
+#
+ undo ssl renegotiation disable
+ undo ssl version ssl3.0 disable
+ undo ssl version tls1.0 disable
+ undo ssl version tls1.1 disable
+#
+return
+!Software Version V800R023C10SPC100B313
+!Last configuration was updated at 2026-06-16 11:43:27+00:00 by root
+#
+sysname Core_SW_01
+#
+undo ftp server source all-interface
+undo ftp ipv6 server source all-interface
+#
+device board 17 board-type CE-MPUB
+device board 1 board-type CE-LPUE
+device board 2 board-type CE-LPUE
+#
+ntp server source-interface all disable
+ntp ipv6 server source-interface all disable
+#
+vlan batch 10 20 30 40 100 110 120 150 201 to 202
+#
+stp instance 0 root primary
+stp instance 1 root primary
+stp instance 2 root secondary
+stp instance 3 root primary
+stp bpdu-protection
+stp enable
+#
+dhcp enable
+#
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+stp region-configuration
+ region-name huawei
+ instance 1 vlan 10 20
+ instance 2 vlan 30 40
+ instance 3 vlan 100 110 120
+#
+dhcp server request-packet all-interface disable
+#
+acl number 3000
+ rule 5 deny ip source 10.1.10.0 0.0.0.255 destination 10.1.120.0 0.0.0.255
+ rule 10 deny ip source 10.1.20.0 0.0.0.255 destination 10.1.120.0 0.0.0.255
+ rule 15 deny ip source 10.1.30.0 0.0.0.255 destination 10.1.120.0 0.0.0.255
+ rule 20 deny ip source 10.1.40.0 0.0.0.255 destination 10.1.120.0 0.0.0.255
+ rule 100 permit ip
+#
+aaa
+ #
+ authentication-scheme default
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default
+ #
+ domain default
+ #
+ domain default_admin
+#
+warranty
+#
+interface Vlanif10
+ ip address 10.1.10.253 255.255.255.0
+ vrrp vrid 1 virtual-ip 10.1.10.254
+ vrrp vrid 1 priority 120
+ vrrp vrid 1 preempt disable
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif20
+ ip address 10.1.20.253 255.255.255.0
+ vrrp vrid 2 virtual-ip 10.1.20.254
+ vrrp vrid 2 priority 120
+ vrrp vrid 2 preempt disable
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif30
+ ip address 10.1.30.253 255.255.255.0
+ vrrp vrid 3 virtual-ip 10.1.30.254
+ vrrp vrid 3 priority 110
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif40
+ ip address 10.1.40.253 255.255.255.0
+ vrrp vrid 4 virtual-ip 10.1.40.254
+ vrrp vrid 4 priority 110
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif110
+ ip address 10.1.110.253 255.255.255.0
+ vrrp vrid 5 virtual-ip 10.1.110.254
+ vrrp vrid 5 priority 120
+ vrrp vrid 5 preempt disable
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif120
+ ip address 10.1.120.253 255.255.255.0
+ vrrp vrid 6 virtual-ip 10.1.120.254
+ vrrp vrid 6 priority 120
+ vrrp vrid 6 preempt disable
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif201
+ ip address 10.1.200.2 255.255.255.252
+ ospf network-type p2p
+#
+interface Vlanif202
+ ip address 10.1.200.6 255.255.255.252
+ ospf network-type p2p
+#
+interface MEth0/0/0
+ undo shutdown
+#
+interface Eth-Trunk1
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 2 to 4094
+ stp instance 1 port priority 64
+ mode lacp-static
+#
+interface Eth-Trunk2
+ description to_FW_01_Eth-trunk2
+ port default vlan 201
+ mode lacp-static
+#
+interface Eth-Trunk3
+ description to_FW_02_Eth-trunk3
+ port default vlan 202
+ mode lacp-static
+#
+interface GE1/0/0
+ shutdown
+#
+interface GE1/0/1
+ undo shutdown
+ eth-trunk 1
+#
+interface GE1/0/2
+ undo shutdown
+ eth-trunk 1
+#
+interface GE1/0/3
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 10 100 110 120
+#
+interface GE1/0/4
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 20 100 110 120
+#
+interface GE1/0/5
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 30 100 110 120
+#
+interface GE1/0/6
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 40 100 110 120
+#
+interface GE1/0/7
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 100 110 120 150
+#
+interface GE1/0/8
+ description to_FW_01_GigabitEthernet1/0/1
+ undo shutdown
+ eth-trunk 2
+#
+interface GE1/0/9
+ description to_FW_02_GigabitEthernet1/0/1
+ undo shutdown
+ eth-trunk 3
+#
+interface GE1/1/0
+ shutdown
+#
+interface GE1/1/1
+ shutdown
+#
+interface GE1/1/2
+ shutdown
+#
+interface GE1/1/3
+ shutdown
+#
+interface GE1/1/4
+ shutdown
+#
+interface GE1/1/5
+ shutdown
+#
+interface GE1/1/6
+ shutdown
+#
+interface GE1/1/7
+ shutdown
+#
+interface GE1/1/8
+ shutdown
+#
+interface GE1/1/9
+ shutdown
+#
+interface GE2/0/0
+ shutdown
+#
+interface GE2/0/1
+ shutdown
+#
+interface GE2/0/2
+ shutdown
+#
+interface GE2/0/3
+ shutdown
+#
+interface GE2/0/4
+ shutdown
+#
+interface GE2/0/5
+ shutdown
+#
+interface GE2/0/6
+ shutdown
+#
+interface GE2/0/7
+ shutdown
+#
+interface GE2/0/8
+ shutdown
+#
+interface GE2/0/9
+ shutdown
+#
+interface GE2/1/0
+ shutdown
+#
+interface GE2/1/1
+ shutdown
+#
+interface GE2/1/2
+ shutdown
+#
+interface GE2/1/3
+ shutdown
+#
+interface GE2/1/4
+ shutdown
+#
+interface GE2/1/5
+ shutdown
+#
+interface GE2/1/6
+ shutdown
+#
+interface GE2/1/7
+ shutdown
+#
+interface GE2/1/8
+ shutdown
+#
+interface GE2/1/9
+ shutdown
+#
+interface LoopBack0
+ ip address 10.1.254.1 255.255.255.255
+#
+interface NULL0
+#
+ospf 1 router-id 10.1.254.1
+ area 0.0.0.0
+  network 10.1.200.2 0.0.0.0
+  network 10.1.200.6 0.0.0.0
+ area 0.0.0.1
+  network 10.1.10.0 0.0.0.255
+  network 10.1.20.0 0.0.0.255
+  network 10.1.30.0 0.0.0.255
+  network 10.1.40.0 0.0.0.255
+ area 0.0.0.2
+  network 10.1.110.0 0.0.0.255
+  network 10.1.120.0 0.0.0.255
+#
+snmp-agent local-engineid 800007DB03380500111200
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+ssh server authentication-type keyboard-interactive enable
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+user-interface maximum-vty 5
+#
+user-interface con 0
+#
+vm-manager
+#
+return
+!Software Version V800R023C10SPC100B313
+!Last configuration was updated at 2026-06-16 11:42:13+00:00 by root
+#
+sysname Core_SW_02
+#
+undo ftp server source all-interface
+undo ftp ipv6 server source all-interface
+#
+device board 17 board-type CE-MPUB
+device board 1 board-type CE-LPUE
+device board 2 board-type CE-LPUE
+#
+ntp server source-interface all disable
+ntp ipv6 server source-interface all disable
+#
+vlan batch 10 20 30 40 100 110 120 150 203 to 204
+#
+stp instance 0 root secondary
+stp instance 1 root secondary
+stp instance 2 root primary
+stp instance 3 root secondary
+stp bpdu-protection
+stp enable
+#
+dhcp enable
+#
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+vlan 120
+#
+stp region-configuration
+ region-name huawei
+ instance 1 vlan 10 20
+ instance 2 vlan 30 40
+ instance 3 vlan 100 110 120
+#
+dhcp server request-packet all-interface disable
+#
+acl number 3000
+ rule 5 deny ip source 10.1.10.0 0.0.0.255 destination 10.1.120.0 0.0.0.255
+ rule 10 deny ip source 10.1.20.0 0.0.0.255 destination 10.1.120.0 0.0.0.255
+ rule 15 deny ip source 10.1.30.0 0.0.0.255 destination 10.1.120.0 0.0.0.255
+ rule 20 deny ip source 10.1.40.0 0.0.0.255 destination 10.1.120.0 0.0.0.255
+ rule 100 permit ip
+#
+aaa
+ #
+ authentication-scheme default
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default
+ #
+ domain default
+ #
+ domain default_admin
+#
+warranty
+#
+interface Vlanif10
+ ip address 10.1.10.252 255.255.255.0
+ vrrp vrid 1 virtual-ip 10.1.10.254
+ vrrp vrid 1 priority 110
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif20
+ ip address 10.1.20.252 255.255.255.0
+ vrrp vrid 2 virtual-ip 10.1.20.254
+ vrrp vrid 2 priority 110
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif30
+ ip address 10.1.30.252 255.255.255.0
+ vrrp vrid 3 virtual-ip 10.1.30.254
+ vrrp vrid 3 priority 120
+ vrrp vrid 3 preempt disable
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif40
+ ip address 10.1.40.252 255.255.255.0
+ vrrp vrid 4 virtual-ip 10.1.40.254
+ vrrp vrid 4 priority 120
+ vrrp vrid 4 preempt disable
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif110
+ ip address 10.1.110.252 255.255.255.0
+ vrrp vrid 5 virtual-ip 10.1.110.254
+ vrrp vrid 5 priority 110
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif120
+ ip address 10.1.120.252 255.255.255.0
+ vrrp vrid 6 virtual-ip 10.1.120.254
+ vrrp vrid 6 priority 110
+ dhcp select relay
+ dhcp relay binding server ip 10.1.50.1
+#
+interface Vlanif203
+ ip address 10.1.200.10 255.255.255.252
+ ospf network-type p2p
+#
+interface Vlanif204
+ ip address 10.1.200.14 255.255.255.252
+ ospf network-type p2p
+#
+interface MEth0/0/0
+ undo shutdown
+#
+interface Eth-Trunk1
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 2 to 4094
+ stp instance 2 port priority 64
+ mode lacp-static
+#
+interface Eth-Trunk2
+ description to_FW_02_Eth-trunk2
+ port default vlan 204
+ mode lacp-static
+#
+interface Eth-Trunk3
+ description to_FW_01_Eth-trunk3
+ port default vlan 203
+ mode lacp-static
+#
+interface GE1/0/0
+ shutdown
+#
+interface GE1/0/1
+ undo shutdown
+ eth-trunk 1
+#
+interface GE1/0/2
+ undo shutdown
+ eth-trunk 1
+#
+interface GE1/0/3
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 10 100 110 120
+#
+interface GE1/0/4
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 20 100 110 120
+#
+interface GE1/0/5
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 30 100 110 120
+#
+interface GE1/0/6
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 40 100 110 120
+#
+interface GE1/0/7
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 100 110 120 150
+#
+interface GE1/0/8
+ description to_FW_01_GigabitEthernet1/0/2
+ undo shutdown
+ eth-trunk 3
+#
+interface GE1/0/9
+ description to_FW_02_GigabitEthernet1/0/2
+ undo shutdown
+ eth-trunk 2
+#
+interface GE1/1/0
+ shutdown
+#
+interface GE1/1/1
+ shutdown
+#
+interface GE1/1/2
+ shutdown
+#
+interface GE1/1/3
+ shutdown
+#
+interface GE1/1/4
+ shutdown
+#
+interface GE1/1/5
+ shutdown
+#
+interface GE1/1/6
+ shutdown
+#
+interface GE1/1/7
+ shutdown
+#
+interface GE1/1/8
+ shutdown
+#
+interface GE1/1/9
+ shutdown
+#
+interface GE2/0/0
+ shutdown
+#
+interface GE2/0/1
+ shutdown
+#
+interface GE2/0/2
+ shutdown
+#
+interface GE2/0/3
+ shutdown
+#
+interface GE2/0/4
+ shutdown
+#
+interface GE2/0/5
+ shutdown
+#
+interface GE2/0/6
+ shutdown
+#
+interface GE2/0/7
+ shutdown
+#
+interface GE2/0/8
+ shutdown
+#
+interface GE2/0/9
+ shutdown
+#
+interface GE2/1/0
+ shutdown
+#
+interface GE2/1/1
+ shutdown
+#
+interface GE2/1/2
+ shutdown
+#
+interface GE2/1/3
+ shutdown
+#
+interface GE2/1/4
+ shutdown
+#
+interface GE2/1/5
+ shutdown
+#
+interface GE2/1/6
+ shutdown
+#
+interface GE2/1/7
+ shutdown
+#
+interface GE2/1/8
+ shutdown
+#
+interface GE2/1/9
+ shutdown
+#
+interface LoopBack0
+ ip address 10.1.254.2 255.255.255.255
+#
+interface NULL0
+#
+ospf 1 router-id 10.1.254.2
+ area 0.0.0.0
+  network 10.1.200.10 0.0.0.0
+  network 10.1.200.14 0.0.0.0
+ area 0.0.0.1
+  network 10.1.10.0 0.0.0.255
+  network 10.1.20.0 0.0.0.255
+  network 10.1.30.0 0.0.0.255
+  network 10.1.40.0 0.0.0.255
+ area 0.0.0.2
+  network 10.1.110.0 0.0.0.255
+  network 10.1.120.0 0.0.0.255
+#
+snmp-agent local-engineid 800007DB03382600111200
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+ssh server authentication-type keyboard-interactive enable
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+user-interface maximum-vty 5
+#
+user-interface con 0
+#
+vm-manager
+#
+return
+!Software Version V800R023C10SPC100B313
+!Last configuration was updated at 2026-06-15 12:55:45+00:00 by root
+#
+sysname HQ_HR_AP01
+#
+undo ftp server source all-interface
+undo ftp ipv6 server source all-interface
+#
+device board 17 board-type CE-MPUB
+device board 1 board-type CE-LPUE
+device board 2 board-type CE-LPUE
+#
+ntp server source-interface all disable
+ntp ipv6 server source-interface all disable
+#
+vlan batch 100 110 120
+#
+telnet server-source all-interface
+telnet ipv6 server-source all-interface
+#
+dhcp server request-packet all-interface disable
+#
+aaa
+ #
+ authentication-scheme default
+ #
+ authorization-scheme default
+ #
+ accounting-scheme default
+ #
+ domain default
+ #
+ domain default_admin
+#
+warranty
+#
+interface Vlanif100
+ ip address 10.1.100.11 255.255.255.0
+#
+interface MEth0/0/0
+ undo shutdown
+#
+interface GE1/0/0
+ description Uplink_to_AGG-SW-04_1/0/4
+ undo shutdown
+ port link-type trunk
+ undo port trunk allow-pass vlan 1
+ port trunk allow-pass vlan 100 110 120
+#
+interface GE1/0/1
+ description to_EMPLOYEE_WIFI_CLIENT03_eth0
+ undo shutdown
+ port default vlan 110
+#
+interface GE1/0/2
+ description to_GUEST_WIFI_CLIENT03_eth0
+ undo shutdown
+ port default vlan 120
+#
+interface GE1/0/3
+ shutdown
+#
+interface GE1/0/4
+ shutdown
+#
+interface GE1/0/5
+ shutdown
+#
+interface GE1/0/6
+ shutdown
+#
+interface GE1/0/7
+ shutdown
+#
+interface GE1/0/8
+ shutdown
+#
+interface GE1/0/9
+ shutdown
+#
+interface GE1/1/0
+ shutdown
+#
+interface GE1/1/1
+ shutdown
+#
+interface GE1/1/2
+ shutdown
+#
+interface GE1/1/3
+ shutdown
+#
+interface GE1/1/4
+ shutdown
+#
+interface GE1/1/5
+ shutdown
+#
+interface GE1/1/6
+ shutdown
+#
+interface GE1/1/7
+ shutdown
+#
+interface GE1/1/8
+ shutdown
+#
+interface GE1/1/9
+ shutdown
+#
+interface GE2/0/0
+ shutdown
+#
+interface GE2/0/1
+ shutdown
+#
+interface GE2/0/2
+ shutdown
+#
+interface GE2/0/3
+ shutdown
+#
+interface GE2/0/4
+ shutdown
+#
+interface GE2/0/5
+ shutdown
+#
+interface GE2/0/6
+ shutdown
+#
+interface GE2/0/7
+ shutdown
+#
+interface GE2/0/8
+ shutdown
+#
+interface GE2/0/9
+ shutdown
+#
+interface GE2/1/0
+ shutdown
+#
+interface GE2/1/1
+ shutdown
+#
+interface GE2/1/2
+ shutdown
+#
+interface GE2/1/3
+ shutdown
+#
+interface GE2/1/4
+ shutdown
+#
+interface GE2/1/5
+ shutdown
+#
+interface GE2/1/6
+ shutdown
+#
+interface GE2/1/7
+ shutdown
+#
+interface GE2/1/8
+ shutdown
+#
+interface GE2/1/9
+ shutdown
+#
+interface NULL0
+#
+ip route-static 0.0.0.0 0.0.0.0 10.1.100.254
+#
+snmp-agent local-engineid 800007DB03381A00111200
+#
+snmp-agent sys-info version v3
+#
+undo snmp-agent protocol source-status all-interface
+undo snmp-agent protocol source-status ipv6 all-interface
+#
+undo snmp-agent proxy protocol source-status all-interface
+undo snmp-agent proxy protocol source-status ipv6 all-interface
+#
+lldp enable
+#
+ssh server authentication-type keyboard-interactive enable
+undo ssh server-source all-interface
+undo ssh ipv6 server-source all-interface
+ssh authorization-type default aaa
+#
+ssh server cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh server hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+ssh server publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh server dh-exchange min-len 1024
+#
+ssh client publickey dsa ecc rsa rsa_sha2_256 rsa_sha2_512
+#
+ssh client cipher aes256_gcm aes128_gcm aes256_ctr aes192_ctr aes128_ctr aes256_cbc aes128_cbc 3des_cbc
+ssh client hmac sha2_512 sha2_256_96 sha2_256 sha1 sha1_96 md5 md5_96
+ssh client key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 dh_group14_sha1 dh_group1_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#
+user-interface maximum-vty 5
+#
+user-interface con 0
+#
+vm-manager
+#
+return
+Get-Content : Cannot find path 'D:\IP组网\optimization-with-real-trajectory\saved_configs\CampusNetwork_09\GUEST_WIFI_CLI
+ENT03\display_current-configuration.txt' because it does not exist.
+At line:2 char:1
++ Get-Content -LiteralPath 'D:\IP组网\optimization-with-real-trajectory\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (D:\IP组网\optimiz...nfiguration.txt:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+

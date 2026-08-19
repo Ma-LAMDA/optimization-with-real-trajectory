@@ -1,0 +1,691 @@
+{
+  "schema_version": "qwen36-0809-agent-error-aware-sft.v7",
+  "status": "static_validation_ready_tokenizer_preflight_archived",
+  "scope": "data/2026-08-09 only",
+  "data_root": "data/2026-08-09",
+  "design_input": {
+    "path": "data/2026-08-09/curation/DESIGN_AUDIT_INPUT.md",
+    "sha256_lf_normalized": "e5852520c7737e472b57d8ce67af6b350c70ced3d490b47ac8e769fc0ca1149f",
+    "scope_note": "repository-contained v7 design input: message-derived structural action closure, candidate-scope-calibrated endpoints, portable release paths, reachable marker-free targets, one bundle per real evidence path, runtime identity binding and complete dependency closure"
+  },
+  "parent_release": {
+    "path": "data/2026-08-05",
+    "manifest": "data/2026-08-05/sft/reasoning_causal_path_manifest.json",
+    "manifest_sha256_lf_normalized": "781d98bb10a25419f1919798f480def0b286ad7045f89ff8fb280f62e87c069a",
+    "schema_version": "qwen36-0805-causal-path-reasoning-sft.v10",
+    "raw_tree_sha256": "7feb2ed9838aacc2181500f0640a1a28126fa49f1531b620b88fdadddf94b731"
+  },
+  "raw_archive": {
+    "files": 840,
+    "bytes": 5300733,
+    "tree_sha256": "7feb2ed9838aacc2181500f0640a1a28126fa49f1531b620b88fdadddf94b731",
+    "byte_identical_to_parent_0805": true
+  },
+  "split": {
+    "source": "frozen 0804/0805 case split",
+    "train_case_count": 72,
+    "validation_case_count": 12,
+    "validation_case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ],
+    "validation_role": "error-mining/dev; not a clean proof after its aggregate failures informed design",
+    "counterfactual_train_validation_intersection": [],
+    "agent_evaluation_trajectories_used_for_training": false,
+    "clean_topology_heldout_required_for_final_claim": true
+  },
+  "conversion": {
+    "parent_semantic_rows_considered": 1430,
+    "parent_core_rows_retained": 719,
+    "parent_endpoint_groups_considered": 237,
+    "strict_endpoint_groups_rebuilt": 116,
+    "failed_endpoint_groups_removed": 161,
+    "strict_endpoint_case_count": 72,
+    "same_query_recovery_case_count": 40,
+    "same_query_recovery_case_ids": [
+      25,
+      26,
+      27,
+      28,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      39,
+      40,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      66,
+      67,
+      68,
+      69,
+      70,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84
+    ],
+    "endpoint_gate_audit": "data/2026-08-09/curation/endpoint_gate_audit.json",
+    "counterfactual_rows": 316,
+    "counterfactual_types": {
+      "counterfactual_action_selection": 308,
+      "hypothesis_elimination_replay": 8
+    },
+    "counterfactual_source": "308 distinct high-information action contexts from successful training-case evidence only",
+    "unsafe_parent_tool_call_policy": "remove cross-snapshot, unresolved-snapshot and saved_configs path-glob call/response pairs; zero loss is not sufficient because history still conditions targets",
+    "unsafe_parent_tool_calls_suppressed": 183,
+    "unsafe_parent_tool_calls_suppressed_by_reason": {
+      "saved_configs_path_glob": 100,
+      "snapshot_mismatch_or_unresolved": 87
+    },
+    "post_closure_parent_rows_repaired": 50,
+    "post_closure_positive_tool_calls_removed": 93,
+    "post_closure_repair_policy": "recompute every strict label-family fact binding from tool responses visible before the first positive loss; if any binding is complete, remove all positive continuation calls and append an evidence-specific stop",
+    "action_visible_grounding_parent_rows_repaired": 308,
+    "action_visible_grounding_issue_counts": {
+      "premature_convergence_assertion": 8,
+      "unsupported_bpdu_filter_enabled": 16,
+      "unsupported_global_stp_disabled": 2,
+      "unsupported_stp_enabled": 2,
+      "unsupported_vrrp_nonpreempt": 1
+    },
+    "action_visible_grounding_policy": "for all selected actions, reconstruct every strict endpoint binding for the same query from tool responses visible before the first positive loss; an incomplete binding may supervise only literal matched facts, explicit missing requirements, a pending hypothesis, and one or two read-only actions",
+    "action_policy": "all 308 label-relevant current-snapshot action contexts are structurally incomplete under message-derived strict bindings; complete contexts are converted to stop, while incomplete contexts must state matched/expected fact counts and cannot assert a closed loop, unique root cause, or final label",
+    "stop_policy": "complete structural evidence stops further calls; endpoint bundles combine evidence summary, positive label boundary, candidate-scope calibration, current-evidence minimal set, stop, and final result once per real evidence path",
+    "label_boundary_policy": "bind direct raw output lines to one of six fact families; positive evidence confirms the mapped label but does not prove unchecked neighboring candidates absent",
+    "minimal_set_policy": "supervise only the result set confirmed by the current complete positive binding; do not reinterpret it as global negative proof about untested candidates",
+    "elimination_policy": "retain only 103 inherited visible-source elimination nodes across 58 queries plus eight declared same-target sampling replays; endpoint bundles add no unsupported candidate exclusion",
+    "inherited_endpoint_policy": "rerun v5 literal gates over all 237 inherited groups; recover missing cases only from same-query/snapshot frozen 0805 successful events; emit exactly one reachable bundle per distinct raw evidence prefix and never count an objective rewrite as a new path",
+    "metadata_negative_policy": "malformed protocol, rejected action, minimal-set and rejected-continuation negatives are audit evidence only and are not counted as training signal; use them for grammar/preference evaluation, never as positive SFT targets",
+    "synthetic_endpoint_eligible_case_count": 32,
+    "synthetic_endpoint_eligibility_by_label": {
+      "STP BPDU被过滤": 10,
+      "VRRP工作在非抢占模式": 12,
+      "全局STP未使能": 10
+    },
+    "synthetic_endpoint_omitted_case_ids": [
+      25,
+      26,
+      27,
+      28,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      39,
+      40,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      66,
+      67,
+      68,
+      69,
+      70,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84
+    ],
+    "validation_trajectory_policy": "the 12 validation cases and their Agent error trajectories are never augmentation inputs",
+    "infrastructure_failures_and_interruptions": "not recorded, sampled, or included in denominators"
+  },
+  "sampling": {
+    "epochs": 5,
+    "base_core_pool_rows": 719,
+    "counterfactual_pool_rows": 316,
+    "endpoint_pool_rows": 116,
+    "base_core_rows_per_epoch": 719,
+    "counterfactual_rows_per_epoch": 316,
+    "endpoint_rows_per_epoch": 116,
+    "effective_rows_per_epoch": 1151,
+    "effective_batch_size": 8,
+    "optimizer_steps_per_epoch": 144,
+    "cumulative_optimizer_steps_by_epoch": [
+      144,
+      288,
+      432,
+      576,
+      720
+    ],
+    "fixed_agent_checkpoint_epoch": 3,
+    "fixed_agent_checkpoint_global_step": 432,
+    "budget_match": "exactly 1151 rows and 144 optimizer steps per epoch: 719 base core + 308 reachable actions + 8 explicit same-target elimination replays + 116 real-path endpoint bundles",
+    "counterfactual_query_balance": "all 308 distinct reachable action rows are exposed once per epoch; every new target is therefore visible before fixed checkpoint-432",
+    "epoch_3_unique_counterfactual_coverage": {
+      "counterfactual_action_selection": 308,
+      "hypothesis_elimination_replay": 8
+    },
+    "endpoint_query_balance": "all 116 distinct raw evidence paths are exposed once per epoch with 1/path_count query loss normalization; no objective rewrite or replay counts as a path"
+  },
+  "counts": {
+    "train_semantic_pool_rows": 1151,
+    "parent_train_rows": 1430,
+    "base_core_pool_rows": 719,
+    "counterfactual_pool_rows": 316,
+    "endpoint_pool_rows": 116,
+    "action_visible_grounding_parent_rows_repaired": 308,
+    "action_visible_grounding_action_rows_repaired": 308,
+    "structurally_incomplete_action_rows": 308,
+    "structural_action_matched_expected_distribution": {
+      "0/1": 103,
+      "0/4": 41,
+      "0/6": 128,
+      "1/4": 15,
+      "1/6": 7,
+      "2/4": 5,
+      "2/6": 7,
+      "4/6": 2
+    },
+    "post_closure_parent_rows_repaired": 50,
+    "post_closure_positive_tool_calls_removed": 93,
+    "strict_endpoint_groups": 116,
+    "unique_raw_evidence_paths": 116,
+    "elimination_replay_rows": 8,
+    "removed_inherited_endpoint_groups": 161,
+    "validation_rows": 245,
+    "real_hypothesis_elimination_rows": 103,
+    "real_hypothesis_elimination_case_count": 58,
+    "evidence_bound_elimination_rows": 0,
+    "endpoint_bundles_with_neighbor_elimination": 0,
+    "endpoint_bundles_with_candidate_scope_calibration": 116,
+    "endpoint_rejected_label_declarations": 0,
+    "combined_evidence_backed_elimination_case_count": 58,
+    "queries_without_real_elimination_node": [
+      13,
+      58,
+      59,
+      66,
+      67,
+      70,
+      73,
+      75,
+      81,
+      83,
+      89,
+      94,
+      95,
+      97
+    ]
+  },
+  "heuristic_training_signal_by_epoch": {
+    "epoch_01": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    },
+    "epoch_02": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    },
+    "epoch_03": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    },
+    "epoch_04": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    },
+    "epoch_05": {
+      "method": "one CJK code point is approximately one token; other text is approximately four characters per token",
+      "row_count": 1151,
+      "target_type_rows": {
+        "counterfactual_action_selection": 308,
+        "endpoint_bundle": 116,
+        "hypothesis_elimination": 103,
+        "hypothesis_elimination_replay": 8,
+        "planning": 167,
+        "post_closure_stop_repair": 44,
+        "reasoning": 405
+      },
+      "raw_target_token_estimate": 297503,
+      "weighted_token_estimate": 105678.95,
+      "weighted_message_kind_percent": {
+        "conclusion_or_answer": 37.136251,
+        "thinking": 58.323252,
+        "tool_call": 4.540497
+      },
+      "weighted_target_type_percent": {
+        "counterfactual_action_selection": 23.708317,
+        "endpoint_bundle": 7.940465,
+        "hypothesis_elimination": 7.212316,
+        "hypothesis_elimination_replay": 0.548548,
+        "planning": 14.329817,
+        "post_closure_stop_repair": 2.777327,
+        "reasoning": 43.48321
+      }
+    }
+  },
+  "training_profile": {
+    "formal_config": "config/qwen36_0809_formal_training.json",
+    "formal_entry": "scripts/train_qwen36_0809_agent_error_aware_5epoch.sh",
+    "distributed_strategy": "ddp",
+    "world_size": 2,
+    "cuda_visible_devices": "0,1",
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "effective_batch_size": 8,
+    "max_length": 16384,
+    "fixed_validation_epoch": 3,
+    "agent_checkpoint_selection": false,
+    "runtime_identity_gate_required": true,
+    "canonical_config_and_plugin_required": true,
+    "dataset_components_by_epoch": {
+      "epoch_01": [
+        "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_01.jsonl",
+        "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_01.jsonl"
+      ],
+      "epoch_02": [
+        "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_02.jsonl",
+        "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_02.jsonl"
+      ],
+      "epoch_03": [
+        "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_03.jsonl",
+        "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_03.jsonl"
+      ],
+      "epoch_04": [
+        "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_04.jsonl",
+        "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_04.jsonl"
+      ],
+      "epoch_05": [
+        "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_05.jsonl",
+        "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_05.jsonl"
+      ]
+    }
+  },
+  "evaluation_protocol": {
+    "current_12_cases_role": "error-mining/dev",
+    "case_ids": [
+      2,
+      12,
+      19,
+      20,
+      29,
+      38,
+      65,
+      71,
+      85,
+      86,
+      99,
+      100
+    ],
+    "repeats_per_case": 5,
+    "fixed_checkpoint": "epoch_03/checkpoint-432",
+    "scoring_entry": "scripts/final_answer_scoring.py",
+    "scoring_policy_version": "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery",
+    "correctness_basis": "final_answer_only",
+    "q73_q86_policy": "inclusive-OR retained inside the canonical v4 scorer",
+    "incomplete_result_recovery": "one complete fenced <result> JSON string list with no closing </result> is accepted only on exact match",
+    "process_tool_or_reasoning_errors": "diagnostic_only; do not override an exact accepted final answer",
+    "terminal_without_valid_final_answer": "model_error",
+    "launcher": "scripts/run_agent_validation_resilient.sh",
+    "reasoning_effort": "high",
+    "timeout_seconds_per_case_repeat": 3600,
+    "timeout_retry_scheduling": "archive_and_defer_until_bounded_final_sweeps",
+    "immediate_timeout_retry": false,
+    "topology": "one_vllm_tp2_instance_two_runners_total_concurrency_2",
+    "early_stop": "for 12x5 only: stop after at least 3 complete valid repeats and 30 cumulative valid model errors; report observed accuracy and 60-slot upper bound",
+    "infrastructure_retry_limit": 3,
+    "clean_heldout_required_for_final_generalization_claim": true,
+    "infrastructure_failures_timeouts_and_interruptions": "excluded from the valid denominator; archive evidence and retry without overwriting",
+    "malformed_process_tool_calls": "diagnostic_only when an accepted final answer exists"
+  },
+  "reproducibility": {
+    "single_data_root_contract": true,
+    "document": "data/2026-08-09/REPRODUCIBILITY.md",
+    "tracked_files": {
+      "root_readme": {
+        "path": "README.md",
+          "sha256_lf_normalized": "766ba4d75dd1a3861385125dc0171b71bd4516439d9771e0a82510c589e97e60"
+      },
+      "release_readme": {
+        "path": "data/2026-08-09/README.md",
+        "sha256_lf_normalized": "2d467e87733e2d156c4852535bcb005f3aa6581bae3bd6433e1285ed3e45b52c"
+      },
+      "reproducibility": {
+        "path": "data/2026-08-09/REPRODUCIBILITY.md",
+        "sha256_lf_normalized": "a124f0fa99e6fb6f23fca826fe472c42363768ff067e824001aff8a63641f06a"
+      },
+      "design_audit_input": {
+        "path": "data/2026-08-09/curation/DESIGN_AUDIT_INPUT.md",
+        "sha256_lf_normalized": "e5852520c7737e472b57d8ce67af6b350c70ced3d490b47ac8e769fc0ca1149f"
+      },
+      "converter": {
+        "path": "scripts/convert_0809_agent_error_aware_sft.py",
+        "sha256_lf_normalized": "6fe41980ab86d1403e1bb6ef461bd75f9f3a9921c7f09b77cadaff862840cdba"
+      },
+      "recovery_dependency": {
+        "path": "scripts/convert_0807_evidence_gated_reasoning_sft.py",
+        "sha256_lf_normalized": "97b41524429655c1abc3b84210f8f20e1c0d502a9d5ff28767a92b8cded88e87"
+      },
+      "validator": {
+        "path": "scripts/validate_0809_agent_error_aware_sft.py",
+        "sha256_lf_normalized": "d6874a9958d66bfb05629734a04ff013cc2b0972221a5f66c44f4a2cab3b932b"
+      },
+      "independent_validator": {
+        "path": "scripts/independent_validate_0809_sft.py",
+        "sha256_lf_normalized": "46d7276c8e1410d1f6132a4f92e63251f701f3323dd452198f42135cdfbc61a7"
+      },
+      "audit": {
+        "path": "scripts/audit_0809_agent_error_aware_sft.py",
+        "sha256_lf_normalized": "15d404574111882a78726a7123d8db3feb056e4ee478a7b366463838ccecd5fe"
+      },
+      "tokenizer_preflight": {
+        "path": "scripts/check_0809_target_tokenizer_preflight.py",
+        "sha256_lf_normalized": "09c0fbd77eb4349729c39901aef03a9349450aed828473967fbd8b3b590ee4c1"
+      },
+      "training_entry": {
+        "path": "scripts/train_qwen36_0809_agent_error_aware_5epoch.sh",
+        "sha256_lf_normalized": "4fb0caec899eb250d55a2240ce2b7ab52c92dbfdfb55b6788f6199702a95e138"
+      },
+      "lr_plugin": {
+        "path": "scripts/qwen36_0809_fixed_stage_lr_plugin.py",
+        "sha256_lf_normalized": "6cf542e0a0d20c48c1fdfcaa929c79289b89faa844602205abeb2ab5e68e56a3"
+      },
+      "formal_config": {
+        "path": "config/qwen36_0809_formal_training.json",
+          "sha256_lf_normalized": "f8fc00a6e67cc126c05b05a4eb9509f4bb0c2d65aada6d70c33ce95c7daa6b4e"
+      },
+      "agent_validation_launcher": {
+        "path": "scripts/run_agent_validation_resilient.sh",
+          "sha256_lf_normalized": "2d8a75012bfe8b8e769619bef3e33afecce5aa5e62c2ef1fd2a9b2090eea25bd"
+      },
+      "agent_validation_retry_policy_test": {
+        "path": "scripts/test_agent_validation_retry_policy.sh",
+          "sha256_lf_normalized": "1734e0c3accd074e733bf74f8cca09ff91bcfc26424be927b01ec4415b51f272"
+      },
+      "agent_validation_retry_policy": {
+        "path": "scripts/agent_validation_retry_policy.sh",
+        "sha256_lf_normalized": "2c44b1fdc38f37a1b09947cb8bcb800b3eee9103526a0965c78eb86d8cf50566"
+      },
+      "agent_validation_early_stop": {
+        "path": "scripts/monitor_agent_validation_early_stop.py",
+        "sha256_lf_normalized": "08d9b3ccd6930f5052cf0d8250443c46a9f62185b7ddc5e03afa775cdba82c33"
+      },
+      "agent_validation_summarizer": {
+        "path": "scripts/summarize_agent_validation.py",
+        "sha256_lf_normalized": "6252bc10aaf5c81ecd4fae5515ec954e0e84637c52e310a38a3495cc3d937b48"
+      },
+      "final_answer_scorer": {
+        "path": "scripts/final_answer_scoring.py",
+        "sha256_lf_normalized": "4fff98ccedaf6536b62b837749ba545129879b7eaf20f5546f9dd4b40234edf2"
+      },
+      "parent_accepted_selection": {
+        "path": "data/2026-08-05/curation/accepted_trajectory_selection.json",
+        "sha256_lf_normalized": "fc64bf0ca77e028eebc66415f9e84b46d9863cea8e7c4f698fc5264039c5c7ef"
+      },
+      "parent_causal_clusters": {
+        "path": "data/2026-08-05/curation/causal_path_clusters_per_case.json",
+        "sha256_lf_normalized": "3947bf626d9f2bd6b294b8ad708f2187cedf26aed160d1f6f9726992de755e89"
+      },
+      "parent_filter_report": {
+        "path": "data/2026-08-05/curation/FILTER_REPORT.md",
+        "sha256_lf_normalized": "d650de6b89cce495c62a73d21282e0b014b67b65fae5c3d8a84ebb7ac3a7c15f"
+      },
+      "release_accepted_selection": {
+        "path": "data/2026-08-09/curation/accepted_trajectory_selection.json",
+        "sha256_lf_normalized": "e4080bbb1204f95ee42147ae6ea53a9ccf040f9ba509c1586563a04fac4a0aab"
+      },
+      "release_causal_clusters": {
+        "path": "data/2026-08-09/curation/causal_path_clusters_per_case.json",
+        "sha256_lf_normalized": "3760279361c9e53a06ca6659c26232a5746c1370371fdbb07bc90bf7c1b978f9"
+      },
+      "release_endpoint_gate_audit": {
+        "path": "data/2026-08-09/curation/endpoint_gate_audit.json",
+        "sha256_lf_normalized": "e4bef0848279a4d1c6f13fdc5ceb9ac0b66b60205e0eb56435a0d32f5e6bdf45"
+      },
+      "release_filter_report": {
+        "path": "data/2026-08-09/curation/FILTER_REPORT.md",
+        "sha256_lf_normalized": "35d3c7873a0ba0c1feeadf6c3a041e312e58266cf1da55c923db2d90679d2fc1"
+      }
+    },
+    "release_record": "data/2026-08-09/sft/RELEASE_RECORD.json"
+  },
+  "target_tokenizer_preflight": {
+    "path": "data/2026-08-09/sft/TARGET_TOKENIZER_PREFLIGHT.json",
+    "status": "passed",
+    "sha256_lf_normalized": "f2779c18caea729cffa4da8b161ff83021cc7d490b6b579568d7322df45fc905",
+    "datasets_match_current_outputs": true,
+    "max_tokens": 5635,
+    "over_max_length_rows": 0,
+    "loss_mask_failures": 0
+  },
+  "outputs": {
+    "train_semantic_pool": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_train_semantic_pool.jsonl",
+      "rows": 1151,
+      "bytes": 20706273,
+      "sha256_lf_normalized": "01e031df6c3cd8f69f4571163ca008891bfc4f87eecb7a9847ac7362f0c3d497"
+    },
+    "base_core_pool": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_base_core_pool.jsonl",
+      "rows": 719,
+      "bytes": 11839724,
+      "sha256_lf_normalized": "6f6ef06bece6cf705cf60ffeefe17646e9427b9e82e3bf8c2a49afe3a9370833"
+    },
+    "counterfactual_pool": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_counterfactual_pool.jsonl",
+      "rows": 316,
+      "bytes": 6226303,
+      "sha256_lf_normalized": "f5208e1cd6e496967f7595ae8e03d7b4424fcf2768040f19d1189f46a3d5e291"
+    },
+    "endpoint_pool": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_pool.jsonl",
+      "rows": 116,
+      "bytes": 2640246,
+      "sha256_lf_normalized": "ab1e18e9bb29c8f82a8e81d9a2c5a36f8aa998349581f752ed5eb9b40ce803a9"
+    },
+    "validation": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_validation.jsonl",
+      "rows": 245,
+      "bytes": 3804227,
+      "sha256_lf_normalized": "93456db24466c15f4fe0f985c99eb211daf79a3d26fa35dd32984fcf966ff3de"
+    },
+    "core_epoch_01": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_01.jsonl",
+      "rows": 1035,
+      "bytes": 18095379,
+      "sha256_lf_normalized": "93a82a059ad6c28360cbc5d8026ab6e06c2c9037018eace92dbd5495b19e1354"
+    },
+    "endpoint_epoch_01": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_01.jsonl",
+      "rows": 116,
+      "bytes": 2642218,
+      "sha256_lf_normalized": "617f2268c8275f3baa1f3856046013fcf498a8905386d1d63ece58a2d3fd2126"
+    },
+    "core_epoch_02": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_02.jsonl",
+      "rows": 1035,
+      "bytes": 18095379,
+      "sha256_lf_normalized": "de4ad8f9c7937faae12e2032133e14638dbab5c263c6ca3e9efac068914c2bb3"
+    },
+    "endpoint_epoch_02": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_02.jsonl",
+      "rows": 116,
+      "bytes": 2642218,
+      "sha256_lf_normalized": "c8973c187c99121692e9ed7c254e423b8f93609c98a5b8edc3263d51b2b01c56"
+    },
+    "core_epoch_03": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_03.jsonl",
+      "rows": 1035,
+      "bytes": 18095379,
+      "sha256_lf_normalized": "dc7488dce86635c508ff598ee7826b546cf94fb6b7abd636ca6079a05c17caad"
+    },
+    "endpoint_epoch_03": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_03.jsonl",
+      "rows": 116,
+      "bytes": 2642218,
+      "sha256_lf_normalized": "af5b0916288be17957c50601089e001d8fabd8c96e33c7c8b207fac88c2ee1f4"
+    },
+    "core_epoch_04": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_04.jsonl",
+      "rows": 1035,
+      "bytes": 18095379,
+      "sha256_lf_normalized": "2c43ac8589373c23253c79f29bd09218ac52f0991c749fc65c882935f202a59c"
+    },
+    "endpoint_epoch_04": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_04.jsonl",
+      "rows": 116,
+      "bytes": 2642218,
+      "sha256_lf_normalized": "4235f54dfd213011aa1cc332ba13983647599ee0f8d4b86dbf60212e7943e990"
+    },
+    "core_epoch_05": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_core_epoch_05.jsonl",
+      "rows": 1035,
+      "bytes": 18095379,
+      "sha256_lf_normalized": "ca1565a1e3355ae8e624b7208b8ec29faf9b9a83d41053239e81e6fc05ccdbb2"
+    },
+    "endpoint_epoch_05": {
+      "path": "data/2026-08-09/sft/qwen3_6_27b_0809_endpoint_epoch_05.jsonl",
+      "rows": 116,
+      "bytes": 2642218,
+      "sha256_lf_normalized": "3ec3b044cc4df283427fe8e742b5931d75faab74beb7d99120c70b3aeb895fd5"
+    }
+  }
+}

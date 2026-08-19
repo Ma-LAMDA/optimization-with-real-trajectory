@@ -1,0 +1,81 @@
+{
+  "schema_version": "codex-ip-normalized-accepted-trajectory.v1",
+  "id": "q0028_success_01",
+  "case_id": 28,
+  "row_index": 28,
+  "success_slot": 1,
+  "attempt_index": 1,
+  "source_record": {
+    "row_index": 28,
+    "original_id": 28,
+    "sample_id": 28,
+    "sample_key": "q0028",
+    "question": "在CampusNetwork_05组网中，从 HQ_MKT_Client01 ping节点 SZ_Server_Cluster2（10.3.20.1）出现高延迟。基于当前配置框架，请给出一组最小故障根因集合。\n## 已定位的信息\n\nL2转发路径：\nHQ_MKT_Client01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/5) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/8) -> FW_01(GigabitEthernet1/0/1) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/2) -> SZ_Server_Cluster2(Ethernet0),\nHQ_MKT_Client01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/5) -> AGG_SW_01(HundredGigE1/0/1) -> Core_SW_01(GE1/0/3) -> Core_SW_01(GE1/0/9) -> FW_02(GigabitEthernet1/0/1) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/2) -> SZ_Server_Cluster2(Ethernet0),\nHQ_MKT_Client01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/5) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/8) -> FW_01(GigabitEthernet1/0/2) -> FW_01(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet2) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/2) -> SZ_Server_Cluster2(Ethernet0),\nHQ_MKT_Client01(Ethernet0) -> AGG_SW_01(HundredGigE1/0/5) -> AGG_SW_01(HundredGigE1/0/2) -> Core_SW_02(GE1/0/3) -> Core_SW_02(GE1/0/9) -> FW_02(GigabitEthernet1/0/2) -> FW_02(GigabitEthernet1/0/3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet3) -> BJHQ_CSR1000V_GW_01(GigabitEthernet4) -> PE1(Ethernet2/0/0) -> PE1(Ethernet1/0/2) -> PE3(Ethernet1/0/1) -> PE3(Ethernet1/0/0) -> SZ_AR(Ethernet1/0/1) -> SZ_AR(Ethernet1/0/0) -> SZ_Core(Ethernet2/4) -> SZ_Core(Ethernet2/2) -> SZ_Server_Cluster2(Ethernet0)",
+    "output_format": "本题涉及故障的一种或者多种。输出格式要求：每行表示一个故障，行与行之间无空行，每行内容前后及中间无多余空白字符，所有符号使用英文字符。\n故障输出格式为：\n```\n<result>\n[\n\"故障节点;故障原因\"\n]\n</result>\n```\n故障原因包括：(1)ARP配置错误；(2)BGP配置错误；(3)IP地址前缀列表缺少相应用户源IP地址；(4)ISIS配置错误；(5)L2VPN配置错误；(6)L3VPN配置错误；(7)MST配置标识-VLAN 实例映射和其他交换机不一致；(8)MST配置标识-修订级别和其他交换机不一致；(9)MST配置标识-域名和其他交换机不一致；(10)NAT内网接口属性配置错误或者缺失；(11)NAT外网接口属性配置错误或者配置缺失；(12)OSPF配置错误；(13)SRV6-Policy隧道规划错误；(14)VRRP Track配置缺失或错误；(15)VXLAN配置错误；(16)全局STP未使能；(17)全局未使能HRP热冗余协议；(18)存在IP路由环路；(19)存在MPLS标签环路；(20)安全策略规则未放通对应的用户；(21)环回口IP配置冲突；(22)缺失静态路由；(23)静态路由错误；(24)黑洞路由；(25)MAC地址配置错误；(26)MTU值配置错误；(27)STP BPDU被过滤；(28)STP 端口下实例根路径开销规划不合理；(29)VRRP Master角色规划不合理；(30)VRRP工作在非抢占模式；(31)接口shutdown；(32)主机信息收集功能缺失；(33)接口IP错误；(34)接口VLAN配置错误；(35)流量挤占端口带宽；(36)端口未使能STP；(37)错误开启了边缘端口功能；若存在多个故障原因，回车换行再输出。\n请务必给出最具体的故障原因。\n故障示例：\n```\n<result>\n[\n\"Test-Zone1-Spine-01;黑洞路由\",\n\"Core-Zone-Core-Switch-02;缺失静态路由\",\n\"Core-Zone-Core-Switch-02;ARP配置错误\",\n\"Test-Zone1-Border-Leaf-01;接口shutdown\",\n\"Test-Zone1-Server-Leaf-01;流量挤占端口带宽\",\n\"Test-Zone1-Server-Leaf-01;接口IP错误\"\n]\n</result>\n```",
+    "contains_ground_answer": false
+  },
+  "agent_messages": [
+    {
+      "event_line": 5,
+      "item_id": "item_2",
+      "text": "我会先精确定位 CampusNetwork_05 的节点与回显文件，再围绕高延迟优先核验路径接口带宽利用率/QoS、路由环路与冗余/STP状态，并用配置和运行数据交叉确认。"
+    },
+    {
+      "event_line": 34,
+      "item_id": "item_17",
+      "text": "当前证据目录包含逐接口运行回显，能直接区分“链路拥塞”和“路由/二层异常”。我先聚焦题目给出的每一段出入接口，比较利用率、丢包、错误计数及 MTU，避免被无关告警干扰。"
+    },
+    {
+      "event_line": 180,
+      "item_id": "item_92",
+      "text": "端到端三层下一跳和接口状态目前一致，目标网段没有黑洞或明显路由环路；已读到的华为路径接口利用率均低于 1%，也无错误丢包。下一步转向目的 VLAN/接入口及策略配置，检查是否存在只影响 10.3.20.1 的限速、MTU或异常转发设置。"
+    },
+    {
+      "event_line": 351,
+      "item_id": "item_180",
+      "text": "发现一处值得重点证伪的异常：PE 环上三个方向的单播累计量呈连续环形增长特征，而正常业务下一跳本应直接由 PE1 到 PE3。现在核对静态 MPLS LSP 与标签转发表，判断这是实际标签环路还是仅为无关历史流量。"
+    },
+    {
+      "event_line": 543,
+      "item_id": "item_278",
+      "text": "已确认不是普通业务路由异常，而是 PE1、PE2、PE3 对两个测试前缀分别形成顺/逆时针闭环静态下一跳。接下来只需用三台设备的实际路由表确认这些配置均已下发到 FIB，再确定最小节点集合。"
+    },
+    {
+      "event_line": 556,
+      "item_id": "item_285",
+      "text": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>"
+    }
+  ],
+  "final_answer": "<result>\n[\n\"PE1;存在IP路由环路\",\n\"PE2;存在IP路由环路\",\n\"PE3;存在IP路由环路\"\n]\n</result>",
+  "actual_result_items": [
+    "PE1;存在IP路由环路",
+    "PE2;存在IP路由环路",
+    "PE3;存在IP路由环路"
+  ],
+  "reference_answer_options": [
+    [
+      "PE1;存在IP路由环路",
+      "PE2;存在IP路由环路",
+      "PE3;存在IP路由环路"
+    ]
+  ],
+  "answer_matches_reference": true,
+  "independent_judgment": {
+    "correct": true,
+    "comparator": "established_fault_set_exact_with_alternatives_v2",
+    "judgment_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0028_r01/attempt_001/judgment.json",
+    "judgment_sha256_lf_normalized": "7405df03ec4c6888ceeea2e05a58b81a01aef93464effe73a004cc0e19b6ee50"
+  },
+  "source": {
+    "experiment": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10",
+    "attempt_directory": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0028_r01/attempt_001",
+    "events_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0028_r01/attempt_001/events.jsonl",
+    "events_sha256_lf_normalized": "697b92d6478497aa1529f8ea5402056471613632523e4f935c09d13ed5c9315e",
+    "final_answer_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/runs/q0028_r01/attempt_001/final_answer.txt",
+    "final_answer_sha256_lf_normalized": "18538f112ded8bb0406026ca2cac688f04a8b8a8acccb00ae8ebbefca14fc4f4",
+    "source_record_file": "experiments/2026-08-02-ip_codex_gpt56-sol_100x10/results/questions/q0028/source_record.json",
+    "source_record_sha256_lf_normalized": "d4f8f600fc3275af08732918962eb1c9dcb724b3113a65ff27b70cc915b27a26",
+    "thread_id": "019fc8a0-0ba4-7463-9fe0-e2c6cc53aceb",
+    "duration_seconds": 791.704
+  }
+}
