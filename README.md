@@ -192,6 +192,16 @@ held-out Agent 集。完整规则与复现命令见
 [`data/2026-08-09/REPRODUCIBILITY.md`](data/2026-08-09/REPRODUCIBILITY.md) 与
 [`data/2026-08-09/AUDIT_REPORT.md`](data/2026-08-09/AUDIT_REPORT.md)。
 
+0809 五轮 full-state SFT 与 temperature=0 Agent 验证已于 2026-08-19 收口。
+epoch-3/checkpoint-432 预声明 primary 为 20/57（35.09%）；epoch-4/checkpoint-576
+comparative 为 26/58（44.83%）；epoch-5/checkpoint-720 comparative 为 24/58
+（41.38%）。三阶段均在至少三个完整有效轮次且有效模型错误不少于 30 后合规提前停止；
+全部 accepted generation audit 的 effective temperature 为 0，reasoning、token/timing、
+进程、GPU、锁、preemption 与 OOM 门禁通过。完整训练 loss、逐题结果、证据哈希和解释限制见
+[`docs/2026-08-19_0809_SFT_AGENT_TEMPERATURE0_RESULT.md`](docs/2026-08-19_0809_SFT_AGENT_TEMPERATURE0_RESULT.md)。
+固定 12 题属于 error-mining/dev，不能作为独立 held-out 泛化结论，且不得以 epoch 4 的观察高分
+事后替换预声明 primary。
+
 ## 数据规则
 
 - `data/simulation/` 默认按不可变来源管理；标准答案纠错只能在用户明确授权和审计报告支持下
@@ -564,6 +574,11 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-19：完成 0809 五轮 SFT 和 epoch-3/4/5 temperature=0 Agent 验证；canonical v4
+  分别为 20/57（35.09%）、26/58（44.83%）和 24/58（41.38%），三阶段均按预声明的
+  3-full-round/30-error 规则合规提前停止。新增机器可读最终审计和逐 checkpoint/逐题比较，
+  全零 temperature、reasoning、token/timing、preemption/OOM、进程/GPU/锁门禁全部通过；
+  epoch 3 继续作为预声明 primary，epoch 4/5 仅作 comparative。
 - 2026-08-12：将唯一 Agent 判分协议升级为
   `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`；只新增“全篇唯一、完整 fenced `<result>`
   JSON 字符串列表仅缺 `</result>` 且精确命中”的恢复分支。23 项回归通过；归档 v3 与 v4 对全部

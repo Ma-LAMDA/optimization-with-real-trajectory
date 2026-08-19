@@ -1,0 +1,864 @@
+{
+  "schema_version": "0809-final-audit.v1",
+  "generated_at": "2026-08-19T19:21:01.073122+08:00",
+  "workflow_root": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800",
+  "scoring_policy_version": "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery",
+  "training": {
+    "global_step": 720,
+    "epoch": 5.0,
+    "per_epoch": [
+      {
+        "epoch": 1,
+        "checkpoint": 144,
+        "logged_points": 144,
+        "mean_loss": 0.23474897956475616,
+        "last_loss": 0.24364471435546875
+      },
+      {
+        "epoch": 2,
+        "checkpoint": 288,
+        "logged_points": 144,
+        "mean_loss": 0.08653733242600639,
+        "last_loss": 0.16310881078243256
+      },
+      {
+        "epoch": 3,
+        "checkpoint": 432,
+        "logged_points": 144,
+        "mean_loss": 0.0666394644682037,
+        "last_loss": 0.004670522175729275
+      },
+      {
+        "epoch": 4,
+        "checkpoint": 576,
+        "logged_points": 144,
+        "mean_loss": 0.05363140837289393,
+        "last_loss": 0.0061575486324727535
+      },
+      {
+        "epoch": 5,
+        "checkpoint": 720,
+        "logged_points": 144,
+        "mean_loss": 0.04480412372827737,
+        "last_loss": 0.010927819646894932
+      }
+    ]
+  },
+  "agent_validations": {
+    "3": {
+      "epoch": 3,
+      "checkpoint": 432,
+      "role": "predeclared_primary_fixed_checkpoint",
+      "completion": {
+        "verified_at": "2026-08-14T23:09:34.815744+08:00",
+        "status": "early_stopped_verified",
+        "temperature": 0,
+        "scoring_policy_version": "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery",
+        "effective_terminals": 57,
+        "correct": 20,
+        "effective_model_wrong": 37,
+        "completed_full_effective_rounds": 3,
+        "maximum_possible_final_accuracy_percent": 38.333333333333336,
+        "accepted_temperature0_requests": 7575,
+        "report": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch3_temperature0_agent_validation/report/final_v4.json"
+      },
+      "completion_sha256": "8d6a92fa06830c94b66185ce30ec095d6b5fea9ca44fdbe513af5a8a4cc8d7c2",
+      "report": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch3_temperature0_agent_validation/report/final_v4.json",
+      "report_sha256": "87bccf16e4fe511edf62a99005f36ea0fb6ec1dee244c93b99aa33e73feca2b1",
+      "correct": 20,
+      "effective": 57,
+      "wrong": 37,
+      "accuracy_percent": 35.08771929824562,
+      "completed_full_effective_rounds": 3,
+      "early_stop": {
+        "triggered": true,
+        "completed_full_effective_rounds": 3,
+        "effective_model_wrong": 37,
+        "planned_total": 60,
+        "maximum_possible_final_correct": 23,
+        "maximum_possible_final_accuracy_percent": 38.333333333333336,
+        "minimum_full_effective_rounds": 3,
+        "minimum_effective_model_wrong": 30
+      },
+      "mean_duration_minutes": 17.133904970760234,
+      "mean_input_output_tokens": 3535238.8421052634,
+      "reasoning": {
+        "effective_cells": 57,
+        "original_cells_with_reasoning": 57,
+        "cells_with_reasoning_evidence": 57,
+        "recovery": null
+      },
+      "token_timing": {
+        "cells_with_duration": 57,
+        "cells_with_input_output_tokens": 57
+      },
+      "temperature_audit": {
+        "accepted": 7575,
+        "nonzero": 0,
+        "malformed": 0,
+        "files": [
+          {
+            "path": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch3_temperature0_agent_validation/control/temperature0_request_audit.jsonl",
+            "accepted": 7575,
+            "nonzero": 0,
+            "malformed": 0
+          }
+        ]
+      },
+      "archives": {
+        "timeout": 81,
+        "infra": 0
+      },
+      "logs": {
+        "files": [
+          "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch3_temperature0_agent_validation/vllm.log",
+          "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch3_temperature0_agent_validation/vllm.recovery_deferred-timeouts-20260813T092450+0800.log"
+        ],
+        "warning_lines": 470,
+        "preemption_lines": 0,
+        "oom_lines": 0,
+        "prefix_tail": [
+          "(APIServer pid=249771) INFO 08-14 23:09:05 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 36.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.4%, Prefix cache hit rate: 98.6%",
+          "(APIServer pid=249771) INFO 08-14 23:09:15 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 30.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 98.6%",
+          "(APIServer pid=249771) INFO 08-14 23:09:25 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 98.6%"
+        ],
+        "kv_tail": [
+          "(APIServer pid=249771) INFO 08-14 23:09:05 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 36.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.4%, Prefix cache hit rate: 98.6%",
+          "(APIServer pid=249771) INFO 08-14 23:09:15 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 30.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 98.6%",
+          "(APIServer pid=249771) INFO 08-14 23:09:25 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 98.6%"
+        ]
+      },
+      "per_case": {
+        "2": {
+          "states": [
+            "wrong",
+            "correct",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 5,
+          "accuracy_percent": 20.0,
+          "mean_duration_minutes": 13.930963333333333,
+          "mean_input_output_tokens": 1351150.6
+        },
+        "12": {
+          "states": [
+            "wrong",
+            "wrong",
+            "wrong",
+            "excluded_or_not_completed",
+            "wrong"
+          ],
+          "correct": 0,
+          "effective": 4,
+          "accuracy_percent": 0.0,
+          "mean_duration_minutes": 17.659074999999998,
+          "mean_input_output_tokens": 1176906.0
+        },
+        "19": {
+          "states": [
+            "wrong",
+            "wrong",
+            "correct",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 5,
+          "accuracy_percent": 20.0,
+          "mean_duration_minutes": 21.55309,
+          "mean_input_output_tokens": 1779551.2
+        },
+        "20": {
+          "states": [
+            "correct",
+            "correct",
+            "wrong",
+            "correct",
+            "wrong"
+          ],
+          "correct": 3,
+          "effective": 5,
+          "accuracy_percent": 60.0,
+          "mean_duration_minutes": 25.319053333333333,
+          "mean_input_output_tokens": 9678031.6
+        },
+        "29": {
+          "states": [
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 0,
+          "effective": 5,
+          "accuracy_percent": 0.0,
+          "mean_duration_minutes": 34.91216333333333,
+          "mean_input_output_tokens": 15768741.2
+        },
+        "38": {
+          "states": [
+            "wrong",
+            "correct",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 5,
+          "accuracy_percent": 20.0,
+          "mean_duration_minutes": 21.526636666666665,
+          "mean_input_output_tokens": 4988794.8
+        },
+        "65": {
+          "states": [
+            "correct",
+            "wrong",
+            "wrong",
+            "excluded_or_not_completed",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 4,
+          "accuracy_percent": 25.0,
+          "mean_duration_minutes": 20.098112500000003,
+          "mean_input_output_tokens": 1121666.25
+        },
+        "71": {
+          "states": [
+            "wrong",
+            "wrong",
+            "excluded_or_not_completed",
+            "wrong",
+            "correct"
+          ],
+          "correct": 1,
+          "effective": 4,
+          "accuracy_percent": 25.0,
+          "mean_duration_minutes": 33.782491666666665,
+          "mean_input_output_tokens": 2954314.25
+        },
+        "85": {
+          "states": [
+            "correct",
+            "wrong",
+            "correct",
+            "correct",
+            "correct"
+          ],
+          "correct": 4,
+          "effective": 5,
+          "accuracy_percent": 80.0,
+          "mean_duration_minutes": 5.138583333333333,
+          "mean_input_output_tokens": 641717.4
+        },
+        "86": {
+          "states": [
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "wrong"
+          ],
+          "correct": 4,
+          "effective": 5,
+          "accuracy_percent": 80.0,
+          "mean_duration_minutes": 4.7741999999999996,
+          "mean_input_output_tokens": 515667.0
+        },
+        "99": {
+          "states": [
+            "correct",
+            "wrong",
+            "correct",
+            "wrong",
+            "correct"
+          ],
+          "correct": 3,
+          "effective": 5,
+          "accuracy_percent": 60.0,
+          "mean_duration_minutes": 4.663646666666667,
+          "mean_input_output_tokens": 612660.0
+        },
+        "100": {
+          "states": [
+            "wrong",
+            "correct",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 5,
+          "accuracy_percent": 20.0,
+          "mean_duration_minutes": 6.276436666666667,
+          "mean_input_output_tokens": 763099.8
+        }
+      }
+    },
+    "4": {
+      "epoch": 4,
+      "checkpoint": 576,
+      "role": "user_requested_comparative_checkpoint",
+      "completion": {
+        "verified_at": "2026-08-16T18:26:04.510058+08:00",
+        "status": "early_stopped_verified",
+        "temperature": 0,
+        "scoring_policy_version": "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery",
+        "effective_terminals": 58,
+        "correct": 26,
+        "effective_model_wrong": 32,
+        "completed_full_effective_rounds": 3,
+        "maximum_possible_final_accuracy_percent": 46.666666666666664,
+        "accepted_temperature0_requests": 7713,
+        "report": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch4_temperature0_agent_validation/report/final_v4.json"
+      },
+      "completion_sha256": "2680856a711c0344898e57660caf234d194ed1fd66405abe5f1b2aa69b716ae2",
+      "report": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch4_temperature0_agent_validation/report/final_v4.json",
+      "report_sha256": "9bc87bae52aa18cbb1c0b3abfe28f50abbb522a8752a014d2e557449dcf6f124",
+      "correct": 26,
+      "effective": 58,
+      "wrong": 32,
+      "accuracy_percent": 44.827586206896555,
+      "completed_full_effective_rounds": 3,
+      "early_stop": {
+        "triggered": true,
+        "completed_full_effective_rounds": 3,
+        "effective_model_wrong": 32,
+        "planned_total": 60,
+        "maximum_possible_final_correct": 28,
+        "maximum_possible_final_accuracy_percent": 46.666666666666664,
+        "minimum_full_effective_rounds": 3,
+        "minimum_effective_model_wrong": 30
+      },
+      "mean_duration_minutes": 12.993255459770117,
+      "mean_input_output_tokens": 1826771.1551724137,
+      "reasoning": {
+        "effective_cells": 58,
+        "original_cells_with_reasoning": 57,
+        "cells_with_reasoning_evidence": 58,
+        "recovery": {
+          "path": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch4_temperature0_agent_validation/control/reasoning_recovery_q12-r04_20260819T180000+0800/enrichment_report.json",
+          "sha256": "db7568278ba93b2c3c6a08c0dcb7d91b2983b8b78663bdfdd9483b40c1df4ee4",
+          "report": {
+            "events": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch4_temperature0_agent_validation/control/reasoning_recovery_q12-r04_20260819T180000+0800/events.recovered.jsonl",
+            "status": "enriched",
+            "thread_id": "01a00a05-1a39-77f0-a2eb-8055bd5a960c",
+            "rollout": "/root/.codex/sessions/2026/08/16/rollout-2026-08-16T18-01-41-01a00a05-1a39-77f0-a2eb-8055bd5a960c.jsonl",
+            "reasoning_items": 35,
+            "reasoning_characters": 136559,
+            "alignment_counts": {
+              "exact_command": 16,
+              "exact_message": 19
+            },
+            "events_sha256": "d89c0ec9e19e10edda5d6baf7cfd7b9a2d5e7931003ff3da757316e717313517"
+          }
+        }
+      },
+      "token_timing": {
+        "cells_with_duration": 58,
+        "cells_with_input_output_tokens": 58
+      },
+      "temperature_audit": {
+        "accepted": 7713,
+        "nonzero": 0,
+        "malformed": 0,
+        "files": [
+          {
+            "path": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch4_temperature0_agent_validation/control/temperature0_request_audit.jsonl",
+            "accepted": 7713,
+            "nonzero": 0,
+            "malformed": 0
+          }
+        ]
+      },
+      "archives": {
+        "timeout": 62,
+        "infra": 0
+      },
+      "logs": {
+        "files": [
+          "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch4_temperature0_agent_validation/vllm.log"
+        ],
+        "warning_lines": 236,
+        "preemption_lines": 0,
+        "oom_lines": 0,
+        "prefix_tail": [
+          "(APIServer pid=440057) INFO 08-16 18:25:43 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 36.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.8%, Prefix cache hit rate: 99.2%",
+          "(APIServer pid=440057) INFO 08-16 18:25:53 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 36.1 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 99.2%",
+          "(APIServer pid=440057) INFO 08-16 18:26:03 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 99.2%"
+        ],
+        "kv_tail": [
+          "(APIServer pid=440057) INFO 08-16 18:25:43 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 36.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.8%, Prefix cache hit rate: 99.2%",
+          "(APIServer pid=440057) INFO 08-16 18:25:53 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 36.1 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 99.2%",
+          "(APIServer pid=440057) INFO 08-16 18:26:03 [loggers.py:273] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 99.2%"
+        ]
+      },
+      "per_case": {
+        "2": {
+          "states": [
+            "wrong",
+            "correct",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 5,
+          "accuracy_percent": 20.0,
+          "mean_duration_minutes": 19.855546666666665,
+          "mean_input_output_tokens": 1293111.8
+        },
+        "12": {
+          "states": [
+            "wrong",
+            "wrong",
+            "excluded_or_not_completed",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 0,
+          "effective": 4,
+          "accuracy_percent": 0.0,
+          "mean_duration_minutes": 19.412029166666667,
+          "mean_input_output_tokens": 1615673.25
+        },
+        "19": {
+          "states": [
+            "wrong",
+            "wrong",
+            "correct",
+            "correct",
+            "correct"
+          ],
+          "correct": 3,
+          "effective": 5,
+          "accuracy_percent": 60.0,
+          "mean_duration_minutes": 13.931916666666666,
+          "mean_input_output_tokens": 1865428.0
+        },
+        "20": {
+          "states": [
+            "correct",
+            "correct",
+            "wrong",
+            "correct",
+            "wrong"
+          ],
+          "correct": 3,
+          "effective": 5,
+          "accuracy_percent": 60.0,
+          "mean_duration_minutes": 12.495476666666667,
+          "mean_input_output_tokens": 1956595.4
+        },
+        "29": {
+          "states": [
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 0,
+          "effective": 5,
+          "accuracy_percent": 0.0,
+          "mean_duration_minutes": 20.68155,
+          "mean_input_output_tokens": 4934687.6
+        },
+        "38": {
+          "states": [
+            "correct",
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 5,
+          "accuracy_percent": 20.0,
+          "mean_duration_minutes": 16.599593333333335,
+          "mean_input_output_tokens": 2652632.6
+        },
+        "65": {
+          "states": [
+            "correct",
+            "wrong",
+            "wrong",
+            "correct",
+            "correct"
+          ],
+          "correct": 3,
+          "effective": 5,
+          "accuracy_percent": 60.0,
+          "mean_duration_minutes": 13.356566666666668,
+          "mean_input_output_tokens": 2729293.8
+        },
+        "71": {
+          "states": [
+            "wrong",
+            "wrong",
+            "correct",
+            "wrong",
+            "excluded_or_not_completed"
+          ],
+          "correct": 1,
+          "effective": 4,
+          "accuracy_percent": 25.0,
+          "mean_duration_minutes": 19.872304166666666,
+          "mean_input_output_tokens": 2995741.0
+        },
+        "85": {
+          "states": [
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct"
+          ],
+          "correct": 5,
+          "effective": 5,
+          "accuracy_percent": 100.0,
+          "mean_duration_minutes": 3.8101266666666667,
+          "mean_input_output_tokens": 471951.2
+        },
+        "86": {
+          "states": [
+            "wrong",
+            "correct",
+            "correct",
+            "correct",
+            "correct"
+          ],
+          "correct": 4,
+          "effective": 5,
+          "accuracy_percent": 80.0,
+          "mean_duration_minutes": 4.7689666666666675,
+          "mean_input_output_tokens": 514534.6
+        },
+        "99": {
+          "states": [
+            "correct",
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 5,
+          "accuracy_percent": 20.0,
+          "mean_duration_minutes": 6.301943333333333,
+          "mean_input_output_tokens": 551154.6
+        },
+        "100": {
+          "states": [
+            "correct",
+            "correct",
+            "correct",
+            "wrong",
+            "correct"
+          ],
+          "correct": 4,
+          "effective": 5,
+          "accuracy_percent": 80.0,
+          "mean_duration_minutes": 7.49261,
+          "mean_input_output_tokens": 532024.4
+        }
+      }
+    },
+    "5": {
+      "epoch": 5,
+      "checkpoint": 720,
+      "role": "user_requested_comparative_checkpoint",
+      "completion": {
+        "verified_at": "2026-08-19T18:41:32.505177+08:00",
+        "status": "early_stopped_verified",
+        "temperature": 0,
+        "scoring_policy_version": "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery",
+        "effective_terminals": 58,
+        "correct": 24,
+        "effective_model_wrong": 34,
+        "completed_full_effective_rounds": 3,
+        "maximum_possible_final_accuracy_percent": 43.333333333333336,
+        "accepted_temperature0_requests": 122,
+        "report": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch5_temperature0_agent_validation/report/recovery_epoch5-timeout-recovery-20260819T173000+0800/final_v4.json"
+      },
+      "completion_sha256": "34da8f15d744cf9ced7b8d12ffd3b38b727a9702a51bf0b0fcf24ce325d3b6dd",
+      "report": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch5_temperature0_agent_validation/report/recovery_epoch5-timeout-recovery-20260819T173000+0800/final_v4.json",
+      "report_sha256": "ad879ea91b7996f45eb9b4a3686f2980ca6de264c86a8acacba0d947dd4dc415",
+      "correct": 24,
+      "effective": 58,
+      "wrong": 34,
+      "accuracy_percent": 41.37931034482759,
+      "completed_full_effective_rounds": 3,
+      "early_stop": {
+        "triggered": true,
+        "completed_full_effective_rounds": 3,
+        "effective_model_wrong": 34,
+        "planned_total": 60,
+        "maximum_possible_final_correct": 26,
+        "maximum_possible_final_accuracy_percent": 43.333333333333336,
+        "minimum_full_effective_rounds": 3,
+        "minimum_effective_model_wrong": 30
+      },
+      "mean_duration_minutes": 12.381300862068967,
+      "mean_input_output_tokens": 2218845.724137931,
+      "reasoning": {
+        "effective_cells": 58,
+        "original_cells_with_reasoning": 58,
+        "cells_with_reasoning_evidence": 58,
+        "recovery": null
+      },
+      "token_timing": {
+        "cells_with_duration": 58,
+        "cells_with_input_output_tokens": 58
+      },
+      "temperature_audit": {
+        "accepted": 7050,
+        "nonzero": 0,
+        "malformed": 0,
+        "files": [
+          {
+            "path": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch5_temperature0_agent_validation/control/temperature0_request_audit.jsonl",
+            "accepted": 6927,
+            "nonzero": 0,
+            "malformed": 0
+          },
+          {
+            "path": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch5_temperature0_agent_validation/control/temperature0_request_audit.recovery_epoch5-timeout-recovery-20260819T172000+0800.jsonl",
+            "accepted": 1,
+            "nonzero": 0,
+            "malformed": 0
+          },
+          {
+            "path": "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch5_temperature0_agent_validation/control/temperature0_request_audit.recovery_epoch5-timeout-recovery-20260819T173000+0800.jsonl",
+            "accepted": 122,
+            "nonzero": 0,
+            "malformed": 0
+          }
+        ]
+      },
+      "archives": {
+        "timeout": 59,
+        "infra": 0
+      },
+      "logs": {
+        "files": [
+          "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch5_temperature0_agent_validation/vllm.log",
+          "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch5_temperature0_agent_validation/vllm.recovery_epoch5-timeout-recovery-20260819T172000+0800.log",
+          "/root/autodl-tmp/optimization-with-real-trajectory/output/2026-08-09-nightly/0809/0809-agent-error-aware-5epoch-20260811T214109+0800/epoch5_temperature0_agent_validation/vllm.recovery_epoch5-timeout-recovery-20260819T173000+0800.log"
+        ],
+        "warning_lines": 704,
+        "preemption_lines": 0,
+        "oom_lines": 0,
+        "prefix_tail": [
+          "(APIServer pid=428106) INFO 08-19 18:41:12 [loggers.py:273] Engine 000: Avg prompt throughput: 186.6 tokens/s, Avg generation throughput: 10.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.7%, Prefix cache hit rate: 97.5%",
+          "(APIServer pid=428106) INFO 08-19 18:41:22 [loggers.py:273] Engine 000: Avg prompt throughput: 1450.7 tokens/s, Avg generation throughput: 30.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.5%, Prefix cache hit rate: 97.3%",
+          "(APIServer pid=428106) INFO 08-19 18:41:32 [loggers.py:273] Engine 000: Avg prompt throughput: 116.3 tokens/s, Avg generation throughput: 37.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 97.3%"
+        ],
+        "kv_tail": [
+          "(APIServer pid=428106) INFO 08-19 18:41:12 [loggers.py:273] Engine 000: Avg prompt throughput: 186.6 tokens/s, Avg generation throughput: 10.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.7%, Prefix cache hit rate: 97.5%",
+          "(APIServer pid=428106) INFO 08-19 18:41:22 [loggers.py:273] Engine 000: Avg prompt throughput: 1450.7 tokens/s, Avg generation throughput: 30.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.5%, Prefix cache hit rate: 97.3%",
+          "(APIServer pid=428106) INFO 08-19 18:41:32 [loggers.py:273] Engine 000: Avg prompt throughput: 116.3 tokens/s, Avg generation throughput: 37.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 97.3%"
+        ]
+      },
+      "per_case": {
+        "2": {
+          "states": [
+            "correct",
+            "wrong",
+            "wrong",
+            "correct",
+            "wrong"
+          ],
+          "correct": 2,
+          "effective": 5,
+          "accuracy_percent": 40.0,
+          "mean_duration_minutes": 11.511316666666666,
+          "mean_input_output_tokens": 1725607.2
+        },
+        "12": {
+          "states": [
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 0,
+          "effective": 5,
+          "accuracy_percent": 0.0,
+          "mean_duration_minutes": 8.611796666666667,
+          "mean_input_output_tokens": 685988.6
+        },
+        "19": {
+          "states": [
+            "wrong",
+            "wrong",
+            "correct",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 1,
+          "effective": 5,
+          "accuracy_percent": 20.0,
+          "mean_duration_minutes": 19.038310000000003,
+          "mean_input_output_tokens": 2760178.8
+        },
+        "20": {
+          "states": [
+            "wrong",
+            "wrong",
+            "correct",
+            "correct",
+            "correct"
+          ],
+          "correct": 3,
+          "effective": 5,
+          "accuracy_percent": 60.0,
+          "mean_duration_minutes": 5.694256666666666,
+          "mean_input_output_tokens": 1161102.0
+        },
+        "29": {
+          "states": [
+            "excluded_or_not_completed",
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 0,
+          "effective": 4,
+          "accuracy_percent": 0.0,
+          "mean_duration_minutes": 25.062900000000003,
+          "mean_input_output_tokens": 8942065.75
+        },
+        "38": {
+          "states": [
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong",
+            "wrong"
+          ],
+          "correct": 0,
+          "effective": 5,
+          "accuracy_percent": 0.0,
+          "mean_duration_minutes": 21.439486666666664,
+          "mean_input_output_tokens": 2209749.4
+        },
+        "65": {
+          "states": [
+            "wrong",
+            "correct",
+            "wrong",
+            "correct",
+            "wrong"
+          ],
+          "correct": 2,
+          "effective": 5,
+          "accuracy_percent": 40.0,
+          "mean_duration_minutes": 17.244596666666666,
+          "mean_input_output_tokens": 2531385.4
+        },
+        "71": {
+          "states": [
+            "correct",
+            "wrong",
+            "wrong",
+            "excluded_or_not_completed",
+            "correct"
+          ],
+          "correct": 2,
+          "effective": 4,
+          "accuracy_percent": 50.0,
+          "mean_duration_minutes": 17.5758375,
+          "mean_input_output_tokens": 6634199.0
+        },
+        "85": {
+          "states": [
+            "correct",
+            "correct",
+            "correct",
+            "wrong",
+            "correct"
+          ],
+          "correct": 4,
+          "effective": 5,
+          "accuracy_percent": 80.0,
+          "mean_duration_minutes": 10.406753333333333,
+          "mean_input_output_tokens": 540184.6
+        },
+        "86": {
+          "states": [
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "wrong"
+          ],
+          "correct": 4,
+          "effective": 5,
+          "accuracy_percent": 80.0,
+          "mean_duration_minutes": 4.469446666666667,
+          "mean_input_output_tokens": 498797.0
+        },
+        "99": {
+          "states": [
+            "correct",
+            "wrong",
+            "correct",
+            "correct",
+            "wrong"
+          ],
+          "correct": 3,
+          "effective": 5,
+          "accuracy_percent": 60.0,
+          "mean_duration_minutes": 5.1241,
+          "mean_input_output_tokens": 488882.8
+        },
+        "100": {
+          "states": [
+            "correct",
+            "wrong",
+            "wrong",
+            "correct",
+            "correct"
+          ],
+          "correct": 3,
+          "effective": 5,
+          "accuracy_percent": 60.0,
+          "mean_duration_minutes": 5.972036666666667,
+          "mean_input_output_tokens": 675722.8
+        }
+      }
+    }
+  },
+  "cleanup": {
+    "processes": [],
+    "gpu": [
+      "0, 0, 0",
+      "1, 0, 0"
+    ],
+    "global_lock_exists": false
+  },
+  "checks": {
+    "policy": true,
+    "temperature": true,
+    "completion": true,
+    "reasoning": true,
+    "token_timing": true,
+    "no_preemption_or_oom": true,
+    "process_cleanup": true,
+    "gpu_cleanup": true,
+    "global_lock_cleanup": true
+  },
+  "passed": true,
+  "interpretation_limits": [
+    "epoch3/checkpoint-432 remains the predeclared primary checkpoint",
+    "epoch4 and epoch5 are comparative checkpoints only",
+    "the fixed 12 cases are error-mining/dev and not an independent held-out set"
+  ]
+}
