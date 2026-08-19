@@ -9,6 +9,11 @@ grep -Fq 'source "${SCRIPT_DIR}/agent_validation_retry_policy.sh"' "${launcher}"
 grep -Fq 'agent_validation_retry_archive_count "${OUTPUT_ROOT}" "${run_name}"' "${launcher}"
 grep -Fq 'agent_validation_archive_timeout "${run_root}"' "${launcher}"
 grep -Fq 'retry timeout case=${case_id} repeat=${repeat}' "${launcher}"
+grep -Fq 'DEFER_TIMEOUT_RETRIES="${DEFER_TIMEOUT_RETRIES:-0}"' "${launcher}"
+grep -Fq 'defer timeout case=${case_id} repeat=${repeat}' "${launcher}"
+grep -Fq 'final timeout retry sweep start' "${launcher}"
+grep -Fq 'run_grid_pass 0' "${launcher}"
+grep -Fq 'run_grid_pass 1' "${launcher}"
 
 test_root="$(mktemp -d)"
 cleanup() {

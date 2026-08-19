@@ -526,7 +526,7 @@ v7 针对 2026-08-11 20:02 深审将 action 门禁升级为完整结构门禁：
 7. **action 完整结构门禁。** 全量从 messages 重算 {len(action_rows)} 条 action：完整 binding {sum(status['complete'] for status in action_structural_status.values())} 条，明确待验证 {len(pending_action_rows)} 条，matched/expected 分布 {dict(sorted((f'{matched}/{expected}', count) for (matched, expected), count in action_matched_expected.items()))}。深审点名的 17 条均存在且不完整；父级完整证据后仍调用工具 {len(complete_base_continuations)} 条。q0023 原 1/1 完整节点已删除 {audited_source['metadata']['0809_post_closure_gate'].get('removed_positive_tool_call_count')} 个正 loss 工具调用并改为停止。
 8. **候选排除不做闭世界推断。** endpoint rejected-label 声明总数 {sum(len(row['metadata'].get('rejected_labels', [])) for row in endpoint)}，候选范围校准 bundle {sum('candidate_scope_calibration' in row['metadata'].get('endpoint_objectives', []) for row in endpoint)}/{len(endpoint)}。没有候选专属负证据时只监督“保持未验证”。
 9. **目标表达多样性。** endpoint 精确正目标 {len({positive_target(row) for row in endpoint})}/{len(endpoint)} 唯一；只去除 snapshot/query/config path 等机械条件后仍有 {len({condition_normalized_target(row) for row in endpoint})}/{len(endpoint)} 唯一，设备、事实、标签和结果均保留在统计中。
-10. **Agent 判分协议。** 固定 epoch 3/checkpoint-432，对同一 12 题各运行 5 次；唯一判分入口为 `{evaluation_policy['scoring_entry']}`，版本 `{evaluation_policy['scoring_policy_version']}`。正确性只看最终答案，q73–q86 inclusive-OR 仍由同一 scorer 处理；过程中的工具/推理错误只作诊断，不能覆盖一个精确可接受的最终答案。终态无有效答案计模型错误；基础设施失败、超时和人为中断不进有效分母，保留证据后安全重试。
+10. **Agent 判分协议。** 固定 epoch 3/checkpoint-432，对同一 12 题各运行 5 次；唯一判分入口为 `{evaluation_policy['scoring_entry']}`，版本 `{evaluation_policy['scoring_policy_version']}`。正确性只看最终答案，q73–q86 inclusive-OR 仍由同一 scorer 处理；过程中的工具/推理错误只作诊断，不能覆盖一个精确可接受的最终答案。全篇唯一、完整 fenced `<result>` JSON 字符串列表仅缺 `</result>` 时，只在精确命中可接受答案的情况下恢复；其他 malformed、冲突或多结果输出不恢复。终态无有效答案计模型错误；基础设施失败、超时和人为中断不进有效分母，保留证据后安全重试。
 
 ## 发布门禁
 

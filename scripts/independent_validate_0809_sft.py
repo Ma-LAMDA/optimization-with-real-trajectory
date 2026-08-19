@@ -46,7 +46,9 @@ STRUCTURAL_AUDIT_ACTIONS = {
     "0809_cf_action_q0066_a03",
 }
 AUDITED_COMPLETE_SOURCE = "q0023_path_02_success_09_step_04"
-EXPECTED_FINAL_ANSWER_SCORER = "agent-final-answer.v3.2026-08-10-final-answer-only"
+EXPECTED_FINAL_ANSWER_SCORER = (
+    "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery"
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -636,13 +638,14 @@ def main() -> None:
         "scoring_entry": "scripts/final_answer_scoring.py",
         "scoring_policy_version": EXPECTED_FINAL_ANSWER_SCORER,
         "correctness_basis": "final_answer_only",
+        "incomplete_result_recovery": "one complete fenced <result> JSON string list with no closing </result> is accepted only on exact match",
         "launcher": "scripts/run_agent_validation_resilient.sh",
         "reasoning_effort": "high",
         "timeout_seconds_per_case_repeat": 3600,
         "infrastructure_retry_limit": 3,
     }
     if any(evaluation.get(key) != value for key, value in independent_contract.items()):
-        raise ValueError("formal config does not bind the shared v3 Agent protocol")
+        raise ValueError("formal config does not bind the shared v4 Agent protocol")
     if (
         "inclusive-OR" not in evaluation.get("q73_q86_policy", "")
         or "diagnostic_only" not in evaluation.get(
@@ -655,8 +658,11 @@ def main() -> None:
     scorer_path = ROOT / evaluation["scoring_entry"]
     scorer_source = scorer_path.read_text(encoding="utf-8")
     if (
-        f'SCORING_POLICY_VERSION = "{EXPECTED_FINAL_ANSWER_SCORER}"'
-        not in scorer_source
+        re.search(
+            rf'SCORING_POLICY_VERSION\s*=\s*(?:\(\s*)?["\']{re.escape(EXPECTED_FINAL_ANSWER_SCORER)}["\']',
+            scorer_source,
+        )
+        is None
         or "q73-q86 VRRP inclusive OR" not in scorer_source
     ):
         raise ValueError("shared final-answer scorer implementation differs")

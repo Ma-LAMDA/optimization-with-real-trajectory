@@ -4,8 +4,10 @@
 The primary protocol is exactly one valid ``<result>...</result>`` JSON string
 list.  Only when the result wrapper is wholly absent may one fenced block be
 recovered, and then only when the block's complete parsed answer exactly equals
-one accepted option.  Prose mentions, malformed or multiple result wrappers,
-and multiple/conflicting fenced blocks are never recovered.
+one accepted option.  One additional exact-match recovery accepts a unique
+`````<result>`` fenced JSON list whose closing ``</result>`` is missing.
+Prose mentions, other malformed or multiple result wrappers, and
+multiple/conflicting fenced blocks are never recovered.
 """
 
 from __future__ import annotations
@@ -16,11 +18,19 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
-SCORING_POLICY_VERSION = "agent-final-answer.v3.2026-08-10-final-answer-only"
+SCORING_POLICY_VERSION = (
+    "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery"
+)
 
 RESULT_RE = re.compile(r"<result>\s*([\s\S]*?)\s*</result>", re.I)
 RESULT_MARKER_RE = re.compile(r"</?result\b", re.I)
+RESULT_OPEN_RE = re.compile(r"(?<!/)<result\b", re.I)
+RESULT_CLOSE_RE = re.compile(r"</result\b", re.I)
 FENCE_RE = re.compile(r"```[^\r\n`]*\r?\n?([\s\S]*?)```", re.I)
+INCOMPLETE_RESULT_FENCE_RE = re.compile(
+    r"```[ \t]*<result>[ \t]*\r?\n([\s\S]*?)```",
+    re.I,
+)
 FENCE_MARKER_RE = re.compile(r"```")
 LIST_PREFIX_RE = re.compile(r"^(?:[-*]\s+|\d+[.)]\s*)")
 
@@ -135,6 +145,36 @@ def parse_final_answer(text: str, expected: Any | None = None) -> ParsedFinalAns
         )
     if len(matches) > 1:
         return ParsedFinalAnswer(value=None, source=f"ambiguous_result_tags:{len(matches)}")
+    if markers and expected is not None:
+        opening_markers = RESULT_OPEN_RE.findall(text)
+        closing_markers = RESULT_CLOSE_RE.findall(text)
+        fenced_blocks = FENCE_RE.findall(text)
+        incomplete_blocks = INCOMPLETE_RESULT_FENCE_RE.findall(text)
+        fence_markers = len(FENCE_MARKER_RE.findall(text))
+        if (
+            len(markers) == 1
+            and len(opening_markers) == 1
+            and not closing_markers
+            and len(fenced_blocks) == 1
+            and len(incomplete_blocks) == 1
+            and fence_markers == 2
+        ):
+            candidate = _parse_json_list(incomplete_blocks[0].strip())
+            if candidate is None:
+                return ParsedFinalAnswer(
+                    value=None,
+                    source="invalid_incomplete_result_fence",
+                )
+            if candidate not in expected_options(expected):
+                return ParsedFinalAnswer(
+                    value=None,
+                    source="conflicting_incomplete_result_fence",
+                )
+            return ParsedFinalAnswer(
+                value=candidate,
+                source="recovered_incomplete_result_fenced_exact_match",
+                recovered=True,
+            )
     if markers:
         return ParsedFinalAnswer(value=None, source="invalid_result_markup")
     if expected is None:

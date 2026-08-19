@@ -92,6 +92,42 @@ class FinalAnswerScoringTest(unittest.TestCase):
         self.assertIsNone(parsed.value)
         self.assertEqual(parsed.source, "invalid_result_markup")
 
+    def test_exact_json_in_incomplete_result_fence_is_recovered(self) -> None:
+        parsed = parse_final_answer(
+            '```<result>\n["Device_A;fault"]\n```',
+            EXPECTED,
+        )
+        self.assertEqual(parsed.value, EXPECTED)
+        self.assertEqual(
+            parsed.source,
+            "recovered_incomplete_result_fenced_exact_match",
+        )
+        self.assertTrue(parsed.recovered)
+
+    def test_conflicting_incomplete_result_fence_is_not_recovered(self) -> None:
+        parsed = parse_final_answer(
+            '```<result>\n["Device_B;fault"]\n```',
+            EXPECTED,
+        )
+        self.assertIsNone(parsed.value)
+        self.assertEqual(parsed.source, "conflicting_incomplete_result_fence")
+
+    def test_plain_incomplete_result_is_not_recovered(self) -> None:
+        parsed = parse_final_answer(
+            '<result>\n["Device_A;fault"]',
+            EXPECTED,
+        )
+        self.assertIsNone(parsed.value)
+        self.assertEqual(parsed.source, "invalid_result_markup")
+
+    def test_multiple_fences_block_incomplete_result_recovery(self) -> None:
+        parsed = parse_final_answer(
+            '```<result>\n["Device_A;fault"]\n```\n```json\n[]\n```',
+            EXPECTED,
+        )
+        self.assertIsNone(parsed.value)
+        self.assertEqual(parsed.source, "invalid_result_markup")
+
     def test_multiple_result_wrappers_are_ambiguous(self) -> None:
         parsed = parse_final_answer(
             '<result>["Device_A;fault"]</result>'

@@ -173,8 +173,9 @@ bash scripts/train_qwen36_0809_agent_error_aware_5epoch.sh
 
 - case IDs：2、12、19、20、29、38、65、71、85、86、99、100，每题 5 次；
 - checkpoint：epoch 3 / checkpoint-432；eval loss 只作诊断，不参与选点；
-- 唯一判分入口：`scripts/final_answer_scoring.py`，策略版本 `agent-final-answer.v3.2026-08-10-final-answer-only`；
+- 唯一判分入口：`scripts/final_answer_scoring.py`，策略版本 `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`；
 - 正确性只看最终答案；过程工具调用、归因或协议告警只作诊断，不能推翻精确可接受答案；q73–q86 inclusive-OR 仍由同一 scorer 处理；
+- v4 仅恢复全篇唯一、完整 fenced `<result>` JSON 字符串列表缺少 `</result>` 且精确命中可接受答案的情况；其他 malformed、冲突或多结果输出不恢复；
 - 终态无有效最终答案计模型错误；基础设施失败、超时和人为中断不进有效分母，完整归档后在同一参数下重试，最多 3 次；
 - `reasoning_effort=high`，单次 3600 秒，一个 vLLM TP=2 实例、两个 runner、总并发 2；
 - 12×5 在至少 3 个完整有效轮次且累计 30 个有效模型错误时允许提前停止；报告必须同时给出观察准确率、完整轮次、错误数、60 格理论上限和未运行槽位。

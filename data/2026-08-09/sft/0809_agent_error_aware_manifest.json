@@ -5,7 +5,7 @@
   "data_root": "data/2026-08-09",
   "design_input": {
     "path": "data/2026-08-09/curation/DESIGN_AUDIT_INPUT.md",
-    "sha256_lf_normalized": "9eeedde9019af3dc9fe4d3ee6a4897a8c2b29a1631eac2f2c0269838a7e2f440",
+    "sha256_lf_normalized": "e5852520c7737e472b57d8ce67af6b350c70ced3d490b47ac8e769fc0ca1149f",
     "scope_note": "repository-contained v7 design input: message-derived structural action closure, candidate-scope-calibrated endpoints, portable release paths, reachable marker-free targets, one bundle per real evidence path, runtime identity binding and complete dependency closure"
   },
   "parent_release": {
@@ -458,14 +458,17 @@
     "repeats_per_case": 5,
     "fixed_checkpoint": "epoch_03/checkpoint-432",
     "scoring_entry": "scripts/final_answer_scoring.py",
-    "scoring_policy_version": "agent-final-answer.v3.2026-08-10-final-answer-only",
+    "scoring_policy_version": "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery",
     "correctness_basis": "final_answer_only",
-    "q73_q86_policy": "inclusive-OR retained inside the canonical v3 scorer",
+    "q73_q86_policy": "inclusive-OR retained inside the canonical v4 scorer",
+    "incomplete_result_recovery": "one complete fenced <result> JSON string list with no closing </result> is accepted only on exact match",
     "process_tool_or_reasoning_errors": "diagnostic_only; do not override an exact accepted final answer",
     "terminal_without_valid_final_answer": "model_error",
     "launcher": "scripts/run_agent_validation_resilient.sh",
     "reasoning_effort": "high",
     "timeout_seconds_per_case_repeat": 3600,
+    "timeout_retry_scheduling": "archive_and_defer_until_bounded_final_sweeps",
+    "immediate_timeout_retry": false,
     "topology": "one_vllm_tp2_instance_two_runners_total_concurrency_2",
     "early_stop": "for 12x5 only: stop after at least 3 complete valid repeats and 30 cumulative valid model errors; report observed accuracy and 60-slot upper bound",
     "infrastructure_retry_limit": 3,
@@ -479,19 +482,19 @@
     "tracked_files": {
       "root_readme": {
         "path": "README.md",
-        "sha256_lf_normalized": "5ea527c01274560d5039ddc718197db770485cf4421bf50ca0dce8529d64f572"
+          "sha256_lf_normalized": "766ba4d75dd1a3861385125dc0171b71bd4516439d9771e0a82510c589e97e60"
       },
       "release_readme": {
         "path": "data/2026-08-09/README.md",
-        "sha256_lf_normalized": "f01fbae7f5f922e49be25dd90b04c2b24899fc2dd2140ef86288a1bdaeaa9247"
+        "sha256_lf_normalized": "2d467e87733e2d156c4852535bcb005f3aa6581bae3bd6433e1285ed3e45b52c"
       },
       "reproducibility": {
         "path": "data/2026-08-09/REPRODUCIBILITY.md",
-        "sha256_lf_normalized": "c9d509a2a126c5180da42a7cd256f604d2ac0d2de4e5d95ff104b821059c4f9a"
+        "sha256_lf_normalized": "a124f0fa99e6fb6f23fca826fe472c42363768ff067e824001aff8a63641f06a"
       },
       "design_audit_input": {
         "path": "data/2026-08-09/curation/DESIGN_AUDIT_INPUT.md",
-        "sha256_lf_normalized": "9eeedde9019af3dc9fe4d3ee6a4897a8c2b29a1631eac2f2c0269838a7e2f440"
+        "sha256_lf_normalized": "e5852520c7737e472b57d8ce67af6b350c70ced3d490b47ac8e769fc0ca1149f"
       },
       "converter": {
         "path": "scripts/convert_0809_agent_error_aware_sft.py",
@@ -503,15 +506,15 @@
       },
       "validator": {
         "path": "scripts/validate_0809_agent_error_aware_sft.py",
-        "sha256_lf_normalized": "bec5d9d54a3fb38a7c5c30f2319471750e950ec4ee4baf64ad1f5cd8b68939a3"
+        "sha256_lf_normalized": "d6874a9958d66bfb05629734a04ff013cc2b0972221a5f66c44f4a2cab3b932b"
       },
       "independent_validator": {
         "path": "scripts/independent_validate_0809_sft.py",
-        "sha256_lf_normalized": "3b37b5931abae482f402bc2ebfc7bab42c6fa4f762590b60d12ae0b7036474ac"
+        "sha256_lf_normalized": "46d7276c8e1410d1f6132a4f92e63251f701f3323dd452198f42135cdfbc61a7"
       },
       "audit": {
         "path": "scripts/audit_0809_agent_error_aware_sft.py",
-        "sha256_lf_normalized": "bc0c664a116de296f092dc33ec99540bd5db45bc7feb1766fc8b5bb5fe72f1ad"
+        "sha256_lf_normalized": "15d404574111882a78726a7123d8db3feb056e4ee478a7b366463838ccecd5fe"
       },
       "tokenizer_preflight": {
         "path": "scripts/check_0809_target_tokenizer_preflight.py",
@@ -527,11 +530,15 @@
       },
       "formal_config": {
         "path": "config/qwen36_0809_formal_training.json",
-        "sha256_lf_normalized": "044de7883f4838b0052116213ccd4137a7a003ab8e22cf772709cbaf30a4382b"
+          "sha256_lf_normalized": "f8fc00a6e67cc126c05b05a4eb9509f4bb0c2d65aada6d70c33ce95c7daa6b4e"
       },
       "agent_validation_launcher": {
         "path": "scripts/run_agent_validation_resilient.sh",
-        "sha256_lf_normalized": "234506f85cd32c2f3497d61c0df20370401071953090d7c2620e3a25147c71b5"
+          "sha256_lf_normalized": "2d8a75012bfe8b8e769619bef3e33afecce5aa5e62c2ef1fd2a9b2090eea25bd"
+      },
+      "agent_validation_retry_policy_test": {
+        "path": "scripts/test_agent_validation_retry_policy.sh",
+          "sha256_lf_normalized": "1734e0c3accd074e733bf74f8cca09ff91bcfc26424be927b01ec4415b51f272"
       },
       "agent_validation_retry_policy": {
         "path": "scripts/agent_validation_retry_policy.sh",
@@ -547,7 +554,7 @@
       },
       "final_answer_scorer": {
         "path": "scripts/final_answer_scoring.py",
-        "sha256_lf_normalized": "70e282aaac26a10513c142779ca0b0783f930177dd8a85ca4306c283a1573f35"
+        "sha256_lf_normalized": "4fff98ccedaf6536b62b837749ba545129879b7eaf20f5546f9dd4b40234edf2"
       },
       "parent_accepted_selection": {
         "path": "data/2026-08-05/curation/accepted_trajectory_selection.json",

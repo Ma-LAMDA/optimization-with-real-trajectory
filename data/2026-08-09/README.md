@@ -74,7 +74,7 @@ bash scripts/train_qwen36_0809_agent_error_aware_5epoch.sh
 
 ## 评测与维护边界
 
-当前 12 题已经用于错误模式分析，只能作为 error-mining/dev 和历史 checkpoint 横向诊断；最终泛化结论必须使用未参与反推的新 topology-heldout Agent 集。0809 与 0807 统一使用 `scripts/final_answer_scoring.py` 的 `agent-final-answer.v3.2026-08-10-final-answer-only`：正确性只看最终答案，q73–q86 inclusive-OR 由同一入口处理；过程中的错误归因或 malformed tool call 只作诊断，不能覆盖一个精确可接受的最终答案。终态无有效最终答案计模型错误；基础设施失败、超时和人为中断不进有效分母，保留原始证据后安全重试。
+当前 12 题已经用于错误模式分析，只能作为 error-mining/dev 和历史 checkpoint 横向诊断；最终泛化结论必须使用未参与反推的新 topology-heldout Agent 集。0809 与 0807 统一使用 `scripts/final_answer_scoring.py` 的 `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`：正确性只看最终答案，q73–q86 inclusive-OR 由同一入口处理；过程中的错误归因或 malformed tool call 只作诊断，不能覆盖一个精确可接受的最终答案。v4 只新增一个保守恢复分支：若全篇恰好只有一个完整 fenced `<result>` JSON 字符串列表、仅缺 `</result>`，且列表精确匹配可接受答案，则计为正确；其他残缺、冲突或多结果输出仍计错。终态无有效最终答案计模型错误；基础设施失败、超时和人为中断不进有效分母，保留原始证据后安全重试。
 
 最终 Agent 协议固定为 epoch 3/checkpoint-432、上述 12 题各 5 次、reasoning effort high、单次 3600 秒、一个 TP=2 vLLM 实例和两个 runner（总并发 2），基础设施最多重试 3 次。12×5 验证在至少完成 3 个有效完整轮次且累计 30 个有效模型错误时允许提前停止，但必须同时报告观察准确率和 60 格理论上限。
 

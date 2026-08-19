@@ -31,6 +31,13 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
     parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument(
+        "--dataset",
+        action="append",
+        default=[],
+        type=Path,
+        help="JSONL dataset used to fill expected answers absent from summary attempts.csv files",
+    )
     parser.add_argument("roots", nargs="*", type=Path)
     return parser.parse_args()
 
@@ -72,6 +79,30 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def load_expected_answers(paths: list[Path]) -> dict[int, Any]:
+    answers: dict[int, Any] = {}
+    for path in paths:
+        with path.open(encoding="utf-8") as handle:
+            for line_number, line in enumerate(handle, start=1):
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                case_id = int(row.get("id") or row.get("case_id") or 0)
+                expected = row.get("answer")
+                if isinstance(expected, str):
+                    expected = json_cell(expected)
+                if not case_id or expected is None:
+                    continue
+                previous = answers.get(case_id)
+                if previous is not None and previous != expected:
+                    raise ValueError(
+                        f"conflicting expected answer for case {case_id} in "
+                        f"{path}:{line_number}"
+                    )
+                answers[case_id] = expected
+    return answers
+
+
 def summarize(original: list[bool], rescored: list[bool], effective: list[bool]) -> dict[str, Any]:
     total = len(original)
     effective_indexes = [index for index, keep in enumerate(effective) if keep]
@@ -96,7 +127,9 @@ def summarize(original: list[bool], rescored: list[bool], effective: list[bool])
     }
 
 
-def rescore_attempts(repo: Path, path: Path) -> dict[str, Any]:
+def rescore_attempts(
+    repo: Path, path: Path, expected_by_case: dict[int, Any]
+) -> dict[str, Any]:
     with path.open(encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
     original: list[bool] = []
@@ -107,13 +140,21 @@ def rescore_attempts(repo: Path, path: Path) -> dict[str, Any]:
     for row in rows:
         case_id = int(row.get("case_id") or 0)
         expected = json_cell(row.get("expected"))
+        if expected is None:
+            expected = expected_by_case.get(case_id)
         final_path = locate_final_answer(repo, path, row.get("artifact_dir") or "")
         if final_path:
-            scored = score_final_answer(
-                final_path.read_text(encoding="utf-8", errors="replace"),
-                expected,
-                case_id=case_id,
-            )
+            try:
+                scored = score_final_answer(
+                    final_path.read_text(encoding="utf-8", errors="replace"),
+                    expected,
+                    case_id=case_id,
+                )
+            except (TypeError, ValueError) as exc:
+                raise RuntimeError(
+                    f"cannot rescore {path} case_id={case_id} "
+                    f"repeat={row.get('repeat')!r} expected={expected!r}"
+                ) from exc
             prediction = scored.prediction
             source = scored.source
             is_correct = scored.correct
@@ -236,6 +277,11 @@ def rescore_judgment(repo: Path, path: Path) -> tuple[bool, bool, bool]:
 def main() -> None:
     args = parse_args()
     repo = args.repo_root.resolve()
+    dataset_paths = [
+        path.resolve() if path.is_absolute() else (repo / path).resolve()
+        for path in args.dataset
+    ]
+    expected_by_case = load_expected_answers(dataset_paths)
     roots = [path.resolve() for path in args.roots] or [repo / "experiments", repo / "output"]
     attempt_files: set[Path] = set()
     prediction_files: set[Path] = set()
@@ -249,7 +295,9 @@ def main() -> None:
 
     files: dict[str, Any] = {}
     for path in sorted(attempt_files):
-        files[path.relative_to(repo).as_posix()] = rescore_attempts(repo, path)
+        files[path.relative_to(repo).as_posix()] = rescore_attempts(
+            repo, path, expected_by_case
+        )
     for path in sorted(prediction_files):
         files[path.relative_to(repo).as_posix()] = rescore_predictions(path)
 
@@ -295,8 +343,17 @@ def main() -> None:
         "rescore_script_sha256": sha256(Path(__file__)),
         "rule": {
             "strict": "single <result> JSON string list",
-            "recovery": "exactly one fenced block whose complete answer exactly matches an accepted option",
+            "missing_result_recovery": (
+                "exactly one fenced block whose complete answer exactly "
+                "matches an accepted option"
+            ),
+            "incomplete_result_recovery": (
+                "exactly one ```<result> fenced JSON string list with no "
+                "</result>, recovered only when it exactly matches an "
+                "accepted option"
+            ),
             "prose_mentions_are_not_recovered": True,
+            "other_malformed_or_conflicting_results_are_not_recovered": True,
             "q73_q86_inclusive_or": True,
         },
         "files": files,

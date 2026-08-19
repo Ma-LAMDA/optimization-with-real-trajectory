@@ -179,7 +179,7 @@ Qwen3.6-27B tokenizer/loss-mask 预检，不复用 v6 哈希：p99 4561、最大
 loss-mask failure 均为 0；环境为 Python 3.12.3、ms-swift 4.4.2、transformers 5.12.1。
 
 0809 最终 Agent 测试与 0807 统一调用 `scripts/final_answer_scoring.py`，策略版本固定为
-`agent-final-answer.v3.2026-08-10-final-answer-only`。两者均固定 epoch 3、相同 12 题×5 次、
+`agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`。两者均固定 epoch 3、相同 12 题×5 次、
 reasoning effort high、3600 秒、TP=2 单实例/两个 runner/总并发 2；过程工具或推理错误只作诊断，
 正确性只看最终答案，q73–q86 inclusive-OR 由同一 scorer 处理。0809 的 checkpoint 是 432，
 0807 是 81，差异仅来自每轮 optimizer step 数不同；训练期 validation 节点数不同，eval loss 不作
@@ -384,8 +384,9 @@ warning和复现控制脚本见
 
 ## 评测约定
 
-- Agent 最终答案的唯一计分入口是 `scripts/final_answer_scoring.py`，当前策略版本为 `agent-final-answer.v3.2026-08-10-final-answer-only`。新汇总必须写入同一 `scoring_policy_version`；复合报告和历史结果复用必须直接重新调用该入口，或拒绝没有相同版本标记的旧 `correct` / `exact_match` 字段。
-- 正常答案必须是唯一一个有效的 `<result>...</result>` JSON 字符串列表。只有在 `<result>` 完全不存在时才允许保守格式恢复：最终回答中必须恰好只有一个 fenced code block，且代码块完整内容精确匹配某个可接受答案，才标记 `recovered_fenced_exact_match`；正文提及、第二个代码块（即使重复或无法解析）、非法或未闭合的 `<result>`、多个 `<result>`、模糊片段和近似匹配均不恢复。
+- Agent 最终答案的唯一计分入口是 `scripts/final_answer_scoring.py`，当前策略版本为 `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`。新汇总必须写入同一 `scoring_policy_version`；复合报告和历史结果复用必须直接重新调用该入口，或拒绝没有相同版本标记的旧 `correct` / `exact_match` 字段。
+- v4 继续优先要求唯一合法 `<result>...</result>` JSON 字符串列表；新增的唯一例外只恢复一个完整的 `````<result>`` fenced JSON 列表在缺少 `</result>` 时的精确命中。恢复要求全篇只有一个 `<result>` 开始标记、没有结束标记、只有一个完整 fence，且其中 JSON 列表精确匹配可接受答案；普通正文、非 JSON、冲突答案、多 fence 或其他残缺标记仍判错。
+- 正常答案必须是唯一一个有效的 `<result>...</result>` JSON 字符串列表。只有在 `<result>` 完全不存在时才允许既有的 fenced-code 保守恢复：最终回答中必须恰好只有一个 fenced code block，且代码块完整内容精确匹配某个可接受答案，才标记 `recovered_fenced_exact_match`。此外仅有上一条定义的 v4 精确恢复允许一个未闭合 `<result>`；正文提及、第二个代码块（即使重复或无法解析）、其他非法或未闭合的 `<result>`、多个 `<result>`、模糊片段和近似匹配均不恢复。
 - 严格正确要求预测与一个完整可接受答案精确匹配；漏报、多报和错报均计错。
 - q73 至 q86 的 `Core_SW_01;VRRP Master角色规划不合理` 与 `Core_SW_02;VRRP Master角色规划不合理` 使用包含式 OR：只报 01、只报 02、同时按 01/02 或 02/01 顺序报告均可；该规则只用于汇总重算，不修改输入或历史事件。
 - 准确率只看最终答案：只要最终答案按上述统一入口精确匹配，即使过程包含错误/不支持的工具调用、错误归因或 runner 协议告警也仍计正确；这些过程信号仅保留为诊断证据，不得覆盖最终答案判定。模型到达终态但没有有效最终答案时计错；超时、纯基础设施失败和人为中断不进入有效分母，必须保留证据并安全重试。
@@ -563,6 +564,11 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 
 ### 更新记录
 
+- 2026-08-12：将唯一 Agent 判分协议升级为
+  `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`；只新增“全篇唯一、完整 fenced `<result>`
+  JSON 字符串列表仅缺 `</result>` 且精确命中”的恢复分支。23 项回归通过；归档 v3 与 v4 对全部
+  3,007 份原始最终答案作差，新增正确 1 条（temp0 q65-r03）、降级 0 条；原 0805 epoch-1/2/3/4/5
+  与部分 0807 epoch-3/5 总分均不变。0809 formal config、manifest、双 validator 和依赖哈希同步更新。
 - 2026-08-11：将 0809 Agent 判分协议升级到仓库统一的
   `agent-final-answer.v3.2026-08-10-final-answer-only`，与 0807 统一为相同 12 题×5 次、固定 epoch 3、
   high thinking、3600 秒和 TP2×单实例/双 runner；过程错误只作诊断，q73–q86 inclusive-OR 继续由
@@ -762,3 +768,11 @@ LoRA 严格正确 12/30（40.00%），Base 为 7/30（23.33%），提升 16.67 �
 - 2026-07-27：建立 README 同步维护规则，并增加仓库级协作说明。
 
 每次推送 GitHub 的提交都必须同步更新本 README，确保数据、脚本、实验和当前结论一致。
+## 2026-08-13 Agent timeout scheduling
+
+Agent validation now supports `DEFER_TIMEOUT_RETRIES=1`: a timed-out cell is
+archived and marked pending while the regular grid continues, and all pending
+timeout cells are retried together in bounded final sweeps. The 0809 temp-zero
+workflow uses this mode for epoch 3/4/5. Timeouts, infrastructure failures, and
+policy-transition interruptions remain excluded from canonical denominators;
+the TP=2/concurrency=2 and early-stop gates are unchanged.

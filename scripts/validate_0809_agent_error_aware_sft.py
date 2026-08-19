@@ -50,7 +50,7 @@ EXPECTED_V7_STRUCTURAL_ACTION_REPAIRS = {
 }
 AUDITED_COMPLETE_CONTINUATION_SOURCE = "q0023_path_02_success_09_step_04"
 CANONICAL_SCORING_POLICY_VERSION = (
-    "agent-final-answer.v3.2026-08-10-final-answer-only"
+    "agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery"
 )
 PREMATURE_CONVERGENCE_PHRASES = (
     "证据已经形成闭环", "证据已形成闭环", "关键区分证据已出现",
@@ -1115,6 +1115,8 @@ def main() -> None:
         or policy.get("scoring_policy_version")
         != CANONICAL_SCORING_POLICY_VERSION
         or policy.get("correctness_basis") != "final_answer_only"
+        or policy.get("incomplete_result_recovery")
+        != "one complete fenced <result> JSON string list with no closing </result> is accepted only on exact match"
         or policy.get("launcher") != "scripts/run_agent_validation_resilient.sh"
         or policy.get("reasoning_effort") != "high"
         or policy.get("timeout_seconds_per_case_repeat") != 3600
@@ -1127,13 +1129,16 @@ def main() -> None:
         or policy.get("clean_heldout_required_for_final_generalization_claim")
         is not True
     ):
-        raise ValueError("formal Agent evaluation policy is not the frozen v3 contract")
+        raise ValueError("formal Agent evaluation policy is not the frozen v4 contract")
     if manifest.get("evaluation_protocol") != policy:
         raise ValueError("manifest evaluation protocol differs from formal config")
     scorer = (ROOT / policy["scoring_entry"]).read_text(encoding="utf-8")
     if (
-        f'SCORING_POLICY_VERSION = "{CANONICAL_SCORING_POLICY_VERSION}"'
-        not in scorer
+        re.search(
+            rf'SCORING_POLICY_VERSION\s*=\s*(?:\(\s*)?["\']{re.escape(CANONICAL_SCORING_POLICY_VERSION)}["\']',
+            scorer,
+        )
+        is None
         or "q73-q86 VRRP inclusive OR" not in scorer
     ):
         raise ValueError("canonical final-answer scorer identity/OR policy differs")

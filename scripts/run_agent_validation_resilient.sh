@@ -31,8 +31,10 @@ MODEL_METADATA_SMOKE_TIMEOUT_SECONDS="${MODEL_METADATA_SMOKE_TIMEOUT_SECONDS:-30
 # chat template to close the <think> block before generation.
 REASONING_EFFORT="${REASONING_EFFORT:-high}"
 INFRA_MAX_RETRIES="${INFRA_MAX_RETRIES:-3}"
+DEFER_TIMEOUT_RETRIES="${DEFER_TIMEOUT_RETRIES:-0}"
 EARLY_STOP_ENABLED="${EARLY_STOP_ENABLED:-1}"
 EARLY_STOP_PHASE="${EARLY_STOP_PHASE:-$(dirname "${OUTPUT_ROOT}")}"
+TIMEOUT_RETRY_PHASE=0
 
 if [[ ! "${REPEATS}" =~ ^[1-9][0-9]*$ ]]; then
   echo "REPEATS must be a positive integer." >&2
@@ -56,6 +58,10 @@ if [[ ! "${REASONING_EFFORT}" =~ ^(minimal|low|medium|high|xhigh|max)$ ]]; then
 fi
 if [[ ! "${INFRA_MAX_RETRIES}" =~ ^[0-9]+$ ]]; then
   echo "INFRA_MAX_RETRIES must be a non-negative integer." >&2
+  exit 1
+fi
+if [[ ! "${DEFER_TIMEOUT_RETRIES}" =~ ^[01]$ ]]; then
+  echo "DEFER_TIMEOUT_RETRIES must be 0 or 1." >&2
   exit 1
 fi
 if [[ ! "${EARLY_STOP_ENABLED}" =~ ^[01]$ ]]; then
@@ -313,20 +319,38 @@ run_one() {
   local resume=0
   local prior_status=""
   local archive_root=""
+  local timeout_archive_count=0
 
   if (( retry_count == 0 )); then
     retry_count="$(agent_validation_retry_archive_count "${OUTPUT_ROOT}" "${run_name}")"
   fi
+  timeout_archive_count="$(find "${OUTPUT_ROOT}" -maxdepth 1 -type d -name "${run_name}.timeout_failed_*" -print 2>/dev/null | wc -l | tr -d '[:space:]')"
+
+  # During the normal grid pass, a cell with preserved timeout evidence and no
+  # current run root stays deferred.  It is revisited only after every regular
+  # cell has had its turn.
+  if [[ "${DEFER_TIMEOUT_RETRIES}" == "1" && "${TIMEOUT_RETRY_PHASE}" == "0" \
+      && "${timeout_archive_count}" -gt 0 && ! -e "${run_root}" ]]; then
+    log "defer previously timed-out cell case=${case_id} repeat=${repeat} timeout_archives=${timeout_archive_count} until=final-timeout-sweep"
+    return
+  fi
+
+  if (( retry_count > INFRA_MAX_RETRIES )); then
+    log "retry budget exhausted case=${case_id} repeat=${repeat} archived_attempts=${retry_count}"
+    return
+  fi
 
   if [[ -f "${timeout_marker}" ]]; then
-    if (( retry_count >= INFRA_MAX_RETRIES )); then
-      log "timeout retries exhausted case=${case_id} repeat=${repeat} retries=${retry_count}"
-      return
-    fi
     archive_root="$(agent_validation_archive_timeout "${run_root}")"
     retry_count=$((retry_count + 1))
-    log "archive timeout case=${case_id} repeat=${repeat} retry=${retry_count}/${INFRA_MAX_RETRIES} archive=${archive_root}"
-    run_one "${case_id}" "${repeat}" "${retry_count}"
+    if [[ "${DEFER_TIMEOUT_RETRIES}" == "1" ]]; then
+      log "defer timeout case=${case_id} repeat=${repeat} archived_attempts=${retry_count} archive=${archive_root} until=final-timeout-sweep"
+    elif (( retry_count <= INFRA_MAX_RETRIES )); then
+      log "archive timeout case=${case_id} repeat=${repeat} retry=${retry_count}/${INFRA_MAX_RETRIES} archive=${archive_root}"
+      run_one "${case_id}" "${repeat}" "${retry_count}"
+    else
+      log "timeout retries exhausted case=${case_id} repeat=${repeat} archived_attempts=${retry_count} archive=${archive_root}"
+    fi
     return
   fi
   if [[ -f "${run_root}/manifest.json" ]]; then
@@ -433,13 +457,17 @@ run_one() {
     touch "${run_root}/.model_protocol_failure"
   fi
   log "end case=${case_id} repeat=${repeat} rc=${rc} timeout=${timed_out} wall_seconds=$(($(date +%s)-started))"
-  if (( timed_out == 1 && retry_count < INFRA_MAX_RETRIES )); then
+  if (( timed_out == 1 )); then
     archive_root="$(agent_validation_archive_timeout "${run_root}")"
     retry_count=$((retry_count + 1))
-    log "retry timeout case=${case_id} repeat=${repeat} retry=${retry_count}/${INFRA_MAX_RETRIES} archive=${archive_root}"
-    run_one "${case_id}" "${repeat}" "${retry_count}"
-  elif (( timed_out == 1 )); then
-    log "timeout retries exhausted case=${case_id} repeat=${repeat} retries=${retry_count}"
+    if [[ "${DEFER_TIMEOUT_RETRIES}" == "1" ]]; then
+      log "defer timeout case=${case_id} repeat=${repeat} archived_attempts=${retry_count} archive=${archive_root} until=final-timeout-sweep"
+    elif (( retry_count <= INFRA_MAX_RETRIES )); then
+      log "retry timeout case=${case_id} repeat=${repeat} retry=${retry_count}/${INFRA_MAX_RETRIES} archive=${archive_root}"
+      run_one "${case_id}" "${repeat}" "${retry_count}"
+    else
+      log "timeout retries exhausted case=${case_id} repeat=${repeat} archived_attempts=${retry_count} archive=${archive_root}"
+    fi
   elif (( rc != 0 && retry_count < INFRA_MAX_RETRIES )) \
     && retryable_infrastructure_failure "${run_root}" "${stderr_log}"; then
     archive_root="${run_root}.infra_failed_$(date -u +%Y%m%dT%H%M%S%NZ)"
@@ -452,44 +480,108 @@ run_one() {
   fi
 }
 
-start_early_stop_monitor
-log "Agent validation start prefix=${RUN_PREFIX} cases=${CASE_IDS} repeats=${REPEATS} topology=tp2x1/concurrency2 thinking=enabled raw_reasoning=captured reasoning_effort=${REASONING_EFFORT}"
-for repeat in $(seq 1 "${REPEATS}"); do
-  # Keep two runner slots occupied continuously.  The previous implementation
-  # waited for both members of a pair, which left one of the two permitted
-  # runners idle whenever its peer took longer.  Refill only after a runner
-  # exits, so this remains capped at the required two Agent runners.
-  active=()
-  next_case_index=0
-  while (( next_case_index < ${#CASES[@]} || ${#active[@]} > 0 )); do
-    while (( next_case_index < ${#CASES[@]} && ${#active[@]} < 2 )); do
-      case_id="${CASES[${next_case_index}]}"
-      run_one "${case_id}" "${repeat}" &
-      active+=("$!")
-      next_case_index=$((next_case_index + 1))
-    done
+deferred_timeout_retry_pending() {
+  local case_id="$1"
+  local repeat="$2"
+  local repeat_text
+  repeat_text="$(printf '%02d' "${repeat}")"
+  local run_name="${RUN_PREFIX}-q${case_id}-r${repeat_text}"
+  local run_root="${OUTPUT_ROOT}/${run_name}"
+  local timeout_count
+  local retry_count
+  local status=""
+  timeout_count="$(find "${OUTPUT_ROOT}" -maxdepth 1 -type d -name "${run_name}.timeout_failed_*" -print 2>/dev/null | wc -l | tr -d '[:space:]')"
+  (( timeout_count > 0 )) || return 1
+  retry_count="$(agent_validation_retry_archive_count "${OUTPUT_ROOT}" "${run_name}")"
+  (( retry_count <= INFRA_MAX_RETRIES )) || return 1
+  if [[ -f "${run_root}/manifest.json" ]]; then
+    status="$(manifest_status "${run_root}/manifest.json" 2>/dev/null || true)"
+    [[ "${status}" != "succeeded" ]] || return 1
+    if [[ "${status}" == "failed" || "${status}" == "interrupted" ]]; then
+      retryable_infrastructure_failure "${run_root}" "${CONTROL_DIR}/logs/q${case_id}-r${repeat_text}.stderr.log" || return 1
+    fi
+  fi
+  return 0
+}
 
-    # Wait only until at least one slot is free, then return to the refill
-    # loop.  Polling child PIDs avoids relying on Bash-version-specific
-    # `wait -n -p` behaviour while preserving the hard concurrency cap.
-    completed=0
-    while (( completed == 0 && ${#active[@]} > 0 )); do
-      remaining=()
-      for pid in "${active[@]}"; do
-        if kill -0 "${pid}" 2>/dev/null; then
-          remaining+=("${pid}")
-        else
-          wait "${pid}" || true
-          completed=1
-        fi
+run_grid_pass() {
+  local deferred_only="${1:-0}"
+  local repeat
+  local case_id
+  local pid
+  local completed
+  local next_case_index
+  local -a pass_cases
+  local -a active
+  local -a remaining
+
+  for repeat in $(seq 1 "${REPEATS}"); do
+    pass_cases=()
+    for case_id in "${CASES[@]}"; do
+      if [[ "${deferred_only}" == "0" ]] || deferred_timeout_retry_pending "${case_id}" "${repeat}"; then
+        pass_cases+=("${case_id}")
+      fi
+    done
+    active=()
+    next_case_index=0
+    while (( next_case_index < ${#pass_cases[@]} || ${#active[@]} > 0 )); do
+      while (( next_case_index < ${#pass_cases[@]} && ${#active[@]} < 2 )); do
+        case_id="${pass_cases[${next_case_index}]}"
+        run_one "${case_id}" "${repeat}" &
+        active+=("$!")
+        next_case_index=$((next_case_index + 1))
       done
-      active=("${remaining[@]}")
-      if (( completed == 0 )); then
-        sleep 1
+      completed=0
+      while (( completed == 0 && ${#active[@]} > 0 )); do
+        remaining=()
+        for pid in "${active[@]}"; do
+          if kill -0 "${pid}" 2>/dev/null; then
+            remaining+=("${pid}")
+          else
+            wait "${pid}" || true
+            completed=1
+          fi
+        done
+        active=("${remaining[@]}")
+        (( completed == 1 )) || sleep 1
+      done
+    done
+  done
+}
+
+count_deferred_timeout_cells() {
+  local count=0
+  local repeat
+  local case_id
+  for repeat in $(seq 1 "${REPEATS}"); do
+    for case_id in "${CASES[@]}"; do
+      if deferred_timeout_retry_pending "${case_id}" "${repeat}"; then
+        count=$((count + 1))
       fi
     done
   done
-done
+  printf '%s\n' "${count}"
+}
+
+start_early_stop_monitor
+log "Agent validation start prefix=${RUN_PREFIX} cases=${CASE_IDS} repeats=${REPEATS} topology=tp2x1/concurrency2 thinking=enabled raw_reasoning=captured reasoning_effort=${REASONING_EFFORT} defer_timeout_retries=${DEFER_TIMEOUT_RETRIES}"
+run_grid_pass 0
+
+if [[ "${DEFER_TIMEOUT_RETRIES}" == "1" ]]; then
+  TIMEOUT_RETRY_PHASE=1
+  sweep=0
+  pending="$(count_deferred_timeout_cells)"
+  while (( pending > 0 && sweep <= INFRA_MAX_RETRIES )); do
+    sweep=$((sweep + 1))
+    log "final timeout retry sweep start sweep=${sweep} pending_cells=${pending}"
+    run_grid_pass 1
+    pending="$(count_deferred_timeout_cells)"
+    log "final timeout retry sweep end sweep=${sweep} pending_cells=${pending}"
+  done
+  if (( pending > 0 )); then
+    log "final timeout retry sweeps exhausted pending_cells=${pending}"
+  fi
+fi
 
 summary_args=(
   --output-root "${OUTPUT_ROOT}"

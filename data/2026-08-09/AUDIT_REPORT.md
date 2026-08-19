@@ -22,7 +22,7 @@ v7 针对 2026-08-11 20:02 深审将 action 门禁升级为完整结构门禁：
 7. **action 完整结构门禁。** 全量从 messages 重算 308 条 action：完整 binding 0 条，明确待验证 308 条，matched/expected 分布 {'0/1': 103, '0/4': 41, '0/6': 128, '1/4': 15, '1/6': 7, '2/4': 5, '2/6': 7, '4/6': 2}。深审点名的 17 条均存在且不完整；父级完整证据后仍调用工具 0 条。q0023 原 1/1 完整节点已删除 2 个正 loss 工具调用并改为停止。
 8. **候选排除不做闭世界推断。** endpoint rejected-label 声明总数 0，候选范围校准 bundle 116/116。没有候选专属负证据时只监督“保持未验证”。
 9. **目标表达多样性。** endpoint 精确正目标 16/116 唯一；只去除 snapshot/query/config path 等机械条件后仍有 16/116 唯一，设备、事实、标签和结果均保留在统计中。
-10. **Agent 判分协议。** 固定 epoch 3/checkpoint-432，对同一 12 题各运行 5 次；唯一判分入口为 `scripts/final_answer_scoring.py`，版本 `agent-final-answer.v3.2026-08-10-final-answer-only`。正确性只看最终答案，q73–q86 inclusive-OR 仍由同一 scorer 处理；过程中的工具/推理错误只作诊断，不能覆盖一个精确可接受的最终答案。终态无有效答案计模型错误；基础设施失败、超时和人为中断不进有效分母，保留证据后安全重试。
+10. **Agent 判分协议。** 固定 epoch 3/checkpoint-432，对同一 12 题各运行 5 次；唯一判分入口为 `scripts/final_answer_scoring.py`，版本 `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`。正确性只看最终答案，q73–q86 inclusive-OR 仍由同一 scorer 处理；过程中的工具/推理错误只作诊断，不能覆盖一个精确可接受的最终答案。全篇唯一、完整 fenced `<result>` JSON 字符串列表仅缺 `</result>` 时，只在精确命中可接受答案的情况下恢复；其他 malformed、冲突或多结果输出不恢复。终态无有效答案计模型错误；基础设施失败、超时和人为中断不进有效分母，保留证据后安全重试。
 
 ## 发布门禁
 

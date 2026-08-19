@@ -16,7 +16,7 @@
 10. 真实错误根因排除只来自父级可见 `hypothesis_elimination` 节点及其透明同目标 replay。endpoint 的候选范围校准不得计入排除覆盖。
 11. q73–q86 的 inclusive-OR 语义、拓扑 overlap、压缩 `cat` 输出、action 的按题权重/重复和 endpoint 的逐题 tokenizer loss 差异不在本次改动范围；不得借本轮审计擅自改变。
 12. 固定 epoch 3 前必须看到全部新目标，并保持每轮 1151 行、有效 batch 8、144 optimizer step、固定 checkpoint-432。
-13. 0809 与 0807 的最终 Agent 横向比较必须调用仓库唯一判分入口 `scripts/final_answer_scoring.py`，版本固定为 `agent-final-answer.v3.2026-08-10-final-answer-only`。正确性只由最终答案决定；过程工具/推理错误只作诊断，不能覆盖精确可接受答案。q73–q86 inclusive-OR 由同一 scorer 处理；终态无有效答案计模型错误，基础设施失败、超时和人为中断不进有效分母。
+13. 0809 与 0807 的最终 Agent 横向比较必须调用仓库唯一判分入口 `scripts/final_answer_scoring.py`，版本固定为 `agent-final-answer.v4.2026-08-12-incomplete-result-exact-recovery`。正确性只由最终答案决定；过程工具/推理错误只作诊断，不能覆盖精确可接受答案。全篇唯一、完整 fenced `<result>` JSON 字符串列表仅缺 `</result>` 时，只在精确命中可接受答案的情况下恢复；其他 malformed、冲突或多结果输出不恢复。q73–q86 inclusive-OR 由同一 scorer 处理；终态无有效答案计模型错误，基础设施失败、超时和人为中断不进有效分母。
 
 ## v7 已实现的结果
 
